@@ -1,0 +1,353 @@
+# Alcedo Film Lab
+
+Research and prototypes for a spectral film simulation pipeline and a new Display Rendering
+Transform (DRT) for [Alcedo Studio](https://github.com/zidage/AlcedoStudio).
+
+The goal is to model film exposure, development, dye absorption, and printing from published
+principles and source measurements. The implementation must support **CUDA, Metal, and OpenCL**.
+The research combines useful ideas from **Fotufilm** and **spektrafilm**, with independent code
+and data preparation where practical.
+
+**Status (2026-10-29): initial research only.** This repository contains the research direction
+and the proposed route from proof of concept (PoC) to a standalone minimum viable product (MVP).
+No renderer, profiles, prototypes, GPU measurements, or completed validation are included yet.
+
+**ACES means ACES Reference Gamut Compression (RGC) in this project.** It does not mean adding
+the complete ACES output transform after the film model. **Film grain is outside this research:**
+Alcedo Studio already has its own implementation.
+
+## 1. Main project and research workflow
+
+| Item | Reference |
+| --- | --- |
+| Product | [Alcedo Studio](https://github.com/zidage/AlcedoStudio) |
+| Research workflow example | [Alcedo AI Mask Lab](https://github.com/zidage/alcedo-ai-mask-lab) |
+| Example of step reports | [AI Mask exploration index](https://github.com/zidage/alcedo-ai-mask-lab/blob/main/docs/exploration/README.md) |
+| Example of an integrated prototype | [AI Mask MVP report](https://github.com/zidage/alcedo-ai-mask-lab/blob/main/docs/exploration/mvp_ai_mask.md) |
+| Alcedo source inspected | [`4261b8a5`](https://github.com/zidage/AlcedoStudio/tree/4261b8a5c93e127a13cf96c78b686be3c3430742) |
+
+Follow the AI Mask Lab approach: state the product requirements, test candidates in separate
+experiments, keep reproducible evidence, then run the selected approach in one standalone MVP.
+The final integration belongs in Alcedo Studio. This lab must prove the model and its execution
+before the port.
+
+Each experiment must state its question, inputs, source versions, method, command, numerical
+criteria, result, cost, limitations, and recommendation. Separate source observations,
+calculations, hypotheses, proposed designs, measured results, and user review.
+
+## 2. User requirements
+
+These requirements come from the user on 2026-10-29. The technical choices below are proposals
+until experiments support them.
+
+| ID | Requirement |
+| --- | --- |
+| U1 | Add a new DRT method built around a film simulation pipeline. |
+| U2 | Study Fotufilm and spektrafilm and combine their useful principles. |
+| U3 | Provide GPU acceleration on CUDA, Metal, and OpenCL. |
+| U4 | Prefer an independent implementation from basic principles, papers, and original film data. |
+| U5 | Research improved spectral reconstruction and wavelength sampling methods. |
+| U6 | Use ACES RGC for gamut compression. This requirement does not select ACES 2 tone mapping or its complete output transform. |
+| U7 | Reuse Alcedo's existing film grain implementation. Do not develop or replace grain in this lab. |
+| U8 | Keep the model suitable for Alcedo's existing scene-referred architecture. |
+| U9 | Use a public lab repository and progress from PoC to MVP. The initial delivery is this README. |
+
+The target source license is GPL-3.0-only. Third-party code, measurements, profiles, and derived
+tables retain their applicable license terms.
+
+## 3. Initial findings from the reference projects
+
+The inspected revisions are fixed below. Later upstream changes require a new source check.
+
+| Project | Inspected revision | Useful parts |
+| --- | --- | --- |
+| [Fotufilm engine](https://github.com/DhaliwalX/fotufilm-engine) | [`96623ba0`](https://github.com/DhaliwalX/fotufilm-engine/tree/96623ba0831a52dbddcda35727a206d4123a8b5f) | Measured-reflectance priors, separation of brightness from spectral reconstruction, explicit film-base density, print materials, and staged precomputation for GPU execution. |
+| [spektrafilm](https://github.com/andreavolpato/spektrafilm) | [`3bb2c2d2`](https://github.com/andreavolpato/spektrafilm/tree/3bb2c2d2801ff68b92019cf1dbcbb133d60832bc) | Film-to-print spectral transport, dye and base separation, development inhibitor couplers, neutral-curve compensation, and chromaticity-to-layer-exposure tables. |
+
+### 3.1 Spectral reconstruction and layer exposure
+
+RGB does not uniquely determine a spectrum. Two spectra can produce the same XYZ and different
+film-layer exposures. A small XYZ reconstruction error therefore does not prove an accurate film
+response.
+
+Fotufilm uses a prior derived from measured reflectance datasets. Its recovery separates
+chromaticity from brightness and includes treatment of saturated colors outside its ordinary
+reflectance domain. See its [spectral model](https://github.com/DhaliwalX/fotufilm-engine/blob/96623ba0831a52dbddcda35727a206d4123a8b5f/Sources/FotufilmCore/SpectralModel.swift)
+and [data provenance](https://github.com/DhaliwalX/fotufilm-engine/blob/96623ba0831a52dbddcda35727a206d4123a8b5f/THIRD_PARTY_NOTICES.md).
+
+spektrafilm includes a chromaticity-based irradiance reconstruction route and a Mallett/Yuksel
+spectral-basis route. Its chromaticity route can precompute the integral against each film layer,
+then restore brightness at runtime. See [spectral upsampling](https://github.com/andreavolpato/spektrafilm/blob/3bb2c2d2801ff68b92019cf1dbcbb133d60832bc/src/spektrafilm/utils/spectral_upsampling.py).
+
+Candidate foundations include [Mallett and Yuksel 2019](https://www.cemyuksel.com/research/papers/spectral_primary_decomposition.pdf),
+[Jakob and Hanika 2019](https://rgl.epfl.ch/publications/Jakob2019Spectral), and an independently
+fitted measured-spectrum prior. Reflectance methods need a defined domain. Emission, extreme
+chromaticities, and HDR exposure cannot be handled by assuming every input is a bounded sRGB
+reflectance.
+
+### 3.2 Development, dyes, and printing
+
+Treat layer exposure, developed dye amount, measured density, spectral density, and encoded RGB
+as different quantities. A manufacturer's Status M or Status A density curve is an instrument
+reading. It is not automatically the amount of one isolated dye.
+
+spektrafilm models development inhibitors and compensates the underlying curves so neutral
+exposure ramps can retain the supplied characteristic response. This is useful: adding layer
+coupling without that constraint can count an effect twice. See [couplers](https://github.com/andreavolpato/spektrafilm/blob/3bb2c2d2801ff68b92019cf1dbcbb133d60832bc/src/spektrafilm/model/couplers.py)
+and [printing](https://github.com/andreavolpato/spektrafilm/blob/3bb2c2d2801ff68b92019cf1dbcbb133d60832bc/src/spektrafilm/runtime/stages/printing.py).
+
+Fotufilm represents minimum-density spectra separately and distinguishes capture illumination,
+printing illumination, and viewing illumination. These distinctions should remain explicit in
+this lab. A change of viewing light must not change already developed dye amounts.
+
+### 3.3 Original measurements do not specify a complete film
+
+[Kodak Portra 400 E-4050](https://business.kodakmoments.com/sites/default/files/files/resources/e4050_portra_400.pdf),
+page 4, provides characteristic curves, spectral sensitivity, and minimum-density and midscale
+neutral spectra. The neutral spectra do not uniquely identify three isolated image-dye spectra.
+
+[Kodak 2383 technical data](https://www.kodak.com/content/products-brochures/Film/KODAK-VISION-Color-Print-Film-2383-3383-data-sheet.pdf),
+page 5, provides peak-normalized dye curves. Their amplitude and relationship to measured
+instrument density still require calibration.
+
+Each profile must distinguish original measurements, independently digitized points, inferred
+parameters, material-family approximations, and creative controls. Record the source edition,
+page, exposure conditions, processing conditions, units, digitization method, and extrapolation.
+Published charts constrain a model; they do not prove a complete reconstruction of a commercial
+emulsion or a particular laboratory process.
+
+## 4. Proposed image pipeline
+
+```text
+Scene-referred RGB with an explicit encoding
+  -> linear AP1 / XYZ conversion
+  -> ACES RGC at a documented location, accounting for prior application
+  -> spectral reconstruction and a defined realizable input domain
+  -> film-layer exposure
+  -> characteristic response and development coupling
+  -> dye amounts + film base and mask contributions
+  -> spectral transmission through the negative
+  -> printing light and filtration
+  -> print-material exposure and development
+  -> viewing spectrum and XYZ
+  -> explicit display luminance and gamut treatment
+  -> output encoding
+```
+
+The first experiment should use one negative and one print material with traceable data.
+Portra 400 with an Endura-family paper is a candidate, subject to the source-data audit. The
+model must support independent negative exposure, print exposure, filtration, and viewing
+conditions. A direct-view positive or scan path can share the same physical stages when its
+measurements and interpretation are defined.
+
+For layer sensitivity S_i and incident spectral radiance L, relative layer exposure is:
+
+```text
+H_i(x) = t * integral L_x(lambda) * S_i(lambda) d(lambda)
+```
+
+For a defined additive effective density basis:
+
+```text
+D_negative(lambda, x) = D_base(lambda) + sum_i a_i(x) * d_i(lambda)
+T_negative(lambda, x) = 10 ^ (-D_negative(lambda, x))
+H_print_j(x) = t_print * integral I_print(lambda) * F_print(lambda)
+              * T_negative(lambda, x) * S_print_j(lambda) d(lambda)
+```
+
+These equations define a starting model, not a claim that every masking process is an
+independent positive absorber. An effective basis can include signed changes from consumed
+masking material. Validate total spectral density and transmission, and count the base once.
+State whether sensitivities use radiometric energy or photon units. Do not apply an extra photon
+conversion to a sensitivity curve that already uses the chosen energy convention.
+
+## 5. ACES RGC: scope and checks
+
+Use the [ACES 1.3 RGC specification](https://docs.acescentral.com/rgc/specification/) and its
+[implementation guide](https://docs.acescentral.com/rgc/guides/rgc-implementation/).
+The standard transform operates through linear AP1 and compresses distances from an achromatic
+axis. Its standard domain and parameters must be preserved when claiming the reference behavior.
+
+RGC does not supply a film tone scale, negative inversion, print response, display transfer
+function, or a general guarantee that every extreme input lands inside a target display gamut.
+It also does not prove that a result admits the bounded reflectance assumed by a reconstruction
+method. Test the reconstruction domain separately.
+
+The PoC must compare these cases: input already processed by RGC, input processed once in the
+lab, and diagnostic input without RGC. The result must identify the application point and avoid
+an accidental repeated application. A target-gamut variant with different parameters or a
+different color domain is a separate derived operation. Do not label it the standard ACES RGC.
+
+Display adaptation must preserve the film and print appearance as far as the selected output
+permits. Define white, black, luminance scale, and out-of-gamut behavior. Do not append a full
+ACES output transform as an implicit extra tone scale.
+
+## 6. Proposed research contributions
+
+### 6.1 Separate spectral shape from exposure
+
+For a reconstruction that is homogeneous in brightness, write L(lambda; c, b) as
+b * L_hat(lambda; c), where c is chromaticity and b is a positive brightness scale. Precompute
+the integral of L_hat against each layer sensitivity. Restore b at runtime.
+
+Verify that one additional exposure stop multiplies every layer exposure by two. Check the
+near-black definition, chromaticity boundaries, and interpolation continuity. This avoids
+clipping scene exposure to an ordinary unit RGB cube.
+
+### 6.2 Optimize deterministic wavelength integration for the film process
+
+Build a dense numerical reference first. Fit fixed wavelength nodes and weights against layer
+exposure, negative transmission over the density range, print exposure, and viewing XYZ.
+Use held-out spectra, illuminants, and density combinations for evaluation.
+
+Do not select a small wavelength count before measuring its error. Narrow sensitivity edges and
+light-source peaks can dominate the result. Interpolation of a coarse source chart does not add
+measurement information. Report separately the source-data uncertainty and integration error.
+
+### 6.3 Evaluate the response of metamers
+
+Use different measured spectra with similar XYZ to examine variation in film-layer exposure.
+Compare XYZ error and layer-exposure error for each reconstruction candidate. Include skin,
+foliage, fabrics, saturated objects, and narrowband illumination where suitable data exist.
+This evaluates the model's assumptions; it does not recover a unique spectrum from RGB.
+
+### 6.4 Preserve physical stages in GPU precomputation
+
+Compile pointwise spectral operations into separate response tables where the error permits.
+Keep film exposure, development, negative-to-print exposure, and viewing independently
+inspectable. Keep any measured spatial development effect outside pointwise tables.
+Do not fit one final look LUT to upstream renders and call that an independent physical model.
+
+## 7. GPU architecture and Alcedo integration
+
+Use a high-precision host evaluator for numerical reference and parameter preparation. Product
+image execution must use the selected GPU backend. A GPU error must report the real failure;
+it must not silently select CPU execution, another backend, a smaller image, or a weaker model.
+
+| Shared work | Backend-specific work |
+| --- | --- |
+| Profile validation, units, characteristic curves, table construction, mathematical definitions, and comparison criteria | Device resources, kernel dispatch, image bindings, transfers, synchronization, and timing |
+
+Use float32 as the initial GPU arithmetic. Check arithmetic and interpolation differences
+against the host evaluator. A later precision change needs a separate measured justification.
+Keep image intermediates as layer exposures, dye amounts, or ordinary RGB where possible.
+For scale: 24 million pixels * 81 bands * 4 bytes is 7.776 GB for one spectral image alone.
+This is a storage calculation, not a measured allocation or speed result.
+
+The inspected Alcedo source uses ACEScc AP1 for scene editing. Its diffusion pass decodes that
+value to linear AP1 before the DRT. The existing DRT owner exposes focused parameter updates.
+The future port should add a method to that owner and use the existing history and export paths.
+It must not create a second editable document state for the film model.
+
+Source entry points at the inspected revision:
+
+- [DRT method and parameter owner](https://github.com/zidage/AlcedoStudio/blob/4261b8a5c93e127a13cf96c78b686be3c3430742/alcedo_studio/src/include/edit/graph/drt_node_model.hpp)
+- [Compiled DRT inputs and stages](https://github.com/zidage/AlcedoStudio/blob/4261b8a5c93e127a13cf96c78b686be3c3430742/alcedo_studio/src/include/edit/runtime/execution_plan.hpp)
+- [CUDA DRT](https://github.com/zidage/AlcedoStudio/blob/4261b8a5c93e127a13cf96c78b686be3c3430742/alcedo_studio/src/edit/runtime/cuda/cuda_drt_pass.cu)
+- [Metal DRT](https://github.com/zidage/AlcedoStudio/blob/4261b8a5c93e127a13cf96c78b686be3c3430742/alcedo_studio/src/edit/runtime/metal/metal_drt_pass.mm)
+- [OpenCL DRT](https://github.com/zidage/AlcedoStudio/blob/4261b8a5c93e127a13cf96c78b686be3c3430742/alcedo_studio/src/edit/runtime/opencl/opencl_drt_pass.cpp)
+- [Shared RGC math](https://github.com/zidage/AlcedoStudio/blob/4261b8a5c93e127a13cf96c78b686be3c3430742/alcedo_studio/src/include/edit/runtime/aces_reference_gamut_compression.h)
+
+Alcedo already applies RGC in its camera-color path and again at the current DRT entry.
+The new method must account for those locations. It cannot recover color information changed
+before its input. The lab does not authorize changing existing Develop behavior.
+
+Existing film grain remains an Alcedo-owned effect. The lab does not require moving it into
+negative density, changing its appearance, or adopting either reference project's grain model.
+
+## 8. Route from PoC to MVP
+
+All implementation steps below are **not started**. They are experimental deliverables, not
+claims of product support. Define numerical tolerances before evaluating each candidate.
+
+| Step | Question and work | Required evidence |
+| --- | --- | --- |
+| P0: data and reference | Can one negative and print pair be specified from traceable sources? Digitize curves, define units and density meanings, and implement a host spectral evaluator. | Source manifest and hashes; curve overlays; explicit inferred fields; neutral exposure and density checks; dense-integration convergence. |
+| P1: spectral input and RGC | Which independent reconstruction gives stable XYZ and film-layer exposure? Compare compact spectral models and a measured-data prior. Verify standard RGC against its published criteria. | Held-out XYZ and layer-exposure errors; exposure scaling; metamer comparison; near-black and saturated-light probes; documented RGC location and residual domain failures. |
+| P2: negative and print | Does the complete pointwise process retain the measured characteristic response? Add dye/base separation, development coupling, print exposure, filtration, and viewing conditions. | Neutral and color sweeps; instrument-density reconstruction; total transmission checks; parameter-isolation tests; comparison with available physical measurements. |
+| P3: spectral acceleration | Can staged tables or optimized integration reproduce the direct evaluator across the declared domain? | Maximum and distribution of errors; table-boundary continuity; negative and print density coverage; construction time; resource size. |
+| P4: three GPU backends | Do CUDA, Metal, and OpenCL execute the same complete model at full image resolution? | Per-backend numerical comparison; device and driver records; cold and warm timings; full-resolution export time; steady and peak memory; explicit failure cases. |
+| MVP: standalone workflow | Can one program run the selected pipeline, controls, and export with the same results as the experiments? | Shared pipeline used by CLI and a small desktop viewer; repeatable parameter files; backend selection; full-resolution output; cost report; user review of appearance and controls. |
+
+The MVP must include the complete negative-to-print chain, an explicit display interpretation,
+and all three GPU implementations. A preview alone does not complete the MVP. A separate report
+must state what each platform actually ran. An unavailable device is unverified support.
+
+Use scene-linear float images with explicit primaries and white point for controlled experiments.
+Do not add a second RAW decoder to this lab by default. Inputs prepared by Alcedo must record the
+export stage, encoding, exposure scale, and previous RGC processing. A standalone reference input
+must remain available so the tests do not require an Alcedo GUI session.
+
+Suggested future paths follow the AI Mask Lab structure:
+
+| Proposed path | Purpose |
+| --- | --- |
+| `docs/research/` | Source analysis, material data, papers, and algorithm comparisons. |
+| `docs/exploration/` | One report per experiment and an index of measured status. |
+| `scripts/poc/` | Reproducible reference experiments and evaluation commands. |
+| `src/` | Shared model code and the CUDA, Metal, and OpenCL implementations. |
+| `profiles/` | Independently prepared material descriptions with provenance and licenses. |
+| `results/` | Small, redistributable measurements and result summaries. |
+| `build/tmp/` | Uncommitted source downloads, intermediate files, private photos, and local evidence. |
+
+These directories do not exist in the initial README-only delivery. Never publish source
+photos, downloaded assets, or manufacturer documents without checking redistribution rights.
+
+## 9. Evidence required before the Alcedo port
+
+- A one-stop exposure increase doubles each layer exposure before development.
+- Neutral ramps reproduce the declared source curves within predeclared tolerances.
+- Development coupling preserves the neutral calibration used to fit the model.
+- Film base is counted once; total transmission is finite and physically admissible.
+- Print exposure and filtration affect the print stage; viewing light leaves dyes unchanged.
+- Staged GPU calculations match direct spectral calculations across the declared input domain.
+- RGC matches the published implementation criteria in its standard form. Any variant is named
+  and evaluated separately.
+- Each backend passes independent comparisons with the host evaluator. Agreement among three
+  ports alone does not establish a correct physical model.
+- Near-black values, high exposure, chromaticity edges, density limits, and table seams remain
+  continuous and free of NaN or infinite output for valid inputs.
+- Profile or illumination changes update the resources they affect without reusing stale tables.
+- Full-resolution image processing and export run without a quality or backend substitution.
+- The cost report states the build type, hardware, drivers, resolution, active effects, table
+  preparation, first render, warm latency distribution, and memory measurement method.
+- User review of film appearance and controls is recorded separately from numerical checks.
+
+## 10. Independent implementation, data, and licensing
+
+Use public physical principles, original publications, and independently prepared datasets.
+Record how each algorithm and profile was derived. Do not copy upstream calibration constants,
+profile JSON, tables, code structure, or rendered outputs into an allegedly independent result.
+If reuse is deliberate, label it as reuse and preserve its applicable notices.
+
+This initial research reads upstream source code. It is not a strict separation between
+researchers who inspect code and implementers who do not. Describe future work accurately as an
+independent implementation from published principles and documented measurements unless a
+separate process establishes a stronger claim.
+
+The inspected Fotufilm engine is Apache-2.0; its listed film profiles are CC BY-SA 4.0, and
+other assets have their own notices. See [licensing](https://github.com/DhaliwalX/fotufilm-engine/blob/96623ba0831a52dbddcda35727a206d4123a8b5f/LICENSING.md).
+Apache-2.0 code can be included in a GPLv3 project with the required notices; see the
+[Apache explanation](https://www.apache.org/licenses/GPL-compatibility.html).
+
+spektrafilm code uses GPLv3. Its inspected [profile and LUT license](https://github.com/andreavolpato/spektrafilm/blob/3bb2c2d2801ff68b92019cf1dbcbb133d60832bc/SPEKTRAFILM_LICENSE.txt)
+states CC BY-SA 4.0 and separately lists requests beyond the legal requirements. The inspected
+README also contains different wording about LUT licensing. Check the exact asset and revision
+before importing it; this repository does not redistribute those assets.
+
+Independent digitization does not automatically establish redistribution rights for a source
+publication. Preserve provenance and check source-data terms. A model derived from a dataset
+does not become rights-free because its storage format changes.
+
+Useful independent data starting points:
+
+- [CIE 1931 2-degree observer](https://cie.co.at/datatable/cie-1931-colour-matching-functions-2-degree-observer): official color-matching function data at 1 nm intervals.
+- [rawtoaces-data](https://github.com/AcademySoftwareFoundation/rawtoaces-data): camera sensitivities, illuminants, observer functions, and training spectra. Check each dataset's metadata and license.
+- [USGS Spectral Library Version 7](https://doi.org/10.5066/F7RR1WDJ): measured material spectra; inspect individual records for suitability.
+- [NIST human skin reflectance reference data](https://doi.org/10.6028/jres.122.026): a candidate source for independent skin-spectrum evaluation.
+
+## License
+
+Project-authored material is licensed under **GPL-3.0-only**. See [LICENSE](LICENSE).
+Third-party materials keep their own terms. No upstream film profiles, LUTs, grain code, or
+manufacturer documents are included in this initial repository.
