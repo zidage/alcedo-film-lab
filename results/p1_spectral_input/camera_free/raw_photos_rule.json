@@ -1,0 +1,1282 @@
+{
+  "pixels_per_file": 2000,
+  "exposure": "median Y of the sampled pixels = 18 % grey",
+  "files": {
+    "canon/1dxii/C68I0112.CR2": {
+      "pixels": 1999,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 1,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 1999,
+        "p50": [
+          0.0036,
+          0.00201,
+          0.01046
+        ],
+        "p95": [
+          0.02401,
+          0.0063,
+          0.03365
+        ],
+        "max": [
+          0.08597,
+          0.03667,
+          0.09493
+        ]
+      },
+      "seconds": 9.9
+    },
+    "canon/5div/793A6931.CR2": {
+      "pixels": 1998,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 3,
+      "quadratic_solves": 4,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0533,
+      "difference_to_jh": {
+        "count": 1994,
+        "p50": [
+          0.00413,
+          0.00154,
+          0.01619
+        ],
+        "p95": [
+          0.02906,
+          0.00668,
+          0.05266
+        ],
+        "max": [
+          0.15048,
+          0.02503,
+          0.07561
+        ]
+      },
+      "seconds": 24.5
+    },
+    "canon/r/Canon-eos-r-raw-00001.cr3": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 4,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00635,
+          0.00163,
+          0.01152
+        ],
+        "p95": [
+          0.03015,
+          0.00468,
+          0.02557
+        ],
+        "max": [
+          0.13542,
+          0.01805,
+          0.05479
+        ]
+      },
+      "seconds": 9.6
+    },
+    "canon/r/Canon-eos-r-raw-00002.cr3": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 0,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00558,
+          0.00622,
+          0.02427
+        ],
+        "p95": [
+          0.02081,
+          0.01035,
+          0.04062
+        ],
+        "max": [
+          0.05624,
+          0.01474,
+          0.05291
+        ]
+      },
+      "seconds": 9.3
+    },
+    "canon/r5/020A0059.CR3": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 1,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 1999,
+        "p50": [
+          0.00463,
+          0.00057,
+          0.00409
+        ],
+        "p95": [
+          0.02616,
+          0.00679,
+          0.04088
+        ],
+        "max": [
+          0.07156,
+          0.04757,
+          0.18212
+        ]
+      },
+      "seconds": 23.4
+    },
+    "canon/r5/Canon-eos-r5-raw-00016.cr3": {
+      "pixels": 1949,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 10,
+      "quadratic_solves": 29,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.053,
+      "difference_to_jh": {
+        "count": 1937,
+        "p50": [
+          0.00794,
+          0.00189,
+          0.03278
+        ],
+        "p95": [
+          0.07019,
+          0.00746,
+          0.10101
+        ],
+        "max": [
+          0.19308,
+          0.06894,
+          0.20084
+        ]
+      },
+      "seconds": 24.3
+    },
+    "canon/r5ii/212A8484.CR3": {
+      "pixels": 1979,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 6,
+      "moved_by_rule": 9,
+      "quadratic_solves": 29,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0806,
+      "difference_to_jh": {
+        "count": 1958,
+        "p50": [
+          0.006,
+          0.00215,
+          0.01975
+        ],
+        "p95": [
+          0.06935,
+          0.00854,
+          0.06411
+        ],
+        "max": [
+          0.21314,
+          0.02233,
+          0.08074
+        ]
+      },
+      "seconds": 25.5
+    },
+    "canon/r5ii/237A2108.CR3": {
+      "pixels": 1999,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 0,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 1999,
+        "p50": [
+          0.0031,
+          0.00152,
+          0.00755
+        ],
+        "p95": [
+          0.02825,
+          0.0073,
+          0.02976
+        ],
+        "max": [
+          0.06826,
+          0.01629,
+          0.06057
+        ]
+      },
+      "seconds": 10.0
+    },
+    "canon/r5ii/237A2110.CR3": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 2,
+      "quadratic_solves": 2,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0856,
+      "difference_to_jh": {
+        "count": 1998,
+        "p50": [
+          0.00435,
+          0.00277,
+          0.01178
+        ],
+        "p95": [
+          0.02464,
+          0.00761,
+          0.03402
+        ],
+        "max": [
+          0.14466,
+          0.0234,
+          0.16833
+        ]
+      },
+      "seconds": 23.4
+    },
+    "canon/r6/1H1A6888.CR3": {
+      "pixels": 1826,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 9,
+      "quadratic_solves": 19,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.16,
+      "difference_to_jh": {
+        "count": 1812,
+        "p50": [
+          0.0035,
+          0.00168,
+          0.00953
+        ],
+        "p95": [
+          0.02854,
+          0.00746,
+          0.03503
+        ],
+        "max": [
+          0.15927,
+          0.01721,
+          0.10345
+        ]
+      },
+      "seconds": 22.0
+    },
+    "canon/r6ii/5O3A3592.CR3": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 1,
+      "moved_by_rule": 6,
+      "quadratic_solves": 53,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.3511,
+      "difference_to_jh": {
+        "count": 1978,
+        "p50": [
+          0.01334,
+          0.00411,
+          0.02559
+        ],
+        "p95": [
+          0.04689,
+          0.01132,
+          0.04603
+        ],
+        "max": [
+          0.305,
+          0.08552,
+          0.0773
+        ]
+      },
+      "seconds": 24.6
+    },
+    "fuji/xt4/9603741704.raf": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 42,
+      "quadratic_solves": 69,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0918,
+      "difference_to_jh": {
+        "count": 1956,
+        "p50": [
+          0.01882,
+          0.00226,
+          0.02115
+        ],
+        "p95": [
+          0.10302,
+          0.0085,
+          0.0644
+        ],
+        "max": [
+          0.22565,
+          0.02483,
+          0.0921
+        ]
+      },
+      "seconds": 27.4
+    },
+    "lumix/gx9/P1011384.RW2": {
+      "pixels": 1966,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 2,
+      "quadratic_solves": 13,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0832,
+      "difference_to_jh": {
+        "count": 1959,
+        "p50": [
+          0.00654,
+          0.00211,
+          0.01738
+        ],
+        "p95": [
+          0.0767,
+          0.01151,
+          0.06135
+        ],
+        "max": [
+          0.19407,
+          0.05683,
+          0.09231
+        ]
+      },
+      "seconds": 23.5
+    },
+    "lumix/gx9/P1012323.RW2": {
+      "pixels": 1997,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 23,
+      "quadratic_solves": 44,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.085,
+      "difference_to_jh": {
+        "count": 1974,
+        "p50": [
+          0.00748,
+          0.00212,
+          0.02817
+        ],
+        "p95": [
+          0.08192,
+          0.00776,
+          0.06598
+        ],
+        "max": [
+          0.21362,
+          0.01492,
+          0.16769
+        ]
+      },
+      "seconds": 24.5
+    },
+    "lumix/gx9/P1024439.RW2": {
+      "pixels": 1947,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 2,
+      "quadratic_solves": 9,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.1729,
+      "difference_to_jh": {
+        "count": 1942,
+        "p50": [
+          0.00642,
+          0.00154,
+          0.0129
+        ],
+        "p95": [
+          0.04794,
+          0.00917,
+          0.05133
+        ],
+        "max": [
+          0.14951,
+          0.02788,
+          0.07395
+        ]
+      },
+      "seconds": 22.8
+    },
+    "nikon/d7000/Nikon-D7000-raw-00009.nef": {
+      "pixels": 1958,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 1,
+      "quadratic_solves": 3,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0979,
+      "difference_to_jh": {
+        "count": 1956,
+        "p50": [
+          0.00646,
+          0.00102,
+          0.00643
+        ],
+        "p95": [
+          0.03832,
+          0.00751,
+          0.04443
+        ],
+        "max": [
+          0.163,
+          0.01919,
+          0.06917
+        ]
+      },
+      "seconds": 22.9
+    },
+    "nikon/d7000/Nikon-D7000-raw-00012.nef": {
+      "pixels": 1992,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 5,
+      "quadratic_solves": 6,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.051,
+      "difference_to_jh": {
+        "count": 1987,
+        "p50": [
+          0.00828,
+          0.00395,
+          0.0251
+        ],
+        "p95": [
+          0.03112,
+          0.01194,
+          0.07076
+        ],
+        "max": [
+          0.14584,
+          0.02901,
+          0.1563
+        ]
+      },
+      "seconds": 23.2
+    },
+    "nikon/d800e/Nikon-D800e-raw-00002.nef": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 0,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00342,
+          0.00077,
+          0.00745
+        ],
+        "p95": [
+          0.01645,
+          0.00202,
+          0.01688
+        ],
+        "max": [
+          0.04351,
+          0.00769,
+          0.03701
+        ]
+      },
+      "seconds": 10.2
+    },
+    "nikon/d800e/Nikon-D800e-raw-00006.nef": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 9,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.03831,
+          0.00091,
+          0.04695
+        ],
+        "p95": [
+          0.08931,
+          0.00293,
+          0.05695
+        ],
+        "max": [
+          0.16705,
+          0.00665,
+          0.07589
+        ]
+      },
+      "seconds": 10.5
+    },
+    "nikon/d800e/Nikon-D800e-raw-00007.nef": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 2,
+      "quadratic_solves": 21,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0762,
+      "difference_to_jh": {
+        "count": 1992,
+        "p50": [
+          0.01724,
+          0.0032,
+          0.02337
+        ],
+        "p95": [
+          0.06803,
+          0.01392,
+          0.05313
+        ],
+        "max": [
+          0.17814,
+          0.03356,
+          0.08897
+        ]
+      },
+      "seconds": 24.3
+    },
+    "nikon/d810/DSC_4742.NEF": {
+      "pixels": 1988,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 0,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 1988,
+        "p50": [
+          0.00303,
+          0.00127,
+          0.00783
+        ],
+        "p95": [
+          0.01898,
+          0.00733,
+          0.0339
+        ],
+        "max": [
+          0.07864,
+          0.01929,
+          0.07156
+        ]
+      },
+      "seconds": 10.3
+    },
+    "nikon/d810/DSC_5495.NEF": {
+      "pixels": 1876,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 1,
+      "moved_by_rule": 1,
+      "quadratic_solves": 18,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 14.1592,
+      "difference_to_jh": {
+        "count": 1867,
+        "p50": [
+          0.01611,
+          0.00482,
+          0.02936
+        ],
+        "p95": [
+          0.04301,
+          0.0102,
+          0.04415
+        ],
+        "max": [
+          0.12649,
+          0.02524,
+          0.10344
+        ]
+      },
+      "seconds": 24.0
+    },
+    "nikon/d810/DSC_7647.NEF": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 2,
+      "moved_by_rule": 21,
+      "quadratic_solves": 105,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.5185,
+      "difference_to_jh": {
+        "count": 1965,
+        "p50": [
+          0.04412,
+          0.01046,
+          0.03767
+        ],
+        "p95": [
+          0.144,
+          0.01981,
+          0.06349
+        ],
+        "max": [
+          0.35763,
+          0.06976,
+          0.40252
+        ]
+      },
+      "seconds": 27.3
+    },
+    "nikon/d810/Nikon-D810-raw00011.nef": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 0,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00394,
+          0.00215,
+          0.01696
+        ],
+        "p95": [
+          0.02926,
+          0.0081,
+          0.05175
+        ],
+        "max": [
+          0.10987,
+          0.01923,
+          0.10788
+        ]
+      },
+      "seconds": 10.3
+    },
+    "nikon/d850/DSC_0630.NEF": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 0,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00252,
+          0.00169,
+          0.01163
+        ],
+        "p95": [
+          0.02145,
+          0.00539,
+          0.03086
+        ],
+        "max": [
+          0.04111,
+          0.00772,
+          0.05849
+        ]
+      },
+      "seconds": 10.7
+    },
+    "nikon/d850/DSC_0836.NEF": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 8,
+      "quadratic_solves": 15,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.123,
+      "difference_to_jh": {
+        "count": 1992,
+        "p50": [
+          0.01021,
+          0.00273,
+          0.02576
+        ],
+        "p95": [
+          0.06115,
+          0.0077,
+          0.05873
+        ],
+        "max": [
+          0.16534,
+          0.01174,
+          0.11322
+        ]
+      },
+      "seconds": 24.8
+    },
+    "nikon/zf/DSC_1456.NEF": {
+      "pixels": 1944,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 1,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 1943,
+        "p50": [
+          0.00207,
+          0.00144,
+          0.01087
+        ],
+        "p95": [
+          0.01822,
+          0.00892,
+          0.03602
+        ],
+        "max": [
+          0.13243,
+          0.046,
+          0.18749
+        ]
+      },
+      "seconds": 22.7
+    },
+    "nikon/zf/DSC_1535.NEF": {
+      "pixels": 1997,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 1,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 1997,
+        "p50": [
+          0.00221,
+          0.00134,
+          0.01053
+        ],
+        "p95": [
+          0.01702,
+          0.00671,
+          0.02976
+        ],
+        "max": [
+          0.10151,
+          0.01502,
+          0.06821
+        ]
+      },
+      "seconds": 10.1
+    },
+    "sony/a6400/DSC00342.ARW": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 11,
+      "quadratic_solves": 52,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.1134,
+      "difference_to_jh": {
+        "count": 1969,
+        "p50": [
+          0.00728,
+          0.0032,
+          0.02179
+        ],
+        "p95": [
+          0.06756,
+          0.01044,
+          0.05837
+        ],
+        "max": [
+          0.14691,
+          0.03065,
+          0.11074
+        ]
+      },
+      "seconds": 24.9
+    },
+    "sony/a6400/DSC00352.ARW": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 1,
+      "quadratic_solves": 12,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.1054,
+      "difference_to_jh": {
+        "count": 1995,
+        "p50": [
+          0.00544,
+          0.00287,
+          0.01624
+        ],
+        "p95": [
+          0.04625,
+          0.00867,
+          0.05409
+        ],
+        "max": [
+          0.15463,
+          0.02276,
+          0.07668
+        ]
+      },
+      "seconds": 22.9
+    },
+    "sony/a7cii/Sonya7c2-Bracaglia-05.ARW": {
+      "pixels": 1999,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 3,
+      "quadratic_solves": 11,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.019,
+      "difference_to_jh": {
+        "count": 1992,
+        "p50": [
+          0.00378,
+          0.00124,
+          0.00971
+        ],
+        "p95": [
+          0.05035,
+          0.00724,
+          0.03403
+        ],
+        "max": [
+          0.10276,
+          0.02181,
+          0.14109
+        ]
+      },
+      "seconds": 23.2
+    },
+    "sony/a7iii/DSC00527.ARW": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 2,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00544,
+          0.0042,
+          0.02014
+        ],
+        "p95": [
+          0.02223,
+          0.00768,
+          0.03881
+        ],
+        "max": [
+          0.1557,
+          0.03601,
+          0.1546
+        ]
+      },
+      "seconds": 9.5
+    },
+    "sony/a7iii/DSC00542.ARW": {
+      "pixels": 1902,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 1,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 1901,
+        "p50": [
+          0.00435,
+          0.00242,
+          0.01571
+        ],
+        "p95": [
+          0.02757,
+          0.00828,
+          0.05862
+        ],
+        "max": [
+          0.08413,
+          0.02518,
+          0.11976
+        ]
+      },
+      "seconds": 22.1
+    },
+    "sony/a7iii/DSC00628.ARW": {
+      "pixels": 1963,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 13,
+      "quadratic_solves": 16,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0828,
+      "difference_to_jh": {
+        "count": 1950,
+        "p50": [
+          0.01091,
+          0.00257,
+          0.02522
+        ],
+        "p95": [
+          0.02849,
+          0.00549,
+          0.07076
+        ],
+        "max": [
+          0.16614,
+          0.02374,
+          0.12465
+        ]
+      },
+      "seconds": 23.2
+    },
+    "sony/a7iv/DSC00102.ARW": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 1,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00484,
+          0.00082,
+          0.00666
+        ],
+        "p95": [
+          0.04545,
+          0.00749,
+          0.05465
+        ],
+        "max": [
+          0.15668,
+          0.01422,
+          0.07083
+        ]
+      },
+      "seconds": 10.6
+    },
+    "sony/a7rii/DSC00372.ARW": {
+      "pixels": 1983,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 5,
+      "quadratic_solves": 15,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.1584,
+      "difference_to_jh": {
+        "count": 1977,
+        "p50": [
+          0.00828,
+          0.00222,
+          0.02485
+        ],
+        "p95": [
+          0.07548,
+          0.00887,
+          0.06264
+        ],
+        "max": [
+          0.22187,
+          0.02448,
+          0.08081
+        ]
+      },
+      "seconds": 23.9
+    },
+    "sony/a7rii/DSC00459.ARW": {
+      "pixels": 1955,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 89,
+      "moved_by_rule": 2,
+      "quadratic_solves": 19,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.2186,
+      "difference_to_jh": {
+        "count": 1861,
+        "p50": [
+          0.00471,
+          0.00164,
+          0.01043
+        ],
+        "p95": [
+          0.04459,
+          0.00862,
+          0.0374
+        ],
+        "max": [
+          0.15676,
+          0.03994,
+          0.20575
+        ]
+      },
+      "seconds": 23.8
+    },
+    "sony/a7rii/DSC00602.ARW": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 0,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00465,
+          0.00165,
+          0.01014
+        ],
+        "p95": [
+          0.02367,
+          0.00559,
+          0.0318
+        ],
+        "max": [
+          0.09828,
+          0.03721,
+          0.1692
+        ]
+      },
+      "seconds": 9.9
+    },
+    "sony/a7rii/DSC00694_ACR.ARW": {
+      "pixels": 1999,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 126,
+      "moved_by_rule": 201,
+      "quadratic_solves": 403,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.1605,
+      "difference_to_jh": {
+        "count": 1569,
+        "p50": [
+          0.01178,
+          0.00388,
+          0.02772
+        ],
+        "p95": [
+          0.06908,
+          0.02775,
+          0.0892
+        ],
+        "max": [
+          0.20543,
+          0.08878,
+          0.3575
+        ]
+      },
+      "seconds": 52.2
+    },
+    "sony/a7riii/DSC00274.ARW": {
+      "pixels": 1983,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 7,
+      "quadratic_solves": 23,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.1171,
+      "difference_to_jh": {
+        "count": 1973,
+        "p50": [
+          0.00664,
+          0.00235,
+          0.01922
+        ],
+        "p95": [
+          0.07113,
+          0.00915,
+          0.06022
+        ],
+        "max": [
+          0.19724,
+          0.02822,
+          0.08971
+        ]
+      },
+      "seconds": 24.2
+    },
+    "sony/a7riii/DSC00674.ARW": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 7,
+      "moved_by_rule": 76,
+      "quadratic_solves": 123,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 0.0818,
+      "difference_to_jh": {
+        "count": 1902,
+        "p50": [
+          0.02234,
+          0.00334,
+          0.03911
+        ],
+        "p95": [
+          0.03456,
+          0.01293,
+          0.08308
+        ],
+        "max": [
+          0.15246,
+          0.02406,
+          0.19215
+        ]
+      },
+      "seconds": 29.7
+    },
+    "sony/a7riii/DSC00728.ARW": {
+      "pixels": 2000,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 0,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 2000,
+        "p50": [
+          0.00681,
+          0.00199,
+          0.0129
+        ],
+        "p95": [
+          0.03082,
+          0.00623,
+          0.03921
+        ],
+        "max": [
+          0.06234,
+          0.01202,
+          0.12923
+        ]
+      },
+      "seconds": 10.0
+    },
+    "sony/a7riv/DSC00141.ARW": {
+      "pixels": 1999,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "quadratic_solves": 1,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": null,
+      "difference_to_jh": {
+        "count": 1998,
+        "p50": [
+          0.00537,
+          0.00087,
+          0.00656
+        ],
+        "p95": [
+          0.04664,
+          0.0055,
+          0.03114
+        ],
+        "max": [
+          0.09914,
+          0.01683,
+          0.0645
+        ]
+      },
+      "seconds": 24.0
+    },
+    "sony/a7riv/DSC02139.ARW": {
+      "pixels": 1969,
+      "outside_domain": 0,
+      "non_finite": 0,
+      "y_not_positive": 0,
+      "moved_by_rule": 1,
+      "quadratic_solves": 12,
+      "above_curve_end": 0,
+      "moved_median_relative_xyz_shift": 8.4728,
+      "difference_to_jh": {
+        "count": 1968,
+        "p50": [
+          0.0041,
+          0.00247,
+          0.01403
+        ],
+        "p95": [
+          0.03569,
+          0.00904,
+          0.05717
+        ],
+        "max": [
+          0.2151,
+          0.04062,
+          0.17753
+        ]
+      },
+      "seconds": 25.2
+    }
+  }
+}

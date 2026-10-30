@@ -1,0 +1,43 @@
+{
+  "input": "rawtoaces_190 under D55",
+  "scales": [
+    1e-06,
+    0.001,
+    0.5,
+    2.0,
+    16.0,
+    1000.0
+  ],
+  "methods": {
+    "mallett_yuksel_rec709": {
+      "max_relative_error": 1.4432899320127035e-15,
+      "domain_changes": 0,
+      "tolerance": 1e-12,
+      "pass": true
+    },
+    "jakob_hanika_sigmoid": {
+      "max_relative_error": 6.8833827526759706e-15,
+      "domain_changes": 0,
+      "tolerance": 1e-06,
+      "pass": true
+    },
+    "measured_prior_linear": {
+      "max_relative_error": 1.7763568394002505e-15,
+      "domain_changes": 0,
+      "tolerance": 1e-12,
+      "pass": true
+    },
+    "measured_prior_nonnegative": {
+      "max_relative_error": 1.6620038678638593e-13,
+      "domain_changes": 0,
+      "tolerance": 1e-09,
+      "pass": true
+    },
+    "measured_prior_local": {
+      "max_relative_error": 1.1102230246251565e-13,
+      "domain_changes": 0,
+      "tolerance": 1e-12,
+      "pass": true
+    }
+  }
+}

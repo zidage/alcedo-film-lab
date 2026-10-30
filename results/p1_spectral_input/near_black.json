@@ -1,0 +1,199 @@
+{
+  "probes": {
+    "grey_ramp_to_1e-12": {
+      "count": 13,
+      "methods": {
+        "mallett_yuksel_rec709": {
+          "non_finite_output": 0,
+          "outside_domain": 0,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 0,
+          "q_over_scale_relative_spread": 1.337663325153201e-15
+        },
+        "jakob_hanika_sigmoid": {
+          "non_finite_output": 0,
+          "outside_domain": 0,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 0,
+          "q_over_scale_relative_spread": 1.0032474938676643e-15
+        },
+        "measured_prior_linear": {
+          "non_finite_output": 0,
+          "outside_domain": 0,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 0,
+          "q_over_scale_relative_spread": 7.857517369585369e-16
+        },
+        "measured_prior_nonnegative": {
+          "non_finite_output": 0,
+          "outside_domain": 0,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 0,
+          "q_over_scale_relative_spread": 5.0512611661621836e-15
+        },
+        "measured_prior_local": {
+          "non_finite_output": 0,
+          "outside_domain": 0,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 0,
+          "q_over_scale_relative_spread": 6.032134162534209e-15
+        }
+      },
+      "inputs_with_y_not_positive": 0,
+      "inputs_inside_spectral_locus": 13
+    },
+    "zero": {
+      "count": 1,
+      "methods": {
+        "mallett_yuksel_rec709": {
+          "non_finite_output": 0,
+          "outside_domain": 0,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 1,
+          "zero_input_radiance_max_abs": 0.0
+        },
+        "jakob_hanika_sigmoid": {
+          "non_finite_output": 0,
+          "outside_domain": 1,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 1,
+          "zero_input_radiance_max_abs": 0.0
+        },
+        "measured_prior_linear": {
+          "non_finite_output": 0,
+          "outside_domain": 0,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 1,
+          "zero_input_radiance_max_abs": 0.0
+        },
+        "measured_prior_nonnegative": {
+          "non_finite_output": 0,
+          "outside_domain": 1,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 1,
+          "zero_input_radiance_max_abs": 0.0
+        },
+        "measured_prior_local": {
+          "non_finite_output": 0,
+          "outside_domain": 1,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 1,
+          "zero_input_radiance_max_abs": 0.0
+        }
+      },
+      "inputs_with_y_not_positive": 1,
+      "inputs_inside_spectral_locus": 0
+    },
+    "noisy_near_black_mean_1e-3_sigma_1e-3": {
+      "count": 10000,
+      "methods": {
+        "mallett_yuksel_rec709": {
+          "non_finite_output": 0,
+          "outside_domain": 5735,
+          "negative_radiance": 5683,
+          "layer_exposure_not_positive": 4856
+        },
+        "jakob_hanika_sigmoid": {
+          "non_finite_output": 0,
+          "outside_domain": 3612,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 58
+        },
+        "measured_prior_linear": {
+          "non_finite_output": 0,
+          "outside_domain": 6085,
+          "negative_radiance": 6085,
+          "layer_exposure_not_positive": 4678
+        },
+        "measured_prior_nonnegative": {
+          "non_finite_output": 0,
+          "outside_domain": 3228,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 3235
+        },
+        "measured_prior_local": {
+          "non_finite_output": 0,
+          "outside_domain": 4611,
+          "negative_radiance": 3713,
+          "layer_exposure_not_positive": 3896
+        }
+      },
+      "inputs_with_y_not_positive": 852,
+      "inputs_inside_spectral_locus": 6775
+    },
+    "one_negative_component": {
+      "count": 3,
+      "methods": {
+        "mallett_yuksel_rec709": {
+          "non_finite_output": 0,
+          "outside_domain": 3,
+          "negative_radiance": 3,
+          "layer_exposure_not_positive": 2
+        },
+        "jakob_hanika_sigmoid": {
+          "non_finite_output": 0,
+          "outside_domain": 1,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 0
+        },
+        "measured_prior_linear": {
+          "non_finite_output": 0,
+          "outside_domain": 3,
+          "negative_radiance": 3,
+          "layer_exposure_not_positive": 2
+        },
+        "measured_prior_nonnegative": {
+          "non_finite_output": 0,
+          "outside_domain": 1,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 1
+        },
+        "measured_prior_local": {
+          "non_finite_output": 0,
+          "outside_domain": 3,
+          "negative_radiance": 3,
+          "layer_exposure_not_positive": 2
+        }
+      },
+      "inputs_with_y_not_positive": 0,
+      "inputs_inside_spectral_locus": 2
+    },
+    "negative_luminance": {
+      "count": 2,
+      "methods": {
+        "mallett_yuksel_rec709": {
+          "non_finite_output": 0,
+          "outside_domain": 2,
+          "negative_radiance": 2,
+          "layer_exposure_not_positive": 2
+        },
+        "jakob_hanika_sigmoid": {
+          "non_finite_output": 0,
+          "outside_domain": 2,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 1
+        },
+        "measured_prior_linear": {
+          "non_finite_output": 0,
+          "outside_domain": 2,
+          "negative_radiance": 2,
+          "layer_exposure_not_positive": 2
+        },
+        "measured_prior_nonnegative": {
+          "non_finite_output": 0,
+          "outside_domain": 2,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 2
+        },
+        "measured_prior_local": {
+          "non_finite_output": 0,
+          "outside_domain": 2,
+          "negative_radiance": 0,
+          "layer_exposure_not_positive": 2
+        }
+      },
+      "inputs_with_y_not_positive": 2,
+      "inputs_inside_spectral_locus": 0
+    }
+  }
+}

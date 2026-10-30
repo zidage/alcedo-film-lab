@@ -1,0 +1,488 @@
+{
+  "makers": [
+    "Canon",
+    "Fujifilm",
+    "Nikon",
+    "Panasonic",
+    "Sony"
+  ],
+  "test_counts": {
+    "gutierrez_natural": 788,
+    "usgs_splib07": 772,
+    "issa_skin_subset": 1000
+  },
+  "scenes": {
+    "D55": {
+      "selected_reference": "daylight_5500K",
+      "datasets": {
+        "gutierrez_natural": {
+          "jakob_hanika_sigmoid": {
+            "count": 16548,
+            "p50": [
+              0.01014,
+              0.00508,
+              0.02781
+            ],
+            "p95": [
+              0.04489,
+              0.03478,
+              0.12841
+            ],
+            "max": [
+              0.09977,
+              0.15187,
+              0.35547
+            ],
+            "signed_median": [
+              -0.00026,
+              0.00102,
+              -0.00301
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": true
+          },
+          "measured_prior_local_nonnegative": {
+            "count": 16548,
+            "p50": [
+              0.00618,
+              0.00317,
+              0.01482
+            ],
+            "p95": [
+              0.02824,
+              0.02067,
+              0.05934
+            ],
+            "max": [
+              0.09069,
+              0.1079,
+              0.20769
+            ],
+            "signed_median": [
+              0.00236,
+              -0.00051,
+              -0.01062
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": false
+          },
+          "measured_prior_local_camera_population": {
+            "count": 16548,
+            "p50": [
+              0.00551,
+              0.00296,
+              0.01468
+            ],
+            "p95": [
+              0.02484,
+              0.01456,
+              0.05877
+            ],
+            "max": [
+              0.07137,
+              0.04957,
+              0.22153
+            ],
+            "signed_median": [
+              -0.00038,
+              -0.00096,
+              -0.0103
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": false
+          }
+        },
+        "usgs_splib07": {
+          "jakob_hanika_sigmoid": {
+            "count": 16212,
+            "p50": [
+              0.00256,
+              0.00125,
+              0.0042
+            ],
+            "p95": [
+              0.02838,
+              0.01104,
+              0.04331
+            ],
+            "max": [
+              0.16578,
+              0.12659,
+              0.42143
+            ],
+            "signed_median": [
+              0.00068,
+              0.00101,
+              0.00303
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": true
+          },
+          "measured_prior_local_nonnegative": {
+            "count": 16212,
+            "p50": [
+              0.00224,
+              0.001,
+              0.00375
+            ],
+            "p95": [
+              0.01847,
+              0.00849,
+              0.05368
+            ],
+            "max": [
+              0.12107,
+              0.09618,
+              0.27362
+            ],
+            "signed_median": [
+              0.00148,
+              0.00062,
+              0.00059
+            ],
+            "p95_within_limit": true,
+            "bias_within_limit": true
+          },
+          "measured_prior_local_camera_population": {
+            "count": 16212,
+            "p50": [
+              0.00162,
+              0.00075,
+              0.00402
+            ],
+            "p95": [
+              0.01589,
+              0.00831,
+              0.0394
+            ],
+            "max": [
+              0.13947,
+              0.0644,
+              0.20367
+            ],
+            "signed_median": [
+              0.00019,
+              -0.0002,
+              -0.0009
+            ],
+            "p95_within_limit": true,
+            "bias_within_limit": true
+          }
+        },
+        "issa_skin_subset": {
+          "jakob_hanika_sigmoid": {
+            "count": 21000,
+            "p50": [
+              0.00584,
+              0.01218,
+              0.03891
+            ],
+            "p95": [
+              0.01532,
+              0.01952,
+              0.06023
+            ],
+            "max": [
+              0.03012,
+              0.0383,
+              0.11935
+            ],
+            "signed_median": [
+              0.00576,
+              0.01218,
+              0.03891
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": false
+          },
+          "measured_prior_local_nonnegative": {
+            "count": 21000,
+            "p50": [
+              0.00899,
+              0.0073,
+              0.02094
+            ],
+            "p95": [
+              0.01864,
+              0.01287,
+              0.03638
+            ],
+            "max": [
+              0.03394,
+              0.02957,
+              0.08929
+            ],
+            "signed_median": [
+              0.00887,
+              0.0073,
+              0.02094
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": false
+          },
+          "measured_prior_local_camera_population": {
+            "count": 21000,
+            "p50": [
+              0.00426,
+              0.00173,
+              0.00734
+            ],
+            "p95": [
+              0.01271,
+              0.00761,
+              0.02439
+            ],
+            "max": [
+              0.02695,
+              0.02488,
+              0.07739
+            ],
+            "signed_median": [
+              -0.00058,
+              0.00072,
+              0.00481
+            ],
+            "p95_within_limit": true,
+            "bias_within_limit": true
+          }
+        }
+      }
+    },
+    "A": {
+      "selected_reference": "planck_2850K",
+      "datasets": {
+        "gutierrez_natural": {
+          "jakob_hanika_sigmoid": {
+            "count": 16380,
+            "p50": [
+              0.01163,
+              0.00329,
+              0.0229
+            ],
+            "p95": [
+              0.04851,
+              0.0335,
+              0.10943
+            ],
+            "max": [
+              0.10333,
+              0.15914,
+              0.29729
+            ],
+            "signed_median": [
+              0.001,
+              0.00136,
+              -0.00123
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": true
+          },
+          "measured_prior_local_nonnegative": {
+            "count": 16548,
+            "p50": [
+              0.00451,
+              0.00233,
+              0.01377
+            ],
+            "p95": [
+              0.02432,
+              0.01259,
+              0.05653
+            ],
+            "max": [
+              0.08972,
+              0.0811,
+              0.20651
+            ],
+            "signed_median": [
+              0.00224,
+              0.00071,
+              -0.00737
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": true
+          },
+          "measured_prior_local_camera_population": {
+            "count": 16548,
+            "p50": [
+              0.00403,
+              0.00219,
+              0.01505
+            ],
+            "p95": [
+              0.02103,
+              0.01066,
+              0.06412
+            ],
+            "max": [
+              0.07965,
+              0.05891,
+              0.21951
+            ],
+            "signed_median": [
+              -0.00045,
+              -0.00065,
+              -0.01005
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": false
+          }
+        },
+        "usgs_splib07": {
+          "jakob_hanika_sigmoid": {
+            "count": 16128,
+            "p50": [
+              0.00202,
+              0.00138,
+              0.00509
+            ],
+            "p95": [
+              0.02149,
+              0.00771,
+              0.03751
+            ],
+            "max": [
+              0.14153,
+              0.12964,
+              0.33113
+            ],
+            "signed_median": [
+              0.00075,
+              0.00125,
+              0.0041
+            ],
+            "p95_within_limit": true,
+            "bias_within_limit": true
+          },
+          "measured_prior_local_nonnegative": {
+            "count": 16212,
+            "p50": [
+              0.00191,
+              0.00127,
+              0.00416
+            ],
+            "p95": [
+              0.01434,
+              0.00615,
+              0.03948
+            ],
+            "max": [
+              0.1976,
+              0.14091,
+              0.18376
+            ],
+            "signed_median": [
+              0.00139,
+              0.00107,
+              0.00192
+            ],
+            "p95_within_limit": true,
+            "bias_within_limit": true
+          },
+          "measured_prior_local_camera_population": {
+            "count": 16212,
+            "p50": [
+              0.00093,
+              0.00052,
+              0.00413
+            ],
+            "p95": [
+              0.01239,
+              0.00545,
+              0.03164
+            ],
+            "max": [
+              0.15477,
+              0.07499,
+              0.14357
+            ],
+            "signed_median": [
+              0.00027,
+              -3e-05,
+              -0.00059
+            ],
+            "p95_within_limit": true,
+            "bias_within_limit": true
+          }
+        },
+        "issa_skin_subset": {
+          "jakob_hanika_sigmoid": {
+            "count": 21000,
+            "p50": [
+              0.00986,
+              0.0101,
+              0.04273
+            ],
+            "p95": [
+              0.01884,
+              0.01605,
+              0.06295
+            ],
+            "max": [
+              0.04199,
+              0.03431,
+              0.11406
+            ],
+            "signed_median": [
+              0.00986,
+              0.0101,
+              0.04273
+            ],
+            "p95_within_limit": false,
+            "bias_within_limit": false
+          },
+          "measured_prior_local_nonnegative": {
+            "count": 21000,
+            "p50": [
+              0.00496,
+              0.00476,
+              0.02538
+            ],
+            "p95": [
+              0.012,
+              0.00853,
+              0.0395
+            ],
+            "max": [
+              0.02232,
+              0.01992,
+              0.08859
+            ],
+            "signed_median": [
+              0.00467,
+              0.00476,
+              0.02538
+            ],
+            "p95_within_limit": true,
+            "bias_within_limit": false
+          },
+          "measured_prior_local_camera_population": {
+            "count": 21000,
+            "p50": [
+              0.00202,
+              0.00147,
+              0.00772
+            ],
+            "p95": [
+              0.00847,
+              0.00592,
+              0.0242
+            ],
+            "max": [
+              0.01961,
+              0.02052,
+              0.08374
+            ],
+            "signed_median": [
+              -0.00103,
+              0.00042,
+              0.00543
+            ],
+            "p95_within_limit": true,
+            "bias_within_limit": true
+          }
+        }
+      }
+    }
+  }
+}

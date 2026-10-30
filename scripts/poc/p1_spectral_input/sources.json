@@ -1,0 +1,346 @@
+{
+  "description": "Source files of step P1. fetch_sources.py downloads each file to build/tmp/p1/sources/ and stops with an error when a SHA-256 hash differs from the expected value. The P0 sources (CIE CMF, daylight, A, D65, Status tables, Kodak data sheets) come from build/tmp/p0/sources/ (scripts/poc/p0_data_and_reference/sources.json).",
+  "retrieved": "2026-10-29",
+  "sources": [
+    {
+      "file": "rawtoaces_training_spectral.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/training/training_spectral.json",
+      "sha256": "1b63cc85f7cf521bf80450fc60172a424a551cc690fdb05313b2cfa7aaa66da1",
+      "title": "rawtoaces-data 190-patch training spectra, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation",
+      "license": "Apache-2.0 (file header and repository LICENSE)",
+      "use": "Measured reflectances: prior training and held-out test set; IDT fit of the camera stage."
+    },
+    {
+      "file": "rawtoaces_LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "title": "rawtoaces-data license",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation",
+      "license": "Apache-2.0",
+      "use": "Notice of the rawtoaces-data files."
+    },
+    {
+      "file": "rawtoaces_camera_Canon_EOS-1D_X_Mark_II_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Canon_EOS-1D_X_Mark_II_380_780_5.json",
+      "sha256": "719e12a54d7eb467351ea166401d9a76c2a4faa0c31ae08d53ab18648d61f0a2",
+      "title": "Camera spectral sensitivity Canon_EOS-1D_X_Mark_II, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Canon_EOS_5D_Mark_IV_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Canon_EOS_5D_Mark_IV_380_780_5.json",
+      "sha256": "c3d5bc6a271fa2d0270386e27aa5dcf258c64223322a1730b03815497375be29",
+      "title": "Camera spectral sensitivity Canon_EOS_5D_Mark_IV, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Canon_EOS_R5_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Canon_EOS_R5_380_780_5.json",
+      "sha256": "6d35746dc44a3e44f3cf7939e957c15bc3f3c62b07a674749b42c140fc00df29",
+      "title": "Camera spectral sensitivity Canon_EOS_R5, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Canon_EOS_R5m2_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Canon_EOS_R5m2_380_780_5.json",
+      "sha256": "b58e96628aa2021eecb2bd3965dfe4fcc2af9a6543a35c739f0247f0687d705b",
+      "title": "Camera spectral sensitivity Canon_EOS_R5m2, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Canon_EOS_R6_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Canon_EOS_R6_380_780_5.json",
+      "sha256": "8ff0f7329084addeafa433c832aec6e13c5125e7373cec34b4c7d42dfcb8eceb",
+      "title": "Camera spectral sensitivity Canon_EOS_R6, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Canon_EOS_R6m2_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Canon_EOS_R6m2_380_780_5.json",
+      "sha256": "6819e47131dfdb1836f32970017aed7b7baa4889553936c23065dfabbb527d5d",
+      "title": "Camera spectral sensitivity Canon_EOS_R6m2, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Canon_EOS_R_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Canon_EOS_R_380_780_5.json",
+      "sha256": "94069a205897ee46426e79816cca82cef641ed2ef5b4a5d1e94fbe89cacaa362",
+      "title": "Camera spectral sensitivity Canon_EOS_R, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Fujifilm_X-T4_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Fujifilm_X-T4_380_780_5.json",
+      "sha256": "e36299929d3d307aed599085d571a04373fe67d08c7058ee9def9bb66892d16f",
+      "title": "Camera spectral sensitivity Fujifilm_X-T4, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Nikon_D7000_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Nikon_D7000_380_780_5.json",
+      "sha256": "4002530a868b45d11ddc2e11b8db144ae2011efdda04d25ff10a2f006494ed95",
+      "title": "Camera spectral sensitivity Nikon_D7000, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Nikon_D800E_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Nikon_D800E_380_780_5.json",
+      "sha256": "8e8bd2ee474db73361bc4f37937966376ddc6dbcb19fd42dc63fa91bdb93ec40",
+      "title": "Camera spectral sensitivity Nikon_D800E, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Nikon_D810_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Nikon_D810_380_780_5.json",
+      "sha256": "fe768979da5b732f3a9974ed04cc81d7446ee27500893bf456207624008d1206",
+      "title": "Camera spectral sensitivity Nikon_D810, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Nikon_D850_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Nikon_D850_380_780_5.json",
+      "sha256": "8a22f9092a4c19fc128f3f8fb0dae6d5e67e17b5d9c01f646024efaacdbed9d0",
+      "title": "Camera spectral sensitivity Nikon_D850, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Nikon_Z_f_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Nikon_Z_f_380_780_5.json",
+      "sha256": "0fafdf21d42b5873e2d2db77bfbb075120e01697111944d12ff0529ac44d3943",
+      "title": "Camera spectral sensitivity Nikon_Z_f, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Panasonic_DC-GX9_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Panasonic_DC-GX9_380_780_5.json",
+      "sha256": "b354d7fb9b3df822e053505e784b9fbede21f0f5ae4c30e8c899497e826b3bb7",
+      "title": "Camera spectral sensitivity Panasonic_DC-GX9, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Sony_ILCE-6400_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Sony_ILCE-6400_380_780_5.json",
+      "sha256": "9d44a700c154bc6fcdc63f2e8c8af7f1758e3181a0ccbf374b85461c8fc5fde6",
+      "title": "Camera spectral sensitivity Sony_ILCE-6400, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Sony_ILCE-7CM2_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Sony_ILCE-7CM2_380_780_5.json",
+      "sha256": "4d8843e19d7dd85099d7533e12db638c91586651102095ebc6319ce297fcb399",
+      "title": "Camera spectral sensitivity Sony_ILCE-7CM2, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Sony_ILCE-7M3_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Sony_ILCE-7M3_380_780_5.json",
+      "sha256": "c6006a237e63e530bf23e4a8b000dce6875305c9c24e54d1410bbbbb8654195f",
+      "title": "Camera spectral sensitivity Sony_ILCE-7M3, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Sony_ILCE-7M4_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Sony_ILCE-7M4_380_780_5.json",
+      "sha256": "f7a8dc024ef923820c9d26ef4c31dd48deb28f0ea25cf70dd5a1bce3623576f8",
+      "title": "Camera spectral sensitivity Sony_ILCE-7M4, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Sony_ILCE-7RM2_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Sony_ILCE-7RM2_380_780_5.json",
+      "sha256": "3a3d6650421e6ba835780b8879b885712d2d4f179788899ba0d735c619c5065c",
+      "title": "Camera spectral sensitivity Sony_ILCE-7RM2, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Sony_ILCE-7RM3_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Sony_ILCE-7RM3_380_780_5.json",
+      "sha256": "0359aad186a62ba8be765416c0fc764d9905aa47062961e8a2d447b02e349fa8",
+      "title": "Camera spectral sensitivity Sony_ILCE-7RM3, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "rawtoaces_camera_Sony_ILCE-7RM4_380_780_5.json",
+      "url": "https://raw.githubusercontent.com/AcademySoftwareFoundation/rawtoaces-data/e9b8503cf8a0641f40e5345d9757bde60c15f423/data/camera/Sony_ILCE-7RM4_380_780_5.json",
+      "sha256": "2e2efe8ca7b92ba65e54029e751d8e363ba1e40dec513fd8d65f9357bc592033",
+      "title": "Camera spectral sensitivity Sony_ILCE-7RM4, 380-780 nm, 5 nm",
+      "edition": "AcademySoftwareFoundation/rawtoaces-data commit e9b8503cf8a0641f40e5345d9757bde60c15f423",
+      "publisher": "Academy Software Foundation (file header: document_creator)",
+      "license": "Apache-2.0 (file header)",
+      "use": "Camera stage of the synthetic test and the IDT of the RAW photos."
+    },
+    {
+      "file": "CIE_illum_FLs.csv",
+      "url": "https://files.cie.co.at/Publications-datasets/CIE_illum_FLs.csv",
+      "sha256": "24303adacbfee5e19b2123ea2c3208a993577a054abaf55ea7e19517f98e4d55",
+      "title": "CIE 015:2018 illuminant table CIE_illum_FLs.csv",
+      "edition": "CIE 015:2018 data set",
+      "publisher": "CIE",
+      "license": "CC BY-SA 4.0",
+      "use": "Fluorescent test illuminants FL1-FL12, FL3.1-FL3.15 (5 nm, 380-780 nm)."
+    },
+    {
+      "file": "CIE_illum_LEDs.csv",
+      "url": "https://files.cie.co.at/Publications-datasets/CIE_illum_LEDs.csv",
+      "sha256": "6147313bd1ec570ef308df222e1fe1e58115fde1ad0a7d4ba91fb9dcb776b267",
+      "title": "CIE 015:2018 illuminant table CIE_illum_LEDs.csv",
+      "edition": "CIE 015:2018 data set",
+      "publisher": "CIE",
+      "license": "CC BY-SA 4.0",
+      "use": "LED test illuminants LED-B1..B5, LED-BH1, LED-RGB1, LED-V1, LED-V2 (5 nm, 380-780 nm)."
+    },
+    {
+      "file": "CIE_illum_HPs.csv",
+      "url": "https://files.cie.co.at/Publications-datasets/CIE_illum_HPs.csv",
+      "sha256": "035e09d62b27f4b1e362ff1ba99a50235f0d7886c2781c50d49851b6e4bb4552",
+      "title": "CIE 015:2018 illuminant table CIE_illum_HPs.csv",
+      "edition": "CIE 015:2018 data set",
+      "publisher": "CIE",
+      "license": "CC BY-SA 4.0",
+      "use": "High-pressure discharge test illuminants HP1-HP5 (5 nm, 380-780 nm)."
+    },
+    {
+      "file": "CIE_illum_FLs.csv_metadata.json",
+      "url": "https://files.cie.co.at/Publications-datasets/CIE_illum_FLs.csv_metadata.json",
+      "sha256": "ae83e6b80f46b6954e93ccb0192daf1fef88b0ca8d17c304c9001df2e1f5dc21",
+      "title": "Metadata of CIE_illum_FLs.csv",
+      "edition": "CIE 015:2018 data set",
+      "publisher": "CIE",
+      "license": "CC BY-SA 4.0",
+      "use": "Column names of the FL table."
+    },
+    {
+      "file": "gutierrez_Database_Plants.csv",
+      "url": "https://ndownloader.figshare.com/files/51761975",
+      "sha256": "bdadfd60623f60983f85fc23bc01e8c7901266ba2b7a6df5782ec7711da963d3",
+      "title": "Spectral dataset of natural objects' reflectance (Southern cone of South America): Database_Plants.csv",
+      "edition": "figshare 10.6084/m9.figshare.25705380, version 4",
+      "publisher": "Gutierrez et al. (figshare)",
+      "license": "CC BY 4.0. Gutierrez, Silva, Fanchini, Morimoto, Barrionuevo, Sandoval-Salinas, Spectral dataset of natural objects' reflectance from the Southern cone of South America. Not distributed by this repository.",
+      "use": "Measured reflectances (400-1000 nm, 4 nm): plants, animals, stones."
+    },
+    {
+      "file": "gutierrez_Database_Animals.csv",
+      "url": "https://ndownloader.figshare.com/files/51761978",
+      "sha256": "aabb1d4eea382f23758766105aa6f9bf89f46e6c59d25cb7fa27ad79c820ae40",
+      "title": "Spectral dataset of natural objects' reflectance (Southern cone of South America): Database_Animals.csv",
+      "edition": "figshare 10.6084/m9.figshare.25705380, version 4",
+      "publisher": "Gutierrez et al. (figshare)",
+      "license": "CC BY 4.0. Gutierrez, Silva, Fanchini, Morimoto, Barrionuevo, Sandoval-Salinas, Spectral dataset of natural objects' reflectance from the Southern cone of South America. Not distributed by this repository.",
+      "use": "Measured reflectances (400-1000 nm, 4 nm): plants, animals, stones."
+    },
+    {
+      "file": "gutierrez_Database_Stones.csv",
+      "url": "https://ndownloader.figshare.com/files/51761981",
+      "sha256": "e7a369164cf02d92d547a028af121ed2e1959f6c4ded17751716d6117e9a7691",
+      "title": "Spectral dataset of natural objects' reflectance (Southern cone of South America): Database_Stones.csv",
+      "edition": "figshare 10.6084/m9.figshare.25705380, version 4",
+      "publisher": "Gutierrez et al. (figshare)",
+      "license": "CC BY 4.0. Gutierrez, Silva, Fanchini, Morimoto, Barrionuevo, Sandoval-Salinas, Spectral dataset of natural objects' reflectance from the Southern cone of South America. Not distributed by this repository.",
+      "use": "Measured reflectances (400-1000 nm, 4 nm): plants, animals, stones."
+    },
+    {
+      "file": "gutierrez_File_name_structure.txt",
+      "url": "https://ndownloader.figshare.com/files/45997353",
+      "sha256": "5b9d6d12bad541be7d82826a7b747b251b89c6585ec46c9c92e9e47141d67161",
+      "title": "Spectral dataset of natural objects' reflectance (Southern cone of South America): File_name_structure.txt",
+      "edition": "figshare 10.6084/m9.figshare.25705380, version 4",
+      "publisher": "Gutierrez et al. (figshare)",
+      "license": "CC BY 4.0. Gutierrez, Silva, Fanchini, Morimoto, Barrionuevo, Sandoval-Salinas, Spectral dataset of natural objects' reflectance from the Southern cone of South America. Not distributed by this repository.",
+      "use": "Measured reflectances (400-1000 nm, 4 nm): plants, animals, stones."
+    },
+    {
+      "file": "gutierrez_README.md",
+      "url": "https://ndownloader.figshare.com/files/52379954",
+      "sha256": "b400ca3eeee1736cf19ff7a450c86d245bb3910519fa6be7066c0ab616292ab2",
+      "title": "Spectral dataset of natural objects' reflectance (Southern cone of South America): README.md",
+      "edition": "figshare 10.6084/m9.figshare.25705380, version 4",
+      "publisher": "Gutierrez et al. (figshare)",
+      "license": "CC BY 4.0. Gutierrez, Silva, Fanchini, Morimoto, Barrionuevo, Sandoval-Salinas, Spectral dataset of natural objects' reflectance from the Southern cone of South America. Not distributed by this repository.",
+      "use": "Measured reflectances (400-1000 nm, 4 nm): plants, animals, stones."
+    },
+    {
+      "file": "ISSA_17_Jan_2025_Yan_Lu.xlsx",
+      "url": "https://ndownloader.figshare.com/files/52744241",
+      "sha256": "7396aa7608f1a6f91ec70bf8f8421252a9d81f71a2bca066eb7e98155b9d1161",
+      "title": "The International Skin Spectra Archive (ISSA)",
+      "edition": "figshare 10.6084/m9.figshare.28228571, version 4 (file of 17 Jan 2025)",
+      "publisher": "Yan Lu et al. (figshare)",
+      "license": "CC BY 4.0. Not distributed by this repository.",
+      "use": "Measured human skin reflectances (360/400-740/780 nm, 10 nm)."
+    },
+    {
+      "file": "ASCIIdata_splib07b_cvASD.zip",
+      "url": "https://www.sciencebase.gov/catalog/file/get/586e8c88e4b0f5ce109fccae?f=__disk__6f%2F81%2F62%2F6f8162500e6f3d250883a27b3def74cb77b927fc",
+      "sha256": "ebb26eca7f4ea99dcd8afa99acb0facbbf5ad8b2754246587fd053125fce7b49",
+      "title": "USGS Spectral Library Version 7, splib07b convolved to ASD standard resolution (2151 channels, 350-2500 nm)",
+      "edition": "USGS Data Series 1035, doi:10.5066/F7RR1WDJ, ScienceBase item 586e8c88e4b0f5ce109fccae",
+      "publisher": "U.S. Geological Survey",
+      "license": "U.S. public domain (CC0 1.0). Not distributed by this repository.",
+      "use": "Measured reflectances: artificial materials, coatings, vegetation, soils, organic compounds, minerals, liquids."
+    }
+  ]
+}

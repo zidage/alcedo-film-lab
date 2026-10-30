@@ -1,0 +1,156 @@
+{
+  "continuity_max_output_over_input_step": 1.0,
+  "continuity_pass": true,
+  "noise": {
+    "mean_0.001_sigma_0.001": {
+      "mean_density_minus_noise_free": [
+        0.00199,
+        0.0012,
+        0.00145
+      ],
+      "density_std": [
+        0.0049,
+        0.00252,
+        0.01285
+      ],
+      "y_not_positive": 278,
+      "moved_by_rule": 668,
+      "non_finite": 0,
+      "quadratic_solves": 1092
+    },
+    "mean_0.01_sigma_0.01": {
+      "mean_density_minus_noise_free": [
+        0.0177,
+        0.01813,
+        -0.01755
+      ],
+      "density_std": [
+        0.11608,
+        0.10726,
+        0.14799
+      ],
+      "y_not_positive": 246,
+      "moved_by_rule": 749,
+      "non_finite": 0,
+      "quadratic_solves": 1157
+    },
+    "mean_0.01_sigma_0.003": {
+      "mean_density_minus_noise_free": [
+        0.0151,
+        -0.00049,
+        -0.00968
+      ],
+      "density_std": [
+        0.05442,
+        0.04587,
+        0.06585
+      ],
+      "y_not_positive": 0,
+      "moved_by_rule": 2,
+      "non_finite": 0,
+      "quadratic_solves": 15
+    },
+    "mean_0.05_sigma_0.05": {
+      "mean_density_minus_noise_free": [
+        -0.11376,
+        -0.06735,
+        -0.1788
+      ],
+      "density_std": [
+        0.26872,
+        0.22697,
+        0.32321
+      ],
+      "y_not_positive": 253,
+      "moved_by_rule": 714,
+      "non_finite": 0,
+      "quadratic_solves": 1175
+    },
+    "mean_0.05_sigma_0.01": {
+      "mean_density_minus_noise_free": [
+        0.00151,
+        -0.00524,
+        -0.0129
+      ],
+      "density_std": [
+        0.06392,
+        0.04549,
+        0.06013
+      ],
+      "y_not_positive": 0,
+      "moved_by_rule": 0,
+      "non_finite": 0,
+      "quadratic_solves": 0
+    }
+  },
+  "scaling_max_relative_error": 2.276879684792732e-09,
+  "scaling_pass": false,
+  "scaling_error_relative_to_largest_layer_of_sample": 0.0,
+  "scaling_max_relative_error_layers_above_1e-6_of_largest": 3.6281022630646476e-10,
+  "noise_pass": true,
+  "gaussian_probes": {
+    "count": 62,
+    "outside_domain": 0,
+    "moved_by_rule": 7,
+    "non_finite": 0,
+    "fwhm10": {
+      "count": 27,
+      "p50": [
+        0.00041,
+        0.00023,
+        0.0
+      ],
+      "p95": [
+        0.21103,
+        0.33489,
+        0.00273
+      ],
+      "max": [
+        0.58565,
+        0.43532,
+        0.01391
+      ],
+      "signed_median": [
+        3e-05,
+        0.0,
+        0.0
+      ],
+      "p95_within_limit": false,
+      "bias_within_limit": true
+    },
+    "fwhm30": {
+      "count": 27,
+      "p50": [
+        0.00601,
+        0.0023,
+        0.0
+      ],
+      "p95": [
+        0.10737,
+        0.17456,
+        0.02804
+      ],
+      "max": [
+        0.12532,
+        0.27133,
+        0.08591
+      ],
+      "signed_median": [
+        0.00015,
+        0.00015,
+        0.0
+      ],
+      "p95_within_limit": false,
+      "bias_within_limit": true
+    },
+    "moved_labels": [
+      "gauss_660nm_fwhm10",
+      "gauss_670nm_fwhm10",
+      "gauss_680nm_fwhm10",
+      "gauss_690nm_fwhm10",
+      "gauss_700nm_fwhm10",
+      "gauss_690nm_fwhm30",
+      "gauss_700nm_fwhm30"
+    ]
+  }
+}

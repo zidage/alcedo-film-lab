@@ -1,0 +1,112 @@
+{
+  "reference": "daylight_5500K",
+  "camera_population": 21,
+  "scaling_max_relative_error": 1.7231794879890572e-09,
+  "scaling_pass": false,
+  "scaling_max_relative_error_layers_above_1e-6_of_largest": 1.7231794879890572e-09,
+  "non_finite": 0,
+  "negative_radiance": 0,
+  "near_black_y_not_positive": 67,
+  "exact_xyz_input": {
+    "rawtoaces_190": {
+      "count": 95,
+      "p50": [
+        0.01855,
+        0.00443,
+        0.01779
+      ],
+      "p95": [
+        0.10163,
+        0.03321,
+        0.07285
+      ],
+      "max": [
+        0.18505,
+        0.08018,
+        0.13538
+      ],
+      "signed_median": [
+        -0.01042,
+        -0.00207,
+        -0.00573
+      ],
+      "p95_within_limit": false,
+      "bias_within_limit": false
+    },
+    "gutierrez_natural": {
+      "count": 788,
+      "p50": [
+        0.0094,
+        0.00262,
+        0.01357
+      ],
+      "p95": [
+        0.03291,
+        0.0239,
+        0.06277
+      ],
+      "max": [
+        0.08315,
+        0.13447,
+        0.15524
+      ],
+      "signed_median": [
+        -0.00058,
+        -0.00159,
+        -0.00826
+      ],
+      "p95_within_limit": false,
+      "bias_within_limit": true
+    },
+    "issa_skin": {
+      "count": 7643,
+      "p50": [
+        0.01159,
+        0.00603,
+        0.01428
+      ],
+      "p95": [
+        0.01778,
+        0.00921,
+        0.0244
+      ],
+      "max": [
+        0.04158,
+        0.01561,
+        0.07715
+      ],
+      "signed_median": [
+        -0.01159,
+        -0.00603,
+        -0.01425
+      ],
+      "p95_within_limit": true,
+      "bias_within_limit": false
+    },
+    "usgs_splib07": {
+      "count": 772,
+      "p50": [
+        0.00232,
+        0.00112,
+        0.00436
+      ],
+      "p95": [
+        0.01936,
+        0.00909,
+        0.03493
+      ],
+      "max": [
+        0.16311,
+        0.13232,
+        0.18997
+      ],
+      "signed_median": [
+        -0.00081,
+        -0.00096,
+        -0.00321
+      ],
+      "p95_within_limit": true,
+      "bias_within_limit": true
+    }
+  }
+}

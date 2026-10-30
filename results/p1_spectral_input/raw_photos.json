@@ -1,0 +1,3774 @@
+{
+  "library": "D:\\Projects\\pu-erh_lab\\alcedo_studio\\tests\\resources\\sample_images\\raw\\camera",
+  "rules": {
+    "clip_fraction": 0.98,
+    "near_black_y_of_clip": 0.00390625,
+    "sample_min_y_of_clip": 0.0009765625,
+    "sample_pixels": 2000
+  },
+  "files": {
+    "canon/1dxii/C68I0112.CR2": {
+      "camera_sensitivity": "Canon_EOS-1D_X_Mark_II",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1978.0,
+        1024.0,
+        1513.0,
+        1024.0
+      ],
+      "pixels": 20170320,
+      "selected_light": "daylight_5300K",
+      "white_balance_log_distance": 0.0275,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.00022,
+        "outside_locus": 9.1e-05,
+        "outside_rec709": 0.001053
+      },
+      "clipped_fraction": 0.000116,
+      "near_black": {
+        "fraction_of_unclipped": 0.007865,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.006437,
+        "outside_locus": 0.002812,
+        "outside_rec709": 0.021157
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9985,
+            "in_domain_and_in_curve": 0.9985
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          }
+        },
+        "all_methods_in_domain": 0.9985,
+        "status_m_spread_over_methods": {
+          "count": 1997,
+          "p50": [
+            0.00926,
+            0.00305,
+            0.01558
+          ],
+          "p95": [
+            0.03412,
+            0.00774,
+            0.03375
+          ],
+          "max": [
+            0.18433,
+            0.02645,
+            0.09854
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 47.9,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 15.0,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.5,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 24.6,
+        "measured_prior_local": 7.8
+      }
+    },
+    "canon/5div/793A6931.CR2": {
+      "camera_sensitivity": "Canon_EOS_5D_Mark_IV",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2005.0,
+        1024.0,
+        1473.0,
+        1024.0
+      ],
+      "pixels": 30361488,
+      "selected_light": "daylight_4900K",
+      "white_balance_log_distance": 0.0287,
+      "unclipped_fraction": {
+        "y_not_positive": 5e-06,
+        "ap1_negative": 0.00159,
+        "outside_locus": 0.000711,
+        "outside_rec709": 0.008031
+      },
+      "clipped_fraction": 0.000457,
+      "near_black": {
+        "fraction_of_unclipped": 0.03178,
+        "y_not_positive": 0.000144,
+        "ap1_negative": 0.036029,
+        "outside_locus": 0.010099,
+        "outside_rec709": 0.108538
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.992,
+            "in_domain_and_in_curve": 0.992
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.991,
+            "in_domain_and_in_curve": 0.991
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_local": {
+            "in_domain": 0.996,
+            "in_domain_and_in_curve": 0.996
+          }
+        },
+        "all_methods_in_domain": 0.991,
+        "status_m_spread_over_methods": {
+          "count": 1982,
+          "p50": [
+            0.01157,
+            0.00288,
+            0.02109
+          ],
+          "p95": [
+            0.04091,
+            0.00784,
+            0.05163
+          ],
+          "max": [
+            0.17154,
+            0.0242,
+            0.08313
+          ]
+        },
+        "ap1_negative": 0.001
+      },
+      "seconds": 67.8,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 22.5,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.0,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 23.4,
+        "measured_prior_local": 7.7
+      }
+    },
+    "canon/r/Canon-eos-r-raw-00001.cr3": {
+      "camera_sensitivity": "Canon_EOS_R",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2166.0,
+        1024.0,
+        1460.0,
+        1024.0
+      ],
+      "pixels": 30325516,
+      "selected_light": "daylight_5000K",
+      "white_balance_log_distance": 0.0089,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000876,
+        "outside_locus": 2.8e-05,
+        "outside_rec709": 0.002307
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.000457,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.040465,
+        "outside_locus": 0.012911,
+        "outside_rec709": 0.064051
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          }
+        },
+        "all_methods_in_domain": 0.999,
+        "status_m_spread_over_methods": {
+          "count": 1998,
+          "p50": [
+            0.0118,
+            0.00292,
+            0.01534
+          ],
+          "p95": [
+            0.03288,
+            0.00518,
+            0.02516
+          ],
+          "max": [
+            0.18547,
+            0.02847,
+            0.05988
+          ]
+        },
+        "ap1_negative": 0.0005
+      },
+      "seconds": 72.5,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 22.0,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 13.9,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 28.9,
+        "measured_prior_local": 7.7
+      }
+    },
+    "canon/r/Canon-eos-r-raw-00002.cr3": {
+      "camera_sensitivity": "Canon_EOS_R",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2118.0,
+        1024.0,
+        1374.0,
+        1024.0
+      ],
+      "pixels": 30325516,
+      "selected_light": "daylight_5200K",
+      "white_balance_log_distance": 0.051,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 2.2e-05,
+        "outside_locus": 2e-06,
+        "outside_rec709": 0.000195
+      },
+      "clipped_fraction": 3e-06,
+      "near_black": {
+        "fraction_of_unclipped": 0.0,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.0,
+        "outside_locus": 0.0,
+        "outside_rec709": 0.0
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 1.0,
+        "status_m_spread_over_methods": {
+          "count": 2000,
+          "p50": [
+            0.01281,
+            0.00625,
+            0.02404
+          ],
+          "p95": [
+            0.02397,
+            0.01145,
+            0.04143
+          ],
+          "max": [
+            0.10887,
+            0.01631,
+            0.05665
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 54.1,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 21.6,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.4,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 24.5,
+        "measured_prior_local": 7.6
+      }
+    },
+    "canon/r5/020A0059.CR3": {
+      "camera_sensitivity": "Canon_EOS_R5",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2093.0,
+        1024.0,
+        1849.0,
+        1024.0
+      ],
+      "pixels": 44747433,
+      "selected_light": "daylight_5100K",
+      "white_balance_log_distance": 0.0478,
+      "unclipped_fraction": {
+        "y_not_positive": 1e-06,
+        "ap1_negative": 0.000692,
+        "outside_locus": 5.2e-05,
+        "outside_rec709": 0.005888
+      },
+      "clipped_fraction": 0.000958,
+      "near_black": {
+        "fraction_of_unclipped": 0.057663,
+        "y_not_positive": 1.5e-05,
+        "ap1_negative": 0.00999,
+        "outside_locus": 0.000724,
+        "outside_rec709": 0.050772
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9955,
+            "in_domain_and_in_curve": 0.9955
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.995,
+            "in_domain_and_in_curve": 0.995
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 0.994,
+        "status_m_spread_over_methods": {
+          "count": 1988,
+          "p50": [
+            0.01078,
+            0.00236,
+            0.01306
+          ],
+          "p95": [
+            0.02864,
+            0.00979,
+            0.04192
+          ],
+          "max": [
+            0.09899,
+            0.06829,
+            0.16212
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 63.8,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 32.4,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.5,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 23.2,
+        "measured_prior_local": 7.7
+      }
+    },
+    "canon/r5/Canon-eos-r5-raw-00016.cr3": {
+      "camera_sensitivity": "Canon_EOS_R5",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1900.0,
+        1024.0,
+        1913.0,
+        1024.0
+      ],
+      "pixels": 44747433,
+      "selected_light": "daylight_4600K",
+      "white_balance_log_distance": 0.0059,
+      "unclipped_fraction": {
+        "y_not_positive": 1.9e-05,
+        "ap1_negative": 0.005632,
+        "outside_locus": 0.005422,
+        "outside_rec709": 0.097996
+      },
+      "clipped_fraction": 0.027113,
+      "near_black": {
+        "fraction_of_unclipped": 0.009114,
+        "y_not_positive": 0.002046,
+        "ap1_negative": 0.023965,
+        "outside_locus": 0.010509,
+        "outside_rec709": 0.04988
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.908,
+            "in_domain_and_in_curve": 0.908
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.992,
+            "in_domain_and_in_curve": 0.992
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9305,
+            "in_domain_and_in_curve": 0.9305
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9925,
+            "in_domain_and_in_curve": 0.9925
+          },
+          "measured_prior_local": {
+            "in_domain": 0.982,
+            "in_domain_and_in_curve": 0.982
+          }
+        },
+        "all_methods_in_domain": 0.903,
+        "status_m_spread_over_methods": {
+          "count": 1806,
+          "p50": [
+            0.01576,
+            0.00427,
+            0.03057
+          ],
+          "p95": [
+            0.06002,
+            0.01375,
+            0.08493
+          ],
+          "max": [
+            0.12286,
+            0.05563,
+            0.12898
+          ]
+        },
+        "ap1_negative": 0.008
+      },
+      "seconds": 83.1,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 31.4,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.3,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 29.8,
+        "measured_prior_local": 7.6
+      }
+    },
+    "canon/r5ii/212A8484.CR3": {
+      "camera_sensitivity": "Canon_EOS_R5m2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1808.0,
+        1024.0,
+        1713.0,
+        1024.0
+      ],
+      "pixels": 45122336,
+      "selected_light": "daylight_4300K",
+      "white_balance_log_distance": 0.008,
+      "unclipped_fraction": {
+        "y_not_positive": 0.00265,
+        "ap1_negative": 0.010847,
+        "outside_locus": 0.008579,
+        "outside_rec709": 0.031179
+      },
+      "clipped_fraction": 0.009186,
+      "near_black": {
+        "fraction_of_unclipped": 0.080191,
+        "y_not_positive": 0.033045,
+        "ap1_negative": 0.112202,
+        "outside_locus": 0.085687,
+        "outside_rec709": 0.171062
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.98,
+            "in_domain_and_in_curve": 0.98
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.996,
+            "in_domain_and_in_curve": 0.996
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9745,
+            "in_domain_and_in_curve": 0.9745
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.996,
+            "in_domain_and_in_curve": 0.996
+          },
+          "measured_prior_local": {
+            "in_domain": 0.991,
+            "in_domain_and_in_curve": 0.991
+          }
+        },
+        "all_methods_in_domain": 0.9735,
+        "status_m_spread_over_methods": {
+          "count": 1947,
+          "p50": [
+            0.01623,
+            0.00308,
+            0.0277
+          ],
+          "p95": [
+            0.06781,
+            0.00857,
+            0.06515
+          ],
+          "max": [
+            0.15701,
+            0.03577,
+            0.10842
+          ]
+        },
+        "ap1_negative": 0.0035
+      },
+      "seconds": 78.2,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 32.1,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.1,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 24.6,
+        "measured_prior_local": 7.5
+      }
+    },
+    "canon/r5ii/237A2108.CR3": {
+      "camera_sensitivity": "Canon_EOS_R5m2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1896.0,
+        1024.0,
+        1563.0,
+        1024.0
+      ],
+      "pixels": 45122336,
+      "selected_light": "daylight_4800K",
+      "white_balance_log_distance": 0.0361,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 4.8e-05,
+        "outside_locus": 8e-06,
+        "outside_rec709": 0.000223
+      },
+      "clipped_fraction": 0.001281,
+      "near_black": {
+        "fraction_of_unclipped": 0.004389,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000364,
+        "outside_locus": 2e-05,
+        "outside_rec709": 0.001507
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          }
+        },
+        "all_methods_in_domain": 0.9995,
+        "status_m_spread_over_methods": {
+          "count": 1999,
+          "p50": [
+            0.00785,
+            0.00227,
+            0.01416
+          ],
+          "p95": [
+            0.02848,
+            0.01181,
+            0.03118
+          ],
+          "max": [
+            0.06947,
+            0.02551,
+            0.07826
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 66.2,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 32.2,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.6,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 25.5,
+        "measured_prior_local": 7.9
+      }
+    },
+    "canon/r5ii/237A2110.CR3": {
+      "camera_sensitivity": "Canon_EOS_R5m2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1808.0,
+        1024.0,
+        1651.0,
+        1024.0
+      ],
+      "pixels": 45122336,
+      "selected_light": "daylight_4400K",
+      "white_balance_log_distance": 0.0332,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.001306,
+        "outside_locus": 0.000711,
+        "outside_rec709": 0.004303
+      },
+      "clipped_fraction": 3.2e-05,
+      "near_black": {
+        "fraction_of_unclipped": 0.035183,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.001415,
+        "outside_locus": 0.00011,
+        "outside_rec709": 0.014503
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.993,
+            "in_domain_and_in_curve": 0.993
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9935,
+            "in_domain_and_in_curve": 0.9935
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9975,
+            "in_domain_and_in_curve": 0.9975
+          }
+        },
+        "all_methods_in_domain": 0.9925,
+        "status_m_spread_over_methods": {
+          "count": 1985,
+          "p50": [
+            0.00904,
+            0.00366,
+            0.01715
+          ],
+          "p95": [
+            0.02534,
+            0.00944,
+            0.0337
+          ],
+          "max": [
+            0.20754,
+            0.04169,
+            0.118
+          ]
+        },
+        "ap1_negative": 0.0015
+      },
+      "seconds": 62.5,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 32.4,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 1.0,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 21.5,
+        "measured_prior_local": 7.6
+      }
+    },
+    "canon/r6/1H1A6888.CR3": {
+      "camera_sensitivity": "Canon_EOS_R6",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1942.0,
+        1024.0,
+        1556.0,
+        1024.0
+      ],
+      "pixels": 20170320,
+      "selected_light": "daylight_4900K",
+      "white_balance_log_distance": 0.0305,
+      "unclipped_fraction": {
+        "y_not_positive": 3e-06,
+        "ap1_negative": 0.007605,
+        "outside_locus": 0.004254,
+        "outside_rec709": 0.01505
+      },
+      "clipped_fraction": 0.084465,
+      "near_black": {
+        "fraction_of_unclipped": 0.058115,
+        "y_not_positive": 5.7e-05,
+        "ap1_negative": 0.016657,
+        "outside_locus": 0.002892,
+        "outside_rec709": 0.036056
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.984,
+            "in_domain_and_in_curve": 0.984
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.993,
+            "in_domain_and_in_curve": 0.993
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.983,
+            "in_domain_and_in_curve": 0.983
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.994,
+            "in_domain_and_in_curve": 0.994
+          },
+          "measured_prior_local": {
+            "in_domain": 0.992,
+            "in_domain_and_in_curve": 0.992
+          }
+        },
+        "all_methods_in_domain": 0.9815,
+        "status_m_spread_over_methods": {
+          "count": 1963,
+          "p50": [
+            0.0087,
+            0.003,
+            0.01574
+          ],
+          "p95": [
+            0.02877,
+            0.00973,
+            0.03678
+          ],
+          "max": [
+            0.1754,
+            0.03111,
+            0.08317
+          ]
+        },
+        "ap1_negative": 0.007
+      },
+      "seconds": 59.1,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 13.3,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.1,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 24.4,
+        "measured_prior_local": 7.3
+      }
+    },
+    "canon/r6ii/5O3A3592.CR3": {
+      "camera_sensitivity": "Canon_EOS_R6m2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2097.0,
+        1024.0,
+        1402.0,
+        1024.0
+      ],
+      "pixels": 24232528,
+      "selected_light": "daylight_5400K",
+      "white_balance_log_distance": 0.0075,
+      "unclipped_fraction": {
+        "y_not_positive": 0.00036,
+        "ap1_negative": 0.022276,
+        "outside_locus": 0.002756,
+        "outside_rec709": 0.039242
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.465473,
+        "y_not_positive": 0.000774,
+        "ap1_negative": 0.039199,
+        "outside_locus": 0.005513,
+        "outside_rec709": 0.065726
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9625,
+            "in_domain_and_in_curve": 0.962
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9915,
+            "in_domain_and_in_curve": 0.991
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9595,
+            "in_domain_and_in_curve": 0.959
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9975,
+            "in_domain_and_in_curve": 0.997
+          },
+          "measured_prior_local": {
+            "in_domain": 0.971,
+            "in_domain_and_in_curve": 0.9705
+          }
+        },
+        "all_methods_in_domain": 0.9575,
+        "status_m_spread_over_methods": {
+          "count": 1915,
+          "p50": [
+            0.02395,
+            0.00453,
+            0.02581
+          ],
+          "p95": [
+            0.06443,
+            0.01026,
+            0.04317
+          ],
+          "max": [
+            0.2816,
+            0.06042,
+            0.07544
+          ]
+        },
+        "ap1_negative": 0.0205
+      },
+      "seconds": 64.0,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 17.4,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.6,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 24.3,
+        "measured_prior_local": 7.8
+      }
+    },
+    "fuji/xt4/9603741704.raf": {
+      "camera_sensitivity": "Fujifilm_X-T4",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        6,
+        6
+      ],
+      "as_shot_white_balance": [
+        570.0,
+        302.0,
+        552.0,
+        302.0
+      ],
+      "pixels": 26045820,
+      "selected_light": "daylight_4800K",
+      "white_balance_log_distance": 0.0043,
+      "unclipped_fraction": {
+        "y_not_positive": 1e-06,
+        "ap1_negative": 0.021645,
+        "outside_locus": 0.021599,
+        "outside_rec709": 0.076274
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.0384,
+        "y_not_positive": 3.1e-05,
+        "ap1_negative": 0.007554,
+        "outside_locus": 0.00713,
+        "outside_rec709": 0.050232
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.931,
+            "in_domain_and_in_curve": 0.931
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.983,
+            "in_domain_and_in_curve": 0.983
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9155,
+            "in_domain_and_in_curve": 0.9155
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9835,
+            "in_domain_and_in_curve": 0.9835
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9675,
+            "in_domain_and_in_curve": 0.9675
+          }
+        },
+        "all_methods_in_domain": 0.914,
+        "status_m_spread_over_methods": {
+          "count": 1828,
+          "p50": [
+            0.02657,
+            0.00356,
+            0.02413
+          ],
+          "p95": [
+            0.08207,
+            0.00881,
+            0.06487
+          ],
+          "max": [
+            0.22844,
+            0.0198,
+            0.10585
+          ]
+        },
+        "ap1_negative": 0.018
+      },
+      "seconds": 70.9,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 21.1,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.9,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 27.8,
+        "measured_prior_local": 7.1
+      }
+    },
+    "lumix/gx9/P1011384.RW2": {
+      "camera_sensitivity": "Panasonic_DC-GX9",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        597.0,
+        256.0,
+        453.0,
+        256.0
+      ],
+      "pixels": 20300800,
+      "selected_light": "daylight_5200K",
+      "white_balance_log_distance": 0.0052,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.004815,
+        "outside_locus": 0.00233,
+        "outside_rec709": 0.033494
+      },
+      "clipped_fraction": 0.013356,
+      "near_black": {
+        "fraction_of_unclipped": 0.147244,
+        "y_not_positive": 3e-06,
+        "ap1_negative": 0.014938,
+        "outside_locus": 0.003506,
+        "outside_rec709": 0.074511
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9735,
+            "in_domain_and_in_curve": 0.973
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.996,
+            "in_domain_and_in_curve": 0.9955
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.951,
+            "in_domain_and_in_curve": 0.9505
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.997,
+            "in_domain_and_in_curve": 0.9965
+          },
+          "measured_prior_local": {
+            "in_domain": 0.99,
+            "in_domain_and_in_curve": 0.9895
+          }
+        },
+        "all_methods_in_domain": 0.95,
+        "status_m_spread_over_methods": {
+          "count": 1900,
+          "p50": [
+            0.01346,
+            0.00323,
+            0.02133
+          ],
+          "p95": [
+            0.07392,
+            0.01129,
+            0.06214
+          ],
+          "max": [
+            0.14803,
+            0.06115,
+            0.09668
+          ]
+        },
+        "ap1_negative": 0.006
+      },
+      "seconds": 68.3,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 14.8,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.2,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 31.2,
+        "measured_prior_local": 8.1
+      }
+    },
+    "lumix/gx9/P1012323.RW2": {
+      "camera_sensitivity": "Panasonic_DC-GX9",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        567.0,
+        256.0,
+        483.0,
+        256.0
+      ],
+      "pixels": 20300800,
+      "selected_light": "daylight_4700K",
+      "white_balance_log_distance": 0.0098,
+      "unclipped_fraction": {
+        "y_not_positive": 4e-06,
+        "ap1_negative": 0.011846,
+        "outside_locus": 0.011726,
+        "outside_rec709": 0.048169
+      },
+      "clipped_fraction": 0.003589,
+      "near_black": {
+        "fraction_of_unclipped": 0.019552,
+        "y_not_positive": 0.000185,
+        "ap1_negative": 0.064401,
+        "outside_locus": 0.052884,
+        "outside_rec709": 0.152749
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9535,
+            "in_domain_and_in_curve": 0.9535
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9875,
+            "in_domain_and_in_curve": 0.987
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.95,
+            "in_domain_and_in_curve": 0.95
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9875,
+            "in_domain_and_in_curve": 0.9875
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9765,
+            "in_domain_and_in_curve": 0.976
+          }
+        },
+        "all_methods_in_domain": 0.9475,
+        "status_m_spread_over_methods": {
+          "count": 1895,
+          "p50": [
+            0.01682,
+            0.00354,
+            0.02984
+          ],
+          "p95": [
+            0.06801,
+            0.00935,
+            0.06685
+          ],
+          "max": [
+            0.13636,
+            0.05655,
+            0.11493
+          ]
+        },
+        "ap1_negative": 0.0115
+      },
+      "seconds": 62.7,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 14.8,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.4,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 26.0,
+        "measured_prior_local": 7.5
+      }
+    },
+    "lumix/gx9/P1024439.RW2": {
+      "camera_sensitivity": "Panasonic_DC-GX9",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        596.0,
+        256.0,
+        454.0,
+        256.0
+      ],
+      "pixels": 20300800,
+      "selected_light": "daylight_5200K",
+      "white_balance_log_distance": 0.0053,
+      "unclipped_fraction": {
+        "y_not_positive": 2e-06,
+        "ap1_negative": 0.00252,
+        "outside_locus": 0.000583,
+        "outside_rec709": 0.012552
+      },
+      "clipped_fraction": 0.023168,
+      "near_black": {
+        "fraction_of_unclipped": 0.149063,
+        "y_not_positive": 1.5e-05,
+        "ap1_negative": 0.01395,
+        "outside_locus": 0.003293,
+        "outside_rec709": 0.058891
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9885,
+            "in_domain_and_in_curve": 0.9885
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.987,
+            "in_domain_and_in_curve": 0.987
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_local": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.998
+          }
+        },
+        "all_methods_in_domain": 0.985,
+        "status_m_spread_over_methods": {
+          "count": 1970,
+          "p50": [
+            0.01329,
+            0.00338,
+            0.01801
+          ],
+          "p95": [
+            0.05134,
+            0.00969,
+            0.05272
+          ],
+          "max": [
+            0.25548,
+            0.04526,
+            0.12356
+          ]
+        },
+        "ap1_negative": 0.001
+      },
+      "seconds": 61.3,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 14.5,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 13.8,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 25.3,
+        "measured_prior_local": 7.6
+      }
+    },
+    "nikon/d7000/Nikon-D7000-raw-00009.nef": {
+      "camera_sensitivity": "Nikon_D7000",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        540.0,
+        256.0,
+        366.0,
+        256.0
+      ],
+      "pixels": 16229440,
+      "selected_light": "daylight_5200K",
+      "white_balance_log_distance": 0.0522,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.001218,
+        "outside_locus": 0.000108,
+        "outside_rec709": 0.004068
+      },
+      "clipped_fraction": 0.01847,
+      "near_black": {
+        "fraction_of_unclipped": 2e-06,
+        "y_not_positive": 0.055556,
+        "ap1_negative": 0.055556,
+        "outside_locus": 0.055556,
+        "outside_rec709": 0.138889
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9945,
+            "in_domain_and_in_curve": 0.9945
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.995,
+            "in_domain_and_in_curve": 0.995
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_local": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          }
+        },
+        "all_methods_in_domain": 0.9945,
+        "status_m_spread_over_methods": {
+          "count": 1989,
+          "p50": [
+            0.01277,
+            0.00279,
+            0.01764
+          ],
+          "p95": [
+            0.03959,
+            0.00783,
+            0.04476
+          ],
+          "max": [
+            0.22006,
+            0.02355,
+            0.07387
+          ]
+        },
+        "ap1_negative": 0.001
+      },
+      "seconds": 62.9,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 11.8,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 13.7,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 29.7,
+        "measured_prior_local": 7.7
+      }
+    },
+    "nikon/d7000/Nikon-D7000-raw-00012.nef": {
+      "camera_sensitivity": "Nikon_D7000",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        416.0,
+        256.0,
+        392.0,
+        256.0
+      ],
+      "pixels": 16229440,
+      "selected_light": "planck_3950K",
+      "white_balance_log_distance": 0.0803,
+      "unclipped_fraction": {
+        "y_not_positive": 1.9e-05,
+        "ap1_negative": 0.0024,
+        "outside_locus": 0.001906,
+        "outside_rec709": 0.020256
+      },
+      "clipped_fraction": 0.004087,
+      "near_black": {
+        "fraction_of_unclipped": 0.002406,
+        "y_not_positive": 0.007739,
+        "ap1_negative": 0.226616,
+        "outside_locus": 0.058878,
+        "outside_rec709": 0.442793
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.98,
+            "in_domain_and_in_curve": 0.98
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.998
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.99,
+            "in_domain_and_in_curve": 0.99
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.998
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9965,
+            "in_domain_and_in_curve": 0.9965
+          }
+        },
+        "all_methods_in_domain": 0.98,
+        "status_m_spread_over_methods": {
+          "count": 1960,
+          "p50": [
+            0.01458,
+            0.00682,
+            0.02526
+          ],
+          "p95": [
+            0.03238,
+            0.01471,
+            0.06753
+          ],
+          "max": [
+            0.13509,
+            0.04234,
+            0.13188
+          ]
+        },
+        "ap1_negative": 0.002
+      },
+      "seconds": 63.8,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 12.0,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.0,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 30.1,
+        "measured_prior_local": 7.8
+      }
+    },
+    "nikon/d800e/Nikon-D800e-raw-00002.nef": {
+      "camera_sensitivity": "Nikon_D800E",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        613.0,
+        256.0,
+        314.0,
+        256.0
+      ],
+      "pixels": 36329272,
+      "selected_light": "daylight_6400K",
+      "white_balance_log_distance": 0.0481,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 2e-06,
+        "outside_locus": 0.0,
+        "outside_rec709": 5.8e-05
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 1e-06,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.0,
+        "outside_locus": 0.0,
+        "outside_rec709": 0.035714
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 1.0,
+        "status_m_spread_over_methods": {
+          "count": 2000,
+          "p50": [
+            0.01087,
+            0.00242,
+            0.01274
+          ],
+          "p95": [
+            0.01612,
+            0.00337,
+            0.01851
+          ],
+          "max": [
+            0.04934,
+            0.00685,
+            0.03321
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 61.4,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 26.7,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.4,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 26.7,
+        "measured_prior_local": 7.6
+      }
+    },
+    "nikon/d800e/Nikon-D800e-raw-00006.nef": {
+      "camera_sensitivity": "Nikon_D800E",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        529.0,
+        256.0,
+        402.0,
+        256.0
+      ],
+      "pixels": 36329272,
+      "selected_light": "daylight_4600K",
+      "white_balance_log_distance": 0.0989,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 3.9e-05,
+        "outside_locus": 4.4e-05,
+        "outside_rec709": 0.130403
+      },
+      "clipped_fraction": 1e-06,
+      "near_black": {
+        "fraction_of_unclipped": 0.0,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.0,
+        "outside_locus": 0.0,
+        "outside_rec709": 0.0
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.8665,
+            "in_domain_and_in_curve": 0.8665
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.8615,
+            "in_domain_and_in_curve": 0.8615
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9985,
+            "in_domain_and_in_curve": 0.9985
+          }
+        },
+        "all_methods_in_domain": 0.857,
+        "status_m_spread_over_methods": {
+          "count": 1714,
+          "p50": [
+            0.04495,
+            0.0031,
+            0.05029
+          ],
+          "p95": [
+            0.08343,
+            0.00525,
+            0.07111
+          ],
+          "max": [
+            0.0957,
+            0.0132,
+            0.09738
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 61.7,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 26.8,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.7,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 26.3,
+        "measured_prior_local": 7.8
+      }
+    },
+    "nikon/d800e/Nikon-D800e-raw-00007.nef": {
+      "camera_sensitivity": "Nikon_D800E",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        598.0,
+        256.0,
+        307.0,
+        256.0
+      ],
+      "pixels": 36329272,
+      "selected_light": "daylight_6400K",
+      "white_balance_log_distance": 0.0146,
+      "unclipped_fraction": {
+        "y_not_positive": 1.7e-05,
+        "ap1_negative": 0.00758,
+        "outside_locus": 0.001167,
+        "outside_rec709": 0.036909
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.172108,
+        "y_not_positive": 0.000101,
+        "ap1_negative": 0.042978,
+        "outside_locus": 0.006701,
+        "outside_rec709": 0.182189
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.968,
+            "in_domain_and_in_curve": 0.968
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.997,
+            "in_domain_and_in_curve": 0.997
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.954,
+            "in_domain_and_in_curve": 0.954
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_local": {
+            "in_domain": 0.993,
+            "in_domain_and_in_curve": 0.993
+          }
+        },
+        "all_methods_in_domain": 0.9515,
+        "status_m_spread_over_methods": {
+          "count": 1903,
+          "p50": [
+            0.02535,
+            0.00468,
+            0.02495
+          ],
+          "p95": [
+            0.07213,
+            0.01914,
+            0.0545
+          ],
+          "max": [
+            0.20274,
+            0.05046,
+            0.08287
+          ]
+        },
+        "ap1_negative": 0.0045
+      },
+      "seconds": 75.6,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 26.9,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 13.9,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 27.2,
+        "measured_prior_local": 7.6
+      }
+    },
+    "nikon/d810/DSC_4742.NEF": {
+      "camera_sensitivity": "Nikon_D810",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2.0039,
+        1.0,
+        1.3008,
+        1.0
+      ],
+      "pixels": 36368640,
+      "selected_light": "daylight_5100K",
+      "white_balance_log_distance": 0.0206,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000756,
+        "outside_locus": 0.000216,
+        "outside_rec709": 0.002864
+      },
+      "clipped_fraction": 0.007395,
+      "near_black": {
+        "fraction_of_unclipped": 0.14145,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.002903,
+        "outside_locus": 0.00045,
+        "outside_rec709": 0.009347
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 0.999,
+        "status_m_spread_over_methods": {
+          "count": 1998,
+          "p50": [
+            0.00738,
+            0.0024,
+            0.01439
+          ],
+          "p95": [
+            0.02593,
+            0.00774,
+            0.03433
+          ],
+          "max": [
+            0.09694,
+            0.03201,
+            0.06955
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 65.2,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 26.6,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.4,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 29.8,
+        "measured_prior_local": 8.4
+      }
+    },
+    "nikon/d810/DSC_5495.NEF": {
+      "camera_sensitivity": "Nikon_D810",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2.4141,
+        1.0,
+        1.0312,
+        1.0
+      ],
+      "pixels": 36368640,
+      "selected_light": "daylight_7800K",
+      "white_balance_log_distance": 0.0254,
+      "unclipped_fraction": {
+        "y_not_positive": 0.00011,
+        "ap1_negative": 0.006116,
+        "outside_locus": 0.000967,
+        "outside_rec709": 0.018233
+      },
+      "clipped_fraction": 0.065935,
+      "near_black": {
+        "fraction_of_unclipped": 0.157868,
+        "y_not_positive": 0.000695,
+        "ap1_negative": 0.038686,
+        "outside_locus": 0.006123,
+        "outside_rec709": 0.108165
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.987,
+            "in_domain_and_in_curve": 0.987
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.988,
+            "in_domain_and_in_curve": 0.988
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9975,
+            "in_domain_and_in_curve": 0.9975
+          }
+        },
+        "all_methods_in_domain": 0.9865,
+        "status_m_spread_over_methods": {
+          "count": 1973,
+          "p50": [
+            0.02504,
+            0.00543,
+            0.02978
+          ],
+          "p95": [
+            0.0518,
+            0.01035,
+            0.04409
+          ],
+          "max": [
+            0.15396,
+            0.03199,
+            0.07713
+          ]
+        },
+        "ap1_negative": 0.001
+      },
+      "seconds": 72.6,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 25.8,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 13.8,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 25.3,
+        "measured_prior_local": 7.7
+      }
+    },
+    "nikon/d810/DSC_7647.NEF": {
+      "camera_sensitivity": "Nikon_D810",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1.25,
+        1.0,
+        1.7891,
+        1.0
+      ],
+      "pixels": 36368640,
+      "selected_light": "planck_3050K",
+      "white_balance_log_distance": 0.1359,
+      "unclipped_fraction": {
+        "y_not_positive": 0.001099,
+        "ap1_negative": 0.027524,
+        "outside_locus": 0.011039,
+        "outside_rec709": 0.166041
+      },
+      "clipped_fraction": 0.000198,
+      "near_black": {
+        "fraction_of_unclipped": 0.010804,
+        "y_not_positive": 0.101711,
+        "ap1_negative": 0.52294,
+        "outside_locus": 0.386826,
+        "outside_rec709": 0.664132
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.8215,
+            "in_domain_and_in_curve": 0.8215
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.989,
+            "in_domain_and_in_curve": 0.989
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.902,
+            "in_domain_and_in_curve": 0.902
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9935,
+            "in_domain_and_in_curve": 0.9935
+          },
+          "measured_prior_local": {
+            "in_domain": 0.955,
+            "in_domain_and_in_curve": 0.955
+          }
+        },
+        "all_methods_in_domain": 0.8055,
+        "status_m_spread_over_methods": {
+          "count": 1611,
+          "p50": [
+            0.05345,
+            0.01293,
+            0.04105
+          ],
+          "p95": [
+            0.2374,
+            0.02407,
+            0.0646
+          ],
+          "max": [
+            0.3179,
+            0.06952,
+            0.16081
+          ]
+        },
+        "ap1_negative": 0.028
+      },
+      "seconds": 78.9,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 27.2,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.7,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 29.2,
+        "measured_prior_local": 7.7
+      }
+    },
+    "nikon/d810/Nikon-D810-raw00011.nef": {
+      "camera_sensitivity": "Nikon_D810",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2.1211,
+        1.0,
+        1.1406,
+        1.0
+      ],
+      "pixels": 36368640,
+      "selected_light": "daylight_6000K",
+      "white_balance_log_distance": 0.062,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 3.8e-05,
+        "outside_locus": 3.4e-05,
+        "outside_rec709": 0.001579
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.065059,
+        "y_not_positive": 1e-06,
+        "ap1_negative": 0.000216,
+        "outside_locus": 0.000148,
+        "outside_rec709": 0.002151
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 0.999,
+        "status_m_spread_over_methods": {
+          "count": 1998,
+          "p50": [
+            0.01215,
+            0.00381,
+            0.01986
+          ],
+          "p95": [
+            0.03027,
+            0.01255,
+            0.04973
+          ],
+          "max": [
+            0.08071,
+            0.02598,
+            0.11972
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 63.8,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 26.7,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.5,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 28.9,
+        "measured_prior_local": 7.5
+      }
+    },
+    "nikon/d850/DSC_0630.NEF": {
+      "camera_sensitivity": "Nikon_D850",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2.0059,
+        1.0,
+        1.2881,
+        1.0
+      ],
+      "pixels": 45749760,
+      "selected_light": "daylight_5400K",
+      "white_balance_log_distance": 0.0467,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 2e-06,
+        "outside_locus": 2e-06,
+        "outside_rec709": 2.7e-05
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 6e-05,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000724,
+        "outside_locus": 0.000724,
+        "outside_rec709": 0.017385
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 1.0,
+        "status_m_spread_over_methods": {
+          "count": 2000,
+          "p50": [
+            0.00847,
+            0.00283,
+            0.01593
+          ],
+          "p95": [
+            0.02742,
+            0.00535,
+            0.03071
+          ],
+          "max": [
+            0.03981,
+            0.00962,
+            0.04738
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 66.1,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 33.3,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.4,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 24.9,
+        "measured_prior_local": 7.5
+      }
+    },
+    "nikon/d850/DSC_0836.NEF": {
+      "camera_sensitivity": "Nikon_D850",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2.1909,
+        1.0,
+        1.1772,
+        1.0
+      ],
+      "pixels": 45749760,
+      "selected_light": "daylight_6200K",
+      "white_balance_log_distance": 0.0426,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.005245,
+        "outside_locus": 0.00535,
+        "outside_rec709": 0.020269
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.005042,
+        "y_not_positive": 9e-06,
+        "ap1_negative": 0.017406,
+        "outside_locus": 0.012503,
+        "outside_rec709": 0.309381
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9805,
+            "in_domain_and_in_curve": 0.9805
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9935,
+            "in_domain_and_in_curve": 0.9935
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9775,
+            "in_domain_and_in_curve": 0.9775
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9935,
+            "in_domain_and_in_curve": 0.9935
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9905,
+            "in_domain_and_in_curve": 0.9905
+          }
+        },
+        "all_methods_in_domain": 0.976,
+        "status_m_spread_over_methods": {
+          "count": 1952,
+          "p50": [
+            0.01839,
+            0.00436,
+            0.02694
+          ],
+          "p95": [
+            0.05293,
+            0.00917,
+            0.05767
+          ],
+          "max": [
+            0.13117,
+            0.01498,
+            0.10506
+          ]
+        },
+        "ap1_negative": 0.0065
+      },
+      "seconds": 82.2,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 33.8,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.5,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 26.2,
+        "measured_prior_local": 7.7
+      }
+    },
+    "nikon/zf/DSC_1456.NEF": {
+      "camera_sensitivity": "Nikon_Z_f",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1.875,
+        1.0,
+        1.1543,
+        1.0
+      ],
+      "pixels": 24498560,
+      "selected_light": "daylight_5800K",
+      "white_balance_log_distance": 0.0402,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000197,
+        "outside_locus": 2e-06,
+        "outside_rec709": 0.001274
+      },
+      "clipped_fraction": 0.023634,
+      "near_black": {
+        "fraction_of_unclipped": 0.012943,
+        "y_not_positive": 1.9e-05,
+        "ap1_negative": 0.004638,
+        "outside_locus": 0.000129,
+        "outside_rec709": 0.031043
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 0.9985,
+        "status_m_spread_over_methods": {
+          "count": 1997,
+          "p50": [
+            0.00882,
+            0.00277,
+            0.01517
+          ],
+          "p95": [
+            0.02089,
+            0.00932,
+            0.03674
+          ],
+          "max": [
+            0.07561,
+            0.06374,
+            0.1562
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 52.8,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 17.5,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.5,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 27.3,
+        "measured_prior_local": 7.4
+      }
+    },
+    "nikon/zf/DSC_1535.NEF": {
+      "camera_sensitivity": "Nikon_Z_f",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        1.8926,
+        1.0,
+        1.1484,
+        1.0
+      ],
+      "pixels": 24498560,
+      "selected_light": "daylight_5900K",
+      "white_balance_log_distance": 0.0361,
+      "unclipped_fraction": {
+        "y_not_positive": 1e-06,
+        "ap1_negative": 0.000457,
+        "outside_locus": 1e-05,
+        "outside_rec709": 0.002397
+      },
+      "clipped_fraction": 0.00059,
+      "near_black": {
+        "fraction_of_unclipped": 0.012699,
+        "y_not_positive": 4.8e-05,
+        "ap1_negative": 0.012704,
+        "outside_locus": 0.000608,
+        "outside_rec709": 0.050171
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.998
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.998
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 0.998,
+        "status_m_spread_over_methods": {
+          "count": 1996,
+          "p50": [
+            0.00951,
+            0.00285,
+            0.01564
+          ],
+          "p95": [
+            0.02146,
+            0.0073,
+            0.03128
+          ],
+          "max": [
+            0.16758,
+            0.0484,
+            0.13268
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 52.2,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 17.8,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.4,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 26.1,
+        "measured_prior_local": 7.8
+      }
+    },
+    "sony/a6400/DSC00342.ARW": {
+      "camera_sensitivity": "Sony_ILCE-6400",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2632.0,
+        1024.0,
+        1832.0,
+        1024.0
+      ],
+      "pixels": 24240576,
+      "selected_light": "daylight_4800K",
+      "white_balance_log_distance": 0.0267,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.02086,
+        "outside_locus": 0.008022,
+        "outside_rec709": 0.046535
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.012674,
+        "y_not_positive": 3.6e-05,
+        "ap1_negative": 0.038688,
+        "outside_locus": 0.0079,
+        "outside_rec709": 0.08786
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9525,
+            "in_domain_and_in_curve": 0.9525
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9865,
+            "in_domain_and_in_curve": 0.9865
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9435,
+            "in_domain_and_in_curve": 0.9435
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.994,
+            "in_domain_and_in_curve": 0.994
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9775,
+            "in_domain_and_in_curve": 0.9775
+          }
+        },
+        "all_methods_in_domain": 0.9425,
+        "status_m_spread_over_methods": {
+          "count": 1885,
+          "p50": [
+            0.01481,
+            0.00439,
+            0.02415
+          ],
+          "p95": [
+            0.05371,
+            0.01147,
+            0.05903
+          ],
+          "max": [
+            0.14851,
+            0.03537,
+            0.12586
+          ]
+        },
+        "ap1_negative": 0.018
+      },
+      "seconds": 63.4,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 17.4,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.6,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 23.7,
+        "measured_prior_local": 7.7
+      }
+    },
+    "sony/a6400/DSC00352.ARW": {
+      "camera_sensitivity": "Sony_ILCE-6400",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2512.0,
+        1024.0,
+        1888.0,
+        1024.0
+      ],
+      "pixels": 24240576,
+      "selected_light": "daylight_4500K",
+      "white_balance_log_distance": 0.0449,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.004926,
+        "outside_locus": 0.000532,
+        "outside_rec709": 0.017313
+      },
+      "clipped_fraction": 5e-06,
+      "near_black": {
+        "fraction_of_unclipped": 0.109764,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.004975,
+        "outside_locus": 0.000438,
+        "outside_rec709": 0.028124
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9795,
+            "in_domain_and_in_curve": 0.9795
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.997,
+            "in_domain_and_in_curve": 0.997
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.977,
+            "in_domain_and_in_curve": 0.977
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9925,
+            "in_domain_and_in_curve": 0.9925
+          }
+        },
+        "all_methods_in_domain": 0.976,
+        "status_m_spread_over_methods": {
+          "count": 1952,
+          "p50": [
+            0.01204,
+            0.00378,
+            0.01974
+          ],
+          "p95": [
+            0.05081,
+            0.00923,
+            0.05422
+          ],
+          "max": [
+            0.23091,
+            0.04547,
+            0.12595
+          ]
+        },
+        "ap1_negative": 0.005
+      },
+      "seconds": 66.9,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 17.3,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.0,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 27.3,
+        "measured_prior_local": 8.2
+      }
+    },
+    "sony/a7cii/Sonya7c2-Bracaglia-05.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7CM2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2464.0,
+        1024.0,
+        1689.0,
+        1024.0
+      ],
+      "pixels": 32947264,
+      "selected_light": "daylight_4700K",
+      "white_balance_log_distance": 0.016,
+      "unclipped_fraction": {
+        "y_not_positive": 8e-06,
+        "ap1_negative": 0.002745,
+        "outside_locus": 0.000707,
+        "outside_rec709": 0.014884
+      },
+      "clipped_fraction": 0.001219,
+      "near_black": {
+        "fraction_of_unclipped": 0.201061,
+        "y_not_positive": 4.1e-05,
+        "ap1_negative": 0.010093,
+        "outside_locus": 0.001199,
+        "outside_rec709": 0.04065
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9925,
+            "in_domain_and_in_curve": 0.9925
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9875,
+            "in_domain_and_in_curve": 0.9875
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_local": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          }
+        },
+        "all_methods_in_domain": 0.986,
+        "status_m_spread_over_methods": {
+          "count": 1972,
+          "p50": [
+            0.01175,
+            0.00304,
+            0.02036
+          ],
+          "p95": [
+            0.07029,
+            0.00801,
+            0.03343
+          ],
+          "max": [
+            0.19642,
+            0.02788,
+            0.11631
+          ]
+        },
+        "ap1_negative": 0.0005
+      },
+      "seconds": 73.6,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 23.5,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 13.8,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 28.6,
+        "measured_prior_local": 7.8
+      }
+    },
+    "sony/a7iii/DSC00527.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7M3",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2252.0,
+        1024.0,
+        1652.0,
+        1024.0
+      ],
+      "pixels": 24240576,
+      "selected_light": "daylight_4500K",
+      "white_balance_log_distance": 0.0706,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000586,
+        "outside_locus": 0.000281,
+        "outside_rec709": 0.002711
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.031013,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.00407,
+        "outside_locus": 0.000823,
+        "outside_rec709": 0.016634
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.998
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          }
+        },
+        "all_methods_in_domain": 0.998,
+        "status_m_spread_over_methods": {
+          "count": 1996,
+          "p50": [
+            0.0133,
+            0.00468,
+            0.02119
+          ],
+          "p95": [
+            0.03457,
+            0.0079,
+            0.04083
+          ],
+          "max": [
+            0.09758,
+            0.06773,
+            0.15343
+          ]
+        },
+        "ap1_negative": 0.0005
+      },
+      "seconds": 67.6,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 17.3,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 13.8,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 28.8,
+        "measured_prior_local": 7.7
+      }
+    },
+    "sony/a7iii/DSC00542.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7M3",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2272.0,
+        1024.0,
+        1640.0,
+        1024.0
+      ],
+      "pixels": 24240576,
+      "selected_light": "daylight_4600K",
+      "white_balance_log_distance": 0.0677,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000225,
+        "outside_locus": 2.2e-05,
+        "outside_rec709": 0.001545
+      },
+      "clipped_fraction": 0.040755,
+      "near_black": {
+        "fraction_of_unclipped": 0.003551,
+        "y_not_positive": 1.2e-05,
+        "ap1_negative": 0.007508,
+        "outside_locus": 0.000387,
+        "outside_rec709": 0.062533
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 0.999,
+        "status_m_spread_over_methods": {
+          "count": 1998,
+          "p50": [
+            0.01046,
+            0.0032,
+            0.01977
+          ],
+          "p95": [
+            0.03767,
+            0.00815,
+            0.05705
+          ],
+          "max": [
+            0.10213,
+            0.03814,
+            0.10917
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 34.3,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 16.7,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.4,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 9.3,
+        "measured_prior_local": 7.8
+      }
+    },
+    "sony/a7iii/DSC00628.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7M3",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2044.0,
+        1024.0,
+        1968.0,
+        1024.0
+      ],
+      "pixels": 24240576,
+      "selected_light": "planck_3700K",
+      "white_balance_log_distance": 0.0022,
+      "unclipped_fraction": {
+        "y_not_positive": 5e-06,
+        "ap1_negative": 0.008037,
+        "outside_locus": 0.007652,
+        "outside_rec709": 0.033143
+      },
+      "clipped_fraction": 0.015704,
+      "near_black": {
+        "fraction_of_unclipped": 0.0587,
+        "y_not_positive": 8.4e-05,
+        "ap1_negative": 0.0732,
+        "outside_locus": 0.072498,
+        "outside_rec709": 0.203084
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9625,
+            "in_domain_and_in_curve": 0.9625
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.99,
+            "in_domain_and_in_curve": 0.99
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9725,
+            "in_domain_and_in_curve": 0.9725
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.99,
+            "in_domain_and_in_curve": 0.99
+          },
+          "measured_prior_local": {
+            "in_domain": 0.986,
+            "in_domain_and_in_curve": 0.986
+          }
+        },
+        "all_methods_in_domain": 0.962,
+        "status_m_spread_over_methods": {
+          "count": 1924,
+          "p50": [
+            0.01708,
+            0.00713,
+            0.02651
+          ],
+          "p95": [
+            0.03085,
+            0.0134,
+            0.06714
+          ],
+          "max": [
+            0.10146,
+            0.0195,
+            0.12776
+          ]
+        },
+        "ap1_negative": 0.011
+      },
+      "seconds": 63.8,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 17.0,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.4,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 24.8,
+        "measured_prior_local": 7.5
+      }
+    },
+    "sony/a7iv/DSC00102.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7M4",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2521.0,
+        1024.0,
+        1599.0,
+        1024.0
+      ],
+      "pixels": 32947264,
+      "selected_light": "daylight_5000K",
+      "white_balance_log_distance": 0.0045,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.001254,
+        "outside_locus": 0.000287,
+        "outside_rec709": 0.010799
+      },
+      "clipped_fraction": 0.0,
+      "near_black": {
+        "fraction_of_unclipped": 0.024431,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.003721,
+        "outside_locus": 0.001847,
+        "outside_rec709": 0.033967
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.991,
+            "in_domain_and_in_curve": 0.991
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.986,
+            "in_domain_and_in_curve": 0.986
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.998
+          }
+        },
+        "all_methods_in_domain": 0.986,
+        "status_m_spread_over_methods": {
+          "count": 1972,
+          "p50": [
+            0.00987,
+            0.00211,
+            0.0171
+          ],
+          "p95": [
+            0.04773,
+            0.00846,
+            0.05461
+          ],
+          "max": [
+            0.11256,
+            0.01629,
+            0.07288
+          ]
+        },
+        "ap1_negative": 0.0005
+      },
+      "seconds": 57.6,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 24.2,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.7,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 25.1,
+        "measured_prior_local": 7.6
+      }
+    },
+    "sony/a7rii/DSC00372.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2516.0,
+        1024.0,
+        1648.0,
+        1024.0
+      ],
+      "pixels": 42389760,
+      "selected_light": "daylight_4700K",
+      "white_balance_log_distance": 0.0215,
+      "unclipped_fraction": {
+        "y_not_positive": 1.5e-05,
+        "ap1_negative": 0.004501,
+        "outside_locus": 0.002169,
+        "outside_rec709": 0.026414
+      },
+      "clipped_fraction": 0.007725,
+      "near_black": {
+        "fraction_of_unclipped": 0.205127,
+        "y_not_positive": 7.4e-05,
+        "ap1_negative": 0.015137,
+        "outside_locus": 0.00533,
+        "outside_rec709": 0.062712
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9805,
+            "in_domain_and_in_curve": 0.98
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.9975
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9675,
+            "in_domain_and_in_curve": 0.967
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.998,
+            "in_domain_and_in_curve": 0.9975
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9945,
+            "in_domain_and_in_curve": 0.994
+          }
+        },
+        "all_methods_in_domain": 0.967,
+        "status_m_spread_over_methods": {
+          "count": 1934,
+          "p50": [
+            0.01693,
+            0.00333,
+            0.02687
+          ],
+          "p95": [
+            0.07413,
+            0.00841,
+            0.06364
+          ],
+          "max": [
+            0.16783,
+            0.0327,
+            0.09573
+          ]
+        },
+        "ap1_negative": 0.0025
+      },
+      "seconds": 82.8,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 30.0,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.1,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 30.9,
+        "measured_prior_local": 7.7
+      }
+    },
+    "sony/a7rii/DSC00459.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2528.0,
+        1024.0,
+        1640.0,
+        1024.0
+      ],
+      "pixels": 42389760,
+      "selected_light": "daylight_4800K",
+      "white_balance_log_distance": 0.0212,
+      "unclipped_fraction": {
+        "y_not_positive": 0.039257,
+        "ap1_negative": 0.005671,
+        "outside_locus": 0.039964,
+        "outside_rec709": 0.023577
+      },
+      "clipped_fraction": 0.023847,
+      "near_black": {
+        "fraction_of_unclipped": 0.232745,
+        "y_not_positive": 0.168667,
+        "ap1_negative": 0.02355,
+        "outside_locus": 0.171642,
+        "outside_rec709": 0.073247
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.984,
+            "in_domain_and_in_curve": 0.984
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9785,
+            "in_domain_and_in_curve": 0.9785
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9975,
+            "in_domain_and_in_curve": 0.9965
+          }
+        },
+        "all_methods_in_domain": 0.972,
+        "status_m_spread_over_methods": {
+          "count": 1944,
+          "p50": [
+            0.01136,
+            0.00335,
+            0.0163
+          ],
+          "p95": [
+            0.0473,
+            0.00993,
+            0.03989
+          ],
+          "max": [
+            0.27822,
+            0.06199,
+            0.15596
+          ]
+        },
+        "ap1_negative": 0.0005
+      },
+      "seconds": 64.5,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 29.6,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.7,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 26.5,
+        "measured_prior_local": 7.8
+      }
+    },
+    "sony/a7rii/DSC00602.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2492.0,
+        1024.0,
+        1668.0,
+        1024.0
+      ],
+      "pixels": 42389760,
+      "selected_light": "daylight_4700K",
+      "white_balance_log_distance": 0.0217,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000219,
+        "outside_locus": 3e-06,
+        "outside_rec709": 0.001204
+      },
+      "clipped_fraction": 5.5e-05,
+      "near_black": {
+        "fraction_of_unclipped": 0.032099,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.006765,
+        "outside_locus": 9e-05,
+        "outside_rec709": 0.031162
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 0.999,
+        "status_m_spread_over_methods": {
+          "count": 1998,
+          "p50": [
+            0.0105,
+            0.00296,
+            0.01641
+          ],
+          "p95": [
+            0.02949,
+            0.00555,
+            0.03132
+          ],
+          "max": [
+            0.11076,
+            0.04481,
+            0.1248
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 55.5,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 30.1,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.5,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 17.2,
+        "measured_prior_local": 7.7
+      }
+    },
+    "sony/a7rii/DSC00694_ACR.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM2",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2360.0,
+        1024.0,
+        1724.0,
+        1024.0
+      ],
+      "pixels": 42389760,
+      "selected_light": "daylight_4400K",
+      "white_balance_log_distance": 0.0397,
+      "unclipped_fraction": {
+        "y_not_positive": 0.065036,
+        "ap1_negative": 0.214251,
+        "outside_locus": 0.159777,
+        "outside_rec709": 0.288634
+      },
+      "clipped_fraction": 0.000743,
+      "near_black": {
+        "fraction_of_unclipped": 0.420528,
+        "y_not_positive": 0.154653,
+        "ap1_negative": 0.463827,
+        "outside_locus": 0.354834,
+        "outside_rec709": 0.571993
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.829,
+            "in_domain_and_in_curve": 0.829
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9295,
+            "in_domain_and_in_curve": 0.9295
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.8135,
+            "in_domain_and_in_curve": 0.8135
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9505,
+            "in_domain_and_in_curve": 0.9505
+          },
+          "measured_prior_local": {
+            "in_domain": 0.882,
+            "in_domain_and_in_curve": 0.882
+          }
+        },
+        "all_methods_in_domain": 0.8045,
+        "status_m_spread_over_methods": {
+          "count": 1609,
+          "p50": [
+            0.02083,
+            0.00713,
+            0.03161
+          ],
+          "p95": [
+            0.07052,
+            0.03622,
+            0.08941
+          ],
+          "max": [
+            0.23527,
+            0.0771,
+            0.16134
+          ]
+        },
+        "ap1_negative": 0.091
+      },
+      "seconds": 85.0,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 30.6,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 17.7,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 29.0,
+        "measured_prior_local": 7.6
+      }
+    },
+    "sony/a7riii/DSC00274.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM3",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2544.0,
+        1024.0,
+        1672.0,
+        1024.0
+      ],
+      "pixels": 42389760,
+      "selected_light": "daylight_4700K",
+      "white_balance_log_distance": 0.0138,
+      "unclipped_fraction": {
+        "y_not_positive": 1.7e-05,
+        "ap1_negative": 0.008515,
+        "outside_locus": 0.002909,
+        "outside_rec709": 0.033059
+      },
+      "clipped_fraction": 0.010206,
+      "near_black": {
+        "fraction_of_unclipped": 0.115535,
+        "y_not_positive": 0.000143,
+        "ap1_negative": 0.047322,
+        "outside_locus": 0.014875,
+        "outside_rec709": 0.133587
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.97,
+            "in_domain_and_in_curve": 0.9695
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9965,
+            "in_domain_and_in_curve": 0.996
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.96,
+            "in_domain_and_in_curve": 0.9595
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.9985,
+            "in_domain_and_in_curve": 0.998
+          },
+          "measured_prior_local": {
+            "in_domain": 0.99,
+            "in_domain_and_in_curve": 0.9895
+          }
+        },
+        "all_methods_in_domain": 0.9555,
+        "status_m_spread_over_methods": {
+          "count": 1911,
+          "p50": [
+            0.01404,
+            0.00408,
+            0.02449
+          ],
+          "p95": [
+            0.06609,
+            0.00966,
+            0.06093
+          ],
+          "max": [
+            0.15041,
+            0.03444,
+            0.11712
+          ]
+        },
+        "ap1_negative": 0.0055
+      },
+      "seconds": 79.9,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 30.1,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 14.2,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 27.9,
+        "measured_prior_local": 7.6
+      }
+    },
+    "sony/a7riii/DSC00674.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM3",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2392.0,
+        1024.0,
+        1728.0,
+        1024.0
+      ],
+      "pixels": 42389760,
+      "selected_light": "daylight_4400K",
+      "white_balance_log_distance": 0.0377,
+      "unclipped_fraction": {
+        "y_not_positive": 0.002971,
+        "ap1_negative": 0.049276,
+        "outside_locus": 0.04003,
+        "outside_rec709": 0.109159
+      },
+      "clipped_fraction": 2.1e-05,
+      "near_black": {
+        "fraction_of_unclipped": 0.264565,
+        "y_not_positive": 0.011231,
+        "ap1_negative": 0.167465,
+        "outside_locus": 0.129948,
+        "outside_rec709": 0.277396
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.925,
+            "in_domain_and_in_curve": 0.925
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 0.9745,
+            "in_domain_and_in_curve": 0.9745
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9395,
+            "in_domain_and_in_curve": 0.9395
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 0.976,
+            "in_domain_and_in_curve": 0.976
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9675,
+            "in_domain_and_in_curve": 0.9675
+          }
+        },
+        "all_methods_in_domain": 0.9135,
+        "status_m_spread_over_methods": {
+          "count": 1827,
+          "p50": [
+            0.02539,
+            0.01453,
+            0.04582
+          ],
+          "p95": [
+            0.03512,
+            0.02086,
+            0.08461
+          ],
+          "max": [
+            0.06553,
+            0.04108,
+            0.1333
+          ]
+        },
+        "ap1_negative": 0.027
+      },
+      "seconds": 79.8,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 30.5,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 15.0,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 26.7,
+        "measured_prior_local": 7.6
+      }
+    },
+    "sony/a7riii/DSC00728.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM3",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2404.0,
+        1024.0,
+        1688.0,
+        1024.0
+      ],
+      "pixels": 42389760,
+      "selected_light": "daylight_4500K",
+      "white_balance_log_distance": 0.0484,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 5.5e-05,
+        "outside_locus": 5.4e-05,
+        "outside_rec709": 0.000665
+      },
+      "clipped_fraction": 0.000172,
+      "near_black": {
+        "fraction_of_unclipped": 0.00597,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.000198,
+        "outside_locus": 0.000103,
+        "outside_rec709": 0.003031
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.999,
+            "in_domain_and_in_curve": 0.999
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          }
+        },
+        "all_methods_in_domain": 0.999,
+        "status_m_spread_over_methods": {
+          "count": 1998,
+          "p50": [
+            0.0144,
+            0.00441,
+            0.01767
+          ],
+          "p95": [
+            0.03202,
+            0.01314,
+            0.03905
+          ],
+          "max": [
+            0.05739,
+            0.02025,
+            0.10404
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 56.4,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 30.0,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.6,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 18.1,
+        "measured_prior_local": 7.7
+      }
+    },
+    "sony/a7riv/DSC00141.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM4",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2684.0,
+        1024.0,
+        1648.0,
+        1024.0
+      ],
+      "pixels": 61005568,
+      "selected_light": "daylight_5000K",
+      "white_balance_log_distance": 0.0012,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.00059,
+        "outside_locus": 6e-06,
+        "outside_rec709": 0.006558
+      },
+      "clipped_fraction": 0.000682,
+      "near_black": {
+        "fraction_of_unclipped": 0.001938,
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.139267,
+        "outside_locus": 0.001693,
+        "outside_rec709": 0.374593
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.9945,
+            "in_domain_and_in_curve": 0.9945
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.992,
+            "in_domain_and_in_curve": 0.992
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9995,
+            "in_domain_and_in_curve": 0.9995
+          }
+        },
+        "all_methods_in_domain": 0.992,
+        "status_m_spread_over_methods": {
+          "count": 1984,
+          "p50": [
+            0.01211,
+            0.00277,
+            0.01512
+          ],
+          "p95": [
+            0.04728,
+            0.00679,
+            0.03702
+          ],
+          "max": [
+            0.16345,
+            0.01581,
+            0.06332
+          ]
+        },
+        "ap1_negative": 0.0
+      },
+      "seconds": 64.4,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 43.6,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.5,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 12.4,
+        "measured_prior_local": 7.8
+      }
+    },
+    "sony/a7riv/DSC02139.ARW": {
+      "camera_sensitivity": "Sony_ILCE-7RM4",
+      "color_desc": "RGBG",
+      "raw_pattern_shape": [
+        2,
+        2
+      ],
+      "as_shot_white_balance": [
+        2532.0,
+        1024.0,
+        1696.0,
+        1024.0
+      ],
+      "pixels": 61005568,
+      "selected_light": "daylight_4700K",
+      "white_balance_log_distance": 0.027,
+      "unclipped_fraction": {
+        "y_not_positive": 0.0,
+        "ap1_negative": 0.001544,
+        "outside_locus": 0.000523,
+        "outside_rec709": 0.008271
+      },
+      "clipped_fraction": 0.015054,
+      "near_black": {
+        "fraction_of_unclipped": 0.075433,
+        "y_not_positive": 4e-06,
+        "ap1_negative": 0.004735,
+        "outside_locus": 0.000384,
+        "outside_rec709": 0.02879
+      },
+      "sample": {
+        "pixels": 2000,
+        "methods": {
+          "mallett_yuksel_rec709": {
+            "in_domain": 0.995,
+            "in_domain_and_in_curve": 0.995
+          },
+          "jakob_hanika_sigmoid": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_linear": {
+            "in_domain": 0.991,
+            "in_domain_and_in_curve": 0.991
+          },
+          "measured_prior_nonnegative": {
+            "in_domain": 1.0,
+            "in_domain_and_in_curve": 1.0
+          },
+          "measured_prior_local": {
+            "in_domain": 0.9985,
+            "in_domain_and_in_curve": 0.9985
+          }
+        },
+        "all_methods_in_domain": 0.99,
+        "status_m_spread_over_methods": {
+          "count": 1980,
+          "p50": [
+            0.00993,
+            0.00314,
+            0.01837
+          ],
+          "p95": [
+            0.04821,
+            0.00924,
+            0.05667
+          ],
+          "max": [
+            0.11451,
+            0.03647,
+            0.10128
+          ]
+        },
+        "ap1_negative": 0.0005
+      },
+      "seconds": 74.4,
+      "stage_seconds": {
+        "decode_idt_and_full_resolution_statistics": 43.5,
+        "mallett_yuksel_rec709": 0.0,
+        "jakob_hanika_sigmoid": 0.8,
+        "measured_prior_linear": 0.0,
+        "measured_prior_nonnegative": 22.2,
+        "measured_prior_local": 8.0
+      }
+    }
+  },
+  "decode_failures": {},
+  "pooled_over_files": {
+    "y_not_positive": {
+      "median": 0.0,
+      "max": 0.065036,
+      "files_above_0.001": 5
+    },
+    "ap1_negative": {
+      "median": 0.001995,
+      "max": 0.214251,
+      "files_above_0.001": 27
+    },
+    "outside_locus": {
+      "median": 0.000645,
+      "max": 0.159777,
+      "files_above_0.001": 18
+    },
+    "outside_rec709": {
+      "median": 0.013718000000000001,
+      "max": 0.288634,
+      "files_above_0.001": 39
+    }
+  }
+}

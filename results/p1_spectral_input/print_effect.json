@@ -1,0 +1,419 @@
+{
+  "chain": "P0 reference chain: Status M -> inferred dyes -> lamp A printer balanced on a D55 grey -> Endura -> D50 viewing",
+  "scene": "D55",
+  "subset_per_dataset": 300,
+  "datasets": {
+    "rawtoaces_190": {
+      "truth_printable": 187,
+      "truth_not_printable": {
+        "dye_basis_cannot_reach_density": 0,
+        "paper_exposure_above_curve_end": 0,
+        "paper_dye_basis_cannot_reach_density": 3
+      },
+      "mallett_yuksel_rec709": {
+        "delta_e_ab": {
+          "count": 160,
+          "p50": [
+            4.8198
+          ],
+          "p95": [
+            18.09749
+          ],
+          "max": [
+            28.60409
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 1,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 2
+        }
+      },
+      "jakob_hanika_sigmoid": {
+        "delta_e_ab": {
+          "count": 184,
+          "p50": [
+            5.54286
+          ],
+          "p95": [
+            20.90355
+          ],
+          "max": [
+            39.79813
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 4
+        }
+      },
+      "measured_prior_linear": {
+        "delta_e_ab": {
+          "count": 140,
+          "p50": [
+            2.54801
+          ],
+          "p95": [
+            16.40183
+          ],
+          "max": [
+            30.31957
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 1
+        }
+      },
+      "measured_prior_nonnegative": {
+        "delta_e_ab": {
+          "count": 181,
+          "p50": [
+            3.27616
+          ],
+          "p95": [
+            20.12238
+          ],
+          "max": [
+            36.11442
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 1,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 6
+        }
+      },
+      "measured_prior_local": {
+        "delta_e_ab": {
+          "count": 182,
+          "p50": [
+            3.45013
+          ],
+          "p95": [
+            13.43682
+          ],
+          "max": [
+            29.35765
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 1,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 3
+        }
+      }
+    },
+    "gutierrez_natural": {
+      "truth_printable": 299,
+      "truth_not_printable": {
+        "dye_basis_cannot_reach_density": 0,
+        "paper_exposure_above_curve_end": 0,
+        "paper_dye_basis_cannot_reach_density": 1
+      },
+      "mallett_yuksel_rec709": {
+        "delta_e_ab": {
+          "count": 295,
+          "p50": [
+            4.10887
+          ],
+          "p95": [
+            16.16492
+          ],
+          "max": [
+            24.33297
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 1
+        }
+      },
+      "jakob_hanika_sigmoid": {
+        "delta_e_ab": {
+          "count": 299,
+          "p50": [
+            4.01311
+          ],
+          "p95": [
+            17.25995
+          ],
+          "max": [
+            30.40087
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 1
+        }
+      },
+      "measured_prior_linear": {
+        "delta_e_ab": {
+          "count": 285,
+          "p50": [
+            3.66286
+          ],
+          "p95": [
+            13.26813
+          ],
+          "max": [
+            24.43468
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "measured_prior_nonnegative": {
+        "delta_e_ab": {
+          "count": 299,
+          "p50": [
+            3.95845
+          ],
+          "p95": [
+            13.24441
+          ],
+          "max": [
+            24.43468
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "measured_prior_local": {
+        "delta_e_ab": {
+          "count": 299,
+          "p50": [
+            3.97211
+          ],
+          "p95": [
+            12.34123
+          ],
+          "max": [
+            15.95867
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 1
+        }
+      }
+    },
+    "issa_skin": {
+      "truth_printable": 300,
+      "truth_not_printable": {
+        "dye_basis_cannot_reach_density": 0,
+        "paper_exposure_above_curve_end": 0,
+        "paper_dye_basis_cannot_reach_density": 0
+      },
+      "mallett_yuksel_rec709": {
+        "delta_e_ab": {
+          "count": 300,
+          "p50": [
+            5.64119
+          ],
+          "p95": [
+            7.13709
+          ],
+          "max": [
+            8.02451
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "jakob_hanika_sigmoid": {
+        "delta_e_ab": {
+          "count": 300,
+          "p50": [
+            4.35669
+          ],
+          "p95": [
+            7.41554
+          ],
+          "max": [
+            9.63079
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "measured_prior_linear": {
+        "delta_e_ab": {
+          "count": 300,
+          "p50": [
+            7.2592
+          ],
+          "p95": [
+            9.07053
+          ],
+          "max": [
+            10.98953
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "measured_prior_nonnegative": {
+        "delta_e_ab": {
+          "count": 300,
+          "p50": [
+            7.2592
+          ],
+          "p95": [
+            9.07053
+          ],
+          "max": [
+            10.98953
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "measured_prior_local": {
+        "delta_e_ab": {
+          "count": 300,
+          "p50": [
+            6.4928
+          ],
+          "p95": [
+            8.79785
+          ],
+          "max": [
+            10.87452
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 0,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      }
+    },
+    "usgs_splib07": {
+      "truth_printable": 298,
+      "truth_not_printable": {
+        "dye_basis_cannot_reach_density": 2,
+        "paper_exposure_above_curve_end": 0,
+        "paper_dye_basis_cannot_reach_density": 0
+      },
+      "mallett_yuksel_rec709": {
+        "delta_e_ab": {
+          "count": 297,
+          "p50": [
+            1.15738
+          ],
+          "p95": [
+            6.10008
+          ],
+          "max": [
+            20.02854
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 2,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "jakob_hanika_sigmoid": {
+        "delta_e_ab": {
+          "count": 298,
+          "p50": [
+            0.36283
+          ],
+          "p95": [
+            3.87184
+          ],
+          "max": [
+            18.07438
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 2,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "measured_prior_linear": {
+        "delta_e_ab": {
+          "count": 295,
+          "p50": [
+            0.95252
+          ],
+          "p95": [
+            4.9823
+          ],
+          "max": [
+            18.50889
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 2,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "measured_prior_nonnegative": {
+        "delta_e_ab": {
+          "count": 298,
+          "p50": [
+            0.96111
+          ],
+          "p95": [
+            5.17873
+          ],
+          "max": [
+            18.50889
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 2,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      },
+      "measured_prior_local": {
+        "delta_e_ab": {
+          "count": 298,
+          "p50": [
+            0.61769
+          ],
+          "p95": [
+            6.38384
+          ],
+          "max": [
+            16.19088
+          ]
+        },
+        "not_printable": {
+          "dye_basis_cannot_reach_density": 2,
+          "paper_exposure_above_curve_end": 0,
+          "paper_dye_basis_cannot_reach_density": 0
+        }
+      }
+    }
+  }
+}
