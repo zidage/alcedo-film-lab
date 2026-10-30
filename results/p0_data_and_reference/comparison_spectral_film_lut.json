@@ -1,0 +1,332 @@
+{
+ "reference": {
+  "repository": "https://github.com/JanLohse/spectral_film_lut",
+  "commit": "bcbcfc6861f49cc706dc5d00ea048e4853060aab",
+  "license": "MIT",
+  "files": {
+   "src/spectral_film_lut/negative_film/kodak_portra_400.py": "d106bac4d95834be6e696b89b40e9341792341a45172e61ffde273d3d763c682",
+   "src/spectral_film_lut/print_film/kodak_endura_premier.py": "ebb7eb73ec42da0c6eb8611d5eee36721e37e34870e324c3d74047ab5a7c26e6",
+   "src/spectral_film_lut/densiometry.py": "c04ea67f57bfef6852ac50d0306291f98b59c1509ff3a4dbd98ea2bc9564ba75",
+   "LICENSE": "3cdc90b3e7727be6e5930102fadeaf35cf3d3bd7c492b90d6d16fb9ad8c3a1bd"
+  }
+ },
+ "rule": "their value minus our value interpolated at their wavelength or log H, inside our domain",
+ "portra_400": {
+  "log_sensitivity_yellow_forming_layer": {
+   "points": 38,
+   "points_outside_our_domain": 1,
+   "their_x_range": [
+    380.3471,
+    519.7206
+   ],
+   "max_abs_difference": 0.020105942000000043,
+   "median_abs_difference": 0.004914531000000277,
+   "mean_difference": 0.0016077176052630908
+  },
+  "log_sensitivity_magenta_forming_layer": {
+   "points": 41,
+   "points_outside_our_domain": 1,
+   "their_x_range": [
+    390.6853,
+    599.7455
+   ],
+   "max_abs_difference": 0.0413997120000007,
+   "median_abs_difference": 0.004781820000000048,
+   "mean_difference": -0.000805390951219356
+  },
+  "log_sensitivity_cyan_forming_layer": {
+   "points": 43,
+   "points_outside_our_domain": 2,
+   "their_x_range": [
+    492.5351,
+    679.7704
+   ],
+   "max_abs_difference": 0.02960974000000105,
+   "median_abs_difference": 0.004612715000000156,
+   "mean_difference": -0.0003232631395346577
+  },
+  "characteristic_red": {
+   "points": 30,
+   "points_outside_our_domain": 1,
+   "their_x_range": [
+    -3.3858,
+    0.5565
+   ],
+   "max_abs_difference": 0.003489199999999998,
+   "median_abs_difference": 0.002354999999999996,
+   "mean_difference": -0.002260110000000016
+  },
+  "characteristic_green": {
+   "points": 30,
+   "points_outside_our_domain": 1,
+   "their_x_range": [
+    -3.3858,
+    0.5565
+   ],
+   "max_abs_difference": 0.003358799999999995,
+   "median_abs_difference": 0.0014303499999999136,
+   "mean_difference": -0.0014225799999999919
+  },
+  "characteristic_blue": {
+   "points": 30,
+   "points_outside_our_domain": 1,
+   "their_x_range": [
+    -3.3775,
+    0.5607
+   ],
+   "max_abs_difference": 0.0025223000000000884,
+   "median_abs_difference": 0.0010059000000000595,
+   "mean_difference": -0.0008677633333333786
+  },
+  "midscale_neutral": {
+   "points": 48,
+   "points_outside_our_domain": 0,
+   "their_x_range": [
+    404.6706,
+    697.9114
+   ],
+   "max_abs_difference": 0.008023538000000219,
+   "median_abs_difference": 0.0005940960000001549,
+   "mean_difference": 0.001004166729166633
+  },
+  "minimum_density": {
+   "points": 38,
+   "points_outside_our_domain": 0,
+   "their_x_range": [
+    405.4193,
+    694.6671
+   ],
+   "max_abs_difference": 0.003582391000000018,
+   "median_abs_difference": 0.0011486089999999949,
+   "mean_difference": -0.000638233499999971
+  }
+ },
+ "endura_premier": {
+  "log_sensitivity_yellow_forming_layer": {
+   "points": 24,
+   "points_outside_our_domain": 2,
+   "their_x_range": [
+    380.4116,
+    510.1136
+   ],
+   "max_abs_difference": 0.01421967999999807,
+   "median_abs_difference": 0.002931272000000318,
+   "mean_difference": -1.69616666685866e-06
+  },
+  "log_sensitivity_magenta_forming_layer": {
+   "points": 28,
+   "points_outside_our_domain": 1,
+   "their_x_range": [
+    420.511,
+    584.9894
+   ],
+   "max_abs_difference": 0.028761642000003307,
+   "median_abs_difference": 0.004400918499999823,
+   "mean_difference": 0.0014870559642855344
+  },
+  "log_sensitivity_cyan_forming_layer": {
+   "points": 25,
+   "points_outside_our_domain": 2,
+   "their_x_range": [
+    529.6309,
+    740.4187
+   ],
+   "max_abs_difference": 0.016516968000000853,
+   "median_abs_difference": 0.006844253999999772,
+   "mean_difference": -4.586684000027402e-05
+  },
+  "characteristic_red": {
+   "points": 50,
+   "points_outside_our_domain": 0,
+   "their_x_range": [
+    -2.9446,
+    -0.1624
+   ],
+   "max_abs_difference": 0.03704949999999996,
+   "median_abs_difference": 0.010770800000000004,
+   "mean_difference": 0.0027554339999999833
+  },
+  "characteristic_green": {
+   "points": 48,
+   "points_outside_our_domain": 0,
+   "their_x_range": [
+    -2.9446,
+    -0.1804
+   ],
+   "max_abs_difference": 0.056843800000000444,
+   "median_abs_difference": 0.01306609999999999,
+   "mean_difference": -0.02169216250000003
+  },
+  "characteristic_blue": {
+   "points": 48,
+   "points_outside_our_domain": 0,
+   "their_x_range": [
+    -2.9486,
+    -0.1664
+   ],
+   "max_abs_difference": 0.045045000000000224,
+   "median_abs_difference": 0.01397304999999998,
+   "mean_difference": -0.005282622916666744
+  },
+  "yellow_dye": {
+   "points": 17,
+   "points_outside_our_domain": 0,
+   "their_x_range": [
+    400.2904,
+    699.7096
+   ],
+   "max_abs_difference": 0.005052093999999993,
+   "median_abs_difference": 0.003039192000000024,
+   "mean_difference": 0.003078213176470563
+  },
+  "magenta_dye": {
+   "points": 21,
+   "points_outside_our_domain": 0,
+   "their_x_range": [
+    400.2904,
+    699.7096
+   ],
+   "max_abs_difference": 0.004915903999999971,
+   "median_abs_difference": 0.003217659999999567,
+   "mean_difference": 0.002831157285714366
+  },
+  "cyan_dye": {
+   "points": 19,
+   "points_outside_our_domain": 0,
+   "their_x_range": [
+    400.0,
+    700.0
+   ],
+   "max_abs_difference": 0.005853594000000073,
+   "median_abs_difference": 0.0024753599999999265,
+   "mean_difference": 0.0023846393157894844
+  }
+ },
+ "status_tables": {
+  "status_a_red": {
+   "common_10nm_points": 15,
+   "max_abs_log_difference": 0.259,
+   "wavelengths_with_difference_above_0_01": [
+    710,
+    720,
+    730,
+    740
+   ]
+  },
+  "status_a_green": {
+   "common_10nm_points": 10,
+   "max_abs_log_difference": 0.047940008672037404,
+   "wavelengths_with_difference_above_0_01": [
+    500,
+    590
+   ]
+  },
+  "status_a_blue": {
+   "common_10nm_points": 8,
+   "max_abs_log_difference": 0.0913729087095585,
+   "wavelengths_with_difference_above_0_01": [
+    480,
+    490
+   ]
+  },
+  "status_m_red": {
+   "common_10nm_points": 14,
+   "max_abs_log_difference": 0.05400000000000005,
+   "wavelengths_with_difference_above_0_01": [
+    730,
+    740,
+    750
+   ]
+  },
+  "status_m_green": {
+   "common_10nm_points": 15,
+   "max_abs_log_difference": 0.1519999999999999,
+   "wavelengths_with_difference_above_0_01": [
+    470,
+    610
+   ]
+  },
+  "status_m_blue": {
+   "common_10nm_points": 11,
+   "max_abs_log_difference": 0.01094335230683674,
+   "wavelengths_with_difference_above_0_01": [
+    410
+   ]
+  }
+ },
+ "status_table_effect_on_density": {
+  "status_m_portra_dmin": {
+   "colormath": [
+    0.19516232239848538,
+    0.6210636098438664,
+    0.7981411745776044
+   ],
+   "spectral_film_lut": [
+    0.19533753970410583,
+    0.6221136825466143,
+    0.7997508541806158
+   ],
+   "max_abs_difference": 0.0016096796030113936
+  },
+  "status_m_portra_midscale_neutral": {
+   "colormath": [
+    0.9839004814549306,
+    1.5134908516515222,
+    1.8193925854663184
+   ],
+   "spectral_film_lut": [
+    0.9921471934800463,
+    1.5203553128729907,
+    1.8268245026779477
+   ],
+   "max_abs_difference": 0.008246712025115732
+  },
+  "status_a_endura_prints": {
+   "colormath": [
+    [
+     0.34713341022788907,
+     0.3771335107056827,
+     0.37260913954376956
+    ],
+    [
+     0.7390236893564328,
+     0.7654122420727272,
+     0.7791640268615729
+    ],
+    [
+     1.5222418036353393,
+     1.582217686476523,
+     1.6046080031865582
+    ],
+    [
+     2.3952910860625485,
+     2.5395876040413348,
+     2.52014947876067
+    ]
+   ],
+   "spectral_film_lut": [
+    [
+     0.34780486399045113,
+     0.37828753106149415,
+     0.37408222189972185
+    ],
+    [
+     0.7408455721008902,
+     0.7679374346992549,
+     0.7826142361892439
+    ],
+    [
+     1.5261876803867902,
+     1.588311728333817,
+     1.6124936525971714
+    ],
+    [
+     2.401208139794916,
+     2.5512440486080696,
+     2.533651164849951
+    ]
+   ],
+   "max_abs_difference": 0.013501686089280707
+  }
+ }
+}

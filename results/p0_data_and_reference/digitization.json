@@ -1,0 +1,471 @@
+{
+ "method": "Step: P0 (data and reference). The charts of both data sheets are vector drawings, not raster images. Each curve is one stroked PDF path made of line and cubic Bezier segments. The script maps the path from PDF points to chart units with the axis frame, and checks the map with the tick marks and grid lines: each tick must map to its labeled value within TICK_TOLERANCE chart units. The Bezier segments are evaluated at BEZIER_SAMPLES points each; the uniform grid is a linear interpolation of that dense polyline. No smoothing and no extrapolation is applied.",
+ "bezier_samples_per_segment": 64,
+ "charts": {
+  "portra400_characteristic": {
+   "pdf": "e4050_portra_400.pdf",
+   "page": 4,
+   "title": "Characteristic Curves",
+   "frame_pt": [
+    81.163,
+    102.853,
+    265.626,
+    287.368
+   ],
+   "x_range": [
+    -4.0,
+    1.0
+   ],
+   "y_range": [
+    0.0,
+    4.0
+   ],
+   "points_per_unit": {
+    "x": 36.892601013183594,
+    "y": 46.128746032714844
+   },
+   "tick_check": {
+    "x_ticks": 4,
+    "y_ticks": 3,
+    "x_max_residual": 0.00046632766611320875,
+    "y_max_residual": 0.0006607721527631671,
+    "x_tolerance": 0.005,
+    "y_tolerance": 0.005,
+    "rule": "each tick or grid line position, mapped with the frame, must equal a multiple of the tick step within the tolerance"
+   },
+   "label_rule": "Labels B, G, R from top to bottom on the chart: order by mean density, highest first.",
+   "curves": {
+    "blue": {
+     "segments": 37,
+     "line_segments": 37,
+     "bezier_segments": 0,
+     "stroke_width_pt": 0.96,
+     "x_min": -3.4402400370420385,
+     "x_max": 0.5599930266997575,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 4.576822854063245e-05,
+     "grid_points": 400,
+     "y_min": 0.8665814792036662,
+     "y_max": 3.0432823768241914,
+     "x_at_y_max": 0.55
+    },
+    "green": {
+     "segments": 38,
+     "line_segments": 38,
+     "bezier_segments": 0,
+     "stroke_width_pt": 0.96,
+     "x_min": -3.4402400370420385,
+     "x_max": 0.5599930266997575,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 5.563966443811186e-05,
+     "grid_points": 400,
+     "y_min": 0.6460433911797073,
+     "y_max": 2.45456342707812,
+     "x_at_y_max": 0.55
+    },
+    "red": {
+     "segments": 39,
+     "line_segments": 39,
+     "bezier_segments": 0,
+     "stroke_width_pt": 0.96,
+     "x_min": -3.4402400370420385,
+     "x_max": 0.5599930266997575,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 5.869227935423327e-05,
+     "grid_points": 400,
+     "y_min": 0.2192625117748568,
+     "y_max": 2.009025157148017,
+     "x_at_y_max": 0.55
+    }
+   }
+  },
+  "portra400_spectral_sensitivity": {
+   "pdf": "e4050_portra_400.pdf",
+   "page": 4,
+   "title": "Spectral-Sensitivity Curves",
+   "frame_pt": [
+    76.214,
+    343.059,
+    276.727,
+    494.555
+   ],
+   "x_range": [
+    250.0,
+    750.0
+   ],
+   "y_range": [
+    0.0,
+    4.0
+   ],
+   "points_per_unit": {
+    "x": 0.4010259857177734,
+    "y": 37.874000549316406
+   },
+   "tick_check": {
+    "x_ticks": 9,
+    "y_ticks": 3,
+    "x_max_residual": 0.0825180651785331,
+    "y_max_residual": 0.000686709153360221,
+    "x_tolerance": 0.5,
+    "y_tolerance": 0.005,
+    "rule": "each tick or grid line position, mapped with the frame, must equal a multiple of the tick step within the tolerance"
+   },
+   "label_rule": "Order by the wavelength of the curve maximum: yellow (shortest), magenta, cyan (longest).",
+   "curves": {
+    "yellow_forming_layer": {
+     "segments": 14,
+     "line_segments": 0,
+     "bezier_segments": 14,
+     "stroke_width_pt": 0.96,
+     "x_min": 379.9566781204171,
+     "x_max": 519.9201712648135,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0010626918531428942,
+     "grid_points": 140,
+     "y_min": 0.32493779792961147,
+     "y_max": 2.6008972651172653,
+     "x_at_y_max": 406.0
+    },
+    "cyan_forming_layer": {
+     "segments": 19,
+     "line_segments": 0,
+     "bezier_segments": 19,
+     "stroke_width_pt": 0.96,
+     "x_min": 489.9869543904777,
+     "x_max": 679.9147971707548,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0026711766471994025,
+     "grid_points": 190,
+     "y_min": 0.3830332319832927,
+     "y_max": 2.60935411188705,
+     "x_at_y_max": 651.0
+    },
+    "magenta_forming_layer": {
+     "segments": 21,
+     "line_segments": 0,
+     "bezier_segments": 21,
+     "stroke_width_pt": 0.96,
+     "x_min": 389.9659853786136,
+     "x_max": 599.9149919835669,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0015143682058651464,
+     "grid_points": 210,
+     "y_min": 0.7507364839604225,
+     "y_max": 2.534011545588349,
+     "x_at_y_max": 550.0
+    }
+   }
+  },
+  "portra400_spectral_dye_density": {
+   "pdf": "e4050_portra_400.pdf",
+   "page": 4,
+   "title": "Spectral-Dye-Density Curves",
+   "frame_pt": [
+    357.123,
+    103.714,
+    541.74,
+    288.06
+   ],
+   "x_range": [
+    400.0,
+    700.0
+   ],
+   "y_range": [
+    0.0,
+    2.5
+   ],
+   "points_per_unit": {
+    "x": 0.6153899129231771,
+    "y": 73.73839721679687
+   },
+   "tick_check": {
+    "x_ticks": 5,
+    "y_ticks": 4,
+    "x_max_residual": 0.0722923718524271,
+    "y_max_residual": 0.0004963257676182664,
+    "x_tolerance": 0.5,
+    "y_tolerance": 0.005,
+    "rule": "each tick or grid line position, mapped with the frame, must equal a multiple of the tick step within the tolerance"
+   },
+   "label_rule": "Midscale neutral is the upper curve: order by mean density, highest first.",
+   "curves": {
+    "midscale_neutral": {
+     "segments": 30,
+     "line_segments": 0,
+     "bezier_segments": 30,
+     "stroke_width_pt": 0.96,
+     "x_min": 399.9723284242459,
+     "x_max": 700.0455242052728,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0007007538353491771,
+     "grid_points": 301,
+     "y_min": 0.7366128060315927,
+     "y_max": 1.8896650498666987,
+     "x_at_y_max": 448.0
+    },
+    "minimum_density": {
+     "segments": 30,
+     "line_segments": 0,
+     "bezier_segments": 30,
+     "stroke_width_pt": 0.96,
+     "x_min": 399.9723284242459,
+     "x_max": 700.0455242052728,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0014314484259243532,
+     "grid_points": 301,
+     "y_min": 0.18842960472592,
+     "y_max": 0.819571945812907,
+     "x_at_y_max": 444.0
+    }
+   }
+  },
+  "endura_premier_characteristic": {
+   "pdf": "e4070_endura_premier.pdf",
+   "page": 4,
+   "title": "Characteristic Curves",
+   "frame_pt": [
+    364.6795,
+    72.5935,
+    549.198,
+    257.1565
+   ],
+   "x_range": [
+    -3.0,
+    0.0
+   ],
+   "y_range": [
+    0.0,
+    3.0
+   ],
+   "points_per_unit": {
+    "x": 61.50616963704427,
+    "y": 61.52099863688151
+   },
+   "tick_check": {
+    "x_ticks": 2,
+    "y_ticks": 2,
+    "x_max_residual": 0.00042551162466653025,
+    "y_max_residual": 0.0007395339456457428,
+    "x_tolerance": 0.005,
+    "y_tolerance": 0.005,
+    "rule": "each tick or grid line position, mapped with the frame, must equal a multiple of the tick step within the tolerance"
+   },
+   "label_rule": "Labels R, G, B from top to bottom at the shoulder: order by maximum density, highest first.",
+   "curves": {
+    "red": {
+     "segments": 19,
+     "line_segments": 0,
+     "bezier_segments": 19,
+     "stroke_width_pt": 0.96,
+     "x_min": -3.0000568115803006,
+     "x_max": -0.14944869198985655,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0003319128476593214,
+     "grid_points": 286,
+     "y_min": 0.10402592588555132,
+     "y_max": 2.7572006746136246,
+     "x_at_y_max": -0.38
+    },
+    "green": {
+     "segments": 19,
+     "line_segments": 0,
+     "bezier_segments": 19,
+     "stroke_width_pt": 0.96,
+     "x_min": -3.0000568115803006,
+     "x_max": -0.14944869198985655,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.00025707504373961854,
+     "grid_points": 286,
+     "y_min": 0.10402813199012666,
+     "y_max": 2.5252102764451405,
+     "x_at_y_max": -0.32
+    },
+    "blue": {
+     "segments": 19,
+     "line_segments": 0,
+     "bezier_segments": 19,
+     "stroke_width_pt": 0.96,
+     "x_min": -3.0000568115803006,
+     "x_max": -0.14944869198985655,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0003097044628157519,
+     "grid_points": 286,
+     "y_min": 0.07798946376936895,
+     "y_max": 2.4431551722201377,
+     "x_at_y_max": -0.31
+    }
+   }
+  },
+  "endura_premier_spectral_sensitivity": {
+   "pdf": "e4070_endura_premier.pdf",
+   "page": 4,
+   "title": "Spectral-Sensitivity Curves",
+   "frame_pt": [
+    350.586,
+    315.738,
+    551.084,
+    467.333
+   ],
+   "x_range": [
+    250.0,
+    750.0
+   ],
+   "y_range": [
+    -2.0,
+    2.0
+   ],
+   "points_per_unit": {
+    "x": 0.4009959716796875,
+    "y": 37.89875030517578
+   },
+   "tick_check": {
+    "x_ticks": 9,
+    "y_ticks": 3,
+    "x_max_residual": 0.049897122003699224,
+    "y_max_residual": 0.0007192191590685848,
+    "x_tolerance": 0.5,
+    "y_tolerance": 0.005,
+    "rule": "each tick or grid line position, mapped with the frame, must equal a multiple of the tick step within the tolerance"
+   },
+   "label_rule": "Order by the wavelength of the curve maximum: yellow (shortest), magenta, cyan (longest).",
+   "curves": {
+    "yellow_forming_layer": {
+     "segments": 26,
+     "line_segments": 0,
+     "bezier_segments": 26,
+     "stroke_width_pt": 1.0,
+     "x_min": 380.00626491837494,
+     "x_max": 510.0125298367499,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0022177314553240013,
+     "grid_points": 130,
+     "y_min": -1.5549558628320006,
+     "y_max": 1.642224607199373,
+     "x_at_y_max": 473.0
+    },
+    "magenta_forming_layer": {
+     "segments": 33,
+     "line_segments": 0,
+     "bezier_segments": 33,
+     "stroke_width_pt": 1.0,
+     "x_min": 420.05904792114603,
+     "x_max": 585.0283062893632,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.004506596666952412,
+     "grid_points": 165,
+     "y_min": -1.7039759652727138,
+     "y_max": 1.1393164588883964,
+     "x_at_y_max": 550.0
+    },
+    "cyan_forming_layer": {
+     "segments": 42,
+     "line_segments": 0,
+     "bezier_segments": 42,
+     "stroke_width_pt": 0.96,
+     "x_min": 530.0377417191509,
+     "x_max": 740.0423414721462,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0007717943478429135,
+     "grid_points": 210,
+     "y_min": -1.6810659923713687,
+     "y_max": -0.028528521255589148,
+     "x_at_y_max": 695.0
+    }
+   }
+  },
+  "endura_premier_spectral_dye_density": {
+   "pdf": "e4070_endura_premier.pdf",
+   "page": 5,
+   "title": "Spectral-Dye-Density Curves",
+   "frame_pt": [
+    88.833,
+    50.57,
+    273.263,
+    234.914
+   ],
+   "x_range": [
+    400.0,
+    700.0
+   ],
+   "y_range": [
+    0.0,
+    2.5
+   ],
+   "points_per_unit": {
+    "x": 0.6147666676839193,
+    "y": 73.73759765625
+   },
+   "tick_check": {
+    "x_ticks": 5,
+    "y_ticks": 4,
+    "x_max_residual": 0.09054887915164045,
+    "y_max_residual": 0.00036891135029326616,
+    "x_tolerance": 0.5,
+    "y_tolerance": 0.005,
+    "rule": "each tick or grid line position, mapped with the frame, must equal a multiple of the tick step within the tolerance"
+   },
+   "label_rule": "Order by the wavelength of the curve maximum: yellow (shortest), magenta, cyan (longest).",
+   "curves": {
+    "cyan_dye": {
+     "segments": 30,
+     "line_segments": 0,
+     "bezier_segments": 30,
+     "stroke_width_pt": 0.96,
+     "x_min": 400.0,
+     "x_max": 700.0,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.00012349967224345448,
+     "grid_points": 301,
+     "y_min": 0.028351500428654825,
+     "y_max": 1.0006610261988265,
+     "x_at_y_max": 649.0
+    },
+    "magenta_dye": {
+     "segments": 30,
+     "line_segments": 0,
+     "bezier_segments": 30,
+     "stroke_width_pt": 0.96,
+     "x_min": 400.0,
+     "x_max": 700.0,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.0001896200556058547,
+     "grid_points": 301,
+     "y_min": 0.007933835536431576,
+     "y_max": 1.0005166911144956,
+     "x_at_y_max": 549.0
+    },
+    "yellow_dye": {
+     "segments": 30,
+     "line_segments": 0,
+     "bezier_segments": 30,
+     "stroke_width_pt": 0.96,
+     "x_min": 400.0,
+     "x_max": 700.0,
+     "backward_steps": 0,
+     "largest_backward_step": 0.0,
+     "grid_interpolation_max_error": 0.00012298514970054963,
+     "grid_points": 301,
+     "y_min": 0.004394442656537845,
+     "y_max": 1.0001744130772432,
+     "x_at_y_max": 443.0
+    }
+   }
+  }
+ }
+}

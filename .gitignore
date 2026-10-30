@@ -1,0 +1,36 @@
+# Logs, evidence, source downloads (manufacturer PDFs, CIE tables), renders of the source
+# charts, virtual environments, temporary scripts, and experiment output.
+build/
+
+# Images. Plots of the results and overlays on renders of manufacturer charts stay on the local
+# machine; each report states the command that makes them again. Photos must not be committed.
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.exr
+*.dng
+*.arw
+*.nef
+*.cr3
+
+# Manufacturer documents and binary arrays. The script READMEs state the commands that make
+# them again.
+*.pdf
+results/**/*.npz
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Agent tool local state
+.uv-cache/
+.uv-python/
+.scratch/
+skills-lock.json
+.claude/
+.codex/

@@ -1,0 +1,230 @@
+{
+ "reference_step_nm": 0.1,
+ "range_nm": [
+  360.0,
+  840.0
+ ],
+ "rules": {
+  "point": "fixed functions sampled at the nodes, support-restricted trapezoid weights",
+  "projected": "fixed functions projected on the hat basis of the nodes (weights integrated on the 0.1 nm grid)"
+ },
+ "variable_functions": "scene spectra, dye spectra, transmission and reflectance sampled at the working nodes",
+ "error": "max absolute difference against the 0.1 nm reference (log10 exposure, density, or Delta E*ab)",
+ "printer_balance": "fixed to the 0.1 nm reference value for every step and rule",
+ "reference_against_0_05nm": {
+  "log_layer_exposure_broadband": 1.136705e-06,
+  "negative_status_m": 2.75876e-06,
+  "log_print_exposure": 5.093315e-06,
+  "ramp_print_status_a": 1.768778e-05,
+  "log_layer_exposure_fwhm30": 3.067449e-06,
+  "log_layer_exposure_fwhm10": 4.565203e-06,
+  "print_lab_d50_delta_e": 0.0001095529,
+  "ramp_print_lab_d50_delta_e": 0.0009135493
+ },
+ "tests": {
+  "log_layer_exposure_broadband": "log10 Q of the negative layers for D55, D65, A",
+  "log_layer_exposure_fwhm30": "log10 Q for Gaussian sources, FWHM 30 nm, centers 383-703 nm (10 nm apart)",
+  "log_layer_exposure_fwhm10": "log10 Q for Gaussian sources, FWHM 10 nm, centers 383-703 nm",
+  "negative_status_m": "Status M of 125 negative dye combinations (0-2 per dye)",
+  "log_print_exposure": "log10 paper layer exposure through the same 125 negatives, lamp A",
+  "print_lab_d50_delta_e": "Lab of 125 print dye combinations (0-2.4 per dye) under D50",
+  "ramp_print_status_a": "end-to-end neutral ramp, print Status A",
+  "ramp_print_lab_d50_delta_e": "end-to-end neutral ramp, print Lab under D50"
+ },
+ "by_rule": {
+  "point": {
+   "errors_by_step_nm": {
+    "1.0": {
+     "log_layer_exposure_broadband": 0.0001499534,
+     "negative_status_m": 0.0003641442,
+     "log_print_exposure": 0.0006711174,
+     "ramp_print_status_a": 0.002331086,
+     "log_layer_exposure_fwhm30": 0.0004046711,
+     "log_layer_exposure_fwhm10": 0.0006028069,
+     "print_lab_d50_delta_e": 0.01445978,
+     "ramp_print_lab_d50_delta_e": 0.1203024,
+     "band_count": 481
+    },
+    "2.0": {
+     "log_layer_exposure_broadband": 0.0001274837,
+     "negative_status_m": 0.001443944,
+     "log_print_exposure": 0.001716901,
+     "ramp_print_status_a": 0.002344756,
+     "log_layer_exposure_fwhm30": 0.01009574,
+     "log_layer_exposure_fwhm10": 0.01020394,
+     "print_lab_d50_delta_e": 0.01483364,
+     "ramp_print_lab_d50_delta_e": 0.1755285,
+     "band_count": 241
+    },
+    "5.0": {
+     "log_layer_exposure_broadband": 0.001140118,
+     "negative_status_m": 0.009028689,
+     "log_print_exposure": 0.007329393,
+     "ramp_print_status_a": 0.01898444,
+     "log_layer_exposure_fwhm30": 0.05327225,
+     "log_layer_exposure_fwhm10": 0.08525225,
+     "print_lab_d50_delta_e": 0.01834781,
+     "ramp_print_lab_d50_delta_e": 1.291206,
+     "band_count": 97
+    },
+    "10.0": {
+     "log_layer_exposure_broadband": 0.005355161,
+     "negative_status_m": 0.03628985,
+     "log_print_exposure": 0.02126441,
+     "ramp_print_status_a": 0.05294971,
+     "log_layer_exposure_fwhm30": 0.1750319,
+     "log_layer_exposure_fwhm10": 0.2928345,
+     "print_lab_d50_delta_e": 0.0879865,
+     "ramp_print_lab_d50_delta_e": 4.097354,
+     "band_count": 49
+    },
+    "20.0": {
+     "log_layer_exposure_broadband": 0.08135585,
+     "negative_status_m": 0.03318547,
+     "log_print_exposure": 0.1803835,
+     "ramp_print_status_a": 0.4783947,
+     "log_layer_exposure_fwhm30": 0.4278556,
+     "log_layer_exposure_fwhm10": 1.523719,
+     "print_lab_d50_delta_e": 0.4947323,
+     "ramp_print_lab_d50_delta_e": 32.26482,
+     "band_count": 25
+    }
+   },
+   "largest_step_meeting_tolerance": {
+    "log_layer_exposure_broadband": {
+     "tolerance": 0.001,
+     "largest_step_nm": 2.0
+    },
+    "negative_status_m": {
+     "tolerance": 0.001,
+     "largest_step_nm": 1.0
+    },
+    "log_print_exposure": {
+     "tolerance": 0.001,
+     "largest_step_nm": 1.0
+    },
+    "ramp_print_status_a": {
+     "tolerance": 0.001,
+     "largest_step_nm": null
+    },
+    "log_layer_exposure_fwhm30": {
+     "tolerance": 0.001,
+     "largest_step_nm": 1.0
+    },
+    "log_layer_exposure_fwhm10": {
+     "tolerance": 0.001,
+     "largest_step_nm": 1.0
+    },
+    "print_lab_d50_delta_e": {
+     "tolerance": 0.1,
+     "largest_step_nm": 10.0
+    },
+    "ramp_print_lab_d50_delta_e": {
+     "tolerance": 0.1,
+     "largest_step_nm": null
+    }
+   }
+  },
+  "projected": {
+   "errors_by_step_nm": {
+    "1.0": {
+     "log_layer_exposure_broadband": 0.0,
+     "negative_status_m": 0.0003480388,
+     "log_print_exposure": 0.0002505062,
+     "ramp_print_status_a": 3.659986e-05,
+     "log_layer_exposure_fwhm30": 0.0009064193,
+     "log_layer_exposure_fwhm10": 0.001334005,
+     "print_lab_d50_delta_e": 0.006806465,
+     "ramp_print_lab_d50_delta_e": 0.002615921,
+     "band_count": 481
+    },
+    "2.0": {
+     "log_layer_exposure_broadband": 1.297727e-05,
+     "negative_status_m": 0.001426369,
+     "log_print_exposure": 0.00102579,
+     "ramp_print_status_a": 0.0001863006,
+     "log_layer_exposure_fwhm30": 0.003644104,
+     "log_layer_exposure_fwhm10": 0.005355228,
+     "print_lab_d50_delta_e": 0.037633,
+     "ramp_print_lab_d50_delta_e": 0.01128117,
+     "band_count": 241
+    },
+    "5.0": {
+     "log_layer_exposure_broadband": 0.0001037009,
+     "negative_status_m": 0.00894858,
+     "log_print_exposure": 0.006461178,
+     "ramp_print_status_a": 0.001141453,
+     "log_layer_exposure_fwhm30": 0.02242742,
+     "log_layer_exposure_fwhm10": 0.03261187,
+     "print_lab_d50_delta_e": 0.2523257,
+     "ramp_print_lab_d50_delta_e": 0.0672325,
+     "band_count": 97
+    },
+    "10.0": {
+     "log_layer_exposure_broadband": 0.0004271684,
+     "negative_status_m": 0.03561321,
+     "log_print_exposure": 0.02692318,
+     "ramp_print_status_a": 0.004564504,
+     "log_layer_exposure_fwhm30": 0.08423598,
+     "log_layer_exposure_fwhm10": 0.1536801,
+     "print_lab_d50_delta_e": 1.025267,
+     "ramp_print_lab_d50_delta_e": 0.3092383,
+     "band_count": 49
+    },
+    "20.0": {
+     "log_layer_exposure_broadband": 0.005779578,
+     "negative_status_m": 0.1333197,
+     "log_print_exposure": 0.1095995,
+     "ramp_print_status_a": 0.03023659,
+     "log_layer_exposure_fwhm30": 0.2541826,
+     "log_layer_exposure_fwhm10": 0.4891438,
+     "print_lab_d50_delta_e": 4.031918,
+     "ramp_print_lab_d50_delta_e": 2.674658,
+     "band_count": 25
+    }
+   },
+   "largest_step_meeting_tolerance": {
+    "log_layer_exposure_broadband": {
+     "tolerance": 0.001,
+     "largest_step_nm": 10.0
+    },
+    "negative_status_m": {
+     "tolerance": 0.001,
+     "largest_step_nm": 1.0
+    },
+    "log_print_exposure": {
+     "tolerance": 0.001,
+     "largest_step_nm": 1.0
+    },
+    "ramp_print_status_a": {
+     "tolerance": 0.001,
+     "largest_step_nm": 2.0
+    },
+    "log_layer_exposure_fwhm30": {
+     "tolerance": 0.001,
+     "largest_step_nm": 1.0
+    },
+    "log_layer_exposure_fwhm10": {
+     "tolerance": 0.001,
+     "largest_step_nm": null
+    },
+    "print_lab_d50_delta_e": {
+     "tolerance": 0.1,
+     "largest_step_nm": 2.0
+    },
+    "ramp_print_lab_d50_delta_e": {
+     "tolerance": 0.1,
+     "largest_step_nm": 5.0
+    }
+   }
+  }
+ },
+ "seconds": 16.98542,
+ "machine": {
+  "python": "3.13.12",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "platform": "Windows-11-10.0.22635-SP0",
+  "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel"
+ }
+}

@@ -1,0 +1,86 @@
+{
+  "description": "Source files of step P0. fetch_sources.py downloads each file to build/tmp/p0/sources/ and stops with an error when a SHA-256 hash differs from the expected value.",
+  "retrieved": "2026-10-29",
+  "sources": [
+    {
+      "file": "e4050_portra_400.pdf",
+      "url": "https://business.kodakmoments.com/sites/default/files/files/resources/e4050_portra_400.pdf",
+      "sha256": "e83ac6775d37832a4cb466892a3e1cf4c88917a6ee93384e59d6924b1cd97e3a",
+      "title": "KODAK PROFESSIONAL PORTRA 400 Film, KODAK Publication No. E-4050",
+      "edition": "Revised 2-16 (PDF created 2016-02-08)",
+      "publisher": "Kodak Alaris Inc.",
+      "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+      "use": "Page 4: characteristic curves (Status M), spectral-sensitivity curves, spectral-dye-density curves (minimum density and midscale neutral)."
+    },
+    {
+      "file": "e4070_endura_premier.pdf",
+      "url": "https://business.kodakmoments.com/sites/default/files/files/products/e4070.pdf",
+      "sha256": "94ead00f26a4bbf8ce1a991ff73add049514e38f32d6e88aa7a8a1e3e2d7982e",
+      "title": "KODAK PROFESSIONAL ENDURA Premier Paper, KODAK Publication No. E-4070",
+      "edition": "Revised 12-17 (PDF modified 2017-12-04)",
+      "publisher": "Kodak Alaris Inc.",
+      "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+      "use": "Page 4: characteristic curves (Status A), spectral-sensitivity curves. Page 5: spectral-dye-density curves (yellow, magenta, cyan)."
+    },
+    {
+      "file": "CIE_xyz_1931_2deg.csv",
+      "url": "https://files.cie.co.at/Publications-datasets/CIE_xyz_1931_2deg.csv",
+      "sha256": "fa663e3535a7e0763a745993a1f0a192eb0275ac46ad2d1befd7626841e713c1",
+      "title": "CIE 1931 colour-matching functions, 2 degree observer, 1 nm, 360-830 nm",
+      "edition": "DOI 10.25039/CIE.DS.xvudnb9b (2019)",
+      "publisher": "CIE",
+      "license": "CC BY-SA 4.0",
+      "use": "XYZ of viewed prints; luminous exposure (lux-seconds) of the camera illuminant."
+    },
+    {
+      "file": "CIE_illum_Dxx_comp.csv",
+      "url": "https://files.cie.co.at/Publications-datasets/CIE_illum_Dxx_comp.csv",
+      "sha256": "4056cf7c1afb23fb8820ff9cbc383a80005acdffe1c0a6945c6032616e08c6be",
+      "title": "Components S0, S1, S2 of the relative spectral distribution of daylight, 5 nm, 300-830 nm",
+      "edition": "CIE 015:2018 data set",
+      "publisher": "CIE",
+      "license": "CC BY-SA 4.0",
+      "use": "D50 (viewing) and D55 (assumed 'Daylight' camera exposure) by the CIE 015 daylight formula."
+    },
+    {
+      "file": "CIE_std_illum_D65.csv",
+      "url": "https://files.cie.co.at/Publications-datasets/CIE_std_illum_D65.csv",
+      "sha256": "e76f210bffff3d552ef7113025da5f325d5dfec200dd4b878b1a2f3a507032cb",
+      "title": "CIE standard illuminant D65, 1 nm, 300-830 nm",
+      "edition": "ISO/CIE 11664-2",
+      "publisher": "CIE",
+      "license": "CC BY-SA 4.0",
+      "use": "Test spectrum for the integration convergence; check of the daylight formula."
+    },
+    {
+      "file": "CIE_std_illum_A_1nm.csv",
+      "url": "https://files.cie.co.at/Publications-datasets/CIE_std_illum_A_1nm.csv",
+      "sha256": "61ef23fe146b8b665c74706717ab28cec7db6c9022993490bdc71991f43cb59b",
+      "title": "CIE standard illuminant A, 1 nm, 300-830 nm",
+      "edition": "ISO/CIE 11664-2",
+      "publisher": "CIE",
+      "license": "CC BY-SA 4.0",
+      "use": "Printer lamp (assumed); test spectrum for the integration convergence."
+    },
+    {
+      "file": "colormath_density_standards.py",
+      "url": "https://raw.githubusercontent.com/gtaylor/python-colormath/6d3261f9c8a2449bdffdf563eb541c8b6846af2d/colormath/density_standards.py",
+      "sha256": "60f4171d6d7dfbcc779b2ead494366323c3070b27a63061829a24dcf7f2b0dc3",
+      "title": "python-colormath density_standards.py: ANSI Status A, E, M, T spectral products, 10 nm, 340-830 nm",
+      "edition": "gtaylor/python-colormath commit 6d3261f9c8a2449bdffdf563eb541c8b6846af2d (2023-12-12)",
+      "publisher": "Gregory Taylor and contributors",
+      "license": "BSD-3-Clause (colormath_LICENSE.txt). The values are a secondary copy of the ANSI PH2.18 / ISO 5-3 spectral products; ISO 5-3:2009 itself was not available to this step.",
+      "use": "Status M (negative) and Status A (print) densities. The file is read as data with ast.literal_eval; it is not imported."
+    },
+    {
+      "file": "colormath_LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/gtaylor/python-colormath/6d3261f9c8a2449bdffdf563eb541c8b6846af2d/LICENSE.txt",
+      "sha256": "e651e9423fb7a8621ade20490473bfe18c1a824209cb0cbd75795ca359b0c976",
+      "title": "python-colormath license",
+      "edition": "commit 6d3261f9c8a2449bdffdf563eb541c8b6846af2d",
+      "publisher": "Gregory Taylor and contributors",
+      "license": "BSD-3-Clause",
+      "use": "Notice of the Status A and Status M tables."
+    }
+  ]
+}

@@ -1,0 +1,298 @@
+{
+ "free_fit": {
+  "dyes": {
+   "cyan": {
+    "peak_nm": 708.883,
+    "sigma_short_nm": 80.64531,
+    "sigma_long_nm": 149.9831
+   },
+   "magenta": {
+    "peak_nm": 543.1244,
+    "sigma_short_nm": 33.2175,
+    "sigma_long_nm": 25.35965
+   },
+   "yellow": {
+    "peak_nm": 449.2028,
+    "sigma_short_nm": 46.12675,
+    "sigma_long_nm": 38.32934
+   }
+  },
+  "midscale_amounts": {
+   "cyan": 1.072788,
+   "magenta": 0.8148516,
+   "yellow": 1.062018
+  },
+  "rms_residual": 0.006570652,
+  "max_abs_residual": 0.03189156,
+  "success": true
+ },
+ "fixed_cyan_peak_scan": [
+  {
+   "cyan_peak_nm": 660.0,
+   "fit_rms": 0.04378311,
+   "fit_max_abs": 0.1278396,
+   "dyes": {
+    "cyan": {
+     "peak_nm": 660.0,
+     "sigma_short_nm": 34.98306,
+     "sigma_long_nm": 150.0
+    },
+    "magenta": {
+     "peak_nm": 546.186,
+     "sigma_short_nm": 27.90975,
+     "sigma_long_nm": 34.03589
+    },
+    "yellow": {
+     "peak_nm": 449.7148,
+     "sigma_short_nm": 45.90853,
+     "sigma_long_nm": 47.41455
+    }
+   },
+   "midscale_dye_amounts_cmy": [
+    0.7406619,
+    0.6576324,
+    0.9466936
+   ],
+   "print_log_exposure_change_rgb_for_status_m_red_plus_0_5": [
+    -0.4885964,
+    0.005985017,
+    0.0001730698
+   ],
+   "ramp_midscale_printing_gamma_rgb": [
+    0.5521159,
+    0.5915366,
+    0.5963293
+   ],
+   "ramp_max_chroma_d50": 4.556943
+  },
+  {
+   "cyan_peak_nm": 680.0,
+   "fit_rms": 0.02047973,
+   "fit_max_abs": 0.05784558,
+   "dyes": {
+    "cyan": {
+     "peak_nm": 680.0,
+     "sigma_short_nm": 53.41353,
+     "sigma_long_nm": 150.0
+    },
+    "magenta": {
+     "peak_nm": 544.2171,
+     "sigma_short_nm": 27.32785,
+     "sigma_long_nm": 30.67021
+    },
+    "yellow": {
+     "peak_nm": 450.1184,
+     "sigma_short_nm": 46.31714,
+     "sigma_long_nm": 46.23342
+    }
+   },
+   "midscale_dye_amounts_cmy": [
+    0.8225207,
+    0.6356237,
+    0.9474688
+   ],
+   "print_log_exposure_change_rgb_for_status_m_red_plus_0_5": [
+    -0.5297487,
+    0.01397819,
+    0.0006201972
+   ],
+   "ramp_midscale_printing_gamma_rgb": [
+    0.6021702,
+    0.5905205,
+    0.5962423
+   ],
+   "ramp_max_chroma_d50": 3.629094
+  },
+  {
+   "cyan_peak_nm": 700.0,
+   "fit_rms": 0.007759626,
+   "fit_max_abs": 0.0313418,
+   "dyes": {
+    "cyan": {
+     "peak_nm": 700.0,
+     "sigma_short_nm": 73.21773,
+     "sigma_long_nm": 8.033842
+    },
+    "magenta": {
+     "peak_nm": 542.7948,
+     "sigma_short_nm": 33.25086,
+     "sigma_long_nm": 26.48983
+    },
+    "yellow": {
+     "peak_nm": 449.4252,
+     "sigma_short_nm": 46.31409,
+     "sigma_long_nm": 37.90439
+    }
+   },
+   "midscale_dye_amounts_cmy": [
+    0.8802817,
+    0.6595176,
+    0.9380678
+   ],
+   "print_log_exposure_change_rgb_for_status_m_red_plus_0_5": [
+    -0.3120111,
+    0.02184416,
+    0.002884493
+   ],
+   "ramp_midscale_printing_gamma_rgb": [
+    0.4000207,
+    0.5929072,
+    0.5954729
+   ],
+   "ramp_max_chroma_d50": 12.27952
+  },
+  {
+   "cyan_peak_nm": 720.0,
+   "fit_rms": 0.007495663,
+   "fit_max_abs": 0.03322271,
+   "dyes": {
+    "cyan": {
+     "peak_nm": 720.0,
+     "sigma_short_nm": 89.05181,
+     "sigma_long_nm": 149.9651
+    },
+    "magenta": {
+     "peak_nm": 543.4658,
+     "sigma_short_nm": 33.11239,
+     "sigma_long_nm": 24.346
+    },
+    "yellow": {
+     "peak_nm": 448.9614,
+     "sigma_short_nm": 45.94699,
+     "sigma_long_nm": 38.7355
+    }
+   },
+   "midscale_dye_amounts_cmy": [
+    0.9399003,
+    0.61443,
+    0.9328762
+   ],
+   "print_log_exposure_change_rgb_for_status_m_red_plus_0_5": [
+    -0.559274,
+    0.02528775,
+    0.00171725
+   ],
+   "ramp_midscale_printing_gamma_rgb": [
+    0.6340164,
+    0.5942855,
+    0.5955926
+   ],
+   "ramp_max_chroma_d50": 3.816935
+  },
+  {
+   "cyan_peak_nm": 740.0,
+   "fit_rms": 0.01020305,
+   "fit_max_abs": 0.05199441,
+   "dyes": {
+    "cyan": {
+     "peak_nm": 740.0,
+     "sigma_short_nm": 102.395,
+     "sigma_long_nm": 8.039335
+    },
+    "magenta": {
+     "peak_nm": 543.8954,
+     "sigma_short_nm": 32.92957,
+     "sigma_long_nm": 23.16675
+    },
+    "yellow": {
+     "peak_nm": 448.6099,
+     "sigma_short_nm": 45.71364,
+     "sigma_long_nm": 39.15434
+    }
+   },
+   "midscale_dye_amounts_cmy": [
+    1.012185,
+    0.5844593,
+    0.9253805
+   ],
+   "print_log_exposure_change_rgb_for_status_m_red_plus_0_5": [
+    -0.5644212,
+    0.02733752,
+    0.0002190267
+   ],
+   "ramp_midscale_printing_gamma_rgb": [
+    0.639965,
+    0.5947082,
+    0.595746
+   ],
+   "ramp_max_chroma_d50": 4.05196
+  },
+  {
+   "cyan_peak_nm": 760.0,
+   "fit_rms": 0.01235232,
+   "fit_max_abs": 0.06339649,
+   "dyes": {
+    "cyan": {
+     "peak_nm": 760.0,
+     "sigma_short_nm": 114.1488,
+     "sigma_long_nm": 8.064594
+    },
+    "magenta": {
+     "peak_nm": 544.1628,
+     "sigma_short_nm": 32.87195,
+     "sigma_long_nm": 22.43007
+    },
+    "yellow": {
+     "peak_nm": 448.3344,
+     "sigma_short_nm": 45.53041,
+     "sigma_long_nm": 39.27464
+    }
+   },
+   "midscale_dye_amounts_cmy": [
+    1.092097,
+    0.5647029,
+    0.9172234
+   ],
+   "print_log_exposure_change_rgb_for_status_m_red_plus_0_5": [
+    -0.5673878,
+    0.02868185,
+    -0.001044924
+   ],
+   "ramp_midscale_printing_gamma_rgb": [
+    0.6434147,
+    0.5948879,
+    0.5958799
+   ],
+   "ramp_max_chroma_d50": 4.230365
+  },
+  {
+   "cyan_peak_nm": 780.0,
+   "fit_rms": 0.01393931,
+   "fit_max_abs": 0.07107529,
+   "dyes": {
+    "cyan": {
+     "peak_nm": 780.0,
+     "sigma_short_nm": 124.7768,
+     "sigma_long_nm": 8.061469
+    },
+    "magenta": {
+     "peak_nm": 544.3435,
+     "sigma_short_nm": 32.86498,
+     "sigma_long_nm": 21.92747
+    },
+    "yellow": {
+     "peak_nm": 448.1278,
+     "sigma_short_nm": 45.37469,
+     "sigma_long_nm": 39.27361
+    }
+   },
+   "midscale_dye_amounts_cmy": [
+    1.179583,
+    0.5507803,
+    0.9094118
+   ],
+   "print_log_exposure_change_rgb_for_status_m_red_plus_0_5": [
+    -0.5693481,
+    0.02963808,
+    -0.002063043
+   ],
+   "ramp_midscale_printing_gamma_rgb": [
+    0.6456975,
+    0.5949587,
+    0.595992
+   ],
+   "ramp_max_chroma_d50": 4.355606
+  }
+ ],
+ "note": "The fit uses only the published 400-700 nm midscale neutral minus D-min."
+}

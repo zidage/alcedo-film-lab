@@ -1,0 +1,78 @@
+{
+ "speed_point_difference_camera_daylight_5000K": [
+  -0.1087992,
+  -0.1125186,
+  0.03996
+ ],
+ "speed_point_difference_camera_daylight_5500K": [
+  -0.0835577,
+  -0.1227221,
+  -0.01880796
+ ],
+ "speed_point_difference_camera_daylight_6500K": [
+  -0.04598606,
+  -0.1383961,
+  -0.1075134
+ ],
+ "speed_point_difference_camera_illuminant_A": [
+  -0.2846504,
+  -0.03161154,
+  0.4440112
+ ],
+ "speed_point_difference_sensitivity_held_to_360nm": [
+  -0.08862989,
+  -0.126111,
+  -0.02450062
+ ],
+ "dmin_status_m_hold_minus_linear_extrapolation": [
+  -1.225819e-05,
+  0.0,
+  0.0
+ ],
+ "midscale_status_m_hold_minus_linear_extrapolation": [
+  -5.39302e-05,
+  0.0,
+  0.0
+ ],
+ "midscale_print_log_exposure_hold_minus_linear": [
+  0.004218515,
+  0.0,
+  -0.003690181
+ ],
+ "status_m_weight_fraction_above_700nm_rgb": [
+  0.004883754,
+  0.0,
+  0.0
+ ],
+ "printing_weight_fraction_above_700nm_rgb_lamp_A": [
+  0.257644,
+  0.0,
+  0.0
+ ],
+ "status_a_neutral_chroma_paper_base_0.03": {
+  "status_a": [
+   0.3,
+   0.75,
+   1.5
+  ],
+  "chroma": [
+   0.5322918,
+   0.9864846,
+   1.114612
+  ]
+ },
+ "status_a_neutral_chroma_paper_base_0.08": {
+  "status_a": [
+   0.3,
+   0.75,
+   1.5
+  ],
+  "chroma": [
+   0.4347418,
+   0.9196193,
+   1.077025
+  ]
+ },
+ "ramp_max_chroma_printer_lamp_D55": 3.301382,
+ "ramp_max_chroma_printer_lamp_A": 3.606095
+}

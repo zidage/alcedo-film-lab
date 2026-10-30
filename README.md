@@ -8,9 +8,13 @@ principles and source measurements. The implementation must support **CUDA, Meta
 The research combines useful ideas from **Fotufilm** and **spektrafilm**, with independent code
 and data preparation where practical.
 
-**Status (2026-10-29): initial research only.** This repository contains the research direction
-and the proposed route from proof of concept (PoC) to a standalone minimum viable product (MVP).
-No renderer, profiles, prototypes, GPU measurements, or completed validation are included yet.
+**Status (2026-10-29): P0 measured.** This repository contains the research direction, the
+proposed route from proof of concept (PoC) to a standalone minimum viable product (MVP), and
+step P0: digitized Portra 400 and Endura Premier curves, a float64 host spectral evaluator, and
+the [P0 report](docs/exploration/p0_data_and_reference.md). There is no renderer, no GPU
+measurement, and no completed validation yet. The step index is
+[docs/exploration/README.md](docs/exploration/README.md). Agent rules are in
+[AGENTS.md](AGENTS.md).
 
 **ACES means ACES Reference Gamut Compression (RGC) in this project.** It does not mean adding
 the complete ACES output transform after the film model. **Film grain is outside this research:**
@@ -51,6 +55,9 @@ until experiments support them.
 | U7 | Reuse Alcedo's existing film grain implementation. Do not develop or replace grain in this lab. |
 | U8 | Keep the model suitable for Alcedo's existing scene-referred architecture. |
 | U9 | Use a public lab repository and progress from PoC to MVP. The initial delivery is this README. |
+| U10 | (2026-10-29) Do not publish the original Kodak documents (data sheet PDFs). The data that the lab scripts make from them (digitized profiles, results) can be published. |
+| U11 | (2026-10-29) spectral_film_lut is MIT. Its methods, code, and data can be adopted directly; keep its notice ([THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)). No separate re-derivation is required. |
+| U12 | (2026-10-29) Fotufilm (Apache-2.0) can be used as a reference. Avoid spektrafilm as a reference for new work as far as possible. |
 
 The target source license is GPL-3.0-only. Third-party code, measurements, profiles, and derived
 tables retain their applicable license terms.
@@ -62,7 +69,8 @@ The inspected revisions are fixed below. Later upstream changes require a new so
 | Project | Inspected revision | Useful parts |
 | --- | --- | --- |
 | [Fotufilm engine](https://github.com/DhaliwalX/fotufilm-engine) | [`96623ba0`](https://github.com/DhaliwalX/fotufilm-engine/tree/96623ba0831a52dbddcda35727a206d4123a8b5f) | Measured-reflectance priors, separation of brightness from spectral reconstruction, explicit film-base density, print materials, and staged precomputation for GPU execution. |
-| [spektrafilm](https://github.com/andreavolpato/spektrafilm) | [`3bb2c2d2`](https://github.com/andreavolpato/spektrafilm/tree/3bb2c2d2801ff68b92019cf1dbcbb133d60832bc) | Film-to-print spectral transport, dye and base separation, development inhibitor couplers, neutral-curve compensation, and chromaticity-to-layer-exposure tables. |
+| [spektrafilm](https://github.com/andreavolpato/spektrafilm) | [`3bb2c2d2`](https://github.com/andreavolpato/spektrafilm/tree/3bb2c2d2801ff68b92019cf1dbcbb133d60832bc) | Film-to-print spectral transport, dye and base separation, development inhibitor couplers, neutral-curve compensation, and chromaticity-to-layer-exposure tables. Avoid as a reference for new work (U12); the notes in this section are kept as a record of the initial research. |
+| [spectral_film_lut](https://github.com/JanLohse/spectral_film_lut) | [`bcbcfc68`](https://github.com/JanLohse/spectral_film_lut/tree/bcbcfc6861f49cc706dc5d00ea048e4853060aab) | A large set of hand-digitized data sheets (about 60 negative, print, and reversal materials), Status A, Status M, and Academy Printing Density tables, a split of a single neutral spectrum into three dye bands, Gaussian tails outside the published range, and a color-masking factor through printing density. Inspected after P0; can be adopted directly (U11); see the P0 report, section 10. |
 
 ### 3.1 Spectral reconstruction and layer exposure
 
@@ -257,8 +265,8 @@ negative density, changing its appearance, or adopting either reference project'
 
 ## 8. Route from PoC to MVP
 
-All implementation steps below are **not started**. They are experimental deliverables, not
-claims of product support. Define numerical tolerances before evaluating each candidate.
+P0 is measured (2026-10-29, [report](docs/exploration/p0_data_and_reference.md)); the other
+steps are **not started**. They are experimental deliverables, not claims of product support. Define numerical tolerances before evaluating each candidate.
 
 | Step | Question and work | Required evidence |
 | --- | --- | --- |
@@ -290,8 +298,9 @@ Suggested future paths follow the AI Mask Lab structure:
 | `results/` | Small, redistributable measurements and result summaries. |
 | `build/tmp/` | Uncommitted source downloads, intermediate files, private photos, and local evidence. |
 
-These directories do not exist in the initial README-only delivery. Never publish source
-photos, downloaded assets, or manufacturer documents without checking redistribution rights.
+`docs/exploration/`, `scripts/poc/`, `profiles/`, and `results/` exist since P0; `src/` does not
+exist yet. Never publish source photos, downloaded assets, or manufacturer documents without
+checking redistribution rights.
 
 ## 9. Evidence required before the Alcedo port
 
@@ -316,9 +325,11 @@ photos, downloaded assets, or manufacturer documents without checking redistribu
 ## 10. Independent implementation, data, and licensing
 
 Use public physical principles, original publications, and independently prepared datasets.
-Record how each algorithm and profile was derived. Do not copy upstream calibration constants,
-profile JSON, tables, code structure, or rendered outputs into an allegedly independent result.
-If reuse is deliberate, label it as reuse and preserve its applicable notices.
+Record how each algorithm and profile was derived. Code, methods, and data of spectral_film_lut
+(MIT) can be adopted directly (U11); Fotufilm (Apache-2.0) can be used as a reference (U12).
+Label each reuse as reuse in the code and the report and keep its notice in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Avoid spektrafilm as a reference for new work
+(U12). Do not call a result independent when it reuses upstream constants, tables, or code.
 
 This initial research reads upstream source code. It is not a strict separation between
 researchers who inspect code and implementers who do not. Describe future work accurately as an
@@ -335,6 +346,12 @@ states CC BY-SA 4.0 and separately lists requests beyond the legal requirements.
 README also contains different wording about LUT licensing. Check the exact asset and revision
 before importing it; this repository does not redistribute those assets.
 
+[spectral_film_lut](https://github.com/JanLohse/spectral_film_lut) (MIT) was inspected at
+[`bcbcfc68`](https://github.com/JanLohse/spectral_film_lut/tree/bcbcfc6861f49cc706dc5d00ea048e4853060aab)
+after P0. P0 compares its hand-digitized Portra 400 and Endura Premier data and its Status A and M
+tables with the lab data, and ports three of its methods as options (P0 report, section 10;
+notice in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)).
+
 Independent digitization does not automatically establish redistribution rights for a source
 publication. Preserve provenance and check source-data terms. A model derived from a dataset
 does not become rights-free because its storage format changes.
@@ -350,4 +367,6 @@ Useful independent data starting points:
 
 Project-authored material is licensed under **GPL-3.0-only**. See [LICENSE](LICENSE).
 Third-party materials keep their own terms. No upstream film profiles, LUTs, grain code, or
-manufacturer documents are included in this initial repository.
+manufacturer documents are included. The `profiles/` files contain values digitized from Kodak
+data sheets; they can be published (U10). The Kodak PDFs are not in the repository
+([profiles/README.md](profiles/README.md#source-documents-not-distributed)).
