@@ -72,6 +72,7 @@ until experiments support them.
 | U21 | (2026-10-30) Product requirement: the user can select the scene light manually. The default is daylight. Options include fluorescent and LED, and the selection changes the spectral reconstruction, mainly for night photos. |
 | U22 | (2026-10-30) The product should offer a scene choice rather than one light, because a night photo usually mixes tungsten, LED, and sodium. This extends U21. |
 | U23 | (2026-10-30) Simulate the modern film workflow in addition to the 2383 print: scan the negative, encode as ADX, and export through ACES 1.3 or 2.0. Inside this path only, the ACES output transform is the display rendering (exception to U6 for this path). The first version uses ADX with published APD responsivities as an ideal scanner. Scanner candidates for later: ARRISCAN, Blackmagic Cintel. ALEV III reference: the estimate of [Yellowmoon](https://github.com/ngriaznov/yellowmoon). Both items are step P3 (section 8). See the [source audit](docs/research/modern_film_scan_workflow.md). |
+| U24 | (2026-10-30) The film chain is evaluated after the default Color Grade of Alcedo Studio for RAW files (contrast +15, saturation 1.3), because the DRT receives the graded image. The chain does not repeat that colour gain and contrast. See the [P2 report](docs/exploration/p2_negative_and_print.md), section 8.5. |
 
 The target source license is GPL-3.0-only. Third-party code, measurements, profiles, and derived
 tables retain their applicable license terms.

@@ -41,7 +41,7 @@ for n in FILES:
         row = []
         for light, timing in runs:
             p = previews[stock, light, timing]
-            image, st = p.render(ap1 * fp.center_weighted_exposure(ap1, p.c))
+            image, st = p.render(fp.product_input(ap1, p.c))
             a = lab(np.clip(image, 0, 1))
             print(n, stock, light, timing, "L5/50/95", np.percentile(a[:, 0], [5, 50, 95]).round(0).tolist(), "C50/95", np.percentile(np.hypot(a[:, 1], a[:, 2]), [50, 95]).round(0).tolist(),
                   "above curve", st["negative_above_curve_end"], "after compression", st["display_clipped_after_compression"], flush=True)

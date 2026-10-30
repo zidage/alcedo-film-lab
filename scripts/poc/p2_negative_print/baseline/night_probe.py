@@ -33,8 +33,9 @@ for n in FILES:
     y = ap1 @ c.ap1_to_xyz[1] * scale
     print(n, "exposure stops", round(float(np.log2(scale)), 2), "Y p50/p99", np.percentile(y, [50, 99]).round(3).tolist(), flush=True)
     images = [fp.srgb_encode(rec709 * scale)]
+    graded = fp.product_input(ap1, c)
     for k, p in previews.items():
-        image, st = p.render(ap1 * scale)
+        image, st = p.render(graded)
         images.append(np.clip(image, 0, 1))
         a = lab(images[-1])
         print(" ", k, "L5/50/95", np.percentile(a[:, 0], [5, 50, 95]).round(0).tolist(), "C50/95", np.percentile(np.hypot(a[:, 1], a[:, 2]), [50, 95]).round(0).tolist(),

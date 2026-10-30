@@ -6,11 +6,16 @@ Output: library used by render_review_images.py. Tables are cached in build/tmp/
 Step: P2, README section 8, with decision U17: the user reviews the rendered appearance first.
 This is a review tool. It uses reduced images and CPU tables; it is not the product path.
 
+Execution: render() and the print table use the compiled kernels of fast_kernels.py. The array methods of this class
+(layer_exposure, negative_density, direct_print_xyz, print_xyz, reference_render) are the reference;
+check_fast_kernels.py compares the two.
+
 Stages (each one stays separate):
 1. Input: RAW through LibRaw with the camera white balance, to XYZ (D65), Bradford adaptation to the
    ACES white, linear AP1. The input is white balanced, so the reference light is E_ref for all
    input of the first review. Exposure: rule 'center_weighted_exposure' (center-weighted mean of
-   linear Y = 0.18).
+   linear Y = 0.18). Function product_input() then applies the default grade of Alcedo Studio (contrast
+   +15, saturation 1.3), because the DRT receives the graded image in the product. The grade does not apply to a raster file.
 2. Layer exposure: measured_prior_local_nonnegative with rule 'spectral_locus_projection' (P1),
    compiled to a table of Q / Y over u'v' (spectral shape depends on chromaticity only).
 3. Negative: Status M from the Portra curves. Rule 'negative_curve_limits': below the toe the first
@@ -59,6 +64,12 @@ at the stated exposure 12.5 / ISO lux seconds. The digitized sensitivities of th
 absolute level of each layer: without the rule the grey was up to 0.6 stops off, different per layer. The
 gains belong to the stock and do not follow the scene.
 
+Rule 'neutral_printing_gain' (option neutral_printing): one gain per paper layer on the paper log exposure about the
+balance exposure, so that a neutral negative ramp has the same paper log exposure slope in each layer. The published
+curves, the dye data and the lamp gave a blue slope about 20 % lower than green on 2383. That is a yellow highlight and
+a blue shadow on a neutral, and a real camera stock and print stock are designed to avoid this, so it is treated as an
+error of the data and of the printer model. It is computed on the curves, so a scene light can still cause a crossover.
+
 Scene light (README U20). The input is white balanced, so it holds a reflectance colour and not the light.
 Rule 'relight': the reflectance shape of the reconstruction is multiplied by the spectrum of scene_light
 (Y of the light = 1), and the layers integrate that radiance. A grey under a light that is not the balance
@@ -83,6 +94,8 @@ from scipy.ndimage import gaussian_filter, map_coordinates
 SCRIPT_DIR = Path(__file__).resolve().parent
 P1_DIR = SCRIPT_DIR.parent / "p1_spectral_input"
 sys.path.insert(0, str(P1_DIR))
+sys.path.insert(0, str(SCRIPT_DIR))
+import fast_kernels as fk  # noqa: E402
 import spectral_datasets as sd  # noqa: E402
 import spectral_reconstruction as sr  # noqa: E402
 from spectral_reconstruction import p0  # noqa: E402
@@ -93,7 +106,11 @@ UV_NODES = 192
 UV_MAX = (0.66, 0.62)
 DENSITY_NODES = 65
 SOLVE_ITERATIONS = 16
-BATCH = 16384
+METER_CAP = 16.0
+# Product default of a RAW file in Alcedo Studio: alcedo_studio/src/include/edit/graph/pipeline_document.hpp.
+# A raster file has a neutral grade. The review uses rule 'center_weighted_exposure' in place of the +1.5 EV.
+PRODUCT_CONTRAST = 15.0
+PRODUCT_SATURATION = 1.3
 
 BRADFORD = np.array([[0.8951, 0.2664, -0.1614], [-0.7502, 1.7135, 0.0367], [0.0389, -0.0685, 1.0296]])
 XYZ_D65 = np.array([0.95047, 1.0, 1.08883])
@@ -105,7 +122,7 @@ def bradford_matrix(source_xyz: np.ndarray, target_xyz: np.ndarray) -> np.ndarra
     return np.linalg.inv(BRADFORD) @ np.diag(gain) @ BRADFORD
 
 
-NOT_IN_PRINT_TABLE = ("gamut_compress", "gamut_threshold", "gamut_limit", "gamut_power", "scene_flare", "display_white", "interlayer_gain", "frame_mm", "scatter_um", "halation", "halation_um",
+NOT_IN_PRINT_TABLE = ("gamut_compress", "gamut_threshold", "gamut_limit", "gamut_power", "scene_flare", "display_white", "frame_mm", "scatter_um", "halation", "halation_um",
                       "adjacency_gain", "adjacency_um", "enlarger_flare", "enlarger_flare_size")
 
 
@@ -121,7 +138,7 @@ class FilmOptions:
     viewing_flare: float = 0.0
     scene_flare: float = 0.0  # not part of the print table
     display_white: str = "reflector"  # not part of the print table; 'reflector' or 'paper'
-    interlayer_gain: float = 0.2  # not part of the print table
+    interlayer_gain: float = 0.2  # part of the print table: the printer balance under a scene light uses it
     negative_profile: str = "kodak_portra_400"
     print_profile: str = "kodak_endura_premier"
     midscale_log_h: float = -1.44  # P0: exposure of the 18 % grey
@@ -131,6 +148,7 @@ class FilmOptions:
     scene_light: str = "E_ref"
     print_timing: float = 1.0
     print_flash: float = 0.0
+    neutral_printing: bool = False
     gamut_compress: bool = False  # not part of the print table; False: clip
     gamut_threshold: tuple[float, float, float] = (0.815, 0.803, 0.880)  # ACES RGC values (cyan, magenta, yellow)
     gamut_limit: tuple[float, float, float] = (1.147, 1.264, 1.312)  # ACES RGC values
@@ -149,8 +167,10 @@ class FilmOptions:
         return hashlib.sha256(json.dumps(fields, sort_keys=True).encode()).hexdigest()[:12]
 
 
-# Review options after the darkroom comparison (README U19).
-DARKROOM = dict(interlayer_gain=0.1, print_flash=0.02, print_contrast=0.92, viewing_flare=0.003, scatter_um=10.0,
+# Review options after the darkroom comparison (README U19), for RAW input through product_input().
+# The input is product_input(): the default grade of the product comes before the film. So the chain has no interlayer
+# gain, and print_contrast takes back about the mid-grey slope of the grade (0.92 / 2^0.15 = 0.83).
+DARKROOM = dict(interlayer_gain=0.0, print_flash=0.02, print_contrast=0.85, viewing_flare=0.003, scatter_um=10.0,
                 halation=(0.03, 0.008, 0.0), adjacency_gain=0.25, enlarger_flare=0.01, gamut_compress=True)
 
 # Printer lights of the cine prints. The LAD aim of 2383 (Status A about 1.06) is for a dark cinema. This value
@@ -165,9 +185,9 @@ STOCKS = {
     "portra400_endura": {},
     # Exposure of the grey: 12.5 / ISO lux seconds. Projection at D65.
     "5207_2383": dict(negative_profile="kodak_5207", print_profile="kodak_2383", midscale_log_h=float(np.log10(12.5 / 250)),
-                      print_midscale_status_a=CINE_GREY_STATUS_A, viewing_cct_k=6500.0, grey_anchor=True, balance_light="D55"),
+                      print_midscale_status_a=CINE_GREY_STATUS_A, viewing_cct_k=6500.0, grey_anchor=True, balance_light="D55", neutral_printing=True),
     "5219_2383": dict(negative_profile="kodak_5219", print_profile="kodak_2383", midscale_log_h=float(np.log10(12.5 / 500)),
-                      print_midscale_status_a=CINE_GREY_STATUS_A, viewing_cct_k=6500.0, grey_anchor=True, balance_light="T3200"),
+                      print_midscale_status_a=CINE_GREY_STATUS_A, viewing_cct_k=6500.0, grey_anchor=True, balance_light="T3200", neutral_printing=True),
 }
 
 
@@ -207,9 +227,11 @@ class FilmPreview:
         self.paper_curves = list(self.film.paper_curves.values())
         self.scene_spectrum = self.light(o.scene_light)
         self.layer_gain = self._camera_filter()
+        self.printing_gain = self._printing_gain()
         self.uv_table = self._load_uv_table()
         self.density_grid, self.print_table, self.table_counts = self._load_print_table()
         self._prepare_display()
+        self._prepare_kernels()
 
     def light(self, name: str) -> np.ndarray:
         """Spectrum with Y = 1. 'E_ref'; 'D55' (CIE daylight, 100 K units); 'T3200' (Planckian); a CIE FL, LED or HP name."""
@@ -244,6 +266,19 @@ class FilmPreview:
         self.scene_grey_stops = np.log2(grey / 10.0 ** self._neutral_log_q)
         f.printer_balance_log10 = reference + o.print_timing * (balance(self.negative_density(grey[None])[0][0]) - reference)
         return gain
+
+    def _printing_gain(self) -> np.ndarray:
+        # Rule 'neutral_printing_gain': see the header. Range: 1.0 log H on each side of the grey.
+        if not self.options.neutral_printing:
+            return np.ones(3)
+        f = self.film
+        log_h = f.options.midscale_log_h + np.linspace(-1.0, 1.0, 21)
+        status_m = np.stack([np.interp(log_h, c.log_h, c.density) for c in self.negative_curves], axis=1)
+        base = f.status_density(f.negative_dmin, f.w_status_m)
+        amounts, _ = solve_amounts(status_m - f.negative_curve_dmin + base, f.negative_dmin, f.negative_dyes, f.w_status_m)
+        paper = f.paper_log_exposure(f.negative_spectral_density(amounts))
+        slopes = np.array([np.polyfit(log_h, paper[:, k], 1)[0] for k in range(3)])
+        return slopes[1] / slopes
 
     # --- stage 2 ------------------------------------------------------------------------------
 
@@ -332,7 +367,7 @@ class FilmPreview:
         negative = film.negative_spectral_density(a)
         log_h = film.paper_log_exposure(negative)
         aim = np.array([c.log_h_at(self.options.print_midscale_status_a) for c in self.paper_curves])
-        log_h = aim + self.options.print_contrast * (log_h - aim)
+        log_h = aim + self.options.print_contrast * self.printing_gain * (log_h - aim)
         if self.options.print_flash:
             log_h = np.log10(10.0 ** log_h + self.options.print_flash * 10.0 ** aim)
         status_a = np.empty_like(log_h)
@@ -346,6 +381,28 @@ class FilmPreview:
             "negative_not_reached": int((r_negative > 1e-4).sum()), "print_not_reached": int((r_print > 1e-4).sum()),
             "paper_exposure_outside_curve": clipped}
 
+    def _print_nodes(self, density: np.ndarray) -> tuple[np.ndarray, dict]:
+        """The kernel form of direct_print_xyz. Each integral uses only the nodes where its weights are not zero."""
+        f, o = self.film, self.options
+
+        def support(weights: np.ndarray) -> np.ndarray:
+            return np.flatnonzero(np.any(weights != 0.0, axis=0))
+
+        m, pr, st, vi = support(f.w_status_m), support(f.w_printing), support(f.w_status_a), support(f.w_viewing[f.viewing_name])
+        w_view = f.w_viewing[f.viewing_name]
+        base = f.status_density(f.negative_dmin, f.w_status_m)
+        length = max(len(c.density) for c in self.paper_curves)
+        curves = np.stack([np.pad(c.density, (0, length - len(c.density)), mode="edge") for c in self.paper_curves])
+        aim = np.array([c.log_h_at(o.print_midscale_status_a) for c in self.paper_curves])
+        xyz, not_negative, not_print, outside = fk.print_nodes(
+            density.astype(np.float64), base - f.negative_curve_dmin, SOLVE_ITERATIONS,
+            f.negative_dmin[m], f.negative_dyes[:, m], f.w_status_m[:, m],
+            f.negative_dmin[pr], f.negative_dyes[:, pr], f.w_printing[:, pr], np.asarray(f.printer_balance_log10, dtype=np.float64), aim, float(o.print_contrast) * self.printing_gain, float(o.print_flash),
+            np.array([c.log_h[0] for c in self.paper_curves]), curves, np.array([len(c.density) for c in self.paper_curves]), float(self.paper_curves[0].log_h[1] - self.paper_curves[0].log_h[0]),
+            f.paper_base[st], f.paper_dyes[:, st], f.w_status_a[:, st],
+            f.paper_base[vi], f.paper_dyes[:, vi], w_view[:, vi], o.viewing_flare * f.white_xyz(), 100.0 / w_view[1].sum())
+        return xyz, {"negative_not_reached": int(not_negative), "print_not_reached": int(not_print), "paper_exposure_outside_curve": int(outside)}
+
     def _load_print_table(self) -> tuple[list[np.ndarray], np.ndarray, dict]:
         path = CACHE_DIR / f"print_table_{self.options.key()}.npz"
         grid = [np.linspace(c.density.min(), c.density.max(), DENSITY_NODES) for c in self.negative_curves]
@@ -354,12 +411,8 @@ class FilmPreview:
             return grid, z["table"], json.loads(str(z["counts"]))
         rr, gg, bb = np.meshgrid(*grid, indexing="ij")
         d = np.stack([rr, gg, bb], axis=-1).reshape(-1, 3)
-        xyz = np.empty_like(d)
-        counts = {"negative_not_reached": 0, "print_not_reached": 0, "paper_exposure_outside_curve": 0, "nodes": len(d)}
-        for start in range(0, len(d), BATCH):
-            xyz[start:start + BATCH], c = self.direct_print_xyz(d[start:start + BATCH])
-            for key, value in c.items():
-                counts[key] += value
+        xyz, counts = self._print_nodes(d)
+        counts["nodes"] = len(d)
         table = np.cbrt(xyz).reshape(DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 3)
         np.savez(path, table=table, counts=json.dumps(counts))
         return grid, table, counts
@@ -410,7 +463,62 @@ class FilmPreview:
             density = -np.log10(t)
         return density
 
-    def render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
+    def _prepare_kernels(self) -> None:
+        o = self.options
+        for curve in self.negative_curves + self.paper_curves:
+            if not np.allclose(np.diff(curve.log_h), curve.log_h[1] - curve.log_h[0], atol=1e-9):
+                raise ValueError("the kernels need characteristic curves on a uniform log H grid")
+        projection = self._projection()
+        self._room = -(projection.offsets + projection.normals @ projection.white)
+        self._uv_f32 = self.uv_table.astype(np.float32)
+        self._print_f32 = self.print_table.astype(np.float32)
+        length = max(len(c.density) for c in self.negative_curves)
+        self._curves_f64 = np.stack([np.pad(c.density, (0, length - len(c.density)), mode="edge") for c in self.negative_curves])
+        self._curve_lengths = np.array([len(c.density) for c in self.negative_curves])
+        self._curve_start = np.array([c.log_h[0] for c in self.negative_curves])
+        self._curve_step = float(self.negative_curves[0].log_h[1] - self.negative_curves[0].log_h[0])
+        if o.interlayer_gain and not hasattr(self, "_neutral_log_q"):
+            self._neutral_log_q = np.log10(self.layer_exposure(np.ones((1, 3)))[0][0])
+        self._neutral = np.asarray(getattr(self, "_neutral_log_q", np.zeros(3)), dtype=np.float64)
+        self._grid_start = np.array([g[0] for g in self.density_grid])
+        self._grid_step = np.array([g[1] - g[0] for g in self.density_grid])
+
+    def render(self, ap1: np.ndarray, detailed: bool = False) -> tuple[np.ndarray, dict]:
+        """Linear AP1 to sRGB, through the kernels. detailed adds the percentiles of the gamut distance (slower)."""
+        o = self.options
+        shape = ap1.shape
+        image = np.ascontiguousarray(ap1, dtype=np.float32)
+        if image.ndim == 2:
+            image = image[None]
+        # Rule 'no_image_plane_steps_on_ramps': a test ramp (fewer than 16 rows) has no image plane.
+        spatial = min(image.shape[:2]) >= 16
+        projection = self._projection()
+        q, moved, not_positive = fk.layer_exposure(image, float(o.scene_flare), self.c.ap1_to_xyz, projection.normals, self._room, projection.white, projection.LOCUS_INSET,
+                                                   self._uv_f32, np.array(UV_MAX), self.layer_gain)
+        pixel = self._pixel_um(image)
+        if spatial and o.scatter_um:
+            sigma = o.scatter_um / pixel
+            q = fk.gaussian_blur(q, sigma)
+        if spatial and any(o.halation):
+            q = fk.mix_exposure(q, fk.gaussian_blur(q, o.halation_um / pixel), np.array(o.halation, dtype=np.float64))
+        density, above = fk.negative_density(q, self.film.negative_criterion_log_h, self._neutral, float(o.interlayer_gain), self._curve_start, self._curves_f64, self._curve_lengths, self._curve_step)
+        if spatial and o.adjacency_gain:
+            density = fk.add_adjacency(density, fk.gaussian_blur(density, o.adjacency_um / pixel), float(o.adjacency_gain))
+        if spatial and o.enlarger_flare:
+            t = fk.density_to_transmittance(density)
+            density = fk.flare_density(t, fk.gaussian_blur(t, o.enlarger_flare_size * max(image.shape[:2])), float(o.enlarger_flare))
+        rgb = fk.print_display(density, self._print_f32, self._grid_start, self._grid_step, self.xyz_to_display)
+        stats = {"moved_by_rule": int(moved), "y_not_positive": int(not_positive), "negative_above_curve_end": int(above), "pixels": int(image.shape[0] * image.shape[1])}
+        if detailed:
+            stats["gamut_distance_p999"] = np.percentile(gamut_distance(rgb).reshape(-1, 3), 99.9, axis=0).round(3).tolist()
+        out, before, after = fk.finish_display(rgb, bool(o.gamut_compress), np.array(o.gamut_threshold), np.array(o.gamut_limit), float(o.gamut_power))
+        stats["display_clipped"] = int(before)
+        if o.gamut_compress:
+            stats["display_clipped_after_compression"] = int(after)
+        return (out[0] if len(shape) == 2 else out), stats
+
+    def reference_render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
+        """The array implementation of render(), for check_fast_kernels.py."""
         # Rule 'no_image_plane_steps_on_ramps': a test ramp (fewer than 16 rows) has no image plane.
         spatial = ap1.ndim == 3 and min(ap1.shape[:2]) >= 16
         q, stats = self.layer_exposure(ap1 + self.options.scene_flare)
@@ -469,12 +577,21 @@ def decode_raw_ap1(path: Path, long_edge: int, c: sr.Colorimetry) -> tuple[np.nd
 
 def center_weighted_exposure(ap1: np.ndarray, c: sr.Colorimetry) -> float:
     """Rule 'center_weighted_exposure': the scale that sets the mean of linear Y to 0.18, with Gaussian
-    weights around the image center (sigma: 0.35 of each side). It acts like a camera meter."""
+    weights around the image center (sigma: 0.35 of each side). It acts like a camera meter. A value above
+    METER_CAP times the weighted median counts as that value, so that a lamp in a night scene does not set the exposure."""
     y = np.maximum(ap1 @ c.ap1_to_xyz[1], 0.0)
     h, w = y.shape
     yy, xx = np.mgrid[0:h, 0:w]
     weight = np.exp(-(((xx - w / 2) / (0.35 * w)) ** 2 + ((yy - h / 2) / (0.35 * h)) ** 2) / 2)
-    return float(0.18 / ((y * weight).sum() / weight.sum()))
+    order = np.argsort(y, axis=None)
+    median = y.ravel()[order][np.searchsorted(np.cumsum(weight.ravel()[order]), 0.5 * weight.sum())]
+    return float(0.18 / ((np.minimum(y, METER_CAP * median) * weight).sum() / weight.sum()))
+
+
+def product_input(ap1: np.ndarray, c: sr.Colorimetry, contrast: float = PRODUCT_CONTRAST, saturation: float = PRODUCT_SATURATION) -> np.ndarray:
+    """Linear AP1 of a RAW file as the DRT receives it in the product: exposure of the review rule, then the default grade."""
+    image = np.ascontiguousarray(ap1, dtype=np.float32)
+    return fk.product_grade(image, float(np.log2(center_weighted_exposure(ap1, c))), float(contrast), float(saturation))
 
 
 def review_exposure(ap1: np.ndarray, c: sr.Colorimetry) -> float:

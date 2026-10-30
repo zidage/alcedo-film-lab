@@ -57,9 +57,10 @@ def render_variants(files: list[str], variants: dict = VARIANTS, long_edge: int 
         scale = fp.center_weighted_exposure(ap1, first.c)
         panels = [fp.srgb_encode(rec709 * scale)]
         for k, preview in previews.items():
-            image, stats = preview.render(ap1 * scale)
+            graded = fp.product_input(ap1, first.c)
+            image, stats = preview.render(graded)
             panels.append(image)
-            q, _ = preview.layer_exposure(ap1 * scale + preview.options.scene_flare)
+            q, _ = preview.layer_exposure(np.asarray(graded, dtype=np.float64) + preview.options.scene_flare)
             density, _ = preview.negative_density(q)
             sample = density.reshape(-1, 3)[rng.choice(density.size // 3, 3000)]
             _, reach = preview.direct_print_xyz(sample)
@@ -135,7 +136,7 @@ def main() -> int:
         t1 = time.time()
         ap1, rec709 = fp.decode_raw_ap1(LIBRARY / rel, LONG_EDGE, preview.c)
         scale = fp.center_weighted_exposure(ap1, preview.c)
-        film, stats = preview.render(ap1 * scale)
+        film, stats = preview.render(fp.product_input(ap1, preview.c))
         plain = fp.srgb_encode(rec709 * scale)
         gap = np.ones((film.shape[0], 12, 3))
         mpimg.imsave(RENDER_DIR / (rel.replace("/", "_") + ".png"), np.concatenate([plain, gap, film], axis=1))

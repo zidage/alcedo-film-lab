@@ -258,7 +258,7 @@ Findings:
 - RAW white can select a daylight or Planckian light. It cannot show a spiky spectrum, so FL and LED need an
   explicit choice. The selection from RAW white is not implemented yet.
 - No comparison with real 5219 footage was made.
-- The print tables depend on the light and the timing. A new pair needs a new table (minutes on CPU).
+- The print tables depend on the light and the timing. A new pair needs a new table (about 2.5 s on CPU, section 8.4).
 
 ## 8.3 Night photos and the scene light as a product control (U21)
 
@@ -278,7 +278,115 @@ The author's visual results:
 - Shadows are dark. `center_weighted_exposure` follows bright lights, so people in dark areas of `_DSC8169` almost
   disappear (median L* 7).
 
-This section has no comparison with real film of these scenes.
+This section has no comparison with real film of these scenes. Section 8.4 changes the two last items above.
+
+## 8.4 Render time, neutral printing, and the meter
+
+**Render time.** The hot stages are now compiled parallel kernels (`fast_kernels.py`, numba). The array methods stay as
+the reference. Machine: 20 logical CPUs. Image: synthetic, 1 MP. Values changed between runs with the machine load.
+
+| Item | Array reference | Kernels |
+| --- | --- | --- |
+| Render, 1 MP | 3000 to 3500 ms | 80 to 130 ms |
+| Print table, 274,625 nodes | about 2 min (scaled from 4096 nodes in 1.8 s; not run in full) | 2.1 to 2.5 s |
+
+[`fast_kernels.json`](../../results/p2_negative_print/fast_kernels.json), with limits set before the first run. One limit
+failed in the first run: the blur with a large sigma had an error of 0.0049, and the limit is 0.002. The cause was
+the reduced image and its edges. The fix keeps the limit. All limits now pass:
+
+| Check | Limit | Result |
+| --- | --- | --- |
+| Print nodes, 4096 | Delta E max <= 0.01, same counts | 1.4e-9, same counts |
+| Blur, sigma 0.35 to 125 | relative max error <= 0.002 | 0.00026 |
+| Render against the reference | sRGB p99.9 <= 1/255, max <= 3/255 | 3.7e-5, 6.7e-5 |
+| Same check, image with colours outside the locus and negative values | the same, same counts | 1.4e-5, 5.8e-5, same counts |
+
+The count of display values outside the range can differ by a few pixels (float32 against float64). The check does not limit this count.
+
+**Neutral printing.** On 5207 and 5219 through 2383, a neutral ramp had yellow-green highlights and blue
+shadows. `baseline/cine_ramp_diagnosis.py` shows the cause: at scene value 1.0, the paper log exposure from the grey
+is R -0.38, G -0.42, B -0.31. The blue slope is low, and the shadows show the same error in the opposite direction.
+Rule `neutral_printing_gain` sets one gain per paper layer. Values: 5207 (1.115, 1, 1.269), 5219 (1.113, 1, 1.263).
+It is computed on the curves, so a scene light can still cause a crossover.
+
+The gains are large. The cause of the low slope is not known: it can be the digitized data, the band split of the dyes,
+or lamp A as a printer model. No test separated these causes, and the gains are a correction, not a measurement.
+
+Neutral ramp of 5207, CIELAB (a*, b*):
+
+| Scene value | Before | After | spektrafilm |
+| --- | --- | --- | --- |
+| 0.063 | 0.3, -6.0 | -4.4, 0.4 | -4.6, -0.5 |
+| 0.398 | -2.8, 8.8 | 0.5, 5.0 | 1.0, 3.0 |
+| 1.0 | -6.3, 13.5 | -1.8, 7.5 | -0.5, 5.8 |
+| 6.31 | -5.9, 12.6 | -2.8, 8.2 | -0.8, 6.0 |
+
+Mean of 8 portraits, the same exposure rule in both columns (5207 / 5219):
+
+| Measure | Gain off | Gain on | spektrafilm |
+| --- | --- | --- | --- |
+| Delta E p50 against spektrafilm | 6.6 / 7.3 | 4.3 / 5.1 | n/a |
+| Delta E p95 against spektrafilm | 12.1 / 13.6 | 8.6 / 10.4 | n/a |
+| C* p95 | 37.6 / 37.1 | 41.4 / 40.8 | 42.5 / 41.7 |
+
+Limits of this result:
+
+- The gain raises C* p95 by about 10 %. This is a risk, because the user judged an earlier saturation too high. The value is
+  near spektrafilm, but on `se231.nef` it is above spektrafilm (61.7 against 56.9).
+- One case is worse: `se019.arw` on 5219, Delta E p95 16.5 to 17.0.
+- Agreement with spektrafilm is not agreement with real film.
+- The top of the ramp is still lighter than spektrafilm (L* 92.8 against 88.1 at scene value 6.31).
+- Portra 400 + Endura does not use this rule.
+
+**Meter.** Rule `center_weighted_exposure` now counts a value above 16 times the weighted median as that value
+(`METER_CAP`). The value 16 is a choice from a comparison of candidates on 31 local files. The change is +1.1 stops on `_DSC8169`, +0.8 on
+`L1001108`, +0.33 on `se127`, +0.28 on `_DSC8170`, +0.23 on `se015`. On the other 26 files it is 0.1 stops or less. Median L* of `_DSC8169`
+goes from 7 to 16. People in the dark areas of that file are visible but still dark.
+
+**Open.** A bright green sign becomes pale mint on 5219 (`_DSC8169`). The rule 'relight' still applies one light to emissive signs.
+
+## 8.5 The default grade of the product comes before the film
+
+In Alcedo Studio, the default document of a RAW file is Develop, then the primary Color Grade, then the DRT. The grade has
+exposure +1.5 EV, contrast +15, and saturation 1.3
+(`alcedo_studio/src/include/edit/graph/pipeline_document.hpp`). So a film DRT receives a graded image. Until this
+section, the review did not apply this grade, and values that were set against spektrafilm did part of its work.
+
+**Change.** Function `product_input()` applies the grade to the review input, with the order and the math of
+`primary_grade.cl` (saturation about the luma of the ACEScc values, contrast on OkLab lightness).
+`DARKROOM` changes from `interlayer_gain=0.1, print_contrast=0.92` to `interlayer_gain=0, print_contrast=0.85`.
+
+- The saturation of the grade replaces the colour gain of the interlayer option.
+- 0.92 / 2^0.15 = 0.83 takes back the mid-grey slope of the grade. The value 0.85 comes from the sweep below.
+- The review uses rule `center_weighted_exposure` in place of the +1.5 EV, so that the test images stay comparable.
+
+Mean of 8 portraits. Columns: C* p50 / C* p95, Delta E p50 / p95 against spektrafilm. The spektrafilm images have
+an ungraded input, so they are a reference for the appearance and not the same experiment.
+
+| Stock | Target: spektrafilm C* | No grade, old options | Grade, old options | Grade, new options | No grade, new options (raster file) |
+| --- | --- | --- | --- | --- | --- |
+| 5207 | 15.2 / 42.5 | 14.2 / 41.4, 4.3 / 8.6 | 17.3 / 47.2, 5.0 / 12.4 | 15.4 / 43.0, 4.2 / 8.8 | 12.6 / 36.7, 5.0 / 10.5 |
+| 5219 | 14.2 / 41.7 | 14.0 / 40.8, 5.1 / 10.4 | 17.1 / 46.6, 5.9 / 14.6 | 15.2 / 42.3, 5.0 / 11.1 | 12.5 / 36.0, 5.3 / 11.4 |
+| Portra 400 | 15.5 / 50.6 | 13.1 / 47.7, 4.5 / 10.7 | 16.0 / 53.6, 4.5 / 11.0 | 14.4 / 49.6, 4.1 / 9.3 | 11.7 / 43.0, 5.6 / 13.8 |
+
+The check of `product_grade` is in [`fast_kernels.json`](../../results/p2_negative_print/fast_kernels.json): an array form of the
+product reference, maximum error 4.1e-5 against a limit of 1e-4. It was not compared with an image from the product. The first run failed (0.035): the array
+form did not have the decode of a code value below the ACEScc floor. The kernel was correct.
+
+Limits of this result:
+
+- **`se019.arw` is worse.** Delta E p95 goes from 13.6 to 18.4 on 5207 and from 17.0 to 22.9 on 5219. The red dress is lighter
+  and more saturated than in spektrafilm.
+- **Night files stay more saturated.** C* p95 of `_DSC8169` goes from 37 to 42 and of `_DSC8159` from 44 to 50 (5219, daylight).
+- **A raster file has a neutral grade in the product.** With the new options it has about 15 % less C* p95 than the same RAW path.
+  No decision was made for this case.
+- About 0.05 % of the pixels of the portraits are now outside the spectral locus (rule `spectral_locus_projection`), because of the saturation.
+- `compare_portraits.py`, `darkroom_probe.py`, and `gain_sweep.py` keep the ungraded input, as records of the earlier comparisons. The numbers of
+  sections 7 to 8.4 are before this change.
+
+**Correction.** The key of the print table did not include `interlayer_gain`, but the printer balance under a light that is
+not the balance light uses it. A change of that option could read a table with the wrong balance. The key now includes it. Results that use one value
+of this option for each table are not affected.
 
 ## 9. Measurements of the tables
 

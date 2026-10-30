@@ -7,6 +7,9 @@ user review (README U17, U18). This is a CPU review tool, not the product path.
 | Script | Input | Output |
 | --- | --- | --- |
 | `film_preview.py` | P0 and P1 libraries, profiles, datasets | library: stages and tables; cache in `build/tmp/p2/tables/` |
+| `fast_kernels.py` | arrays from the library | compiled parallel kernels of `render()` and of the print table (numba) |
+| `check_fast_kernels.py` | the library, a synthetic image | comparison with the array reference, `results/p2_negative_print/fast_kernels.json` |
+| `profile_preview.py` | the library, a synthetic image | render times on the console |
 | `render_review_images.py` | the library, RAW files | `build/tmp/p2/renders/*.png` (local only), `results/p2_negative_print/*.json` |
 | `baseline/` | RAW files, external projects | comparison with spektrafilm and Fotufilm; `build/tmp/baseline/` (local only) |
 
@@ -24,7 +27,7 @@ $E/venv/Scripts/python -I scripts/poc/p2_negative_print/render_review_images.py 
 ```
 
 The first run builds the u'v' table (about 5 min) and one print table per print option set (about
-2 min). Change the options in `VARIANTS` of `render_review_images.py`.
+3 s). The first run also compiles the kernels and caches them in `__pycache__/`. Change the options in `VARIANTS` of `render_review_images.py`.
 
 ## Baseline comparison
 
@@ -43,5 +46,5 @@ Order of the runs:
 2. `render_spektrafilm.py`, `render_spektrafilm_nocouplers.py` (`venv_spektra`); `run_fotufilm.sh` (in `ff24`).
 3. `grey_ramp_spektrafilm.py` (`venv_spektra`), then `grey_compare.py` (P1 environment).
 4. `match_probe.py`, `gap_analysis.py`, `gain_sweep.py`, `compare_portraits.py` (P1 environment).
-5. `import_cine_profiles.py <spectral_film_lut/src/spectral_film_lut>` writes the cine profiles. Then `render_spektrafilm_cine.py`, `grey_ramp_spektrafilm_cine.py` (`venv_spektra`), `run_fotufilm_cine.sh` (in `ff24`, with `FILES`), `darkroom_probe.py`, `cine_grey_check.py`, `stock_probe.py <names>`, `light_probe.py` (P1 environment).
+5. `import_cine_profiles.py <spectral_film_lut/src/spectral_film_lut>` writes the cine profiles. Then `render_spektrafilm_cine.py`, `grey_ramp_spektrafilm_cine.py` (`venv_spektra`), `run_fotufilm_cine.sh` (in `ff24`, with `FILES`), `darkroom_probe.py`, `cine_grey_check.py`, `cine_ramp_diagnosis.py`, `stock_probe.py <names>`, `light_probe.py` (P1 environment).
 6. `night_sheet.py <folder>`, `night_probe.py <folder> <names>` (P1 environment): night photos with each product light.

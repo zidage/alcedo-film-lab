@@ -44,7 +44,7 @@ for n in FILES:
     images = {}
     size = (ap1.shape[1], ap1.shape[0])
     for k, p in previews.items():
-        images[k], st = p.render(ap1 * fp.center_weighted_exposure(ap1, p.c))
+        images[k], st = p.render(fp.product_input(ap1, p.c), detailed=True)
         images[k] = np.clip(images[k], 0, 1)
         a = lab(images[k])
         print(n, k, "L5/50/95", np.percentile(a[:, 0], [5, 50, 95]).round(0).tolist(), "C50/95", np.percentile(np.hypot(a[:, 1], a[:, 2]), [50, 95]).round(0).tolist(), "outside 709 %", round(100 * st["display_clipped"] / st["pixels"], 1), "after compression %", round(100 * st["display_clipped_after_compression"] / st["pixels"], 2), "distance p99.9", st["gamut_distance_p999"], flush=True)

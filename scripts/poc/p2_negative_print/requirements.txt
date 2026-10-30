@@ -3,3 +3,4 @@ scipy>=1.14
 matplotlib>=3.9
 rawpy>=0.27
 openpyxl>=3.1
+numba>=0.68
