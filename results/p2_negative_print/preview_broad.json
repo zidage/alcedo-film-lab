@@ -1,0 +1,254 @@
+{
+  "sony/a7riii/DSC00674.ARW": {
+    "baseline": {
+      "moved_by_rule": 1,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 69831,
+      "pixels": 1176608,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 81,
+        "print_not_reached": 2,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "canon/r5ii/237A2108.CR3": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 720,
+      "pixels": 1252180,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 0,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "canon/5div/793A6931.CR2": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 4552,
+      "pixels": 843000,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 0,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "nikon/z6ii/DSC_2457.NEF": {
+    "baseline": {
+      "moved_by_rule": 11,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 26,
+      "display_clipped": 4961,
+      "pixels": 679730,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 11,
+        "print_not_reached": 2,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "nikon/zf/DSC_1535.NEF": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 2764,
+      "pixels": 679730,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 1,
+        "print_not_reached": 0,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "nikon/d3x/nikon_d3x_08.nef": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 23470,
+      "pixels": 682762,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 32,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "leica/sl3-p/0768513254.dng": {
+    "baseline": {
+      "moved_by_rule": 82,
+      "y_not_positive": 329,
+      "negative_above_curve_end": 8,
+      "display_clipped": 37217,
+      "pixels": 1230800,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 20,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "sony/a7cii/Sonya7c2-Bracaglia-05.ARW": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 24240,
+      "pixels": 914551,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 18,
+        "print_not_reached": 4,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "sony/a7rii/DSC00602.ARW": {
+    "baseline": {
+      "moved_by_rule": 1,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 12782,
+      "pixels": 1176608,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 0,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "fuji/xt5/DSCF1787.RAF": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 87,
+      "pixels": 1114996,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 1,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "sony/a7riii/DSC00728.ARW": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 1043,
+      "pixels": 1176608,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 0,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "pentax/k1/4354619001 (1).pef": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 78396,
+      "pixels": 1010238,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 1,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "nikon/d800e/Nikon-D800e-raw-00007.nef": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 2015,
+      "pixels": 1007780,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 12,
+        "print_not_reached": 0,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "sony/a7iii/DSC00542.ARW": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 916,
+      "pixels": 672680,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 0,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "sigma/fp/SDIM0220.DNG": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 4811,
+      "pixels": 679730,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 0,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "leica/m10/L1001108.dng": {
+    "baseline": {
+      "moved_by_rule": 35,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 312,
+      "display_clipped": 168413,
+      "pixels": 663005,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 19,
+        "print_not_reached": 73,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "canon/r6iii/9327411796.cr3": {
+    "baseline": {
+      "moved_by_rule": 0,
+      "y_not_positive": 0,
+      "negative_above_curve_end": 0,
+      "display_clipped": 2482,
+      "pixels": 896680,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 0,
+        "print_not_reached": 78,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  },
+  "sony/a7rv/DSC07857.ARW": {
+    "baseline": {
+      "moved_by_rule": 941,
+      "y_not_positive": 2947,
+      "negative_above_curve_end": 1926,
+      "display_clipped": 35711,
+      "pixels": 951220,
+      "sample_3000_dye_solve": {
+        "negative_not_reached": 32,
+        "print_not_reached": 50,
+        "paper_exposure_outside_curve": 0
+      }
+    }
+  }
+}

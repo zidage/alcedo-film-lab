@@ -395,6 +395,8 @@ class ModelOptions:
     # 'log_linear' (spectral_film_lut: log sensitivity extended linearly inside 380-780 nm)
     sensitivity_outside: str = "zero"
     negative_dye_basis: str = "gaussian_fit"  # or 'band_split' (spectral_film_lut)
+    negative_profile: str = "kodak_portra_400"
+    print_profile: str = "kodak_endura_premier"
 
 
 class ReferenceModel:
@@ -441,8 +443,8 @@ class ReferenceModel:
         self.w_status_m = self.grid.weights(np.stack([product(f"ANSI_STATUS_M_{c}") for c in ("RED", "GREEN", "BLUE")]))
         self.w_status_a = self.grid.weights(np.stack([product(f"ANSI_STATUS_A_{c}") for c in ("RED", "GREEN", "BLUE")]))
 
-        portra = load_profile("kodak_portra_400")
-        endura = load_profile("kodak_endura_premier")
+        portra = load_profile(o.negative_profile)
+        endura = load_profile(o.print_profile)
         layers = ("cyan_forming_layer", "magenta_forming_layer", "yellow_forming_layer")
         sens = portra["charts"]["spectral_sensitivity"]["curves"]
         neg_values, neg_support = zip(*(self._sensitivity(sens[k], fwl) for k in layers))

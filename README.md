@@ -8,10 +8,13 @@ principles and source measurements. The implementation must support **CUDA, Meta
 The research combines useful ideas from **Fotufilm** and **spektrafilm**, with independent code
 and data preparation where practical.
 
-**Status (2026-10-29): P0 measured.** This repository contains the research direction, the
-proposed route from proof of concept (PoC) to a standalone minimum viable product (MVP), and
-step P0: digitized Portra 400 and Endura Premier curves, a float64 host spectral evaluator, and
-the [P0 report](docs/exploration/p0_data_and_reference.md). There is no renderer, no GPU
+**Status (2026-10-30): P0 measured; P1 spectral input measured (RGC open, U13).** This
+repository contains the research direction, the proposed route from proof of concept (PoC) to a
+standalone minimum viable product (MVP), step P0 (digitized Portra 400 and Endura Premier curves,
+a float64 host spectral evaluator, [P0 report](docs/exploration/p0_data_and_reference.md)), and
+step P1 (seven spectral reconstructions from AP1 compared by Portra layer exposure on measured
+reflectances, light probes, 21 camera sensitivities, and RAW files,
+[P1 report](docs/exploration/p1_spectral_input.md)). There is no renderer, no GPU
 measurement, and no completed validation yet. The step index is
 [docs/exploration/README.md](docs/exploration/README.md). Agent rules are in
 [AGENTS.md](AGENTS.md).
@@ -58,6 +61,17 @@ until experiments support them.
 | U10 | (2026-10-29) Do not publish the original Kodak documents (data sheet PDFs). The data that the lab scripts make from them (digitized profiles, results) can be published. |
 | U11 | (2026-10-29) spectral_film_lut is MIT. Its methods, code, and data can be adopted directly; keep its notice ([THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)). No separate re-derivation is required. |
 | U12 | (2026-10-29) Fotufilm (Apache-2.0) can be used as a reference. Avoid spektrafilm as a reference for new work as far as possible. |
+| U13 | (2026-10-29) RGC is out of scope of step P1 for now. P1 measures the spectral input without RGC; the RGC verification and its location stay open. The user also supplied the RAW library of the Alcedo Studio tests for P1 and pointed to rawtoaces-data as a data source. |
+| U14 | (2026-10-30, delegated to the P1 step by the user) Inputs with Y <= 0 give zero radiance; inputs outside the reachable spectral cone move toward the reference white at constant Y to the cone boundary (rule `spectral_locus_projection`). This rule is not RGC. |
+| U15 | (2026-10-30, delegated to the P1 step by the user) P1 layer acceptance per dataset under daylight: Status M error p95 at most (0.025, 0.011, 0.054), the between-dataset metamer p95, and signed median at most 0.01. The max is reported and is not a criterion. |
+| U16 | (2026-10-30) The DRT receives no camera identity; the method must generalize across cameras. Camera sensitivities can only simulate input and build a population statistic. |
+| U17 | (2026-10-30) The scene white is available for RAW input. Non-RAW input is assumed to have the ACES white. The priority is the final rendered appearance, which must be pleasing; do not over-engineer the model for numeric accuracy. |
+| U18 | (2026-10-30) Set an appearance baseline: the render must look at least near the reference projects. spektrafilm is run as an external comparison for this purpose (exception to U12); its code, tables, and profiles are not reused. A result that follows its output is not independent. Portrait RAW files are the main test images. |
+| U19 | (2026-10-30) The chroma is too high and the texture is poor: take ideas from the traditional darkroom process. KODAK VISION3 5207 and 5219 are important stocks. The display gamut compression can follow the method of the ACES RGC. |
+| U20 | (2026-10-30) Restore the tungsten character of 5219. LED and fluorescent spectra differ strongly from daylight, so the scene light is a spectrum and not only a white point. |
+| U21 | (2026-10-30) Product requirement: the user can select the scene light manually. The default is daylight. Options include fluorescent and LED, and the selection changes the spectral reconstruction, mainly for night photos. |
+| U22 | (2026-10-30) The product should offer a scene choice rather than one light, because a night photo usually mixes tungsten, LED, and sodium. This extends U21. |
+| U23 | (2026-10-30) Simulate the modern film workflow in addition to the 2383 print: scan the negative, encode as ADX, and export through ACES 1.3 or 2.0. Inside this path only, the ACES output transform is the display rendering (exception to U6 for this path). The first version uses ADX with published APD responsivities as an ideal scanner. Scanner candidates for later: ARRISCAN, Blackmagic Cintel. ALEV III reference: the estimate of [Yellowmoon](https://github.com/ngriaznov/yellowmoon). Both items are step P3 (section 8). See the [source audit](docs/research/modern_film_scan_workflow.md). |
 
 The target source license is GPL-3.0-only. Third-party code, measurements, profiles, and derived
 tables retain their applicable license terms.
@@ -141,6 +155,11 @@ Scene-referred RGB with an explicit encoding
   -> explicit display luminance and gamut treatment
   -> output encoding
 ```
+
+**Scene light (U21, U22).** The scene light is a user control of the product, with daylight as the default and
+choices such as tungsten, fluorescent, LED, and sodium. Step P3 studies a scene choice in place of one light. It selects the spectrum that multiplies the reconstructed
+reflectance before the film-layer exposure. The white point cannot show that a light has spectral spikes, so
+this is a choice and not a detection. The [P2 report](docs/exploration/p2_negative_and_print.md#83-night-photos-and-the-scene-light-as-a-product-control-u21) has the first results.
 
 The first experiment should use one negative and one print material with traceable data.
 Portra 400 with an Endura-family paper is a candidate, subject to the source-data audit. The
@@ -265,16 +284,19 @@ negative density, changing its appearance, or adopting either reference project'
 
 ## 8. Route from PoC to MVP
 
-P0 is measured (2026-10-29, [report](docs/exploration/p0_data_and_reference.md)); the other
-steps are **not started**. They are experimental deliverables, not claims of product support. Define numerical tolerances before evaluating each candidate.
+P0 is measured (2026-10-29, [report](docs/exploration/p0_data_and_reference.md)). P1 is measured
+for the spectral input (2026-10-30, [report](docs/exploration/p1_spectral_input.md)); its RGC
+part is open (U13). P2 is in progress ([report](docs/exploration/p2_negative_and_print.md)). The
+other steps are **not started**. They are experimental deliverables, not claims of product support. Define numerical tolerances before evaluating each candidate.
 
 | Step | Question and work | Required evidence |
 | --- | --- | --- |
 | P0: data and reference | Can one negative and print pair be specified from traceable sources? Digitize curves, define units and density meanings, and implement a host spectral evaluator. | Source manifest and hashes; curve overlays; explicit inferred fields; neutral exposure and density checks; dense-integration convergence. |
 | P1: spectral input and RGC | Which independent reconstruction gives stable XYZ and film-layer exposure? Compare compact spectral models and a measured-data prior. Verify standard RGC against its published criteria. | Held-out XYZ and layer-exposure errors; exposure scaling; metamer comparison; near-black and saturated-light probes; documented RGC location and residual domain failures. |
 | P2: negative and print | Does the complete pointwise process retain the measured characteristic response? Add dye/base separation, development coupling, print exposure, filtration, and viewing conditions. | Neutral and color sweeps; instrument-density reconstruction; total transmission checks; parameter-isolation tests; comparison with available physical measurements. |
-| P3: spectral acceleration | Can staged tables or optimized integration reproduce the direct evaluator across the declared domain? | Maximum and distribution of errors; table-boundary continuity; negative and print density coverage; construction time; resource size. |
-| P4: three GPU backends | Do CUDA, Metal, and OpenCL execute the same complete model at full image resolution? | Per-backend numerical comparison; device and driver records; cold and warm timings; full-resolution export time; steady and peak memory; explicit failure cases. |
+| P3: scene presets and scanned-negative output | (a) Can the product offer a scene choice in place of one light, when a night scene mixes tungsten, LED, and sodium? (b) Can a digital intermediate path be simulated: the negative of P2, a scanner, an ADX encoding, and an ACES 1.3 or 2.0 output, in place of a 2383 print? | (a) Definition of each scene as named CIE spectra and weights; user review on night photos; a statement of what a global mixture cannot do. (b) Source and license of the APD responsivities, the ADX encoding, and the ADX to ACES transform; ADX values of a neutral ramp against the published encoding; a statement of which scanner fields are public and which are inferred; user review against a second path that uses the print model of P2; how much difference between stocks each path keeps. |
+| P4: spectral acceleration | Can staged tables or optimized integration reproduce the direct evaluator across the declared domain? | Maximum and distribution of errors; table-boundary continuity; negative and print density coverage; construction time; resource size. |
+| P5: three GPU backends | Do CUDA, Metal, and OpenCL execute the same complete model at full image resolution? | Per-backend numerical comparison; device and driver records; cold and warm timings; full-resolution export time; steady and peak memory; explicit failure cases. |
 | MVP: standalone workflow | Can one program run the selected pipeline, controls, and export with the same results as the experiments? | Shared pipeline used by CLI and a small desktop viewer; repeatable parameter files; backend selection; full-resolution output; cost report; user review of appearance and controls. |
 
 The MVP must include the complete negative-to-print chain, an explicit display interpretation,

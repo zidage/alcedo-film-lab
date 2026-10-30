@@ -1,0 +1,200 @@
+{
+ "canon_r5ii_237A2108.CR3": {
+  "matched_ev_vs_sensor": 1.23,
+  "review_rule_ev": 2.0,
+  "spektrafilm": [
+   3.5,
+   31.4,
+   82.8,
+   9.3,
+   30.0
+  ],
+  "matched": [
+   3.6,
+   31.5,
+   84.6,
+   6.1,
+   30.3
+  ]
+ },
+ "nikon_zf_DSC_1535.NEF": {
+  "matched_ev_vs_sensor": 0.64,
+  "review_rule_ev": 1.11,
+  "spektrafilm": [
+   3.3,
+   44.8,
+   69.9,
+   5.6,
+   25.8
+  ],
+  "matched": [
+   3.7,
+   45.5,
+   69.8,
+   3.7,
+   24.2
+  ]
+ },
+ "sony_a7riii_DSC00674.ARW": {
+  "matched_ev_vs_sensor": 1.61,
+  "review_rule_ev": 3.18,
+  "spektrafilm": [
+   3.0,
+   29.7,
+   72.4,
+   23.8,
+   63.7
+  ],
+  "matched": [
+   3.0,
+   29.4,
+   81.1,
+   20.9,
+   64.5
+  ]
+ },
+ "nikon_d3x_nikon_d3x_08.nef": {
+  "matched_ev_vs_sensor": 0.98,
+  "review_rule_ev": 1.61,
+  "spektrafilm": [
+   3.0,
+   29.6,
+   85.5,
+   14.6,
+   59.5
+  ],
+  "matched": [
+   4.2,
+   29.7,
+   87.5,
+   10.2,
+   51.5
+  ]
+ },
+ "sony_a7cii_Sonya7c2-Bracaglia-05.ARW": {
+  "matched_ev_vs_sensor": 1.14,
+  "review_rule_ev": 2.37,
+  "spektrafilm": [
+   3.0,
+   46.8,
+   80.3,
+   9.6,
+   34.9
+  ],
+  "matched": [
+   3.0,
+   47.7,
+   81.5,
+   6.2,
+   31.8
+  ]
+ },
+ "sony_a7rii_DSC00602.ARW": {
+  "matched_ev_vs_sensor": 0.7,
+  "review_rule_ev": 1.39,
+  "spektrafilm": [
+   3.0,
+   26.1,
+   82.9,
+   12.7,
+   26.5
+  ],
+  "matched": [
+   3.2,
+   26.0,
+   86.1,
+   8.4,
+   21.2
+  ]
+ },
+ "fuji_xt5_DSCF1787.RAF": {
+  "matched_ev_vs_sensor": 0.52,
+  "review_rule_ev": 2.04,
+  "spektrafilm": [
+   3.0,
+   21.2,
+   69.7,
+   10.7,
+   62.5
+  ],
+  "matched": [
+   3.0,
+   20.4,
+   79.3,
+   5.6,
+   51.4
+  ]
+ },
+ "sony_a7riii_DSC00728.ARW": {
+  "matched_ev_vs_sensor": 0.67,
+  "review_rule_ev": 2.02,
+  "spektrafilm": [
+   3.0,
+   8.5,
+   84.3,
+   4.8,
+   34.1
+  ],
+  "matched": [
+   3.2,
+   8.7,
+   87.4,
+   3.9,
+   32.0
+  ]
+ },
+ "nikon_d800e_Nikon-D800e-raw-00007.nef": {
+  "matched_ev_vs_sensor": 1.64,
+  "review_rule_ev": 2.85,
+  "spektrafilm": [
+   2.8,
+   9.2,
+   85.1,
+   5.3,
+   27.4
+  ],
+  "matched": [
+   3.1,
+   9.3,
+   88.8,
+   3.8,
+   21.4
+  ]
+ },
+ "leica_m10_L1001108.dng": {
+  "matched_ev_vs_sensor": 3.14,
+  "review_rule_ev": 4.87,
+  "spektrafilm": [
+   3.0,
+   12.9,
+   59.1,
+   19.8,
+   56.7
+  ],
+  "matched": [
+   3.1,
+   13.1,
+   68.1,
+   18.7,
+   54.3
+  ]
+ },
+ "nikon_d810_DSC_7647.NEF": {
+  "matched_ev_vs_sensor": 1.64,
+  "review_rule_ev": 2.07,
+  "spektrafilm": [
+   10.9,
+   48.6,
+   70.3,
+   34.5,
+   46.7
+  ],
+  "matched": [
+   8.3,
+   47.9,
+   73.2,
+   41.5,
+   67.1
+  ]
+ }
+}

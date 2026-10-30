@@ -7,6 +7,7 @@ stated conditions, the quantity and unit of each axis, and the provenance of the
 | --- | --- | --- | --- |
 | [`kodak_portra_400.json`](kodak_portra_400.json) | KODAK PROFESSIONAL PORTRA 400 (C-41 negative) | E-4050, Revised 2-16, page 4 | digitized points (PDF vector paths) |
 | [`kodak_endura_premier.json`](kodak_endura_premier.json) | KODAK PROFESSIONAL ENDURA Premier Paper (RA-4) | E-4070, Revised 12-17, pages 4 and 5 | digitized points (PDF vector paths) |
+| `kodak_5207.json`, `kodak_5219.json`, `kodak_2383.json` | KODAK VISION3 250D 5207, VISION3 500T 5219, VISION 2383 | spectral_film_lut (MIT) at `bcbcfc68` | digitized by that project; linearly resampled by `scripts/poc/p2_negative_print/import_cine_profiles.py`; not checked against Kodak documents |
 
 `digitize_kodak_charts.py` (step P0) writes these files. The curves are resampled on 1 nm
 (spectral charts) or 0.01 log10 lux-seconds (characteristic charts) inside the published domain

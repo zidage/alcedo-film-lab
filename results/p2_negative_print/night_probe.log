@@ -1,0 +1,42 @@
+daylight D55 grey on curves (stops) [-0.54, 0.18, 1.14]
+fluorescent FL11 grey on curves (stops) [-0.75, 0.28, 0.4]
+led LED-B3 grey on curves (stops) [-0.6, 0.1, 0.11]
+sodium HP1 grey on curves (stops) [-0.61, -0.66, -1.94]
+tungsten T3200 grey on curves (stops) [0.0, 0.0, 0.0]
+_DSC8148 exposure stops 2.47 Y p50/p99 [0.117, 1.006]
+  daylight L5/50/95 [12.0, 35.0, 62.0] C50/95 [16.0, 34.0] above curve 0 after compression % 0.03
+  fluorescent L5/50/95 [12.0, 34.0, 62.0] C50/95 [16.0, 39.0] above curve 0 after compression % 0.05
+  led L5/50/95 [12.0, 35.0, 62.0] C50/95 [17.0, 41.0] above curve 0 after compression % 0.03
+  sodium L5/50/95 [11.0, 34.0, 61.0] C50/95 [22.0, 47.0] above curve 0 after compression % 0.0
+  tungsten L5/50/95 [12.0, 35.0, 62.0] C50/95 [22.0, 41.0] above curve 0 after compression % 0.02
+_DSC8169 exposure stops 1.13 Y p50/p99 [0.025, 2.182]
+  daylight L5/50/95 [4.0, 7.0, 74.0] C50/95 [6.0, 55.0] above curve 0 after compression % 0.93
+  fluorescent L5/50/95 [4.0, 7.0, 72.0] C50/95 [4.0, 58.0] above curve 0 after compression % 1.42
+  led L5/50/95 [4.0, 7.0, 74.0] C50/95 [4.0, 56.0] above curve 0 after compression % 0.92
+  sodium L5/50/95 [4.0, 6.0, 70.0] C50/95 [4.0, 45.0] above curve 0 after compression % 0.02
+  tungsten L5/50/95 [4.0, 7.0, 74.0] C50/95 [3.0, 55.0] above curve 0 after compression % 0.71
+_DSC8170 exposure stops 1.5 Y p50/p99 [0.054, 2.592]
+  daylight L5/50/95 [4.0, 17.0, 71.0] C50/95 [9.0, 46.0] above curve 0 after compression % 0.0
+  fluorescent L5/50/95 [4.0, 17.0, 71.0] C50/95 [8.0, 46.0] above curve 0 after compression % 0.0
+  led L5/50/95 [4.0, 17.0, 71.0] C50/95 [7.0, 47.0] above curve 0 after compression % 0.0
+  sodium L5/50/95 [5.0, 15.0, 69.0] C50/95 [6.0, 44.0] above curve 0 after compression % 0.0
+  tungsten L5/50/95 [4.0, 17.0, 71.0] C50/95 [7.0, 50.0] above curve 0 after compression % 0.0
+_DSC8085 exposure stops 1.8 Y p50/p99 [0.094, 1.185]
+  daylight L5/50/95 [5.0, 29.0, 64.0] C50/95 [13.0, 31.0] above curve 0 after compression % 0.02
+  fluorescent L5/50/95 [5.0, 29.0, 64.0] C50/95 [12.0, 35.0] above curve 0 after compression % 0.02
+  led L5/50/95 [5.0, 29.0, 64.0] C50/95 [12.0, 37.0] above curve 0 after compression % 0.01
+  sodium L5/50/95 [5.0, 27.0, 63.0] C50/95 [11.0, 46.0] above curve 0 after compression % 0.0
+  tungsten L5/50/95 [5.0, 30.0, 64.0] C50/95 [12.0, 39.0] above curve 0 after compression % 0.01
+_DSC8159 exposure stops 3.03 Y p50/p99 [0.116, 0.74]
+  daylight L5/50/95 [7.0, 35.0, 64.0] C50/95 [16.0, 40.0] above curve 0 after compression % 0.0
+  fluorescent L5/50/95 [7.0, 34.0, 64.0] C50/95 [16.0, 41.0] above curve 0 after compression % 0.0
+  led L5/50/95 [7.0, 35.0, 64.0] C50/95 [15.0, 43.0] above curve 0 after compression % 0.0
+  sodium L5/50/95 [7.0, 34.0, 63.0] C50/95 [17.0, 47.0] above curve 0 after compression % 0.0
+  tungsten L5/50/95 [7.0, 35.0, 64.0] C50/95 [18.0, 45.0] above curve 0 after compression % 0.0
+_DSC8175 exposure stops 1.7 Y p50/p99 [0.062, 1.6]
+  daylight L5/50/95 [4.0, 20.0, 69.0] C50/95 [7.0, 21.0] above curve 0 after compression % 0.0
+  fluorescent L5/50/95 [4.0, 20.0, 69.0] C50/95 [7.0, 21.0] above curve 0 after compression % 0.0
+  led L5/50/95 [4.0, 19.0, 69.0] C50/95 [6.0, 21.0] above curve 0 after compression % 0.0
+  sodium L5/50/95 [4.0, 17.0, 67.0] C50/95 [5.0, 26.0] above curve 0 after compression % 0.0
+  tungsten L5/50/95 [4.0, 20.0, 69.0] C50/95 [5.0, 25.0] above curve 0 after compression % 0.0
+
