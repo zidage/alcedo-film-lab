@@ -24,7 +24,7 @@
 | A DPX log scan of a negative looks nothing like the final film. A PFE LUT simulates the negative and the print. | [What's After the Movie: archival LUT](https://www.whatsafterthemovie.com/wiki/term/archival-lut) | Glossary, secondary |
 | "The substantial part of the perceptual look comes from the mathematical preparation of the image for display." | [S. Yedlin, On Color Science](https://www.yedlin.net/NerdyFilmTechStuff/OnColorScience/) | Direct, one author's position |
 | Tone is not sufficient: a color response model is also necessary. Yedlin cites measured 5219 data. Grain, halation, and gate weave are separate attributes. | Same | Direct |
-| In a blind demonstration, film and digital footage receive the same display preparation. | [ASC: display prep demo](https://theasc.com/news/yedlin-releases-display-prep-demo) | Direct |
+| A demonstration alternates film and digital footage, both with custom display preparation, and does not state which is which. | [ASC: display prep demo](https://theasc.com/news/yedlin-releases-display-prep-demo) | Direct |
 | A PFE treats the image as if it was printed onto a stock. Some LUTs expect a Cineon curve as input. Accurate public print data is rare. | [Lowepost: PFE workflow](https://lowepost.com/insider/insights/print-film-emulation-workflow-r76/) (the full article is paid; this audit read the public part and search extracts) | Practitioner |
 | A facility creates a show LUT, and it also makes dailies film prints and print screenings on a film production. | [FotoKem blog](https://fotokem.com/blog/) | Facility, no technical values |
 
@@ -49,8 +49,8 @@ is not in this lab.
   ([ACESCentral](https://community.acescentral.com/t/setting-up-a-scanner-for-adx-encoding/3434)).
 - **ADX16 and ADX10.** ADX16 has a density range near 8, and ADX10 near 2. A scan with the ADX10 range in a 16-bit file
   appears wrong with the ADX16 transform ([ACESCentral](https://community.acescentral.com/t/film-scans-setup-with-aces-workflow/1341)).
-  P3 starts with ADX10, because it is the range of the transform above. The negatives in this lab stay below that range
-  on normal exposure; P3 must count the values that do not.
+  P3 starts with ADX10, because it is the range of the transform above. A thread says that few negative stocks exceed
+  this range. This lab did not measure this for its stocks, so P3 must count the values outside the range.
 - **Licenses.** `ampas/aces-dev` and `ampas/aces-output` report Apache-2.0 on their default branches. The Yellowmoon
   notice describes the tag v1.3.1 under an AMPAS license. Check the license at the tag before any reuse.
 
