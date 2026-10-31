@@ -1,0 +1,849 @@
+{
+  "scenes": {
+    "daylight": [
+      [
+        "D55",
+        1.0
+      ]
+    ],
+    "sodium": [
+      [
+        "HP1",
+        1.0
+      ]
+    ],
+    "street_mixed": [
+      [
+        "T2800",
+        0.3
+      ],
+      [
+        "LED-B3",
+        0.4
+      ],
+      [
+        "HP1",
+        0.3
+      ]
+    ],
+    "street_sodium": [
+      [
+        "HP1",
+        0.7
+      ],
+      [
+        "T2800",
+        0.15
+      ],
+      [
+        "LED-B3",
+        0.15
+      ]
+    ],
+    "street_led": [
+      [
+        "LED-B3",
+        0.75
+      ],
+      [
+        "T2800",
+        0.15
+      ],
+      [
+        "HP1",
+        0.1
+      ]
+    ],
+    "interior_warm": [
+      [
+        "T2800",
+        0.7
+      ],
+      [
+        "LED-B3",
+        0.3
+      ]
+    ],
+    "interior_office": [
+      [
+        "FL11",
+        0.5
+      ],
+      [
+        "LED-B3",
+        0.5
+      ]
+    ]
+  },
+  "grey_on_curves_stops": {
+    "daylight": [
+      -0.54,
+      0.18,
+      1.14
+    ],
+    "sodium": [
+      -0.61,
+      -0.66,
+      -1.94
+    ],
+    "street_mixed": [
+      -0.33,
+      -0.14,
+      -0.46
+    ],
+    "street_sodium": [
+      -0.46,
+      -0.42,
+      -1.14
+    ],
+    "street_led": [
+      -0.46,
+      0.02,
+      -0.08
+    ],
+    "interior_warm": [
+      -0.02,
+      -0.01,
+      -0.26
+    ],
+    "interior_office": [
+      -0.67,
+      0.19,
+      0.26
+    ]
+  },
+  "images": {
+    "_DSC8085": {
+      "daylight": {
+        "L_p5_p50_p95": [
+          4.9,
+          29.7,
+          66.1
+        ],
+        "C_p50_p95": [
+          13.5,
+          40.7
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.0,
+          0.0
+        ]
+      },
+      "sodium": {
+        "L_p5_p50_p95": [
+          5.3,
+          27.7,
+          65.0
+        ],
+        "C_p50_p95": [
+          16.0,
+          51.6
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          9.4,
+          29.5
+        ]
+      },
+      "street_mixed": {
+        "L_p5_p50_p95": [
+          4.9,
+          29.2,
+          65.8
+        ],
+        "C_p50_p95": [
+          15.0,
+          48.9
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          3.8,
+          16.1
+        ]
+      },
+      "street_sodium": {
+        "L_p5_p50_p95": [
+          5.1,
+          28.4,
+          65.4
+        ],
+        "C_p50_p95": [
+          15.6,
+          50.3
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          6.8,
+          23.7
+        ]
+      },
+      "street_led": {
+        "L_p5_p50_p95": [
+          4.9,
+          29.3,
+          65.8
+        ],
+        "C_p50_p95": [
+          14.3,
+          48.0
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          3.3,
+          12.6
+        ]
+      },
+      "interior_warm": {
+        "L_p5_p50_p95": [
+          5.0,
+          30.0,
+          66.1
+        ],
+        "C_p50_p95": [
+          15.7,
+          48.6
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          1.2,
+          10.3
+        ]
+      },
+      "interior_office": {
+        "L_p5_p50_p95": [
+          4.9,
+          29.3,
+          65.8
+        ],
+        "C_p50_p95": [
+          14.1,
+          46.1
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          3.4,
+          6.3
+        ]
+      },
+      "street_mixed_aces20": {
+        "L_p5_p50_p95": [
+          3.1,
+          31.3,
+          64.3
+        ],
+        "C_p50_p95": [
+          11.8,
+          28.2
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          7.0,
+          16.6
+        ]
+      }
+    },
+    "_DSC8148": {
+      "daylight": {
+        "L_p5_p50_p95": [
+          12.1,
+          36.2,
+          64.4
+        ],
+        "C_p50_p95": [
+          21.4,
+          43.9
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.0,
+          0.0
+        ]
+      },
+      "sodium": {
+        "L_p5_p50_p95": [
+          11.2,
+          35.7,
+          64.3
+        ],
+        "C_p50_p95": [
+          29.7,
+          52.6
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          8.7,
+          30.4
+        ]
+      },
+      "street_mixed": {
+        "L_p5_p50_p95": [
+          11.9,
+          36.4,
+          64.5
+        ],
+        "C_p50_p95": [
+          27.3,
+          50.2
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          4.0,
+          12.2
+        ]
+      },
+      "street_sodium": {
+        "L_p5_p50_p95": [
+          11.5,
+          36.0,
+          64.4
+        ],
+        "C_p50_p95": [
+          28.6,
+          51.4
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          6.5,
+          20.8
+        ]
+      },
+      "street_led": {
+        "L_p5_p50_p95": [
+          11.9,
+          36.3,
+          64.4
+        ],
+        "C_p50_p95": [
+          25.4,
+          49.5
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          3.1,
+          10.1
+        ]
+      },
+      "interior_warm": {
+        "L_p5_p50_p95": [
+          12.3,
+          37.1,
+          64.6
+        ],
+        "C_p50_p95": [
+          28.3,
+          49.9
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.8,
+          6.8
+        ]
+      },
+      "interior_office": {
+        "L_p5_p50_p95": [
+          11.8,
+          35.9,
+          64.2
+        ],
+        "C_p50_p95": [
+          23.5,
+          47.9
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          2.1,
+          5.4
+        ]
+      },
+      "street_mixed_aces20": {
+        "L_p5_p50_p95": [
+          13.9,
+          37.3,
+          63.2
+        ],
+        "C_p50_p95": [
+          17.3,
+          31.6
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          6.6,
+          15.1
+        ]
+      }
+    },
+    "_DSC8159": {
+      "daylight": {
+        "L_p5_p50_p95": [
+          6.7,
+          35.7,
+          65.6
+        ],
+        "C_p50_p95": [
+          18.4,
+          49.6
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.0,
+          0.0
+        ]
+      },
+      "sodium": {
+        "L_p5_p50_p95": [
+          7.0,
+          35.8,
+          65.0
+        ],
+        "C_p50_p95": [
+          22.5,
+          52.5
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          15.7,
+          37.5
+        ]
+      },
+      "street_mixed": {
+        "L_p5_p50_p95": [
+          6.8,
+          36.1,
+          65.5
+        ],
+        "C_p50_p95": [
+          21.1,
+          52.1
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          5.8,
+          16.8
+        ]
+      },
+      "street_sodium": {
+        "L_p5_p50_p95": [
+          6.8,
+          36.0,
+          65.3
+        ],
+        "C_p50_p95": [
+          21.8,
+          52.1
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          9.5,
+          26.8
+        ]
+      },
+      "street_led": {
+        "L_p5_p50_p95": [
+          6.7,
+          35.8,
+          65.5
+        ],
+        "C_p50_p95": [
+          19.8,
+          51.7
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          4.8,
+          14.6
+        ]
+      },
+      "interior_warm": {
+        "L_p5_p50_p95": [
+          7.0,
+          36.5,
+          65.7
+        ],
+        "C_p50_p95": [
+          22.5,
+          53.2
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          3.7,
+          11.9
+        ]
+      },
+      "interior_office": {
+        "L_p5_p50_p95": [
+          6.6,
+          35.2,
+          65.4
+        ],
+        "C_p50_p95": [
+          19.1,
+          50.4
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          2.5,
+          8.8
+        ]
+      },
+      "street_mixed_aces20": {
+        "L_p5_p50_p95": [
+          6.5,
+          36.7,
+          64.2
+        ],
+        "C_p50_p95": [
+          15.8,
+          40.2
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          3.3,
+          6.2
+        ]
+      }
+    },
+    "_DSC8169": {
+      "daylight": {
+        "L_p5_p50_p95": [
+          5.0,
+          15.9,
+          81.9
+        ],
+        "C_p50_p95": [
+          8.3,
+          41.7
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.0,
+          0.0
+        ]
+      },
+      "sodium": {
+        "L_p5_p50_p95": [
+          5.2,
+          13.5,
+          80.5
+        ],
+        "C_p50_p95": [
+          7.1,
+          36.5
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          21.7,
+          32.4
+        ]
+      },
+      "street_mixed": {
+        "L_p5_p50_p95": [
+          4.9,
+          15.0,
+          81.8
+        ],
+        "C_p50_p95": [
+          8.0,
+          42.5
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          13.7,
+          22.6
+        ]
+      },
+      "street_sodium": {
+        "L_p5_p50_p95": [
+          5.0,
+          14.2,
+          81.6
+        ],
+        "C_p50_p95": [
+          7.9,
+          40.2
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          17.1,
+          26.9
+        ]
+      },
+      "street_led": {
+        "L_p5_p50_p95": [
+          4.9,
+          15.3,
+          81.4
+        ],
+        "C_p50_p95": [
+          8.1,
+          43.4
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          13.5,
+          22.2
+        ]
+      },
+      "interior_warm": {
+        "L_p5_p50_p95": [
+          5.0,
+          15.6,
+          81.7
+        ],
+        "C_p50_p95": [
+          8.0,
+          42.6
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          10.9,
+          17.7
+        ]
+      },
+      "interior_office": {
+        "L_p5_p50_p95": [
+          4.9,
+          15.4,
+          80.1
+        ],
+        "C_p50_p95": [
+          8.6,
+          46.4
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          5.5,
+          13.7
+        ]
+      },
+      "street_mixed_aces20": {
+        "L_p5_p50_p95": [
+          3.1,
+          17.6,
+          88.4
+        ],
+        "C_p50_p95": [
+          6.5,
+          57.4
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          2.0,
+          4.7
+        ]
+      }
+    },
+    "_DSC8170": {
+      "daylight": {
+        "L_p5_p50_p95": [
+          4.5,
+          19.8,
+          75.5
+        ],
+        "C_p50_p95": [
+          7.6,
+          55.7
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.0,
+          0.0
+        ]
+      },
+      "sodium": {
+        "L_p5_p50_p95": [
+          4.8,
+          17.7,
+          73.4
+        ],
+        "C_p50_p95": [
+          9.0,
+          51.9
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          18.7,
+          24.2
+        ]
+      },
+      "street_mixed": {
+        "L_p5_p50_p95": [
+          4.5,
+          19.1,
+          74.8
+        ],
+        "C_p50_p95": [
+          8.5,
+          56.0
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          2.5,
+          8.1
+        ]
+      },
+      "street_sodium": {
+        "L_p5_p50_p95": [
+          4.6,
+          18.3,
+          74.0
+        ],
+        "C_p50_p95": [
+          9.0,
+          54.3
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          6.3,
+          17.4
+        ]
+      },
+      "street_led": {
+        "L_p5_p50_p95": [
+          4.4,
+          19.3,
+          75.1
+        ],
+        "C_p50_p95": [
+          8.2,
+          56.1
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          1.6,
+          5.0
+        ]
+      },
+      "interior_warm": {
+        "L_p5_p50_p95": [
+          4.4,
+          19.7,
+          75.3
+        ],
+        "C_p50_p95": [
+          8.8,
+          57.8
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.8,
+          2.6
+        ]
+      },
+      "interior_office": {
+        "L_p5_p50_p95": [
+          4.4,
+          19.4,
+          75.3
+        ],
+        "C_p50_p95": [
+          8.4,
+          55.2
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.4,
+          4.2
+        ]
+      },
+      "street_mixed_aces20": {
+        "L_p5_p50_p95": [
+          2.1,
+          22.0,
+          73.6
+        ],
+        "C_p50_p95": [
+          7.0,
+          49.7
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          3.5,
+          8.7
+        ]
+      }
+    },
+    "_DSC8175": {
+      "daylight": {
+        "L_p5_p50_p95": [
+          3.8,
+          20.5,
+          71.6
+        ],
+        "C_p50_p95": [
+          5.4,
+          24.6
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          0.0,
+          0.0
+        ]
+      },
+      "sodium": {
+        "L_p5_p50_p95": [
+          4.1,
+          17.6,
+          69.1
+        ],
+        "C_p50_p95": [
+          6.8,
+          33.0
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          15.7,
+          20.7
+        ]
+      },
+      "street_mixed": {
+        "L_p5_p50_p95": [
+          3.8,
+          19.5,
+          70.8
+        ],
+        "C_p50_p95": [
+          5.9,
+          30.1
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          7.1,
+          10.4
+        ]
+      },
+      "street_sodium": {
+        "L_p5_p50_p95": [
+          3.9,
+          18.5,
+          70.0
+        ],
+        "C_p50_p95": [
+          6.3,
+          31.2
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          11.8,
+          15.9
+        ]
+      },
+      "street_led": {
+        "L_p5_p50_p95": [
+          3.8,
+          19.8,
+          71.1
+        ],
+        "C_p50_p95": [
+          5.9,
+          28.6
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          6.0,
+          8.8
+        ]
+      },
+      "interior_warm": {
+        "L_p5_p50_p95": [
+          3.8,
+          20.3,
+          71.3
+        ],
+        "C_p50_p95": [
+          5.7,
+          31.1
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          3.1,
+          7.9
+        ]
+      },
+      "interior_office": {
+        "L_p5_p50_p95": [
+          3.8,
+          20.0,
+          71.3
+        ],
+        "C_p50_p95": [
+          6.4,
+          26.9
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          4.5,
+          6.5
+        ]
+      },
+      "street_mixed_aces20": {
+        "L_p5_p50_p95": [
+          0.9,
+          22.3,
+          69.1
+        ],
+        "C_p50_p95": [
+          4.0,
+          18.7
+        ],
+        "hue_change_top_1pct_chroma_abs_p50_p95_deg": [
+          9.9,
+          15.4
+        ]
+      }
+    }
+  }
+}

@@ -40,6 +40,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## ACES (aces-dev)
+
+- Source: <https://github.com/ampas/aces-dev>, tag v1.3.1, `transforms/ctl/csc/ADX/ACEScsc.Academy.ADX10_to_ACES.ctl`.
+- Reused in `scripts/poc/p3_scan_and_scene/aces_scan.py`: the constants and steps of the ADX10 to ACES transform.
+
+```text
+Copyright (c) 2015 Academy of Motion Picture Arts and Sciences (A.M.P.A.S.).
+Portions contributed by others as indicated. All rights reserved.
+
+Disclaimer of Warranty: THIS SOFTWARE IS PROVIDED BY A.M.P.A.S. AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL A.M.P.A.S., OR ANY
+CONTRIBUTORS OR DISTRIBUTORS, BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, RESITUTIONARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+WITHOUT LIMITING THE GENERALITY OF THE FOREGOING, THE ACADEMY SPECIFICALLY
+DISCLAIMS ANY REPRESENTATIONS OR WARRANTIES WHATSOEVER RELATED TO PATENT OR
+OTHER INTELLECTUAL PROPERTY RIGHTS IN THE ACADEMY COLOR ENCODING SYSTEM, OR
+APPLICATIONS THEREOF, HELD BY PARTIES OTHER THAN A.M.P.A.S.,WHETHER DISCLOSED OR
+UNDISCLOSED.
+```
+
+The name A.M.P.A.S. and the names of contributors are not used to endorse this project. The complete license terms are in `LICENSE.md` of that tag.
+
 ## Data read at run time (not in this repository)
 
 | Data | License | Use |
@@ -52,6 +82,9 @@ SOFTWARE.
 | Lu et al., *The International Skin Spectra Archive (ISSA)*, doi:10.6084/m9.figshare.28228571 (v4) | CC BY 4.0 | P1: test and prior training data, read at run time; no derived table is committed |
 | Clark et al., *USGS Spectral Library Version 7*, doi:10.5066/F7RR1WDJ | U.S. public domain | P1: test and prior training data, read at run time |
 | CIE 015:2018 FL, LED, and HP illuminant tables | CC BY-SA 4.0 | P1: scene lights |
+| SMPTE ST 2065-2:2020 tables and ST 2065-3:2020 | SMPTE copyright, all rights reserved | P3: downloaded by `scripts/poc/p3_scan_and_scene/fetch_sources.py`, read at run time; not committed |
+| Film Analyzer public chart measurements (<https://filmanalyzer.talkativephotographer.com/>) | not stated | P3: read at run time as a comparison, kept in `build/tmp/`; the report quotes a few values with the source; the model is not fitted to them |
+| OpenColorIO 2.6 (Academy Software Foundation) | BSD-3-Clause | P3: ACES output transforms, installed as a Python package; not redistributed |
 
 ## Methods from publications (no code reused)
 

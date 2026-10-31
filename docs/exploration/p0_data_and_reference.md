@@ -72,7 +72,7 @@ Can one negative and print pair be specified from traceable sources? Step P0 doe
   1.8e-5 density and 0.0009 Delta E*ab on the end-to-end ramp. A cut published curve must be
   integrated over its own support. Without that, a cut curve is an O(h) error, and in the first
   run this error was 0.012 log units at 1 nm.
-- **Coarse integration (input for P4):**
+- **Coarse integration (input for P5):**
   - The end-to-end ramp meets 0.1 Delta E*ab at 5 nm with hat-projected weights (0.067), but
     not at 1 nm with point sampling (0.12).
   - Status M of dense negatives needs 1 nm with both rules (3.5e-4 at 1 nm, 1.4e-3 at 2 nm).
@@ -371,7 +371,7 @@ Observations:
 - **End-to-end ramp.** The steep paper curves amplify the errors (print gamma near 3). The ramp
   meets 0.1 Delta E with projected weights up to 5 nm, but with point sampling not even at 1 nm.
 - **Narrowband light.** Narrowband sources (FWHM 10 nm) need 1 nm or finer with both rules.
-  A small fixed band count cannot represent them without a different method (P4).
+  A small fixed band count cannot represent them without a different method (P5).
 
 ## 8. Recommendation
 
@@ -389,9 +389,9 @@ Observations:
    or spectral data. The evaluator already keeps both anchors apart (H*_i from the curve, the
    speed point from the spectra). A 0.1 log H anchor error gives C*ab 13 on the print grey
    (section 7.3).
-4. **Use the 0.1 nm support-restricted trapezoid as the numerical reference in P1 to P5.** It is
+4. **Use the 0.1 nm support-restricted trapezoid as the numerical reference in P1 to P6.** It is
    converged to below 0.001 Delta E*ab.
-5. **For P4, start from projected weights** (5 nm meets 0.1 Delta E*ab on the neutral ramp).
+5. **For P5, start from projected weights** (5 nm meets 0.1 Delta E*ab on the neutral ramp).
    Add separate treatment of the dense-dye transmission (the 10^-D nonlinearity) and of
    narrowband scene light. A fixed band count is not justified by these results.
 6. **Verify the Status M and Status A tables against ISO 5-3:2009** before a density claim is
@@ -413,7 +413,7 @@ Not measured in P0:
 - RGC (P1);
 - reconstruction of scene spectra from RGB (P1);
 - a coupler model (P2);
-- GPU execution, time, and memory (P5);
+- GPU execution, time, and memory (P6);
 - photos;
 - user review of appearance.
 

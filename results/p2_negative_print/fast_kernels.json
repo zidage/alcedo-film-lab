@@ -29,44 +29,44 @@
   "125.0": 0.00016783348110038787
  },
  "render": {
-  "srgb_difference_p999": 3.5215918889937137e-05,
-  "srgb_difference_max": 6.53599088422177e-05,
+  "srgb_difference_p999": 2.6905983779446562e-05,
+  "srgb_difference_max": 4.967784202236647e-05,
   "counts_kernel": {
    "moved_by_rule": 0,
    "y_not_positive": 0,
    "negative_above_curve_end": 0,
    "pixels": 1000000,
-   "display_clipped": 279349,
-   "display_clipped_after_compression": 87387
+   "display_clipped": 253538,
+   "display_clipped_after_compression": 87621
   },
   "counts_reference": {
    "moved_by_rule": 0,
    "y_not_positive": 0,
    "negative_above_curve_end": 0,
-   "display_clipped": 279349,
+   "display_clipped": 253542,
    "pixels": 1000000,
-   "display_clipped_after_compression": 87395
+   "display_clipped_after_compression": 87622
   }
  },
  "render_wide": {
-  "srgb_difference_p999": 1.2909719056020521e-05,
-  "srgb_difference_max": 5.052592457227556e-05,
+  "srgb_difference_p999": 1.2407916463294475e-05,
+  "srgb_difference_max": 5.21334542453733e-05,
   "counts_kernel": {
    "moved_by_rule": 64923,
    "y_not_positive": 22786,
-   "negative_above_curve_end": 1236
+   "negative_above_curve_end": 1017
   },
   "counts_reference": {
    "moved_by_rule": 64923,
    "y_not_positive": 22786,
-   "negative_above_curve_end": 1236
+   "negative_above_curve_end": 1017
   }
  },
  "time_ms": {
-  "render_kernels": 102.7,
-  "render_reference": 3061.5,
+  "render_kernels": 101.5,
+  "render_reference": 2950.2,
   "pixels": 1000000,
-  "print_table_build": 2300.0
+  "print_table_build": 2207.4
  },
  "product_grade": {
   "relative_linear_error_max": 4.054905111383878e-05,

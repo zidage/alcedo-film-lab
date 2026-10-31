@@ -1,0 +1,2222 @@
+{
+ "source": "https://filmanalyzer.talkativephotographer.com/browse/ (per-patch values not stored here)",
+ "stocks": {
+  "5207": {
+   "set": "5207_ls9000",
+   "paths": {
+    "print": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       51.6,
+       40.7,
+       28.8,
+       15.8,
+       6.4,
+       3.7
+      ],
+      "-1": [
+       66.6,
+       57.6,
+       46.0,
+       30.1,
+       14.5,
+       4.8
+      ],
+      "0": [
+       77.6,
+       71.1,
+       62.0,
+       47.4,
+       28.2,
+       9.7
+      ],
+      "1": [
+       85.3,
+       80.8,
+       74.3,
+       63.2,
+       45.3,
+       20.7
+      ],
+      "2": [
+       89.8,
+       87.4,
+       83.3,
+       75.1,
+       61.5,
+       36.4
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       2.4,
+       -0.3,
+       -1.1,
+       0.6,
+       1.3,
+       0.5
+      ],
+      "-1": [
+       5.7,
+       3.0,
+       0.3,
+       -1.0,
+       0.1,
+       0.9
+      ],
+      "0": [
+       7.3,
+       5.9,
+       4.0,
+       0.8,
+       -2.1,
+       1.2
+      ],
+      "1": [
+       8.5,
+       7.6,
+       6.4,
+       4.3,
+       -0.8,
+       -1.2
+      ],
+      "2": [
+       8.4,
+       8.5,
+       8.1,
+       6.6,
+       3.1,
+       -2.0
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 26.2,
+      "-1": 39.5,
+      "0": 40.1,
+      "1": 36.2,
+      "2": 26.5
+     },
+     "stops_to_real_neutral_5": 1.22,
+     "delta_e_median": 16.5,
+     "hue_difference_abs_median_deg": 6.5,
+     "chroma_ratio_median": 0.75,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": 15.0,
+      "Light Skin": 14.0,
+      "Blue Sky": -6.0,
+      "Foliage": 2.0,
+      "Blue Flower": 28.0,
+      "Bluish Green": -30.0,
+      "Orange": 5.0,
+      "Purplish Blue": 6.0,
+      "Moderate Red": 2.0,
+      "Purple": 19.0,
+      "Yellow Green": 1.0,
+      "Orange Yellow": 4.0,
+      "Blue": -11.0,
+      "Green": -3.0,
+      "Red": -7.0,
+      "Yellow": 4.0,
+      "Magenta": 8.0,
+      "Cyan": -19.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.99,
+      "Light Skin": 0.94,
+      "Blue Sky": 0.29,
+      "Foliage": 0.81,
+      "Blue Flower": 0.44,
+      "Bluish Green": 0.81,
+      "Orange": 0.71,
+      "Purplish Blue": 0.48,
+      "Moderate Red": 0.66,
+      "Purple": 0.75,
+      "Yellow Green": 0.78,
+      "Orange Yellow": 0.74,
+      "Blue": 0.56,
+      "Green": 0.79,
+      "Red": 0.68,
+      "Yellow": 0.78,
+      "Magenta": 0.66,
+      "Cyan": 0.81
+     }
+    },
+    "aces13": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       44.9,
+       33.5,
+       22.8,
+       11.5,
+       2.9,
+       0.2
+      ],
+      "-1": [
+       63.9,
+       51.9,
+       38.7,
+       23.9,
+       10.2,
+       1.3
+      ],
+      "0": [
+       80.2,
+       70.7,
+       57.6,
+       40.2,
+       22.2,
+       5.8
+      ],
+      "1": [
+       89.6,
+       84.3,
+       75.7,
+       59.1,
+       38.0,
+       15.7
+      ],
+      "2": [
+       94.6,
+       91.7,
+       87.1,
+       76.8,
+       56.8,
+       29.6
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       1.4,
+       -0.0,
+       -0.7,
+       -1.1,
+       -0.5,
+       -0.2
+      ],
+      "-1": [
+       2.5,
+       1.2,
+       0.2,
+       -0.6,
+       -1.5,
+       -0.3
+      ],
+      "0": [
+       2.5,
+       2.1,
+       1.4,
+       0.4,
+       -1.3,
+       -1.1
+      ],
+      "1": [
+       1.9,
+       1.9,
+       2.1,
+       1.5,
+       -0.5,
+       -1.6
+      ],
+      "2": [
+       1.3,
+       1.4,
+       1.8,
+       2.1,
+       0.6,
+       -1.0
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 18.8,
+      "-1": 25.3,
+      "0": 30.5,
+      "1": 36.5,
+      "2": 26.5
+     },
+     "stops_to_real_neutral_5": 1.37,
+     "delta_e_median": 17.7,
+     "hue_difference_abs_median_deg": 8.9,
+     "chroma_ratio_median": 0.66,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": 2.0,
+      "Light Skin": 0.0,
+      "Blue Sky": -18.0,
+      "Foliage": 15.0,
+      "Blue Flower": 7.0,
+      "Bluish Green": -17.0,
+      "Orange": -1.0,
+      "Purplish Blue": 3.0,
+      "Moderate Red": -8.0,
+      "Purple": 18.0,
+      "Yellow Green": 14.0,
+      "Orange Yellow": 6.0,
+      "Blue": -15.0,
+      "Green": 8.0,
+      "Red": -17.0,
+      "Yellow": 10.0,
+      "Magenta": 2.0,
+      "Cyan": -31.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.73,
+      "Light Skin": 0.63,
+      "Blue Sky": 0.47,
+      "Foliage": 0.88,
+      "Blue Flower": 0.63,
+      "Bluish Green": 1.09,
+      "Orange": 0.53,
+      "Purplish Blue": 0.54,
+      "Moderate Red": 0.73,
+      "Purple": 0.77,
+      "Yellow Green": 0.64,
+      "Orange Yellow": 0.51,
+      "Blue": 0.48,
+      "Green": 1.0,
+      "Red": 0.69,
+      "Yellow": 0.49,
+      "Magenta": 0.83,
+      "Cyan": 1.0
+     }
+    },
+    "aces20": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       42.7,
+       33.8,
+       24.2,
+       12.5,
+       2.7,
+       0.1
+      ],
+      "-1": [
+       57.0,
+       47.9,
+       38.0,
+       25.3,
+       11.2,
+       1.1
+      ],
+      "0": [
+       70.3,
+       62.0,
+       52.3,
+       39.1,
+       23.6,
+       6.1
+      ],
+      "1": [
+       81.2,
+       74.7,
+       66.1,
+       53.4,
+       37.4,
+       17.1
+      ],
+      "2": [
+       88.7,
+       84.3,
+       77.9,
+       67.1,
+       51.7,
+       30.5
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       1.0,
+       -0.0,
+       -0.7,
+       -1.2,
+       -0.6,
+       -0.0
+      ],
+      "-1": [
+       1.7,
+       0.8,
+       0.2,
+       -0.6,
+       -1.8,
+       -0.3
+      ],
+      "0": [
+       1.9,
+       1.3,
+       0.9,
+       0.3,
+       -1.3,
+       -1.3
+      ],
+      "1": [
+       1.8,
+       1.5,
+       1.4,
+       1.0,
+       -0.4,
+       -1.8
+      ],
+      "2": [
+       1.3,
+       1.4,
+       1.5,
+       1.4,
+       0.4,
+       -0.9
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 19.0,
+      "-1": 23.7,
+      "0": 27.3,
+      "1": 29.3,
+      "2": 26.3
+     },
+     "stops_to_real_neutral_5": 1.92,
+     "delta_e_median": 22.1,
+     "hue_difference_abs_median_deg": 13.0,
+     "chroma_ratio_median": 0.56,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": -0.0,
+      "Light Skin": -9.0,
+      "Blue Sky": -21.0,
+      "Foliage": 16.0,
+      "Blue Flower": 4.0,
+      "Bluish Green": -23.0,
+      "Orange": -15.0,
+      "Purplish Blue": 1.0,
+      "Moderate Red": -5.0,
+      "Purple": 19.0,
+      "Yellow Green": 22.0,
+      "Orange Yellow": -1.0,
+      "Blue": -20.0,
+      "Green": 9.0,
+      "Red": -17.0,
+      "Yellow": 11.0,
+      "Magenta": 8.0,
+      "Cyan": -31.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.58,
+      "Light Skin": 0.5,
+      "Blue Sky": 0.29,
+      "Foliage": 0.65,
+      "Blue Flower": 0.33,
+      "Bluish Green": 0.99,
+      "Orange": 0.41,
+      "Purplish Blue": 0.37,
+      "Moderate Red": 0.63,
+      "Purple": 0.61,
+      "Yellow Green": 0.53,
+      "Orange Yellow": 0.37,
+      "Blue": 0.41,
+      "Green": 0.76,
+      "Red": 0.63,
+      "Yellow": 0.4,
+      "Magenta": 0.62,
+      "Cyan": 0.78
+     }
+    },
+    "direct": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       60.9,
+       48.2,
+       35.2,
+       21.2,
+       9.0,
+       2.5
+      ],
+      "-1": [
+       79.4,
+       68.3,
+       54.3,
+       36.5,
+       19.7,
+       5.3
+      ],
+      "0": [
+       91.4,
+       84.8,
+       73.9,
+       55.9,
+       34.6,
+       13.8
+      ],
+      "1": [
+       96.9,
+       94.0,
+       88.3,
+       75.3,
+       53.5,
+       26.5
+      ],
+      "2": [
+       98.9,
+       97.9,
+       95.6,
+       89.1,
+       73.3,
+       43.5
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       0.9,
+       -0.3,
+       -0.6,
+       -0.4,
+       0.2,
+       0.2
+      ],
+      "-1": [
+       0.8,
+       -0.1,
+       -0.4,
+       -0.5,
+       -1.3,
+       0.1
+      ],
+      "0": [
+       0.6,
+       0.1,
+       -0.2,
+       -0.3,
+       -1.6,
+       -0.7
+      ],
+      "1": [
+       0.3,
+       0.2,
+       0.0,
+       -0.0,
+       -1.6,
+       -1.6
+      ],
+      "2": [
+       0.1,
+       0.1,
+       0.1,
+       0.1,
+       -1.2,
+       -1.8
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 33.1,
+      "-1": 43.6,
+      "0": 49.4,
+      "1": 43.1,
+      "2": 28.6
+     },
+     "stops_to_real_neutral_5": 0.51,
+     "delta_e_median": 7.8,
+     "hue_difference_abs_median_deg": 6.5,
+     "chroma_ratio_median": 0.91,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": 8.0,
+      "Light Skin": 2.0,
+      "Blue Sky": 11.0,
+      "Foliage": 7.0,
+      "Blue Flower": 4.0,
+      "Bluish Green": -10.0,
+      "Orange": 2.0,
+      "Purplish Blue": 13.0,
+      "Moderate Red": -4.0,
+      "Purple": 15.0,
+      "Yellow Green": 7.0,
+      "Orange Yellow": 6.0,
+      "Blue": 0.0,
+      "Green": -2.0,
+      "Red": -7.0,
+      "Yellow": 7.0,
+      "Magenta": -2.0,
+      "Cyan": -4.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.99,
+      "Light Skin": 0.93,
+      "Blue Sky": 0.7,
+      "Foliage": 1.0,
+      "Blue Flower": 1.08,
+      "Bluish Green": 0.99,
+      "Orange": 0.8,
+      "Purplish Blue": 0.84,
+      "Moderate Red": 0.9,
+      "Purple": 0.88,
+      "Yellow Green": 0.98,
+      "Orange Yellow": 0.86,
+      "Blue": 0.74,
+      "Green": 1.06,
+      "Red": 0.86,
+      "Yellow": 0.91,
+      "Magenta": 1.01,
+      "Cyan": 0.8
+     }
+    }
+   }
+  },
+  "5207_second_scanner": {
+   "set": "5207_xt5",
+   "paths": {
+    "print": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       51.6,
+       40.7,
+       28.8,
+       15.8,
+       6.4,
+       3.7
+      ],
+      "-1": [
+       66.6,
+       57.6,
+       46.0,
+       30.1,
+       14.5,
+       4.8
+      ],
+      "0": [
+       77.6,
+       71.1,
+       62.0,
+       47.4,
+       28.2,
+       9.7
+      ],
+      "1": [
+       85.3,
+       80.8,
+       74.3,
+       63.2,
+       45.3,
+       20.7
+      ],
+      "2": [
+       89.8,
+       87.4,
+       83.3,
+       75.1,
+       61.5,
+       36.4
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       2.4,
+       -0.3,
+       -1.1,
+       0.6,
+       1.3,
+       0.5
+      ],
+      "-1": [
+       5.7,
+       3.0,
+       0.3,
+       -1.0,
+       0.1,
+       0.9
+      ],
+      "0": [
+       7.3,
+       5.9,
+       4.0,
+       0.8,
+       -2.1,
+       1.2
+      ],
+      "1": [
+       8.5,
+       7.6,
+       6.4,
+       4.3,
+       -0.8,
+       -1.2
+      ],
+      "2": [
+       8.4,
+       8.5,
+       8.1,
+       6.6,
+       3.1,
+       -2.0
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 26.2,
+      "-1": 39.5,
+      "0": 40.1,
+      "1": 36.2,
+      "2": 26.5
+     },
+     "stops_to_real_neutral_5": 1.32,
+     "delta_e_median": 10.8,
+     "hue_difference_abs_median_deg": 7.5,
+     "chroma_ratio_median": 0.9,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": 4.0,
+      "Light Skin": 7.0,
+      "Blue Sky": -8.0,
+      "Foliage": 11.0,
+      "Blue Flower": 31.0,
+      "Bluish Green": -50.0,
+      "Orange": 4.0,
+      "Purplish Blue": 12.0,
+      "Moderate Red": -14.0,
+      "Purple": 7.0,
+      "Yellow Green": 7.0,
+      "Orange Yellow": 7.0,
+      "Blue": -4.0,
+      "Green": -7.0,
+      "Red": -15.0,
+      "Yellow": 8.0,
+      "Magenta": -9.0,
+      "Cyan": -29.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 1.01,
+      "Light Skin": 1.12,
+      "Blue Sky": 0.34,
+      "Foliage": 1.24,
+      "Blue Flower": 0.69,
+      "Bluish Green": 1.15,
+      "Orange": 0.78,
+      "Purplish Blue": 0.63,
+      "Moderate Red": 0.79,
+      "Purple": 1.29,
+      "Yellow Green": 1.08,
+      "Orange Yellow": 0.86,
+      "Blue": 0.79,
+      "Green": 1.32,
+      "Red": 0.71,
+      "Yellow": 0.95,
+      "Magenta": 1.01,
+      "Cyan": 0.86
+     }
+    },
+    "aces13": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       44.9,
+       33.5,
+       22.8,
+       11.5,
+       2.9,
+       0.2
+      ],
+      "-1": [
+       63.9,
+       51.9,
+       38.7,
+       23.9,
+       10.2,
+       1.3
+      ],
+      "0": [
+       80.2,
+       70.7,
+       57.6,
+       40.2,
+       22.2,
+       5.8
+      ],
+      "1": [
+       89.6,
+       84.3,
+       75.7,
+       59.1,
+       38.0,
+       15.7
+      ],
+      "2": [
+       94.6,
+       91.7,
+       87.1,
+       76.8,
+       56.8,
+       29.6
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       1.4,
+       -0.0,
+       -0.7,
+       -1.1,
+       -0.5,
+       -0.2
+      ],
+      "-1": [
+       2.5,
+       1.2,
+       0.2,
+       -0.6,
+       -1.5,
+       -0.3
+      ],
+      "0": [
+       2.5,
+       2.1,
+       1.4,
+       0.4,
+       -1.3,
+       -1.1
+      ],
+      "1": [
+       1.9,
+       1.9,
+       2.1,
+       1.5,
+       -0.5,
+       -1.6
+      ],
+      "2": [
+       1.3,
+       1.4,
+       1.8,
+       2.1,
+       0.6,
+       -1.0
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 18.8,
+      "-1": 25.3,
+      "0": 30.5,
+      "1": 36.5,
+      "2": 26.5
+     },
+     "stops_to_real_neutral_5": 1.44,
+     "delta_e_median": 14.0,
+     "hue_difference_abs_median_deg": 11.1,
+     "chroma_ratio_median": 0.82,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": -9.0,
+      "Light Skin": -7.0,
+      "Blue Sky": -19.0,
+      "Foliage": 24.0,
+      "Blue Flower": 7.0,
+      "Bluish Green": -36.0,
+      "Orange": -2.0,
+      "Purplish Blue": 9.0,
+      "Moderate Red": -24.0,
+      "Purple": 6.0,
+      "Yellow Green": 19.0,
+      "Orange Yellow": 9.0,
+      "Blue": -7.0,
+      "Green": 5.0,
+      "Red": -25.0,
+      "Yellow": 13.0,
+      "Magenta": -15.0,
+      "Cyan": -40.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.76,
+      "Light Skin": 0.75,
+      "Blue Sky": 0.6,
+      "Foliage": 1.37,
+      "Blue Flower": 1.02,
+      "Bluish Green": 1.51,
+      "Orange": 0.59,
+      "Purplish Blue": 0.74,
+      "Moderate Red": 0.9,
+      "Purple": 1.34,
+      "Yellow Green": 0.87,
+      "Orange Yellow": 0.59,
+      "Blue": 0.7,
+      "Green": 1.7,
+      "Red": 0.73,
+      "Yellow": 0.59,
+      "Magenta": 1.3,
+      "Cyan": 1.09
+     }
+    },
+    "aces20": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       42.7,
+       33.8,
+       24.2,
+       12.5,
+       2.7,
+       0.1
+      ],
+      "-1": [
+       57.0,
+       47.9,
+       38.0,
+       25.3,
+       11.2,
+       1.1
+      ],
+      "0": [
+       70.3,
+       62.0,
+       52.3,
+       39.1,
+       23.6,
+       6.1
+      ],
+      "1": [
+       81.2,
+       74.7,
+       66.1,
+       53.4,
+       37.4,
+       17.1
+      ],
+      "2": [
+       88.7,
+       84.3,
+       77.9,
+       67.1,
+       51.7,
+       30.5
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       1.0,
+       -0.0,
+       -0.7,
+       -1.2,
+       -0.6,
+       -0.0
+      ],
+      "-1": [
+       1.7,
+       0.8,
+       0.2,
+       -0.6,
+       -1.8,
+       -0.3
+      ],
+      "0": [
+       1.9,
+       1.3,
+       0.9,
+       0.3,
+       -1.3,
+       -1.3
+      ],
+      "1": [
+       1.8,
+       1.5,
+       1.4,
+       1.0,
+       -0.4,
+       -1.8
+      ],
+      "2": [
+       1.3,
+       1.4,
+       1.5,
+       1.4,
+       0.4,
+       -0.9
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 19.0,
+      "-1": 23.7,
+      "0": 27.3,
+      "1": 29.3,
+      "2": 26.3
+     },
+     "stops_to_real_neutral_5": 2.03,
+     "delta_e_median": 15.8,
+     "hue_difference_abs_median_deg": 15.3,
+     "chroma_ratio_median": 0.63,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": -11.0,
+      "Light Skin": -16.0,
+      "Blue Sky": -22.0,
+      "Foliage": 25.0,
+      "Blue Flower": 4.0,
+      "Bluish Green": -41.0,
+      "Orange": -17.0,
+      "Purplish Blue": 7.0,
+      "Moderate Red": -21.0,
+      "Purple": 6.0,
+      "Yellow Green": 28.0,
+      "Orange Yellow": 2.0,
+      "Blue": -12.0,
+      "Green": 5.0,
+      "Red": -25.0,
+      "Yellow": 15.0,
+      "Magenta": -10.0,
+      "Cyan": -41.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.6,
+      "Light Skin": 0.59,
+      "Blue Sky": 0.37,
+      "Foliage": 0.99,
+      "Blue Flower": 0.54,
+      "Bluish Green": 1.39,
+      "Orange": 0.45,
+      "Purplish Blue": 0.49,
+      "Moderate Red": 0.77,
+      "Purple": 1.04,
+      "Yellow Green": 0.73,
+      "Orange Yellow": 0.42,
+      "Blue": 0.6,
+      "Green": 1.28,
+      "Red": 0.67,
+      "Yellow": 0.48,
+      "Magenta": 0.96,
+      "Cyan": 0.85
+     }
+    },
+    "direct": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       60.9,
+       48.2,
+       35.2,
+       21.2,
+       9.0,
+       2.5
+      ],
+      "-1": [
+       79.4,
+       68.3,
+       54.3,
+       36.5,
+       19.7,
+       5.3
+      ],
+      "0": [
+       91.4,
+       84.8,
+       73.9,
+       55.9,
+       34.6,
+       13.8
+      ],
+      "1": [
+       96.9,
+       94.0,
+       88.3,
+       75.3,
+       53.5,
+       26.5
+      ],
+      "2": [
+       98.9,
+       97.9,
+       95.6,
+       89.1,
+       73.3,
+       43.5
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       0.9,
+       -0.3,
+       -0.6,
+       -0.4,
+       0.2,
+       0.2
+      ],
+      "-1": [
+       0.8,
+       -0.1,
+       -0.4,
+       -0.5,
+       -1.3,
+       0.1
+      ],
+      "0": [
+       0.6,
+       0.1,
+       -0.2,
+       -0.3,
+       -1.6,
+       -0.7
+      ],
+      "1": [
+       0.3,
+       0.2,
+       0.0,
+       -0.0,
+       -1.6,
+       -1.6
+      ],
+      "2": [
+       0.1,
+       0.1,
+       0.1,
+       0.1,
+       -1.2,
+       -1.8
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 33.1,
+      "-1": 43.6,
+      "0": 49.4,
+      "1": 43.1,
+      "2": 28.6
+     },
+     "stops_to_real_neutral_5": 0.58,
+     "delta_e_median": 14.2,
+     "hue_difference_abs_median_deg": 10.8,
+     "chroma_ratio_median": 1.11,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": -3.0,
+      "Light Skin": -5.0,
+      "Blue Sky": 11.0,
+      "Foliage": 15.0,
+      "Blue Flower": 5.0,
+      "Bluish Green": -29.0,
+      "Orange": 1.0,
+      "Purplish Blue": 18.0,
+      "Moderate Red": -21.0,
+      "Purple": 2.0,
+      "Yellow Green": 12.0,
+      "Orange Yellow": 10.0,
+      "Blue": 9.0,
+      "Green": -6.0,
+      "Red": -15.0,
+      "Yellow": 11.0,
+      "Magenta": -20.0,
+      "Cyan": -14.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 1.04,
+      "Light Skin": 1.1,
+      "Blue Sky": 0.88,
+      "Foliage": 1.55,
+      "Blue Flower": 1.8,
+      "Bluish Green": 1.38,
+      "Orange": 0.89,
+      "Purplish Blue": 1.13,
+      "Moderate Red": 1.11,
+      "Purple": 1.56,
+      "Yellow Green": 1.36,
+      "Orange Yellow": 1.01,
+      "Blue": 1.08,
+      "Green": 1.81,
+      "Red": 0.91,
+      "Yellow": 1.11,
+      "Magenta": 1.59,
+      "Cyan": 0.87
+     }
+    }
+   }
+  },
+  "5219": {
+   "set": "5219_ls9000",
+   "paths": {
+    "print": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       51.8,
+       40.8,
+       28.8,
+       15.7,
+       6.4,
+       3.8
+      ],
+      "-1": [
+       66.9,
+       57.8,
+       46.1,
+       30.1,
+       14.5,
+       4.8
+      ],
+      "0": [
+       78.0,
+       71.4,
+       62.3,
+       47.5,
+       28.2,
+       9.6
+      ],
+      "1": [
+       85.5,
+       81.2,
+       74.7,
+       63.5,
+       45.4,
+       20.7
+      ],
+      "2": [
+       90.1,
+       87.6,
+       83.5,
+       75.6,
+       61.8,
+       36.5
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       -3.4,
+       -7.4,
+       -8.6,
+       -5.7,
+       -1.2,
+       0.6
+      ],
+      "-1": [
+       1.3,
+       -2.2,
+       -6.3,
+       -8.5,
+       -6.0,
+       -0.1
+      ],
+      "0": [
+       4.5,
+       2.2,
+       -0.9,
+       -5.7,
+       -9.6,
+       -3.4
+      ],
+      "1": [
+       6.9,
+       5.3,
+       2.9,
+       -0.4,
+       -7.4,
+       -8.5
+      ],
+      "2": [
+       7.9,
+       7.3,
+       5.9,
+       3.2,
+       -1.8,
+       -9.4
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 27.4,
+      "-1": 38.5,
+      "0": 41.3,
+      "1": 34.5,
+      "2": 24.5
+     },
+     "stops_to_real_neutral_5": 1.18,
+     "delta_e_median": 18.5,
+     "hue_difference_abs_median_deg": 9.7,
+     "chroma_ratio_median": 0.68,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": 79.0,
+      "Light Skin": 19.0,
+      "Blue Sky": -2.0,
+      "Foliage": -19.0,
+      "Blue Flower": 21.0,
+      "Bluish Green": -21.0,
+      "Orange": 7.0,
+      "Purplish Blue": 0.0,
+      "Moderate Red": 10.0,
+      "Purple": 26.0,
+      "Yellow Green": -3.0,
+      "Orange Yellow": 6.0,
+      "Blue": -10.0,
+      "Green": -9.0,
+      "Red": -3.0,
+      "Yellow": 7.0,
+      "Magenta": 10.0,
+      "Cyan": -18.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 1.57,
+      "Light Skin": 0.91,
+      "Blue Sky": 0.37,
+      "Foliage": 0.88,
+      "Blue Flower": 0.43,
+      "Bluish Green": 0.66,
+      "Orange": 0.67,
+      "Purplish Blue": 0.49,
+      "Moderate Red": 0.65,
+      "Purple": 0.59,
+      "Yellow Green": 0.77,
+      "Orange Yellow": 0.69,
+      "Blue": 0.52,
+      "Green": 0.81,
+      "Red": 0.74,
+      "Yellow": 0.74,
+      "Magenta": 0.62,
+      "Cyan": 0.79
+     }
+    },
+    "aces13": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       45.1,
+       33.5,
+       22.6,
+       11.2,
+       2.8,
+       0.3
+      ],
+      "-1": [
+       64.3,
+       52.2,
+       38.9,
+       23.8,
+       10.0,
+       1.4
+      ],
+      "0": [
+       80.6,
+       71.2,
+       58.0,
+       40.3,
+       22.1,
+       5.5
+      ],
+      "1": [
+       89.8,
+       84.6,
+       76.1,
+       59.5,
+       38.2,
+       15.5
+      ],
+      "2": [
+       94.9,
+       92.0,
+       87.4,
+       77.3,
+       57.2,
+       29.6
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       -3.3,
+       -4.3,
+       -4.4,
+       -4.0,
+       -2.1,
+       0.0
+      ],
+      "-1": [
+       -2.5,
+       -3.7,
+       -4.3,
+       -4.4,
+       -4.3,
+       -1.1
+      ],
+      "0": [
+       -0.9,
+       -2.6,
+       -3.5,
+       -4.2,
+       -5.0,
+       -3.4
+      ],
+      "1": [
+       0.0,
+       -0.8,
+       -2.0,
+       -3.4,
+       -5.1,
+       -4.9
+      ],
+      "2": [
+       0.5,
+       0.1,
+       -0.5,
+       -1.8,
+       -4.3,
+       -5.1
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 20.3,
+      "-1": 27.3,
+      "0": 32.9,
+      "1": 33.5,
+      "2": 24.3
+     },
+     "stops_to_real_neutral_5": 1.34,
+     "delta_e_median": 17.9,
+     "hue_difference_abs_median_deg": 10.4,
+     "chroma_ratio_median": 0.65,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": 66.0,
+      "Light Skin": -1.0,
+      "Blue Sky": -11.0,
+      "Foliage": -11.0,
+      "Blue Flower": 4.0,
+      "Bluish Green": -10.0,
+      "Orange": -0.0,
+      "Purplish Blue": -2.0,
+      "Moderate Red": 1.0,
+      "Purple": 25.0,
+      "Yellow Green": 11.0,
+      "Orange Yellow": 8.0,
+      "Blue": -16.0,
+      "Green": -1.0,
+      "Red": -11.0,
+      "Yellow": 13.0,
+      "Magenta": 5.0,
+      "Cyan": -29.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 1.19,
+      "Light Skin": 0.55,
+      "Blue Sky": 0.53,
+      "Foliage": 1.04,
+      "Blue Flower": 0.66,
+      "Bluish Green": 0.91,
+      "Orange": 0.51,
+      "Purplish Blue": 0.55,
+      "Moderate Red": 0.75,
+      "Purple": 0.59,
+      "Yellow Green": 0.64,
+      "Orange Yellow": 0.48,
+      "Blue": 0.46,
+      "Green": 1.08,
+      "Red": 0.76,
+      "Yellow": 0.46,
+      "Magenta": 0.79,
+      "Cyan": 0.94
+     }
+    },
+    "aces20": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       42.8,
+       33.8,
+       24.0,
+       12.1,
+       2.6,
+       0.2
+      ],
+      "-1": [
+       57.3,
+       48.2,
+       38.1,
+       25.1,
+       10.8,
+       1.1
+      ],
+      "0": [
+       70.7,
+       62.5,
+       52.5,
+       39.2,
+       23.4,
+       5.7
+      ],
+      "1": [
+       81.6,
+       75.0,
+       66.5,
+       53.7,
+       37.5,
+       16.7
+      ],
+      "2": [
+       89.2,
+       84.8,
+       78.3,
+       67.5,
+       52.0,
+       30.4
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       -2.5,
+       -3.7,
+       -4.6,
+       -4.7,
+       -2.5,
+       -0.0
+      ],
+      "-1": [
+       -1.7,
+       -2.7,
+       -3.4,
+       -4.5,
+       -5.2,
+       -0.9
+      ],
+      "0": [
+       -0.7,
+       -1.7,
+       -2.5,
+       -3.3,
+       -5.2,
+       -4.5
+      ],
+      "1": [
+       0.1,
+       -0.7,
+       -1.5,
+       -2.4,
+       -4.0,
+       -5.6
+      ],
+      "2": [
+       0.6,
+       0.1,
+       -0.5,
+       -1.4,
+       -3.1,
+       -4.7
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 19.5,
+      "-1": 24.9,
+      "0": 26.8,
+      "1": 27.3,
+      "2": 23.4
+     },
+     "stops_to_real_neutral_5": 1.88,
+     "delta_e_median": 22.6,
+     "hue_difference_abs_median_deg": 10.9,
+     "chroma_ratio_median": 0.49,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": 66.0,
+      "Light Skin": -8.0,
+      "Blue Sky": -11.0,
+      "Foliage": -11.0,
+      "Blue Flower": 2.0,
+      "Bluish Green": -16.0,
+      "Orange": -13.0,
+      "Purplish Blue": -3.0,
+      "Moderate Red": 5.0,
+      "Purple": 25.0,
+      "Yellow Green": 18.0,
+      "Orange Yellow": 3.0,
+      "Blue": -21.0,
+      "Green": -2.0,
+      "Red": -10.0,
+      "Yellow": 15.0,
+      "Magenta": 8.0,
+      "Cyan": -28.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.93,
+      "Light Skin": 0.42,
+      "Blue Sky": 0.35,
+      "Foliage": 0.78,
+      "Blue Flower": 0.37,
+      "Bluish Green": 0.81,
+      "Orange": 0.38,
+      "Purplish Blue": 0.41,
+      "Moderate Red": 0.62,
+      "Purple": 0.46,
+      "Yellow Green": 0.52,
+      "Orange Yellow": 0.34,
+      "Blue": 0.39,
+      "Green": 0.83,
+      "Red": 0.69,
+      "Yellow": 0.38,
+      "Magenta": 0.57,
+      "Cyan": 0.76
+     }
+    },
+    "direct": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       61.5,
+       48.8,
+       35.6,
+       21.4,
+       9.3,
+       2.9
+      ],
+      "-1": [
+       79.8,
+       68.8,
+       54.9,
+       37.0,
+       20.0,
+       5.7
+      ],
+      "0": [
+       91.5,
+       85.1,
+       74.4,
+       56.4,
+       35.0,
+       14.0
+      ],
+      "1": [
+       96.9,
+       94.1,
+       88.5,
+       75.7,
+       54.1,
+       26.8
+      ],
+      "2": [
+       98.9,
+       97.9,
+       95.6,
+       89.3,
+       73.7,
+       44.0
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       -6.5,
+       -7.8,
+       -7.5,
+       -5.8,
+       -4.1,
+       0.7
+      ],
+      "-1": [
+       -5.0,
+       -7.1,
+       -7.9,
+       -7.5,
+       -6.4,
+       -2.4
+      ],
+      "0": [
+       -2.5,
+       -4.6,
+       -6.7,
+       -7.7,
+       -8.4,
+       -5.5
+      ],
+      "1": [
+       -0.9,
+       -2.0,
+       -3.8,
+       -6.4,
+       -9.0,
+       -7.7
+      ],
+      "2": [
+       -0.2,
+       -0.6,
+       -1.5,
+       -3.5,
+       -7.7,
+       -9.2
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 33.2,
+      "-1": 42.8,
+      "0": 46.7,
+      "1": 39.2,
+      "2": 24.4
+     },
+     "stops_to_real_neutral_5": 0.47,
+     "delta_e_median": 10.6,
+     "hue_difference_abs_median_deg": 6.5,
+     "chroma_ratio_median": 0.84,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": 72.0,
+      "Light Skin": -4.0,
+      "Blue Sky": 16.0,
+      "Foliage": -19.0,
+      "Blue Flower": 11.0,
+      "Bluish Green": 2.0,
+      "Orange": 3.0,
+      "Purplish Blue": 11.0,
+      "Moderate Red": 3.0,
+      "Purple": 20.0,
+      "Yellow Green": 3.0,
+      "Orange Yellow": 9.0,
+      "Blue": 0.0,
+      "Green": -11.0,
+      "Red": -1.0,
+      "Yellow": 10.0,
+      "Magenta": -0.0,
+      "Cyan": -0.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 1.55,
+      "Light Skin": 0.79,
+      "Blue Sky": 0.73,
+      "Foliage": 1.08,
+      "Blue Flower": 1.15,
+      "Bluish Green": 0.81,
+      "Orange": 0.76,
+      "Purplish Blue": 0.82,
+      "Moderate Red": 0.91,
+      "Purple": 0.72,
+      "Yellow Green": 0.95,
+      "Orange Yellow": 0.8,
+      "Blue": 0.7,
+      "Green": 1.06,
+      "Red": 0.92,
+      "Yellow": 0.85,
+      "Magenta": 0.97,
+      "Cyan": 0.79
+     }
+    }
+   }
+  },
+  "portra": {
+   "set": "portra400_xt5",
+   "paths": {
+    "print": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       56.9,
+       42.2,
+       26.6,
+       13.2,
+       7.3,
+       5.9
+      ],
+      "-1": [
+       76.1,
+       65.1,
+       49.3,
+       28.2,
+       12.1,
+       6.5
+      ],
+      "0": [
+       86.5,
+       81.0,
+       70.9,
+       51.1,
+       25.9,
+       8.9
+      ],
+      "1": [
+       90.2,
+       88.4,
+       84.1,
+       72.2,
+       48.5,
+       17.7
+      ],
+      "2": [
+       91.1,
+       90.6,
+       89.5,
+       84.8,
+       70.2,
+       36.6
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       0.3,
+       -0.2,
+       0.3,
+       -0.5,
+       -1.9,
+       -1.9
+      ],
+      "-1": [
+       -1.8,
+       -1.7,
+       -0.7,
+       0.5,
+       -1.2,
+       -1.9
+      ],
+      "0": [
+       -2.7,
+       -2.8,
+       -2.4,
+       -0.6,
+       -0.8,
+       -1.5
+      ],
+      "1": [
+       -2.9,
+       -2.8,
+       -3.1,
+       -2.3,
+       -2.1,
+       -1.1
+      ],
+      "2": [
+       -3.0,
+       -3.0,
+       -2.9,
+       -3.0,
+       -3.4,
+       -1.6
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 22.1,
+      "-1": 38.0,
+      "0": 48.7,
+      "1": 38.9,
+      "2": 24.4
+     },
+     "stops_to_real_neutral_5": 0.05,
+     "delta_e_median": 9.0,
+     "hue_difference_abs_median_deg": 5.6,
+     "chroma_ratio_median": 0.97,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": -10.0,
+      "Light Skin": -3.0,
+      "Blue Sky": -3.0,
+      "Foliage": 16.0,
+      "Blue Flower": 9.0,
+      "Bluish Green": -9.0,
+      "Orange": -4.0,
+      "Purplish Blue": 4.0,
+      "Moderate Red": -9.0,
+      "Purple": 13.0,
+      "Yellow Green": 3.0,
+      "Orange Yellow": 2.0,
+      "Blue": 1.0,
+      "Green": 8.0,
+      "Red": -7.0,
+      "Yellow": 3.0,
+      "Magenta": -3.0,
+      "Cyan": -11.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 1.0,
+      "Light Skin": 1.09,
+      "Blue Sky": 0.82,
+      "Foliage": 0.96,
+      "Blue Flower": 0.98,
+      "Bluish Green": 1.19,
+      "Orange": 0.87,
+      "Purplish Blue": 0.89,
+      "Moderate Red": 1.02,
+      "Purple": 1.2,
+      "Yellow Green": 1.04,
+      "Orange Yellow": 0.92,
+      "Blue": 0.93,
+      "Green": 1.13,
+      "Red": 0.86,
+      "Yellow": 0.96,
+      "Magenta": 1.31,
+      "Cyan": 0.92
+     }
+    },
+    "aces13": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       45.4,
+       33.0,
+       21.7,
+       9.8,
+       1.9,
+       0.0
+      ],
+      "-1": [
+       66.2,
+       53.1,
+       38.7,
+       22.8,
+       8.5,
+       0.7
+      ],
+      "0": [
+       82.7,
+       73.4,
+       59.4,
+       40.3,
+       21.1,
+       4.3
+      ],
+      "1": [
+       91.5,
+       86.7,
+       78.3,
+       61.0,
+       38.0,
+       14.2
+      ],
+      "2": [
+       96.2,
+       93.6,
+       89.3,
+       79.5,
+       58.6,
+       28.9
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       0.6,
+       0.6,
+       1.2,
+       1.6,
+       0.6,
+       0.0
+      ],
+      "-1": [
+       -0.8,
+       -0.6,
+       0.1,
+       1.2,
+       1.2,
+       0.4
+      ],
+      "0": [
+       -1.3,
+       -1.9,
+       -1.2,
+       0.1,
+       0.6,
+       0.9
+      ],
+      "1": [
+       -1.1,
+       -1.6,
+       -1.9,
+       -1.2,
+       -0.7,
+       0.9
+      ],
+      "2": [
+       -0.9,
+       -1.2,
+       -1.4,
+       -1.9,
+       -2.1,
+       -0.1
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 19.5,
+      "-1": 24.9,
+      "0": 27.8,
+      "1": 35.2,
+      "2": 25.3
+     },
+     "stops_to_real_neutral_5": 0.58,
+     "delta_e_median": 16.3,
+     "hue_difference_abs_median_deg": 14.7,
+     "chroma_ratio_median": 0.81,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": -14.0,
+      "Light Skin": -24.0,
+      "Blue Sky": -5.0,
+      "Foliage": 25.0,
+      "Blue Flower": 22.0,
+      "Bluish Green": -21.0,
+      "Orange": -10.0,
+      "Purplish Blue": -5.0,
+      "Moderate Red": -20.0,
+      "Purple": 13.0,
+      "Yellow Green": 9.0,
+      "Orange Yellow": -3.0,
+      "Blue": -18.0,
+      "Green": 16.0,
+      "Red": -18.0,
+      "Yellow": 3.0,
+      "Magenta": 0.0,
+      "Cyan": -35.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.66,
+      "Light Skin": 1.01,
+      "Blue Sky": 0.55,
+      "Foliage": 0.87,
+      "Blue Flower": 0.93,
+      "Bluish Green": 1.09,
+      "Orange": 0.68,
+      "Purplish Blue": 0.62,
+      "Moderate Red": 0.91,
+      "Purple": 1.05,
+      "Yellow Green": 0.68,
+      "Orange Yellow": 0.63,
+      "Blue": 0.55,
+      "Green": 1.01,
+      "Red": 0.78,
+      "Yellow": 0.62,
+      "Magenta": 1.27,
+      "Cyan": 0.83
+     }
+    },
+    "aces20": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       43.1,
+       33.4,
+       23.1,
+       10.6,
+       1.6,
+       0.0
+      ],
+      "-1": [
+       58.8,
+       48.9,
+       38.0,
+       24.2,
+       9.2,
+       0.4
+      ],
+      "0": [
+       73.2,
+       64.4,
+       53.7,
+       39.2,
+       22.5,
+       4.2
+      ],
+      "1": [
+       84.4,
+       77.8,
+       68.7,
+       54.9,
+       37.4,
+       15.4
+      ],
+      "2": [
+       91.7,
+       87.5,
+       81.1,
+       69.8,
+       53.1,
+       29.8
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       0.5,
+       0.5,
+       1.2,
+       1.7,
+       0.4,
+       0.0
+      ],
+      "-1": [
+       -0.4,
+       -0.4,
+       0.1,
+       1.2,
+       1.2,
+       0.1
+      ],
+      "0": [
+       -0.9,
+       -1.2,
+       -0.8,
+       0.1,
+       0.6,
+       0.9
+      ],
+      "1": [
+       -0.9,
+       -1.3,
+       -1.3,
+       -0.8,
+       -0.5,
+       0.9
+      ],
+      "2": [
+       -0.8,
+       -1.1,
+       -1.3,
+       -1.3,
+       -1.4,
+       -0.1
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 18.1,
+      "-1": 23.2,
+      "0": 24.6,
+      "1": 27.8,
+      "2": 25.2
+     },
+     "stops_to_real_neutral_5": 0.83,
+     "delta_e_median": 18.0,
+     "hue_difference_abs_median_deg": 17.8,
+     "chroma_ratio_median": 0.68,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": -17.0,
+      "Light Skin": -29.0,
+      "Blue Sky": 1.0,
+      "Foliage": 24.0,
+      "Blue Flower": 23.0,
+      "Bluish Green": -21.0,
+      "Orange": -20.0,
+      "Purplish Blue": -4.0,
+      "Moderate Red": -19.0,
+      "Purple": 14.0,
+      "Yellow Green": 10.0,
+      "Orange Yellow": -17.0,
+      "Blue": -35.0,
+      "Green": 16.0,
+      "Red": -20.0,
+      "Yellow": -11.0,
+      "Magenta": 3.0,
+      "Cyan": -35.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.64,
+      "Light Skin": 0.87,
+      "Blue Sky": 0.41,
+      "Foliage": 0.71,
+      "Blue Flower": 0.65,
+      "Bluish Green": 0.73,
+      "Orange": 0.59,
+      "Purplish Blue": 0.52,
+      "Moderate Red": 0.85,
+      "Purple": 1.01,
+      "Yellow Green": 0.49,
+      "Orange Yellow": 0.52,
+      "Blue": 0.42,
+      "Green": 0.77,
+      "Red": 0.76,
+      "Yellow": 0.49,
+      "Magenta": 1.04,
+      "Cyan": 0.72
+     }
+    },
+    "direct": {
+     "neutral_L_by_offset_unshifted": {
+      "-2": [
+       60.9,
+       48.2,
+       35.4,
+       21.3,
+       9.0,
+       2.2
+      ],
+      "-1": [
+       79.4,
+       68.3,
+       54.3,
+       36.7,
+       19.8,
+       5.2
+      ],
+      "0": [
+       91.3,
+       84.7,
+       73.9,
+       55.9,
+       34.8,
+       13.9
+      ],
+      "1": [
+       96.9,
+       94.0,
+       88.3,
+       75.3,
+       53.6,
+       26.6
+      ],
+      "2": [
+       98.9,
+       97.9,
+       95.6,
+       89.1,
+       73.3,
+       43.6
+      ]
+     },
+     "neutral_b_by_offset_unshifted": {
+      "-2": [
+       0.8,
+       -0.3,
+       -0.3,
+       -0.1,
+       -0.7,
+       0.2
+      ],
+      "-1": [
+       0.6,
+       -0.2,
+       -0.4,
+       -0.2,
+       -0.9,
+       -0.5
+      ],
+      "0": [
+       0.3,
+       -0.2,
+       -0.3,
+       -0.3,
+       -1.2,
+       -0.9
+      ],
+      "1": [
+       0.1,
+       -0.1,
+       -0.3,
+       -0.2,
+       -1.5,
+       -1.2
+      ],
+      "2": [
+       0.0,
+       -0.0,
+       -0.1,
+       -0.2,
+       -1.4,
+       -1.7
+      ]
+     },
+     "median_C_by_offset_unshifted": {
+      "-2": 29.9,
+      "-1": 39.5,
+      "0": 44.5,
+      "1": 39.5,
+      "2": 25.8
+     },
+     "stops_to_real_neutral_5": -0.18,
+     "delta_e_median": 11.9,
+     "hue_difference_abs_median_deg": 9.1,
+     "chroma_ratio_median": 0.89,
+     "hue_difference_deg_by_patch": {
+      "Dark Skin": -9.0,
+      "Light Skin": -4.0,
+      "Blue Sky": 4.0,
+      "Foliage": 17.0,
+      "Blue Flower": 12.0,
+      "Bluish Green": -27.0,
+      "Orange": -2.0,
+      "Purplish Blue": 8.0,
+      "Moderate Red": -14.0,
+      "Purple": 9.0,
+      "Yellow Green": 13.0,
+      "Orange Yellow": 7.0,
+      "Blue": -3.0,
+      "Green": 6.0,
+      "Red": -11.0,
+      "Yellow": 10.0,
+      "Magenta": -3.0,
+      "Cyan": -16.0
+     },
+     "chroma_ratio_by_patch": {
+      "Dark Skin": 0.73,
+      "Light Skin": 1.03,
+      "Blue Sky": 0.64,
+      "Foliage": 0.89,
+      "Blue Flower": 0.96,
+      "Bluish Green": 1.15,
+      "Orange": 0.78,
+      "Purplish Blue": 0.79,
+      "Moderate Red": 0.95,
+      "Purple": 1.19,
+      "Yellow Green": 0.93,
+      "Orange Yellow": 0.82,
+      "Blue": 0.81,
+      "Green": 1.02,
+      "Red": 0.88,
+      "Yellow": 0.89,
+      "Magenta": 1.24,
+      "Cyan": 0.72
+     }
+    }
+   }
+  }
+ },
+ "two_real_scanners_5207": {
+  "delta_e_median": 12.2,
+  "delta_e_max": 27.4,
+  "hue_difference_abs_median_deg": 7.7
+ }
+}

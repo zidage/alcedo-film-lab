@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-30.
 **Use:** input to step P3 of the [README route](../../README.md#8-route-from-poc-to-mvp) (decision U23).
-**Status:** source audit. This lab did not run an ADX path yet, and it did not measure a scanner.
+**Status:** source audit. The ADX to ACES path ran in the [P3 report](../exploration/p3_scan_and_scene.md), and the user dropped it (README U26). This lab did not measure a scanner. Section 11 of that report lists the classic scanner data.
 
 ## 1. Summary
 
@@ -38,7 +38,7 @@ is not in this lab.
   sensitivities and a printer lamp. ADX is in [SMPTE ST 2065-3](https://pub.smpte.org/doc/st2065-3/20200909-pub/st2065-3-2020.pdf).
 - **The transform.** [`ACEScsc.Academy.ADX10_to_ACES.ctl`](https://github.com/ampas/aces-dev/blob/v1.3.1/transforms/ctl/csc/ADX/ACEScsc.Academy.ADX10_to_ACES.ctl)
   has the name "Universal ADX10 to ACES Transform". This lab read the code:
-  1. channel dependent density = (ADX10 - 95) / 500;
+  1. channel dependent density = (ADX10 - 95) / 500. The encoding of ST 2065-3 has a scale of 1.00, 0.92, 0.95 per channel, and this step does not remove it;
   2. a 3x3 matrix to channel independent density;
   3. a table, and above density 0.6 a straight line with a slope of 100 / 55, to log exposure;
   4. power of 10, and a 3x3 matrix to ACES.
@@ -51,8 +51,8 @@ is not in this lab.
   appears wrong with the ADX16 transform ([ACESCentral](https://community.acescentral.com/t/film-scans-setup-with-aces-workflow/1341)).
   P3 starts with ADX10, because it is the range of the transform above. A thread says that few negative stocks exceed
   this range. This lab did not measure this for its stocks, so P3 must count the values outside the range.
-- **Licenses.** `ampas/aces-dev` and `ampas/aces-output` report Apache-2.0 on their default branches. The Yellowmoon
-  notice describes the tag v1.3.1 under an AMPAS license. Check the license at the tag before any reuse.
+- **Licenses.** `ampas/aces-dev` and `ampas/aces-output` report Apache-2.0 on their default branches. At the tag v1.3.1, `LICENSE.md` of aces-dev
+  is the A.M.P.A.S. license (checked in P3). Its notice is in [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md).
 
 ## 4. Scanners
 
@@ -80,6 +80,10 @@ blends tables by class. It also has manual presets, from its
 a scene can be a weighted mixture of classes. Its sensor map is a 3x3 matrix per light; this lab does not adopt that
 for the film input (README, P1 route). Its own report states that most of its fit lights miss its limits.
 
+## 5a. Direct scanning without a print
+
+The user reports that a developed negative is now usually scanned directly, with no print. [Film Analyzer](https://filmanalyzer.talkativephotographer.com/browse/kodak-5207-vision3-250d) shows the result on a chart per film and per scanner. The comparison is in the [P3 report, section 10](../exploration/p3_scan_and_scene.md#10-direct-scanning-real-measurements-and-a-direct-inversion-path).
+
 ## 6. Plan for P3
 
 1. Negative of P2 (spectral density), then APD responsivities, then APD, then ADX10.
@@ -87,5 +91,4 @@ for the film input (README, P1 route). Its own report states that most of its fi
 3. **Path B (comparison):** ADX10 or the same negative, then the 2383 print model of P2.
 4. Review on the portraits, the night files, and 5207 and 5219. Report how much difference between the stocks each path keeps.
 
-Open: APD responsivities must come from ST 2065-2, and a comparison with the APD table of spectral_film_lut must be
-recorded. Status: not started.
+The APD responsivities come from ST 2065-2, and they equal the table of spectral_film_lut after normalization. Status: see the [P3 report](../exploration/p3_scan_and_scene.md).

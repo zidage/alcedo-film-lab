@@ -22,7 +22,7 @@ OpenCL.
   this repository.
 - `docs/research/` holds source analysis, material data audits, papers, and algorithm
   comparisons.
-- `docs/exploration/` holds one report per step (P0 to P5, MVP) and an index of the measured
+- `docs/exploration/` holds one report per step (P0 to P6, MVP) and an index of the measured
   status.
 - New prototypes go under `scripts/poc/<name>/`. Each prototype directory has a `README.md` with
   the commands and a `requirements.txt`.
@@ -80,8 +80,8 @@ engineering blocker.
 
 The decisions in [README.md](README.md) bind every proposal and prototype. The most important ones:
 
-- **ACES means ACES Reference Gamut Compression (RGC), except in the scanned-negative path of P3 (README U23),
-  where the ACES output transform is the display rendering.** Do not append the ACES output transform
+- **ACES means ACES Reference Gamut Compression (RGC).** The ACES output path of P3 (README U23) was tested and
+  is dropped (README U26). Do not append the ACES output transform
   or its tone scale after the film model. A variant of RGC with other parameters or another domain
   has its own name and is not "the standard ACES RGC".
 - **Film grain is outside this lab.** Alcedo Studio keeps its own grain implementation.

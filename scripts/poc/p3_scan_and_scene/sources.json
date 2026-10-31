@@ -1,0 +1,42 @@
+{
+  "description": "Source files of step P3. fetch_sources.py downloads each file to build/tmp/p3/sources/ and stops with an error when a SHA-256 hash differs.",
+  "retrieved": "2026-10-30",
+  "sources": [
+    {
+      "file": "st2065-2-20200527-pub.zip",
+      "url": "https://pub.smpte.org/pub/st2065-2/st2065-2-20200527-pub.zip",
+      "sha256": "7bdff67862fb1a7c8e329f0c89743cf3716b34f02406ed4b206d9591c2e3c36c",
+      "title": "SMPTE ST 2065-2:2020, Academy Printing Density (APD), with the elements st2065-2a-2020.csv (spectral responsivities, 2 nm) and st2065-2b-2020.csv (influx spectrum)",
+      "edition": "2020-05-27",
+      "license": "Copyright SMPTE, all rights reserved. Do not commit the PDF or the tables.",
+      "use": "Spectral responsivities of the ideal scanner, read at run time."
+    },
+    {
+      "file": "st2065-3-2020.pdf",
+      "url": "https://pub.smpte.org/doc/st2065-3/20200909-pub/st2065-3-2020.pdf",
+      "sha256": "fb6949a21d729494ad71fc848f9df667c56c29ead0e1357e38ed224f1856d764",
+      "title": "SMPTE ST 2065-3:2020, Academy Density Exchange Encoding (ADX)",
+      "edition": "2020-09-09",
+      "license": "Copyright SMPTE, all rights reserved. Do not commit the PDF.",
+      "use": "Equation 2: the ADX10 encoding, implemented in aces_scan.py."
+    },
+    {
+      "file": "ACEScsc.Academy.ADX10_to_ACES.ctl",
+      "url": "https://raw.githubusercontent.com/ampas/aces-dev/v1.3.1/transforms/ctl/csc/ADX/ACEScsc.Academy.ADX10_to_ACES.ctl",
+      "sha256": "740c5fda7d9e75557eda2599041aa19dd3c6cad51f98c5cca34a3de01affe1f2",
+      "title": "Universal ADX10 to ACES Transform, aces-dev v1.3.1",
+      "edition": "v1.3.1, transform ID ACEScsc.Academy.ADX10_to_ACES.a1.0.3",
+      "license": "A.M.P.A.S. license of aces-dev v1.3.1 (see THIRD_PARTY_NOTICES.md).",
+      "use": "Constants and steps ported to aces_scan.py."
+    },
+    {
+      "file": "aces-dev-LICENSE.md",
+      "url": "https://raw.githubusercontent.com/ampas/aces-dev/v1.3.1/LICENSE.md",
+      "sha256": "cf614fceabe08ebc5618bb79ab056ced3e68967cc32f60245bd64fabd6731833",
+      "title": "License of aces-dev v1.3.1",
+      "edition": "v1.3.1",
+      "license": "A.M.P.A.S.",
+      "use": "Record of the license of the ported transform."
+    }
+  ]
+}

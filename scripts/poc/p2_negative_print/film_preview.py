@@ -106,6 +106,7 @@ UV_NODES = 192
 UV_MAX = (0.66, 0.62)
 DENSITY_NODES = 65
 SOLVE_ITERATIONS = 16
+UV_SMOOTH_BLEND = (0.05, 0.15)  # u'v' distance from the white where sigma_near changes to sigma_far
 METER_CAP = 16.0
 # Product default of a RAW file in Alcedo Studio: alcedo_studio/src/include/edit/graph/pipeline_document.hpp.
 # A raster file has a neutral grade. The review uses rule 'center_weighted_exposure' in place of the +1.5 EV.
@@ -122,7 +123,7 @@ def bradford_matrix(source_xyz: np.ndarray, target_xyz: np.ndarray) -> np.ndarra
     return np.linalg.inv(BRADFORD) @ np.diag(gain) @ BRADFORD
 
 
-NOT_IN_PRINT_TABLE = ("gamut_compress", "gamut_threshold", "gamut_limit", "gamut_power", "scene_flare", "display_white", "frame_mm", "scatter_um", "halation", "halation_um",
+NOT_IN_PRINT_TABLE = ("uv_smooth", "gamut_compress", "gamut_threshold", "gamut_limit", "gamut_power", "scene_flare", "display_white", "frame_mm", "scatter_um", "halation", "halation_um",
                       "adjacency_gain", "adjacency_um", "enlarger_flare", "enlarger_flare_size")
 
 
@@ -161,6 +162,7 @@ class FilmOptions:
     adjacency_um: float = 60.0
     enlarger_flare: float = 0.0
     enlarger_flare_size: float = 0.1  # sigma, share of the long side
+    uv_smooth: tuple[float, float] = (0.0, 0.0)  # not part of the print table; sigma_near, sigma_far of rule 'smooth_reflectance_table'
 
     def key(self) -> str:
         fields = {k: v for k, v in asdict(self).items() if k not in NOT_IN_PRINT_TABLE}
@@ -170,7 +172,7 @@ class FilmOptions:
 # Review options after the darkroom comparison (README U19), for RAW input through product_input().
 # The input is product_input(): the default grade of the product comes before the film. So the chain has no interlayer
 # gain, and print_contrast takes back about the mid-grey slope of the grade (0.92 / 2^0.15 = 0.83).
-DARKROOM = dict(interlayer_gain=0.0, print_flash=0.02, print_contrast=0.85, viewing_flare=0.003, scatter_um=10.0,
+DARKROOM = dict(uv_smooth=(0.006, 0.025), interlayer_gain=0.0, print_flash=0.02, print_contrast=0.85, viewing_flare=0.003, scatter_um=10.0,
                 halation=(0.03, 0.008, 0.0), adjacency_gain=0.25, enlarger_flare=0.01, gamut_compress=True)
 
 # Printer lights of the cine prints. The LAD aim of 2383 (Status A about 1.06) is for a dark cinema. This value
@@ -180,6 +182,17 @@ CINE_GREY_STATUS_A = 0.85
 # Scene lights that the user selects (README U21). Default: daylight. One representative CIE spectrum per type;
 # real lamps of a type differ, and this table does not claim to match a lamp.
 PRODUCT_LIGHTS = {"daylight": "D55", "tungsten": "T3200", "fluorescent": "FL11", "led": "LED-B3", "sodium": "HP1"}
+
+# Scenes that the user selects in place of one light (README U22, step P3). Each one is a global mixture of named
+# spectra; the weights are shares of the luminance and the author's choice, not measurements of a place.
+# One spectrum applies to every pixel of the image: see the P3 report for what this cannot do.
+SCENE_PRESETS = {
+    "street_mixed": (("T2800", 0.3), ("LED-B3", 0.4), ("HP1", 0.3)),
+    "street_sodium": (("HP1", 0.7), ("T2800", 0.15), ("LED-B3", 0.15)),
+    "street_led": (("LED-B3", 0.75), ("T2800", 0.15), ("HP1", 0.1)),
+    "interior_warm": (("T2800", 0.7), ("LED-B3", 0.3)),
+    "interior_office": (("FL11", 0.5), ("LED-B3", 0.5)),
+}
 
 STOCKS = {
     "portra400_endura": {},
@@ -236,6 +249,9 @@ class FilmPreview:
     def light(self, name: str) -> np.ndarray:
         """Spectrum with Y = 1. 'E_ref'; 'D55' (CIE daylight, 100 K units); 'T3200' (Planckian); a CIE FL, LED or HP name."""
         wl = self.c.wavelengths
+        if name in SCENE_PRESETS:
+            # Rule 'scene_mixture': the weights are shares of the luminance, because each light has Y = 1.
+            return sum(weight * self.light(light) for light, weight in SCENE_PRESETS[name])
         if name == "E_ref":
             spectrum = self.c.e_ref
         elif name[0] == "D" and name[1:].isdigit():
@@ -315,6 +331,16 @@ class FilmPreview:
     def _load_uv_table(self) -> np.ndarray:
         # Rule 'relight': see the header. Fast, so that a light does not need a new reconstruction.
         rho = self._load_reflectance_table().astype(np.float64)
+        if any(self.options.uv_smooth):
+            near, far = self.options.uv_smooth
+            path = CACHE_DIR / f"reflectance_over_uv_smooth_{near}_{far}.npy"
+            if path.exists():
+                rho = np.load(path).astype(np.float64)
+            else:
+                white = self.c.xyz(self.c.e_ref)
+                white_uv = np.array([4.0 * white[0], 9.0 * white[1]]) / (white[0] + 15.0 * white[1] + 3.0 * white[2])
+                rho = smooth_reflectance_table(rho, near, far, white_uv, self.c.w_xyz * self.c.e_ref)
+                np.save(path, rho.astype(np.float32))
         return self.c.layer_exposure(rho * self.scene_spectrum[None, :]).reshape(UV_NODES, UV_NODES, 3)
 
     def layer_exposure(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
@@ -483,13 +509,9 @@ class FilmPreview:
         self._grid_start = np.array([g[0] for g in self.density_grid])
         self._grid_step = np.array([g[1] - g[0] for g in self.density_grid])
 
-    def render(self, ap1: np.ndarray, detailed: bool = False) -> tuple[np.ndarray, dict]:
-        """Linear AP1 to sRGB, through the kernels. detailed adds the percentiles of the gamut distance (slower)."""
+    def negative_image(self, image: np.ndarray) -> tuple[np.ndarray, dict]:
+        """Linear AP1 (rows, columns, 3; float32) to negative Status M, through the kernels. The print and the scan start here."""
         o = self.options
-        shape = ap1.shape
-        image = np.ascontiguousarray(ap1, dtype=np.float32)
-        if image.ndim == 2:
-            image = image[None]
         # Rule 'no_image_plane_steps_on_ramps': a test ramp (fewer than 16 rows) has no image plane.
         spatial = min(image.shape[:2]) >= 16
         projection = self._projection()
@@ -507,8 +529,17 @@ class FilmPreview:
         if spatial and o.enlarger_flare:
             t = fk.density_to_transmittance(density)
             density = fk.flare_density(t, fk.gaussian_blur(t, o.enlarger_flare_size * max(image.shape[:2])), float(o.enlarger_flare))
+        return density, {"moved_by_rule": int(moved), "y_not_positive": int(not_positive), "negative_above_curve_end": int(above), "pixels": int(image.shape[0] * image.shape[1])}
+
+    def render(self, ap1: np.ndarray, detailed: bool = False) -> tuple[np.ndarray, dict]:
+        """Linear AP1 to sRGB, through the kernels. detailed adds the percentiles of the gamut distance (slower)."""
+        o = self.options
+        shape = ap1.shape
+        image = np.ascontiguousarray(ap1, dtype=np.float32)
+        if image.ndim == 2:
+            image = image[None]
+        density, stats = self.negative_image(image)
         rgb = fk.print_display(density, self._print_f32, self._grid_start, self._grid_step, self.xyz_to_display)
-        stats = {"moved_by_rule": int(moved), "y_not_positive": int(not_positive), "negative_above_curve_end": int(above), "pixels": int(image.shape[0] * image.shape[1])}
         if detailed:
             stats["gamut_distance_p999"] = np.percentile(gamut_distance(rgb).reshape(-1, 3), 99.9, axis=0).round(3).tolist()
         out, before, after = fk.finish_display(rgb, bool(o.gamut_compress), np.array(o.gamut_threshold), np.array(o.gamut_limit), float(o.gamut_power))
@@ -535,6 +566,28 @@ class FilmPreview:
             rgb = compress_gamut(rgb, o.gamut_threshold, o.gamut_limit, o.gamut_power)
             stats["display_clipped_after_compression"] = int(((rgb < 0) | (rgb > 1)).any(axis=-1).sum())
         return srgb_encode(rgb), stats
+
+
+def smooth_reflectance_table(rho: np.ndarray, sigma_near: float, sigma_far: float, white_uv: np.ndarray, to_xyz: np.ndarray) -> np.ndarray:
+    """Rule 'smooth_reflectance_table': the reconstruction changes its active set and its neighbours from node to node, so the shape has creases and steps over u'v'
+    that a colour ramp shows as breaks. A Gaussian over u'v' removes them. Skin and other low chroma colours have measured spectra nearby and small creases, so they get sigma_near; the strong
+    breaks are at high chroma, which gets sigma_far. The blend is a smoothstep of the u'v' distance from the white, over UV_SMOOTH_BLEND.
+    Each node then gets a scale per wavelength, rho (1 + to_xyz^T lambda), to restore its XYZ (Newton steps). to_xyz: (3, wavelengths)."""
+    step = np.array(UV_MAX) / (UV_NODES - 1)
+    shape = rho.reshape(UV_NODES, UV_NODES, -1)
+    near = gaussian_filter(shape, sigma=(sigma_near / step[0], sigma_near / step[1], 0.0), mode="nearest").reshape(-1, rho.shape[-1])
+    far = gaussian_filter(shape, sigma=(sigma_far / step[0], sigma_far / step[1], 0.0), mode="nearest").reshape(-1, rho.shape[-1])
+    u, v = np.meshgrid(*FilmPreview.uv_axes(), indexing="ij")
+    t = np.clip((np.hypot(u - white_uv[0], v - white_uv[1]).ravel() - UV_SMOOTH_BLEND[0]) / (UV_SMOOTH_BLEND[1] - UV_SMOOTH_BLEND[0]), 0.0, 1.0)
+    weight = (t * t * (3.0 - 2.0 * t))[:, None]
+    out = (1.0 - weight) * near + weight * far
+    target = rho @ to_xyz.T
+    for _ in range(8):
+        error = target - out @ to_xyz.T
+        gram = np.einsum("ni,ai,bi->nab", out, to_xyz, to_xyz, optimize=True)
+        scale = np.linalg.solve(gram + 1e-12 * np.trace(gram, axis1=1, axis2=2)[:, None, None] * np.eye(3), error[..., None])[..., 0]
+        out = np.maximum(out * (1.0 + scale @ to_xyz), 0.0)
+    return out
 
 
 def gamut_distance(rgb: np.ndarray) -> np.ndarray:
