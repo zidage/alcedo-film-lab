@@ -14,7 +14,9 @@ code and data that the repository contains or reuses, with their notices.
 - Reused in `profiles/`: the digitized data of KODAK VISION3 5207, 5219 and VISION 2383, through
   `scripts/poc/p2_negative_print/import_cine_profiles.py`. Through
   `scripts/poc/p4_physical_film_response/import_dyes_and_mtf.py`: the isolated dye curves of 5207
-  and 5219, and the modulation transfer curves of 5207, 5219, and Portra 400.
+  and 5219, and the modulation transfer curves of 5207, 5219, and Portra 400. Through
+  `scripts/poc/p5_film_and_print_combinations/digitize_stock_charts.py`: all digitized data of
+  Fujicolor C200, and the spectral sensitivity of KODAK GOLD 200.
 - Use without reuse: `compare_spectral_film_lut.py` reads its digitized data and Status tables as
   comparison data only. These files are not in this repository.
 
@@ -97,6 +99,13 @@ primal active-set method of J. Nocedal and S. Wright, *Numerical Optimization* (
 algorithm 16.3). The brightness normalization 2 max(rgb) of the sigmoid follows pbrt-v4
 `RGBIlluminantSpectrum` (rule only; no pbrt-v4 code is used). The P1 dataset selection follows
 the Fotufilm third-party notices (reference, README U12).
+
+P5 reuses, with a label, the method of the uncalibrated Auto Invert of [NexFilm](https://github.com/BillyDu-TJ/NexFilm)
+(commit `fbd7113f4b0d34c0fa84fc8601b6c5a13a742df1`, GPL-3.0-only, the license of this project) in
+`scripts/poc/p5_film_and_print_combinations/render_density_window.py`: the order of the steps, the
+endpoints from the same pixels, and the tail of 2% on a grid of 512. The code is written for this
+lab, and the repository contains no NexFilm source file. The user also ran NexFilm as an external
+program on local files.
 
 P2 runs spektrafilm (`3bb2c2d2`, GPLv3; profiles CC BY-SA 4.0) and the Fotufilm engine (v1.14.1,
 Apache-2.0; profiles CC BY-SA 4.0) as external programs to compare appearance (README U18). This

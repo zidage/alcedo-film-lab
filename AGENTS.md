@@ -95,6 +95,10 @@ The decisions in [README.md](README.md) bind every proposal and prototype. The m
   unless its terms permit redistribution.
 - The model must fit the scene-referred architecture of Alcedo Studio (linear AP1 input to the
   DRT).
+- **A colour cast is not a fault of a film simulation (README U36).** The cast and the character of
+  each stock are wanted, and each stock must show them. Do not correct, neutralize, or limit a cast.
+  Do not report a cast or a change of tint as a fault or as a cost. Measure a cast only as a property
+  of a stock. Work from the physical process, and let the user decide the look by eye.
 
 ## Evidence and measurement rules
 

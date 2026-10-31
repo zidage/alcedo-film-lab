@@ -348,6 +348,37 @@ def print_display(density, table, start, step, matrix):
 
 
 @njit(parallel=True, fastmath=True, cache=True)
+def print_display_masked(density, mask_density, tables, mask_start, mask_step, start, step, matrix):
+    """Rule 'contrast_mask': as print_display, with one more linear axis over the density of the mask. tables: (masks, n, n, n, 3)."""
+    h, w = density.shape[:2]
+    m = tables.shape[0]
+    n = tables.shape[1]
+    out = np.empty((h, w, 3), dtype=np.float32)
+    for i in prange(h):
+        xyz = np.empty(3)
+        for j in range(w):
+            c0 = min(max((density[i, j, 0] - start[0]) / step[0], 0.0), n - 1.000001)
+            c1 = min(max((density[i, j, 1] - start[1]) / step[1], 0.0), n - 1.000001)
+            c2 = min(max((density[i, j, 2] - start[2]) / step[2], 0.0), n - 1.000001)
+            c3 = min(max((mask_density[i, j] - mask_start) / mask_step, 0.0), m - 1.000001)
+            i0, i1, i2, i3 = int(c0), int(c1), int(c2), int(c3)
+            f0, f1, f2, f3 = c0 - i0, c1 - i1, c2 - i2, c3 - i3
+            for k in range(3):
+                value = 0.0
+                for layer, weight in ((i3, 1.0 - f3), (i3 + 1, f3)):
+                    t = tables[layer]
+                    low = ((1 - f1) * ((1 - f2) * t[i0, i1, i2, k] + f2 * t[i0, i1, i2 + 1, k])
+                           + f1 * ((1 - f2) * t[i0, i1 + 1, i2, k] + f2 * t[i0, i1 + 1, i2 + 1, k]))
+                    high = ((1 - f1) * ((1 - f2) * t[i0 + 1, i1, i2, k] + f2 * t[i0 + 1, i1, i2 + 1, k])
+                            + f1 * ((1 - f2) * t[i0 + 1, i1 + 1, i2, k] + f2 * t[i0 + 1, i1 + 1, i2 + 1, k]))
+                    value += weight * ((1 - f0) * low + f0 * high)
+                xyz[k] = value * value * value
+            for k in range(3):
+                out[i, j, k] = matrix[k, 0] * xyz[0] + matrix[k, 1] * xyz[1] + matrix[k, 2] * xyz[2]
+    return out
+
+
+@njit(parallel=True, fastmath=True, cache=True)
 def finish_display(rgb, compress, threshold, limit, power):
     """Stage 5, second part: rule 'rgc_style_display_compression', the clip, sRGB. Returns (sRGB, clipped before, clipped after)."""
     h, w = rgb.shape[:2]

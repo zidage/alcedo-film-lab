@@ -1,0 +1,783 @@
+{
+ "limits_rms": {
+  "characteristic": 0.03,
+  "spectral_dye_density": 0.03,
+  "spectral_sensitivity": 0.05,
+  "modulation_transfer": 0.05
+ },
+ "edition_limit": 0.005,
+ "fragment_limit_pt": 2.0,
+ "kodak_portra_160": {
+  "against_spectral_film_lut": {
+   "characteristic": {
+    "blue": {
+     "rms": 0.0034,
+     "largest": 0.0082,
+     "domain": [
+      -3.02,
+      0.95
+     ]
+    },
+    "green": {
+     "rms": 0.0025,
+     "largest": 0.0055,
+     "domain": [
+      -3.01,
+      0.95
+     ]
+    },
+    "red": {
+     "rms": 0.0017,
+     "largest": 0.004,
+     "domain": [
+      -3.02,
+      0.95
+     ]
+    }
+   },
+   "spectral_sensitivity": {
+    "yellow_forming_layer": {
+     "rms": 0.0089,
+     "largest": 0.0267,
+     "domain": [
+      380.0,
+      509.0
+     ]
+    },
+    "magenta_forming_layer": {
+     "rms": 0.0046,
+     "largest": 0.0144,
+     "domain": [
+      390.0,
+      589.0
+     ]
+    },
+    "cyan_forming_layer": {
+     "rms": 0.0104,
+     "largest": 0.0311,
+     "domain": [
+      491.0,
+      669.0
+     ]
+    }
+   },
+   "spectral_dye_density": {
+    "midscale_neutral": {
+     "rms": 0.005,
+     "largest": 0.0158,
+     "domain": [
+      401.0,
+      699.0
+     ]
+    },
+    "minimum_density": {
+     "rms": 0.0022,
+     "largest": 0.0081,
+     "domain": [
+      401.0,
+      699.0
+     ]
+    }
+   },
+   "modulation_transfer": {
+    "blue": {
+     "rms": 0.0047,
+     "largest": 0.0176,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "green": {
+     "rms": 0.0101,
+     "largest": 0.0173,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "red": {
+     "rms": 0.0076,
+     "largest": 0.0377,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    }
+   }
+  },
+  "against_older_edition": {
+   "characteristic": {
+    "blue": {
+     "rms": 0.0005,
+     "largest": 0.0007,
+     "domain": [
+      -3.02,
+      0.95
+     ]
+    },
+    "green": {
+     "rms": 0.0004,
+     "largest": 0.0006,
+     "domain": [
+      -3.02,
+      0.95
+     ]
+    },
+    "red": {
+     "rms": 0.0003,
+     "largest": 0.0005,
+     "domain": [
+      -3.02,
+      0.95
+     ]
+    }
+   },
+   "spectral_sensitivity": {
+    "yellow_forming_layer": {
+     "rms": 0.0016,
+     "largest": 0.0041,
+     "domain": [
+      381.0,
+      510.0
+     ]
+    },
+    "magenta_forming_layer": {
+     "rms": 0.001,
+     "largest": 0.0036,
+     "domain": [
+      391.0,
+      590.0
+     ]
+    },
+    "cyan_forming_layer": {
+     "rms": 0.0012,
+     "largest": 0.0037,
+     "domain": [
+      490.0,
+      670.0
+     ]
+    }
+   },
+   "spectral_dye_density": {
+    "midscale_neutral": {
+     "rms": 0.0004,
+     "largest": 0.0008,
+     "domain": [
+      401.0,
+      699.0
+     ]
+    },
+    "minimum_density": {
+     "rms": 0.0001,
+     "largest": 0.0005,
+     "domain": [
+      401.0,
+      699.0
+     ]
+    }
+   },
+   "modulation_transfer": {
+    "blue": {
+     "rms": 0.0007,
+     "largest": 0.001,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "green": {
+     "rms": 0.0009,
+     "largest": 0.0011,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "red": {
+     "rms": 0.0007,
+     "largest": 0.0011,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    }
+   }
+  },
+  "largest_fall_removed": {
+   "blue": 0.002,
+   "green": 0.0,
+   "red": 0.0
+  }
+ },
+ "kodak_portra_800": {
+  "against_spectral_film_lut": {
+   "characteristic": {
+    "blue": {
+     "rms": 0.002,
+     "largest": 0.0063,
+     "domain": [
+      -3.72,
+      0.24
+     ]
+    },
+    "green": {
+     "rms": 0.0024,
+     "largest": 0.0052,
+     "domain": [
+      -3.72,
+      0.25
+     ]
+    },
+    "red": {
+     "rms": 0.0022,
+     "largest": 0.0046,
+     "domain": [
+      -3.72,
+      0.25
+     ]
+    }
+   },
+   "spectral_sensitivity": {
+    "yellow_forming_layer": {
+     "rms": 0.013,
+     "largest": 0.0474,
+     "domain": [
+      371.0,
+      524.0
+     ]
+    },
+    "magenta_forming_layer": {
+     "rms": 0.0168,
+     "largest": 0.0749,
+     "domain": [
+      390.0,
+      604.0
+     ]
+    },
+    "cyan_forming_layer": {
+     "rms": 0.0117,
+     "largest": 0.048,
+     "domain": [
+      491.0,
+      705.0
+     ]
+    }
+   },
+   "spectral_dye_density": {
+    "midscale_neutral": {
+     "rms": 0.0043,
+     "largest": 0.0113,
+     "domain": [
+      401.0,
+      700.0
+     ]
+    },
+    "minimum_density": {
+     "rms": 0.0062,
+     "largest": 0.0109,
+     "domain": [
+      401.0,
+      699.0
+     ]
+    }
+   },
+   "modulation_transfer": {
+    "blue": {
+     "rms": 0.0056,
+     "largest": 0.0218,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "green": {
+     "rms": 0.0054,
+     "largest": 0.0103,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "red": {
+     "rms": 0.0048,
+     "largest": 0.0091,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    }
+   }
+  },
+  "against_older_edition": {
+   "characteristic": {
+    "blue": {
+     "rms": 0.0004,
+     "largest": 0.0009,
+     "domain": [
+      -3.73,
+      0.25
+     ]
+    },
+    "green": {
+     "rms": 0.0004,
+     "largest": 0.0007,
+     "domain": [
+      -3.73,
+      0.25
+     ]
+    },
+    "red": {
+     "rms": 0.0003,
+     "largest": 0.0007,
+     "domain": [
+      -3.73,
+      0.25
+     ]
+    }
+   },
+   "spectral_sensitivity": {
+    "yellow_forming_layer": {
+     "rms": 0.0014,
+     "largest": 0.0026,
+     "domain": [
+      371.0,
+      525.0
+     ]
+    },
+    "magenta_forming_layer": {
+     "rms": 0.0019,
+     "largest": 0.0066,
+     "domain": [
+      390.0,
+      604.0
+     ]
+    },
+    "cyan_forming_layer": {
+     "rms": 0.0029,
+     "largest": 0.0105,
+     "domain": [
+      490.0,
+      705.0
+     ]
+    }
+   },
+   "spectral_dye_density": {
+    "midscale_neutral": {
+     "rms": 0.0003,
+     "largest": 0.0006,
+     "domain": [
+      401.0,
+      700.0
+     ]
+    },
+    "minimum_density": {
+     "rms": 0.0002,
+     "largest": 0.0003,
+     "domain": [
+      401.0,
+      699.0
+     ]
+    }
+   },
+   "modulation_transfer": {
+    "blue": {
+     "rms": 0.0007,
+     "largest": 0.0009,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "green": {
+     "rms": 0.0008,
+     "largest": 0.0012,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "red": {
+     "rms": 0.0006,
+     "largest": 0.0009,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    }
+   }
+  },
+  "largest_fall_removed": {
+   "blue": 0.0,
+   "green": 0.0013,
+   "red": 0.0013
+  }
+ },
+ "kodak_ektar_100": {
+  "against_spectral_film_lut": {
+   "characteristic": {
+    "blue": {
+     "rms": 0.0042,
+     "largest": 0.0132,
+     "domain": [
+      -2.83,
+      1.15
+     ]
+    },
+    "green": {
+     "rms": 0.0036,
+     "largest": 0.0066,
+     "domain": [
+      -2.83,
+      1.15
+     ]
+    },
+    "red": {
+     "rms": 0.0045,
+     "largest": 0.0114,
+     "domain": [
+      -2.83,
+      1.15
+     ]
+    }
+   },
+   "spectral_sensitivity": {
+    "yellow_forming_layer": {
+     "rms": 0.0106,
+     "largest": 0.0456,
+     "domain": [
+      380.0,
+      494.0
+     ]
+    },
+    "magenta_forming_layer": {
+     "rms": 0.0059,
+     "largest": 0.0264,
+     "domain": [
+      395.0,
+      589.0
+     ]
+    },
+    "cyan_forming_layer": {
+     "rms": 0.0179,
+     "largest": 0.0684,
+     "domain": [
+      555.0,
+      694.0
+     ]
+    }
+   },
+   "spectral_dye_density": {
+    "midscale_neutral": {
+     "rms": 0.003,
+     "largest": 0.0076,
+     "domain": [
+      401.0,
+      684.0
+     ]
+    },
+    "minimum_density": {
+     "rms": 0.0027,
+     "largest": 0.0083,
+     "domain": [
+      401.0,
+      684.0
+     ]
+    }
+   },
+   "modulation_transfer": {
+    "blue": {
+     "rms": 0.0037,
+     "largest": 0.0099,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "green": {
+     "rms": 0.006,
+     "largest": 0.0133,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "red": {
+     "rms": 0.0066,
+     "largest": 0.0131,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    }
+   }
+  },
+  "against_older_edition": {
+   "characteristic": {
+    "blue": {
+     "rms": 0.0003,
+     "largest": 0.0004,
+     "domain": [
+      -2.83,
+      1.16
+     ]
+    },
+    "green": {
+     "rms": 0.0002,
+     "largest": 0.0004,
+     "domain": [
+      -2.83,
+      1.16
+     ]
+    },
+    "red": {
+     "rms": 0.0002,
+     "largest": 0.0003,
+     "domain": [
+      -2.83,
+      1.16
+     ]
+    }
+   },
+   "spectral_sensitivity": {
+    "yellow_forming_layer": {
+     "rms": 0.003,
+     "largest": 0.0085,
+     "domain": [
+      381.0,
+      494.0
+     ]
+    },
+    "magenta_forming_layer": {
+     "rms": 0.0024,
+     "largest": 0.0112,
+     "domain": [
+      396.0,
+      589.0
+     ]
+    },
+    "cyan_forming_layer": {
+     "rms": 0.0036,
+     "largest": 0.011,
+     "domain": [
+      556.0,
+      694.0
+     ]
+    }
+   },
+   "spectral_dye_density": {
+    "midscale_neutral": {
+     "rms": 0.0007,
+     "largest": 0.0015,
+     "domain": [
+      401.0,
+      684.0
+     ]
+    },
+    "minimum_density": {
+     "rms": 0.0003,
+     "largest": 0.0007,
+     "domain": [
+      401.0,
+      684.0
+     ]
+    }
+   },
+   "modulation_transfer": {
+    "blue": {
+     "rms": 0.0003,
+     "largest": 0.0006,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "green": {
+     "rms": 0.0004,
+     "largest": 0.0007,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    },
+    "red": {
+     "rms": 0.0004,
+     "largest": 0.0006,
+     "domain": [
+      3.0,
+      79.0
+     ]
+    }
+   }
+  },
+  "largest_fall_removed": {
+   "blue": 0.0,
+   "green": 0.0,
+   "red": 0.0
+  }
+ },
+ "kodak_gold_200": {
+  "against_spectral_film_lut": {
+   "characteristic": {
+    "blue": {
+     "rms": 0.0049,
+     "largest": 0.0276,
+     "domain": [
+      -2.67,
+      0.8
+     ]
+    },
+    "green": {
+     "rms": 0.0019,
+     "largest": 0.0037,
+     "domain": [
+      -2.89,
+      0.82
+     ]
+    },
+    "red": {
+     "rms": 0.0021,
+     "largest": 0.0043,
+     "domain": [
+      -2.9,
+      0.82
+     ]
+    }
+   },
+   "spectral_dye_density": {
+    "midscale_neutral": {
+     "rms": 0.0053,
+     "largest": 0.0185,
+     "domain": [
+      406.0,
+      693.0
+     ]
+    },
+    "minimum_density": {
+     "rms": 0.0031,
+     "largest": 0.0089,
+     "domain": [
+      408.0,
+      691.0
+     ]
+    }
+   }
+  },
+  "against_older_edition": {},
+  "largest_fall_removed": {
+   "blue": 0.0313,
+   "green": 0.0,
+   "red": 0.0
+  },
+  "sensitivity_against_fragments_pt": {
+   "cyan_forming_layer": 2.91,
+   "magenta_forming_layer": 1.06,
+   "yellow_forming_layer": 1.71
+  },
+  "modulation_transfer_of_spectral_film_lut_against_its_portra_160": {
+   "red": {
+    "rms": 0.0,
+    "largest": 0.0,
+    "domain": [
+     3.0,
+     80.0
+    ]
+   },
+   "green": {
+    "rms": 0.0,
+    "largest": 0.0,
+    "domain": [
+     3.0,
+     79.0
+    ]
+   },
+   "blue": {
+    "rms": 0.0,
+    "largest": 0.0,
+    "domain": [
+     3.0,
+     79.0
+    ]
+   }
+  }
+ },
+ "fuji_c200": {
+  "largest_fall_removed": {
+   "red": 0.0,
+   "green": 0.0,
+   "blue": 0.0
+  }
+ },
+ "kodak_portra_400_edition_1_25_against_profile_2_16": {
+  "characteristic": {
+   "blue": {
+    "rms": 0.0009,
+    "largest": 0.0011,
+    "domain": [
+     -3.44,
+     0.55
+    ]
+   },
+   "green": {
+    "rms": 0.0008,
+    "largest": 0.001,
+    "domain": [
+     -3.44,
+     0.55
+    ]
+   },
+   "red": {
+    "rms": 0.0008,
+    "largest": 0.001,
+    "domain": [
+     -3.44,
+     0.55
+    ]
+   }
+  },
+  "spectral_sensitivity": {
+   "yellow_forming_layer": {
+    "rms": 0.0023,
+    "largest": 0.0047,
+    "domain": [
+     381.0,
+     519.0
+    ]
+   },
+   "magenta_forming_layer": {
+    "rms": 0.002,
+    "largest": 0.0066,
+    "domain": [
+     391.0,
+     599.0
+    ]
+   },
+   "cyan_forming_layer": {
+    "rms": 0.0023,
+    "largest": 0.0079,
+    "domain": [
+     491.0,
+     679.0
+    ]
+   }
+  },
+  "spectral_dye_density": {
+   "midscale_neutral": {
+    "rms": 0.0005,
+    "largest": 0.0009,
+    "domain": [
+     401.0,
+     699.0
+    ]
+   },
+   "minimum_density": {
+    "rms": 0.0003,
+    "largest": 0.0006,
+    "domain": [
+     401.0,
+     699.0
+    ]
+   }
+  }
+ }
+}

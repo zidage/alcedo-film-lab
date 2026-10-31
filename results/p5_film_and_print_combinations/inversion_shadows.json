@@ -1,0 +1,86 @@
+{
+ "Portra 400": {
+  "print": {
+   "shadow_L": 11.85,
+   "shadow_share_below_L8": 0.36,
+   "highlight_L": 86.69
+  },
+  "inversion": {
+   "shadow_L": 26.63,
+   "shadow_share_below_L8": 0.17,
+   "highlight_L": 97.54
+  }
+ },
+ "Portra 160": {
+  "print": {
+   "shadow_L": 12.22,
+   "shadow_share_below_L8": 0.34,
+   "highlight_L": 86.73
+  },
+  "inversion": {
+   "shadow_L": 22.17,
+   "shadow_share_below_L8": 0.26,
+   "highlight_L": 97.3
+  }
+ },
+ "Portra 800": {
+  "print": {
+   "shadow_L": 12.43,
+   "shadow_share_below_L8": 0.31,
+   "highlight_L": 85.9
+  },
+  "inversion": {
+   "shadow_L": 22.67,
+   "shadow_share_below_L8": 0.23,
+   "highlight_L": 97.21
+  }
+ },
+ "Ektar 100": {
+  "print": {
+   "shadow_L": 11.32,
+   "shadow_share_below_L8": 0.4,
+   "highlight_L": 86.92
+  },
+  "inversion": {
+   "shadow_L": 22.77,
+   "shadow_share_below_L8": 0.24,
+   "highlight_L": 97.62
+  }
+ },
+ "Gold 200": {
+  "print": {
+   "shadow_L": 11.49,
+   "shadow_share_below_L8": 0.37,
+   "highlight_L": 86.75
+  },
+  "inversion": {
+   "shadow_L": 22.05,
+   "shadow_share_below_L8": 0.22,
+   "highlight_L": 97.46
+  }
+ },
+ "C200": {
+  "print": {
+   "shadow_L": 10.75,
+   "shadow_share_below_L8": 0.4,
+   "highlight_L": 87.95
+  },
+  "inversion": {
+   "shadow_L": 27.97,
+   "shadow_share_below_L8": 0.1,
+   "highlight_L": 97.45
+  }
+ },
+ "5207": {
+  "print": {
+   "shadow_L": 12.22,
+   "shadow_share_below_L8": 0.37,
+   "highlight_L": 78.14
+  },
+  "inversion": {
+   "shadow_L": 26.53,
+   "shadow_share_below_L8": 0.14,
+   "highlight_L": 97.54
+  }
+ }
+}

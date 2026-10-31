@@ -93,6 +93,12 @@ Rule 'development_inhibition' (options inhibition_*, step P4, needs negative_rec
 G is a Gaussian of the length inhibition_um in the image plane. F_i is computed so that the neutral ramp returns the published curve exactly: on a neutral, F_i maps log H - sum_j K_ij a_j(log H) to a_i(log H). So the published curve holds for a neutral and a large flat area, and a colour, where the layers differ, gets less inhibition from the layers that developed less.
 The total of K per layer comes from the published modulation transfer (fit_mtf.py of step P4). Its split between the layers has no source and is inferred. Solve: fixed-point steps from the uninhibited amounts.
 
+Rule 'overexposed_negative' (option overexposure_stops, step P5, U35). The negative takes N more stops, and the printer lights take them back, so that a grey keeps its print value. The shadows move off the toe of the negative, and the highlights use the latitude of the negative.
+
+Rule 'contrast_mask' (options mask_*, step P5, U35). The darkroom method for a high contrast negative: a faint positive on black and white film, made from the negative, is put on the negative during the print. It adds a neutral density where the negative is thin, so the shadows of the scene take less exposure and print lighter:
+    T = integral of the negative transmittance under the lamp and a panchromatic response;  D = -log10(blur of T);  x = D_ref - D;  D_mask = mask_gamma * (x + sqrt(x^2 + k^2)) / 2
+D_ref is the pan density of a grey mask_reference_stops from mid grey, and k (mask_knee_density) is the toe of the mask film. The printer lights take back the mask density of a grey. A neutral density moves each paper layer by the same log10 exposure, so the colour comes from the paper and the dyes. A table per mask density holds this, and print_display_masked reads it. Inferred, with no source: the panchromatic response (flat from 400 to 650 nm), mask_gamma, the reference, the toe, and the length of the blur (the spacer between the mask and the negative). A blur has the halo of the real method.
+
 Rule 'layer_spread' (option layer_spread_um, step P4): an exponential spread of the light per layer, in layer exposure, with the length from the published modulation transfer. A sum of two Gaussians stands for the exponential (constants SPREAD_GAUSSIANS, largest error in the transfer function 0.028).
 """
 
@@ -129,6 +135,10 @@ LIGHT_FIT_STEPS = 12  # continuation steps from the white to the node
 LIGHT_FIT_LIMIT = 1e-5  # largest relative XYZ error of a fitted node
 LIGHT_REACH_FADE = 0.008  # u'v' sigma of the fade toward the nodes that the family cannot reach
 SPREAD_GAUSSIANS = ((0.2528, 0.4142), (0.7472, 1.4271))  # (weight, sigma / spread length): least-squares fit of 1 / (1 + x^2) for x up to 8
+MASK_DENSITY_START = -0.05
+MASK_DENSITY_STEP = 0.05
+MASK_DENSITY_NODES = 16  # up to 0.70 density
+MASK_PAN_NM = (400.0, 650.0)
 INHIBITION_STEPS_IMAGE = 4
 INHIBITION_STEPS_POINT = 16
 METER_CAP = 16.0
@@ -148,7 +158,7 @@ def bradford_matrix(source_xyz: np.ndarray, target_xyz: np.ndarray) -> np.ndarra
 
 
 NOT_IN_PRINT_TABLE = ("light_spectra", "uv_smooth", "layer_spread_um", "inhibition_um", "gamut_compress", "gamut_threshold", "gamut_limit", "gamut_power", "scene_flare", "display_white", "frame_mm", "scatter_um", "halation", "halation_um",
-                      "adjacency_gain", "adjacency_um", "enlarger_flare", "enlarger_flare_size")
+                      "adjacency_gain", "adjacency_um", "enlarger_flare", "enlarger_flare_size", "mask_gamma", "mask_reference_stops", "mask_knee_density", "mask_um")
 
 
 @dataclass(frozen=True)
@@ -193,9 +203,16 @@ class FilmOptions:
     inhibition_total: tuple[float, float, float] = (0.0, 0.0, 0.0)  # rule 'development_inhibition' (P4): the total inhibition that each layer receives, log10 H per unit of dye amount
     inhibition_cross_share: float = 0.5  # share of the total that comes from the other two layers (inferred)
     inhibition_um: float = 35.0  # not part of the print table; Gaussian length of the inhibitor in the image plane
+    overexposure_stops: float = 0.0  # rule 'overexposed_negative' (P5)
+    mask_gamma: float = 0.0  # not part of the print table; rule 'contrast_mask' (P5), the next ones too
+    mask_reference_stops: float = -1.0
+    mask_knee_density: float = 0.15
+    mask_um: float = 1000.0
 
     def key(self) -> str:
         fields = {k: v for k, v in asdict(self).items() if k not in NOT_IN_PRINT_TABLE}
+        if not fields["overexposure_stops"]:
+            del fields["overexposure_stops"]  # the tables of the earlier steps stay valid
         return hashlib.sha256(json.dumps(fields, sort_keys=True).encode()).hexdigest()[:12]
 
 
@@ -233,6 +250,17 @@ P4_PHYSICAL = {
     "portra400_endura": dict(negative_dye_basis="band_split", negative_record="dye_amount", light_spectra=True, scatter_um=0.0, adjacency_gain=0.0, layer_spread_um=(4.53, 3.21, 2.63), inhibition_total=(0.211, 0.3356, 0.1902), gamut_limit=P4_GAMUT_LIMIT),
 }
 
+# Physical options of step P5, the same rules as P4_PHYSICAL. No isolated dye curves are published for these stocks, so all keep the inferred band split. Spread and inhibition: results/p5_film_and_print_combinations/mtf_fit.json.
+# C200: the chart has one curve, so the spread is one value and the inhibition differs only by the slope of each layer. Gold 200: E-7022 has no modulation transfer chart, so this stock has no spread and no inhibition, and a value of another stock is not used.
+P5_BAND_SPLIT = dict(negative_dye_basis="band_split", negative_record="dye_amount", light_spectra=True, scatter_um=0.0, adjacency_gain=0.0, gamut_limit=P4_GAMUT_LIMIT)
+P5_PHYSICAL = {
+    "portra160_endura": dict(P5_BAND_SPLIT, scene_light="D55", layer_spread_um=(5.55, 2.98, 3.03), inhibition_total=(0.2786, 0.2648, 0.083)),
+    "portra800_endura": dict(P5_BAND_SPLIT, scene_light="D55", layer_spread_um=(5.21, 3.64, 2.51), inhibition_total=(0.1301, 0.3485, 0.1196)),
+    "ektar100_endura": dict(P5_BAND_SPLIT, scene_light="D55", layer_spread_um=(6.51, 3.86, 3.13), inhibition_total=(0.4991, 0.3589, 0.1379)),
+    "gold200_endura": dict(P5_BAND_SPLIT, scene_light="D55"),
+    "c200_endura": dict(P5_BAND_SPLIT, scene_light="D55", layer_spread_um=(3.24, 3.24, 3.24), inhibition_total=(0.2754, 0.2362, 0.2145)),
+}
+
 STOCKS = {
     "portra400_endura": {},
     # Exposure of the grey: 12.5 / ISO lux seconds. Projection at D65.
@@ -240,6 +268,12 @@ STOCKS = {
                       print_midscale_status_a=CINE_GREY_STATUS_A, viewing_cct_k=6500.0, grey_anchor=True, balance_light="D55", neutral_printing=True),
     "5219_2383": dict(negative_profile="kodak_5219", print_profile="kodak_2383", midscale_log_h=float(np.log10(12.5 / 500)),
                       print_midscale_status_a=CINE_GREY_STATUS_A, viewing_cct_k=6500.0, grey_anchor=True, balance_light="T3200", neutral_printing=True),
+    # Step P5. Exposure of the grey: the Log H Ref of the sheet. AF3-0249E states none, so C200 takes the value of Gold 200, the Kodak stock of the same ISO (inferred). Rule 'grey_anchor': C200 has a relative sensitivity chart, and the Kodak charts leave the grey up to 0.70 stops apart between layers under D55.
+    "portra160_endura": dict(negative_profile="kodak_portra_160", midscale_log_h=-1.051, grey_anchor=True, balance_light="D55"),
+    "portra800_endura": dict(negative_profile="kodak_portra_800", midscale_log_h=-1.74, grey_anchor=True, balance_light="D55"),
+    "ektar100_endura": dict(negative_profile="kodak_ektar_100", midscale_log_h=-0.84, grey_anchor=True, balance_light="D55"),
+    "gold200_endura": dict(negative_profile="kodak_gold_200", midscale_log_h=-1.14, grey_anchor=True, balance_light="D55"),
+    "c200_endura": dict(negative_profile="fuji_c200", midscale_log_h=-1.14, grey_anchor=True, balance_light="D55"),
 }
 
 
@@ -281,11 +315,13 @@ class FilmPreview:
         self.paper_curves = list(self.film.paper_curves.values())
         self.scene_spectrum = self.light(o.scene_light)
         self.layer_gain = self._camera_filter()
+        self._apply_overexposure()
         self.printing_gain = self._printing_gain()
         self.uv_table = self._load_uv_table()
         self.density_grid, self.print_table, self.table_counts = self._load_print_table()
         self._prepare_display()
         self._prepare_kernels()
+        self._prepare_mask()
 
     def light(self, name: str) -> np.ndarray:
         """Spectrum with Y = 1. 'E_ref'; 'D55' (CIE daylight, 100 K units); 'T3200' (Planckian); a CIE FL, LED or HP name."""
@@ -323,6 +359,22 @@ class FilmPreview:
         self.scene_grey_stops = np.log2(grey / 10.0 ** self._neutral_log_q)
         f.printer_balance_log10 = reference + o.print_timing * (balance(self.record_to_status_m(self.negative_density(grey[None])[0])[0]) - reference)
         return gain
+
+    def _apply_overexposure(self) -> None:
+        """Rule 'overexposed_negative'. It works on any stock, because the printer lights move by the change of the grey on the negative."""
+        stops = self.options.overexposure_stops
+        if not stops:
+            return
+        f = self.film
+        factor = 2.0 ** stops
+
+        def unbalanced(q: np.ndarray) -> np.ndarray:
+            status_m = self.record_to_status_m(self.negative_density(q[None])[0])[0]
+            return np.log10(f.paper_layer_exposure_unbalanced(f.negative_spectral_density(f.negative_dye_amounts(status_m))))
+
+        grey = self.layer_gain * self.c.layer_exposure(0.18 * self.scene_spectrum)
+        f.printer_balance_log10 = np.asarray(f.printer_balance_log10) - (unbalanced(grey * factor) - unbalanced(grey))
+        self.layer_gain = self.layer_gain * factor
 
     def _printing_gain(self) -> np.ndarray:
         # Rule 'neutral_printing_gain': see the header. Range: 1.0 log H on each side of the grey.
@@ -638,6 +690,59 @@ class FilmPreview:
             density = fk.flare_density(t, fk.gaussian_blur(t, o.enlarger_flare_size * max(image.shape[:2])), float(o.enlarger_flare))
         return density, {"moved_by_rule": int(moved), "y_not_positive": int(not_positive), "negative_above_curve_end": int(above), "pixels": int(image.shape[0] * image.shape[1])}
 
+    def _prepare_mask(self) -> None:
+        """Rule 'contrast_mask': the tables per mask density, the pan transmittance over the negative record, the density of the reference and of the grey."""
+        o = self.options
+        if not o.mask_gamma:
+            return
+        f = self.film
+        path = CACHE_DIR / f"print_table_{o.key()}_mask.npz"
+        rr, gg, bb = np.meshgrid(*self.density_grid, indexing="ij")
+        nodes = np.stack([rr, gg, bb], axis=-1).reshape(-1, 3)
+        densities = MASK_DENSITY_START + MASK_DENSITY_STEP * np.arange(MASK_DENSITY_NODES)
+        if path.exists():
+            tables = np.load(path)["tables"]
+        else:
+            balance = np.asarray(f.printer_balance_log10, dtype=np.float64).copy()
+            tables = np.empty((MASK_DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 3), dtype=np.float32)
+            for k, density in enumerate(densities):
+                f.printer_balance_log10 = balance - density
+                tables[k] = np.cbrt(self._print_nodes(nodes)[0]).reshape(DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 3)
+            f.printer_balance_log10 = balance
+            np.savez(path, tables=tables)
+        self._mask_tables = tables
+        # The pan response: the printer lamp, flat inside MASK_PAN_NM. Stored as the cube root in three channels, so print_display reads it.
+        pan = (10.0 ** (-f.negative_spectral_density(self._record_amounts(nodes))) @ self._mask_lamp()) / self._mask_lamp().sum()
+        self._mask_pan = np.repeat(np.cbrt(pan).reshape(DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 1), 3, axis=-1).astype(np.float32)
+        grey = self.layer_gain * self.c.layer_exposure(0.18 * self.scene_spectrum)
+        self._mask_reference = self._pan_density_of_exposure(grey * 2.0 ** o.mask_reference_stops)
+        self._mask_at_grey = self._mask_curve(self._mask_reference - self._pan_density_of_exposure(grey))
+
+    def _mask_lamp(self) -> np.ndarray:
+        wl = self.c.wavelengths
+        return self.film.illuminants[self.options.printer_lamp] * ((wl >= MASK_PAN_NM[0]) & (wl <= MASK_PAN_NM[1]))
+
+    def _record_amounts(self, record: np.ndarray) -> np.ndarray:
+        if self.options.negative_record == "dye_amount":
+            return record
+        return self.film.negative_dye_amounts(record)
+
+    def _pan_density_of_exposure(self, q: np.ndarray) -> float:
+        record = self.negative_density(q[None])[0]
+        lamp = self._mask_lamp()
+        return float(-np.log10((10.0 ** (-self.film.negative_spectral_density(self._record_amounts(record))) @ lamp)[0] / lamp.sum()))
+
+    def _mask_curve(self, x: np.ndarray) -> np.ndarray:
+        o = self.options
+        return o.mask_gamma * 0.5 * (x + np.sqrt(x * x + o.mask_knee_density ** 2))
+
+    def mask_density(self, record: np.ndarray, pixel: float) -> np.ndarray:
+        """The neutral density of the mask at each pixel, after the printer lights take back the density at the grey. pixel = 0: no image plane."""
+        pan = fk.print_display(record, self._mask_pan, self._grid_start, self._grid_step, np.eye(3))
+        if pixel:
+            pan = fk.gaussian_blur(pan, self.options.mask_um / pixel)
+        return (self._mask_curve(self._mask_reference + np.log10(np.maximum(pan[..., 0].astype(np.float64), 1e-9))) - self._mask_at_grey).astype(np.float32)
+
     def _spread_layers(self, q: np.ndarray, pixel: float) -> np.ndarray:
         """Rule 'layer_spread'. Each layer has its own length, so each one takes its channel of its own blurs."""
         out = np.empty_like(q)
@@ -661,7 +766,11 @@ class FilmPreview:
         if image.ndim == 2:
             image = image[None]
         density, stats = self.negative_image(image)
-        rgb = fk.print_display(density, self._print_f32, self._grid_start, self._grid_step, self.xyz_to_display)
+        if o.mask_gamma:
+            pixel = self._pixel_um(image) if min(image.shape[:2]) >= 16 else 0.0
+            rgb = fk.print_display_masked(density, self.mask_density(density, pixel), self._mask_tables, MASK_DENSITY_START, MASK_DENSITY_STEP, self._grid_start, self._grid_step, self.xyz_to_display)
+        else:
+            rgb = fk.print_display(density, self._print_f32, self._grid_start, self._grid_step, self.xyz_to_display)
         if detailed:
             stats["gamut_distance_p999"] = np.percentile(gamut_distance(rgb).reshape(-1, 3), 99.9, axis=0).round(3).tolist()
         out, before, after = fk.finish_display(rgb, bool(o.gamut_compress), np.array(o.gamut_threshold), np.array(o.gamut_limit), float(o.gamut_power))
@@ -672,6 +781,8 @@ class FilmPreview:
 
     def reference_render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
         """The array implementation of render(), for check_fast_kernels.py."""
+        if self.options.mask_gamma:
+            raise ValueError("reference_render has no form of rule contrast_mask")
         # Rule 'no_image_plane_steps_on_ramps': a test ramp (fewer than 16 rows) has no image plane.
         spatial = ap1.ndim == 3 and min(ap1.shape[:2]) >= 16
         q, stats = self.layer_exposure(ap1 + self.options.scene_flare)
