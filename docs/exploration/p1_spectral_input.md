@@ -713,7 +713,7 @@ section replaces the earlier recommendation of the camera population prior.
 4. **Use the U15 criteria as guidance, not as a requirement of later steps.** The user review of the
    rendered images decides. The numeric checks of README section 9 that protect the physical
    stages stay (scaling, finite output, stage separation).
-5. **For P5, tabulate by chromaticity and reference light.** Only 1.3 % of real pixels need the QP
+5. **For P6, tabulate by chromaticity and reference light.** Only 1.3 % of real pixels need the QP
    (section 7.19).
 
 ## 9. Open items
@@ -732,7 +732,7 @@ section replaces the earlier recommendation of the camera population prior.
 Not measured in P1:
 
 - RGC (U13);
-- a GPU or table implementation of any candidate (P5, P6);
+- a GPU or table implementation of any candidate (P6, P7);
 - the selected route through the print on real images, and any user review of its appearance;
 - white-balanced AP1;
 - fluorescent materials (reflectance above 1 is rejected above 1.5 only);

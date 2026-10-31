@@ -22,7 +22,7 @@ OpenCL.
   this repository.
 - `docs/research/` holds source analysis, material data audits, papers, and algorithm
   comparisons.
-- `docs/exploration/` holds one report per step (P0 to P6, MVP) and an index of the measured
+- `docs/exploration/` holds one report per step (P0 to P7, MVP) and an index of the measured
   status.
 - New prototypes go under `scripts/poc/<name>/`. Each prototype directory has a `README.md` with
   the commands and a `requirements.txt`.

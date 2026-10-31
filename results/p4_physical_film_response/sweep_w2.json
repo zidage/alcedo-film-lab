@@ -1,0 +1,17 @@
+{
+ "limit": 0.02,
+ "largest_second_difference": {
+  "5207 250D | 无 DIR | 打印 Print": 0.0087,
+  "5207 250D | 无 DIR | APD 反转": 0.0112,
+  "5207 250D | W2 DIR | 打印 Print": 0.009,
+  "5207 250D | W2 DIR | APD 反转": 0.0118,
+  "5207 250D | W2 DIR 只自身抑制 | APD 反转": 0.0123
+ },
+ "pass": {
+  "5207 250D | 无 DIR | 打印 Print": true,
+  "5207 250D | 无 DIR | APD 反转": true,
+  "5207 250D | W2 DIR | 打印 Print": true,
+  "5207 250D | W2 DIR | APD 反转": true,
+  "5207 250D | W2 DIR 只自身抑制 | APD 反转": true
+ }
+}

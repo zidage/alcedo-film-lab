@@ -12,7 +12,9 @@ code and data that the repository contains or reuses, with their notices.
   - the split of a neutral density spectrum into three dye bands (`construct_spectral_density`);
   - the linear extension of log sensitivity outside the published domain.
 - Reused in `profiles/`: the digitized data of KODAK VISION3 5207, 5219 and VISION 2383, through
-  `scripts/poc/p2_negative_print/import_cine_profiles.py`.
+  `scripts/poc/p2_negative_print/import_cine_profiles.py`. Through
+  `scripts/poc/p4_physical_film_response/import_dyes_and_mtf.py`: the isolated dye curves of 5207
+  and 5219, and the modulation transfer curves of 5207, 5219, and Portra 400.
 - Use without reuse: `compare_spectral_film_lut.py` reads its digitized data and Status tables as
   comparison data only. These files are not in this repository.
 

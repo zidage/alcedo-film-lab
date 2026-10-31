@@ -13,3 +13,4 @@ manufacturer charts, which must not be published.
 | [`p1_spectral_input/`](p1_spectral_input/) | P1: spectral input (README section 8) | [P1 report](../docs/exploration/p1_spectral_input.md) |
 | [`p3_scan_and_scene/`](p3_scan_and_scene/) | P3: scene presets and scanned-negative output (README section 8) | [P3 report](../docs/exploration/p3_scan_and_scene.md) |
 | [`p2_negative_print/`](p2_negative_print/) | P2: negative and print (README section 8) | [P2 report](../docs/exploration/p2_negative_and_print.md) |
+| [`p4_physical_film_response/`](p4_physical_film_response/) | P4: physical colour and film response (README section 8) | [P4 report](../docs/exploration/p4_physical_film_response.md) |

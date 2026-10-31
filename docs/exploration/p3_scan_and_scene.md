@@ -203,7 +203,7 @@ Author's visual result on `_DSC8169`: the red sign is orange under sodium alone,
 - Film grain, gate weave, scanner flare, and noise.
 - Rounding to 10 bits and any banding.
 - A scan through ADX16 (not needed for range on these images).
-- GPU execution and the cost of the APD table outside this CPU tool. The first build of one APD table takes about one minute on CPU with the array solve, and no kernel exists for it. P5 owns this.
+- GPU execution and the cost of the APD table outside this CPU tool. The first build of one APD table takes about one minute on CPU with the array solve, and no kernel exists for it. P6 owns this.
 - Colour-dependent effect of the density rule above 700 nm.
 - Display white and viewing adaptation of the two paths: the print has its own white and paper, the scan has the white of the transform.
 
@@ -314,7 +314,7 @@ Author's visual results, 18 files of three overview sheets. This is not user rev
 Proposals, not measured results:
 
 1. **A scanner is a look.** The scanner changes the result as much as the path. The product could offer a scanner choice for a stock. A second APD-like response (for example a narrow RGB LED record near Status M) costs one table, and the data of real machines stays not public (audit).
-2. **Per-channel curves give the behaviour that a display transform removes.** The chroma that falls with overexposure and the hue twists follow from channels that saturate one at a time. This can stay a pointwise table, which fits P5.
+2. **Per-channel curves give the behaviour that a display transform removes.** The chroma that falls with overexposure and the hue twists follow from channels that saturate one at a time. This can stay a pointwise table, which fits P6.
 3. **The underexposed side is the largest shared error.** Real scans keep chroma at -1 and -2 stops, and every path loses it. Real blacks are also lifted (Black at L* 24.7 on the CoolScan, against 13.8). A lower curve toe is the first thing to test.
 4. **Keep the cast of a tungsten stock as an option.** A real scan of 5219 in daylight does not neutralize the shadows. The present option `print_timing` cannot give this crossover.
 

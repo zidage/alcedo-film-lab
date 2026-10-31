@@ -162,6 +162,28 @@ def negative_density(q, criterion, neutral, interlayer, curve_start, curves, len
     return out, above.sum()
 
 
+@njit(parallel=True, fastmath=True, cache=True)
+def inhibited_step(q, inhibitor, criterion, k, start, free, lengths, step):
+    """One step of rule 'development_inhibition': a_i = F_i(log H_i - sum_j K_ij I_j)."""
+    h, w = q.shape[:2]
+    out = np.empty((h, w, 3), dtype=np.float32)
+    for i in prange(h):
+        for j in range(w):
+            for m in range(3):
+                reduced = (criterion[m] + math.log10(max(float(q[i, j, m]), 1e-30))
+                           - k[m, 0] * inhibitor[i, j, 0] - k[m, 1] * inhibitor[i, j, 1] - k[m, 2] * inhibitor[i, j, 2])
+                t = (reduced - start[m]) / step
+                last = lengths[m] - 1
+                if t <= 0.0:
+                    out[i, j, m] = free[m, 0]
+                elif t >= last:
+                    out[i, j, m] = free[m, last]
+                else:
+                    index = int(t)
+                    out[i, j, m] = free[m, index] + (t - index) * (free[m, index + 1] - free[m, index])
+    return out
+
+
 def _kernel(sigma: float) -> np.ndarray:
     radius = int(4.0 * sigma + 0.5)
     x = np.arange(-radius, radius + 1, dtype=np.float64)

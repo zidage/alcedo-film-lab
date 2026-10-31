@@ -63,10 +63,10 @@
   }
  },
  "time_ms": {
-  "render_kernels": 101.5,
-  "render_reference": 2950.2,
+  "render_kernels": 180.4,
+  "render_reference": 4635.2,
   "pixels": 1000000,
-  "print_table_build": 2207.4
+  "print_table_build": 2924.9
  },
  "product_grade": {
   "relative_linear_error_max": 4.054905111383878e-05,

@@ -130,14 +130,15 @@ class ScanPreview:
         """Negative Status M (N, 3) to APD through the stages; the second array is the residual of the dye solve."""
         film = self.negative.film
         base = film.status_density(film.negative_dmin, film.w_status_m)
-        amounts, residual = fp.solve_amounts(status_m - film.negative_curve_dmin + base, film.negative_dmin, film.negative_dyes, film.w_status_m)
+        amounts, residual = fp.solve_amounts(self.negative.record_to_status_m(status_m) - film.negative_curve_dmin + base, film.negative_dmin, film.negative_dyes, film.w_status_m)
         return self.apd(film.negative_spectral_density(amounts)), residual
 
     def _build_table(self) -> np.ndarray:
         # The scan depends on the negative only, so the cache key has the choices of the negative and not the print or the light.
         o = self.negative.options
         name = "apd_table" if self.scanner_name == "apd" else f"scan_table_{self.scanner_name}"
-        path = fp.CACHE_DIR / f"{name}_{o.negative_profile}_{o.negative_dye_basis}_{o.density_outside}.npy"
+        record = "" if o.negative_record == "status_m" else f"_{o.negative_record}"
+        path = fp.CACHE_DIR / f"{name}_{o.negative_profile}_{o.negative_dye_basis}_{o.density_outside}{record}.npy"
         if path.exists():
             return np.load(path)
         grid = self.negative.density_grid
@@ -203,12 +204,17 @@ class DirectInversionPreview(ScanPreview):
     A neutral has equal records at the grey, so it does not change there; away from the grey the records of a neutral differ a little, and the display changes by 0.0025 at most on the ramp of 5207 (k = 0.25). The move has the size k * crosstalk_limit at most, so a saturated colour cannot drive a channel to black, and the function is smooth.
     Rule 'soft_scan' (review controls): log_contrast scales the log exposure around the grey, and record_saturation scales the distance of each record from the mean of the records. Both take back the
     default grade of the product, as print_contrast does in the print. black and white set the display range of the curve.
+    Rule 'density_timing' (step P4, option per_record_slope = False): one slope for all records, the mean of the three, and one offset per channel. A lab balances a frame in this way, so a neutral away from the balance point keeps the crossover of the stock.
+    Rule 'frame_balance_image' (step P4, option frame_balance = 'image'): the offset per channel moves by the median of the record in the frame, about the mean of the three medians, as an automatic scanner does. 'fixed': the offset of the grey under the light.
     k is (3, 3); the diagonal is not used. This is an algorithm with values chosen by eye. It is not a measurement of a scanner and not a fit to chart scans."""
 
     def __init__(self, options: fp.FilmOptions, display_grey: float = 0.22, contrast: float = 1.6, timing: float | None = None,
                  scanner: tuple[str, np.ndarray, np.ndarray] | None = None, tone=None, crosstalk: np.ndarray | None = None, crosstalk_limit: float = 0.5,
-                 log_contrast: float = 1.0, record_saturation: float = 1.0, black: float = 0.0, white: float = 1.0) -> None:
+                 log_contrast: float = 1.0, record_saturation: float = 1.0, black: float = 0.0, white: float = 1.0, per_record_slope: bool = True, frame_balance: str = "fixed") -> None:
         super().__init__(options, timing=timing, scanner=scanner)
+        if frame_balance not in ("fixed", "image"):
+            raise ValueError(f"unknown frame balance {frame_balance!r}")
+        self.frame_balance = frame_balance
         self.log_contrast, self.record_saturation, self.black, self.white = log_contrast, record_saturation, black, white
         self.crosstalk = crosstalk
         self.crosstalk_limit = crosstalk_limit
@@ -219,6 +225,7 @@ class DirectInversionPreview(ScanPreview):
         scene_values = 0.18 * 10.0 ** np.linspace(-1.0, 1.0, 21)
         ramp = np.stack([self.grey_apd(o.balance_light, float(v)) for v in scene_values])
         self.gamma = np.array([np.polyfit(np.log10(scene_values), ramp[:, k], 1)[0] for k in range(3)])
+        self.record_slope = self.gamma if per_record_slope else np.full(3, self.gamma.mean())
         balance = self.grey_apd(o.balance_light)
         self.grey_position = balance + self.timing * (self.grey_apd(o.scene_light) - balance)
         # A neutral of the image goes through the reconstruction, and its layer exposures differ a little from a flat reflectance. The position uses the neutral of the image.
@@ -229,7 +236,11 @@ class DirectInversionPreview(ScanPreview):
         """Linear AP1 to sRGB through the negative and the per-channel inversion. The curve keeps the values inside the display range."""
         image = np.ascontiguousarray(ap1, dtype=np.float32)
         status_m, stats = self.negative.negative_image(image[None] if image.ndim == 2 else image)
-        log_exposure = self.finish_records((self.table_apd(status_m) - self.grey_position) / self.gamma)
+        records = (self.table_apd(status_m) - self.grey_position) / self.record_slope
+        if self.frame_balance == "image" and min(image.shape[:2]) >= 16:
+            medians = np.median(records.reshape(-1, 3), axis=0)
+            records = records - (medians - medians.mean())
+        log_exposure = self.finish_records(records)
         if self.tone is not None:
             display = self.tone(log_exposure)
             return (display[0] if image.ndim == 2 else display), stats

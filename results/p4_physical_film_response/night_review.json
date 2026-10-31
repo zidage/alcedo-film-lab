@@ -1,0 +1,97 @@
+{
+ "0696694599": {
+  "light_from_raw_white": "D48",
+  "cct_k": 4797,
+  "neutral_xy": [
+   0.3528,
+   0.3707
+  ],
+  "exposure_stops": 2.82,
+  "share_clipped_after_compression": {
+   "P3 现状 | D55 定时 0.75 | 打印 Print": 0.00086,
+   "P4 | D55 定时 0.75 | 打印 Print": 0.00017,
+   "P4 | T3200 钨丝 定时 1 | 打印 Print": 0.00018,
+   "P4 | T3200 钨丝 定时 0.5 | 打印 Print": 0.00018,
+   "P4 | 混合街景 定时 1 | 打印 Print": 0.00017,
+   "P4 | 钠灯街景 定时 1 | 打印 Print": 0.00016,
+   "P4 | LED 街景 定时 1 | 打印 Print": 0.00016,
+   "P4 | RAW 白点 D48 定时 1 | 打印 Print": 0.00016
+  }
+ },
+ "2136729222": {
+  "light_from_raw_white": "T3500",
+  "cct_k": 3538,
+  "neutral_xy": [
+   0.4163,
+   0.4256
+  ],
+  "exposure_stops": 2.63,
+  "share_clipped_after_compression": {
+   "P3 现状 | D55 定时 0.75 | 打印 Print": 7e-05,
+   "P4 | D55 定时 0.75 | 打印 Print": 0.0,
+   "P4 | T3200 钨丝 定时 1 | 打印 Print": 0.0,
+   "P4 | T3200 钨丝 定时 0.5 | 打印 Print": 0.0,
+   "P4 | 混合街景 定时 1 | 打印 Print": 0.0,
+   "P4 | 钠灯街景 定时 1 | 打印 Print": 0.0,
+   "P4 | LED 街景 定时 1 | 打印 Print": 0.0,
+   "P4 | RAW 白点 T3500 定时 1 | 打印 Print": 0.0
+  }
+ },
+ "5437808984": {
+  "light_from_raw_white": "D56",
+  "cct_k": 5639,
+  "neutral_xy": [
+   0.3295,
+   0.3286
+  ],
+  "exposure_stops": 1.11,
+  "share_clipped_after_compression": {
+   "P3 现状 | D55 定时 0.75 | 打印 Print": 0.00023,
+   "P4 | D55 定时 0.75 | 打印 Print": 0.0,
+   "P4 | T3200 钨丝 定时 1 | 打印 Print": 0.0,
+   "P4 | T3200 钨丝 定时 0.5 | 打印 Print": 0.0,
+   "P4 | 混合街景 定时 1 | 打印 Print": 0.0,
+   "P4 | 钠灯街景 定时 1 | 打印 Print": 0.0,
+   "P4 | LED 街景 定时 1 | 打印 Print": 0.0,
+   "P4 | RAW 白点 D56 定时 1 | 打印 Print": 0.0
+  }
+ },
+ "8390668518": {
+  "light_from_raw_white": "D43",
+  "cct_k": 4275,
+  "neutral_xy": [
+   0.3684,
+   0.3647
+  ],
+  "exposure_stops": 2.56,
+  "share_clipped_after_compression": {
+   "P3 现状 | D55 定时 0.75 | 打印 Print": 0.00026,
+   "P4 | D55 定时 0.75 | 打印 Print": 0.0,
+   "P4 | T3200 钨丝 定时 1 | 打印 Print": 0.0,
+   "P4 | T3200 钨丝 定时 0.5 | 打印 Print": 0.0,
+   "P4 | 混合街景 定时 1 | 打印 Print": 0.0,
+   "P4 | 钠灯街景 定时 1 | 打印 Print": 0.0,
+   "P4 | LED 街景 定时 1 | 打印 Print": 0.0,
+   "P4 | RAW 白点 D43 定时 1 | 打印 Print": 0.0
+  }
+ },
+ "P1031516": {
+  "light_from_raw_white": "D66",
+  "cct_k": 6588,
+  "neutral_xy": [
+   0.3094,
+   0.3416
+  ],
+  "exposure_stops": 0.95,
+  "share_clipped_after_compression": {
+   "P3 现状 | D55 定时 0.75 | 打印 Print": 0.0,
+   "P4 | D55 定时 0.75 | 打印 Print": 0.0,
+   "P4 | T3200 钨丝 定时 1 | 打印 Print": 0.0,
+   "P4 | T3200 钨丝 定时 0.5 | 打印 Print": 0.0,
+   "P4 | 混合街景 定时 1 | 打印 Print": 0.0,
+   "P4 | 钠灯街景 定时 1 | 打印 Print": 0.0,
+   "P4 | LED 街景 定时 1 | 打印 Print": 0.0,
+   "P4 | RAW 白点 D66 定时 1 | 打印 Print": 0.0
+  }
+ }
+}

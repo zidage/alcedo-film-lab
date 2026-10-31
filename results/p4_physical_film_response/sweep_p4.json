@@ -1,0 +1,37 @@
+{
+ "limit": 0.02,
+ "largest_second_difference": {
+  "5207 250D | P3 现状 | 打印 Print": 0.0121,
+  "5207 250D | P3 现状 | APD 反转": 0.0142,
+  "5207 250D | P4 全部 | 打印 Print": 0.009,
+  "5207 250D | P4 全部 | APD 密度定时": 0.0118,
+  "5207 250D | P4 全部 | APD 每记录斜率": 0.0121,
+  "Portra 400 | P3 现状 | 打印 Print": 0.014,
+  "Portra 400 | P3 现状 | APD 反转": 0.0141,
+  "Portra 400 | P4 全部 | 打印 Print": 0.0146,
+  "Portra 400 | P4 全部 | APD 密度定时": 0.012,
+  "Portra 400 | P4 全部 | APD 每记录斜率": 0.0126,
+  "5219 500T | P3 现状 | 打印 Print": 0.0182,
+  "5219 500T | P3 现状 | APD 反转": 0.0132,
+  "5219 500T | P4 全部 | 打印 Print": 0.0112,
+  "5219 500T | P4 全部 | APD 密度定时": 0.0156,
+  "5219 500T | P4 全部 | APD 每记录斜率": 0.0158
+ },
+ "pass": {
+  "5207 250D | P3 现状 | 打印 Print": true,
+  "5207 250D | P3 现状 | APD 反转": true,
+  "5207 250D | P4 全部 | 打印 Print": true,
+  "5207 250D | P4 全部 | APD 密度定时": true,
+  "5207 250D | P4 全部 | APD 每记录斜率": true,
+  "Portra 400 | P3 现状 | 打印 Print": true,
+  "Portra 400 | P3 现状 | APD 反转": true,
+  "Portra 400 | P4 全部 | 打印 Print": true,
+  "Portra 400 | P4 全部 | APD 密度定时": true,
+  "Portra 400 | P4 全部 | APD 每记录斜率": true,
+  "5219 500T | P3 现状 | 打印 Print": true,
+  "5219 500T | P3 现状 | APD 反转": true,
+  "5219 500T | P4 全部 | 打印 Print": true,
+  "5219 500T | P4 全部 | APD 密度定时": true,
+  "5219 500T | P4 全部 | APD 每记录斜率": true
+ }
+}

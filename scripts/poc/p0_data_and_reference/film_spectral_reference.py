@@ -394,7 +394,7 @@ class ModelOptions:
     # 'zero'; 'hold_below' (the first published value down to 360 nm, uncertainty study);
     # 'log_linear' (spectral_film_lut: log sensitivity extended linearly inside 380-780 nm)
     sensitivity_outside: str = "zero"
-    negative_dye_basis: str = "gaussian_fit"  # or 'band_split' (spectral_film_lut)
+    negative_dye_basis: str = "gaussian_fit"  # or 'band_split' (spectral_film_lut), or 'published' (isolated dye curves of the profile)
     negative_profile: str = "kodak_portra_400"
     print_profile: str = "kodak_endura_premier"
 
@@ -472,6 +472,10 @@ class ReferenceModel:
             bands, info = band_split_dyes(grid_1nm, neutral)
             self.negative_dyes = np.stack([np.interp(wl, grid_1nm, band) for band in bands])
             self.negative_dye_fit = {"method": "band_split", **info, "midscale_amounts": {d: 1.0 for d in NEGATIVE_DYES}}
+        elif o.negative_dye_basis == "published":
+            # The isolated dye curves of the profile (step P4). A stock with no such curves stops here with a KeyError.
+            self.negative_dyes = np.stack([curve_on_grid(dye_chart[f"{d}_dye"], wl, o.negative_density_outside) for d in NEGATIVE_DYES])
+            self.negative_dye_fit = {"method": "published"}
         else:
             raise ValueError(f"unknown dye basis {o.negative_dye_basis!r}")
 

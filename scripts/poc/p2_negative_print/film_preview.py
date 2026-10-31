@@ -78,6 +78,22 @@ the printer lights remove this share of the cast at mid grey (1: a neutral mid g
 position on the curves stays, so the shadows and the highlights can keep a colour (crossover), and a
 spiky light keeps its effect on colours. RAW white can select a daylight or Planckian light. It cannot show
 that a light is fluorescent or LED, so those are an explicit choice.
+
+Rule 'dye_amount_curves' (option negative_record = 'dye_amount', step P4). A Status M curve is an instrument reading of a neutral; it is not the response of one layer. With 'status_m',
+each layer exposure sets one Status M channel, and the dye solve then removes the side absorption of each dye. With 'dye_amount', the dye solve runs once on the neutral ramp and gives the curve
+amount against log H of each layer. Each layer exposure sets the amount of its own dye, and the spectral density and every reading follow. A neutral keeps its published Status M, and a colour keeps the side absorption of its dyes.
+
+Rule 'light_like_spectra' (option light_spectra, step P4). The prior of the reconstruction holds measured reflectances of objects. A blue object often reflects again in the far red, and sky light does not, so a sky had
+too much red layer exposure and turned violet (P4 report, W1). A low-colour-temperature light had the opposite error. In two sectors of u'v' around the white, the table shape moves to a smooth spectrum, rho = exp(c0 + c1 x + c2 x^2), with the XYZ of the node.
+The blue sector follows the direction of skylight, and the warm sector the direction of a Planckian light below about 3000 K. The sectors and the family are inferred. The rule acts after rule 'smooth_reflectance_table'. The cost: a blue object or a saturated orange object loses the
+detail of its measured neighbours; the P4 report states the size. A photo gives no way to separate an object from a light, and sky and sunset are the larger areas of a landscape.
+
+Rule 'development_inhibition' (options inhibition_*, step P4, needs negative_record = 'dye_amount'). A developing layer releases an inhibitor that lowers development in the same layer and in the others:
+    a_i = F_i(log H_i - sum_j K_ij G * a_j)
+G is a Gaussian of the length inhibition_um in the image plane. F_i is computed so that the neutral ramp returns the published curve exactly: on a neutral, F_i maps log H - sum_j K_ij a_j(log H) to a_i(log H). So the published curve holds for a neutral and a large flat area, and a colour, where the layers differ, gets less inhibition from the layers that developed less.
+The total of K per layer comes from the published modulation transfer (fit_mtf.py of step P4). Its split between the layers has no source and is inferred. Solve: fixed-point steps from the uninhibited amounts.
+
+Rule 'layer_spread' (option layer_spread_um, step P4): an exponential spread of the light per layer, in layer exposure, with the length from the published modulation transfer. A sum of two Gaussians stands for the exponential (constants SPREAD_GAUSSIANS, largest error in the transfer function 0.028).
 """
 
 from __future__ import annotations
@@ -107,6 +123,14 @@ UV_MAX = (0.66, 0.62)
 DENSITY_NODES = 65
 SOLVE_ITERATIONS = 16
 UV_SMOOTH_BLEND = (0.05, 0.15)  # u'v' distance from the white where sigma_near changes to sigma_far
+LIGHT_SECTOR_DEGREES = (30.0, 60.0)  # angle from the direction of a sector: full weight, then a smoothstep to zero
+LIGHT_SECTOR_RADIUS = {"blue": (0.006, 0.02), "warm": (0.05, 0.09)}  # u'v' distance from the white: zero weight, then a smoothstep to full weight
+LIGHT_FIT_STEPS = 12  # continuation steps from the white to the node
+LIGHT_FIT_LIMIT = 1e-5  # largest relative XYZ error of a fitted node
+LIGHT_REACH_FADE = 0.008  # u'v' sigma of the fade toward the nodes that the family cannot reach
+SPREAD_GAUSSIANS = ((0.2528, 0.4142), (0.7472, 1.4271))  # (weight, sigma / spread length): least-squares fit of 1 / (1 + x^2) for x up to 8
+INHIBITION_STEPS_IMAGE = 4
+INHIBITION_STEPS_POINT = 16
 METER_CAP = 16.0
 # Product default of a RAW file in Alcedo Studio: alcedo_studio/src/include/edit/graph/pipeline_document.hpp.
 # A raster file has a neutral grade. The review uses rule 'center_weighted_exposure' in place of the +1.5 EV.
@@ -123,7 +147,7 @@ def bradford_matrix(source_xyz: np.ndarray, target_xyz: np.ndarray) -> np.ndarra
     return np.linalg.inv(BRADFORD) @ np.diag(gain) @ BRADFORD
 
 
-NOT_IN_PRINT_TABLE = ("uv_smooth", "gamut_compress", "gamut_threshold", "gamut_limit", "gamut_power", "scene_flare", "display_white", "frame_mm", "scatter_um", "halation", "halation_um",
+NOT_IN_PRINT_TABLE = ("light_spectra", "uv_smooth", "layer_spread_um", "inhibition_um", "gamut_compress", "gamut_threshold", "gamut_limit", "gamut_power", "scene_flare", "display_white", "frame_mm", "scatter_um", "halation", "halation_um",
                       "adjacency_gain", "adjacency_um", "enlarger_flare", "enlarger_flare_size")
 
 
@@ -163,6 +187,12 @@ class FilmOptions:
     enlarger_flare: float = 0.0
     enlarger_flare_size: float = 0.1  # sigma, share of the long side
     uv_smooth: tuple[float, float] = (0.0, 0.0)  # not part of the print table; sigma_near, sigma_far of rule 'smooth_reflectance_table'
+    negative_record: str = "status_m"  # 'status_m' or 'dye_amount': rule 'dye_amount_curves' (P4)
+    light_spectra: bool = False  # not part of the print table; rule 'light_like_spectra' (P4)
+    layer_spread_um: tuple[float, float, float] = (0.0, 0.0, 0.0)  # not part of the print table; rule 'layer_spread' (P4), red, green, blue layer
+    inhibition_total: tuple[float, float, float] = (0.0, 0.0, 0.0)  # rule 'development_inhibition' (P4): the total inhibition that each layer receives, log10 H per unit of dye amount
+    inhibition_cross_share: float = 0.5  # share of the total that comes from the other two layers (inferred)
+    inhibition_um: float = 35.0  # not part of the print table; Gaussian length of the inhibitor in the image plane
 
     def key(self) -> str:
         fields = {k: v for k, v in asdict(self).items() if k not in NOT_IN_PRINT_TABLE}
@@ -192,6 +222,15 @@ SCENE_PRESETS = {
     "street_led": (("LED-B3", 0.75), ("T2800", 0.15), ("HP1", 0.1)),
     "interior_warm": (("T2800", 0.7), ("LED-B3", 0.3)),
     "interior_office": (("FL11", 0.5), ("LED-B3", 0.5)),
+}
+
+# Physical options of step P4, for each stock. Spread and inhibition: results/p4_physical_film_response/mtf_fit.json. Portra 400 has no published isolated dye curves, so it keeps the inferred band split.
+# These options replace scatter_um and adjacency_gain of DARKROOM. gamut_limit: on this chain the print of a saturated sky or cyan reaches a gamut distance of 1.25 to 1.32 (p99.9 on the hue sweep, cyan), so the ACES RGC value 1.147 left a clip that made a break in the sweep.
+P4_GAMUT_LIMIT = (1.4, 1.3, 1.312)
+P4_PHYSICAL = {
+    "5207_2383": dict(negative_dye_basis="published", negative_record="dye_amount", light_spectra=True, scatter_um=0.0, adjacency_gain=0.0, layer_spread_um=(4.95, 3.02, 2.83), inhibition_total=(0.1448, 0.079, 0.204), gamut_limit=P4_GAMUT_LIMIT),
+    "5219_2383": dict(negative_dye_basis="published", negative_record="dye_amount", light_spectra=True, scatter_um=0.0, adjacency_gain=0.0, layer_spread_um=(5.0, 3.41, 3.17), inhibition_total=(0.1836, 0.2463, 0.2833), gamut_limit=P4_GAMUT_LIMIT),
+    "portra400_endura": dict(negative_dye_basis="band_split", negative_record="dye_amount", light_spectra=True, scatter_um=0.0, adjacency_gain=0.0, layer_spread_um=(4.53, 3.21, 2.63), inhibition_total=(0.211, 0.3356, 0.1902), gamut_limit=P4_GAMUT_LIMIT),
 }
 
 STOCKS = {
@@ -236,7 +275,9 @@ class FilmPreview:
         self.c = sr.Colorimetry(model_options)
         self.film = self.c.film
         CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        self.negative_curves = list(self.film.negative_curves.values())
+        self.status_curves = list(self.film.negative_curves.values())
+        self.negative_curves = self.status_curves if o.negative_record == "status_m" else self._dye_amount_curves()
+        self._prepare_inhibition()
         self.paper_curves = list(self.film.paper_curves.values())
         self.scene_spectrum = self.light(o.scene_light)
         self.layer_gain = self._camera_filter()
@@ -280,7 +321,7 @@ class FilmPreview:
         reference = balance(np.array([c.density_at(f.options.midscale_log_h) for c in f.negative_curves.values()]))
         grey = gain * self.c.layer_exposure(0.18 * self.scene_spectrum)
         self.scene_grey_stops = np.log2(grey / 10.0 ** self._neutral_log_q)
-        f.printer_balance_log10 = reference + o.print_timing * (balance(self.negative_density(grey[None])[0][0]) - reference)
+        f.printer_balance_log10 = reference + o.print_timing * (balance(self.record_to_status_m(self.negative_density(grey[None])[0])[0]) - reference)
         return gain
 
     def _printing_gain(self) -> np.ndarray:
@@ -289,7 +330,7 @@ class FilmPreview:
             return np.ones(3)
         f = self.film
         log_h = f.options.midscale_log_h + np.linspace(-1.0, 1.0, 21)
-        status_m = np.stack([np.interp(log_h, c.log_h, c.density) for c in self.negative_curves], axis=1)
+        status_m = np.stack([np.interp(log_h, c.log_h, c.density) for c in self.status_curves], axis=1)
         base = f.status_density(f.negative_dmin, f.w_status_m)
         amounts, _ = solve_amounts(status_m - f.negative_curve_dmin + base, f.negative_dmin, f.negative_dyes, f.w_status_m)
         paper = f.paper_log_exposure(f.negative_spectral_density(amounts))
@@ -331,15 +372,23 @@ class FilmPreview:
     def _load_uv_table(self) -> np.ndarray:
         # Rule 'relight': see the header. Fast, so that a light does not need a new reconstruction.
         rho = self._load_reflectance_table().astype(np.float64)
+        white = self.c.xyz(self.c.e_ref)
+        white_uv = np.array([4.0 * white[0], 9.0 * white[1]]) / (white[0] + 15.0 * white[1] + 3.0 * white[2])
+        near, far = self.options.uv_smooth
         if any(self.options.uv_smooth):
-            near, far = self.options.uv_smooth
             path = CACHE_DIR / f"reflectance_over_uv_smooth_{near}_{far}.npy"
             if path.exists():
                 rho = np.load(path).astype(np.float64)
             else:
-                white = self.c.xyz(self.c.e_ref)
-                white_uv = np.array([4.0 * white[0], 9.0 * white[1]]) / (white[0] + 15.0 * white[1] + 3.0 * white[2])
                 rho = smooth_reflectance_table(rho, near, far, white_uv, self.c.w_xyz * self.c.e_ref)
+                np.save(path, rho.astype(np.float32))
+        if self.options.light_spectra:
+            # After the smoothing: the family is smooth over u'v', and the smoothing moved the far end of a Planckian light (P4 report, section W1).
+            path = CACHE_DIR / f"reflectance_over_uv_light_{near}_{far}.npy"
+            if path.exists():
+                rho = np.load(path).astype(np.float64)
+            else:
+                rho = light_like_spectra(rho, self.c, white_uv)
                 np.save(path, rho.astype(np.float32))
         return self.c.layer_exposure(rho * self.scene_spectrum[None, :]).reshape(UV_NODES, UV_NODES, 3)
 
@@ -363,6 +412,58 @@ class FilmPreview:
 
     # --- stage 3 ------------------------------------------------------------------------------
 
+    def _dye_amount_curves(self) -> list[p0.CharacteristicCurve]:
+        """Rule 'dye_amount_curves': the dye amounts of the neutral ramp, on one log H grid. Ends: the rule 'negative_curve_limits' of each Status M curve."""
+        f = self.film
+        step = self.status_curves[0].log_h[1] - self.status_curves[0].log_h[0]
+        start, stop = min(c.log_h[0] for c in self.status_curves), max(c.log_h[-1] for c in self.status_curves)
+        log_h = start + step * np.arange(int(round((stop - start) / step)) + 1)
+        status_m = np.stack([np.interp(log_h, c.log_h, c.density) for c in self.status_curves], axis=1)
+        base = f.status_density(f.negative_dmin, f.w_status_m)
+        amounts, residual = solve_amounts(status_m - f.negative_curve_dmin + base, f.negative_dmin, f.negative_dyes, f.w_status_m)
+        rising = np.maximum.accumulate(amounts, axis=0)
+        self.dye_curve_info = {"largest_solve_residual": float(residual.max()), "largest_fall_removed": float((rising - amounts).max()), "amount_range": [rising.min(axis=0).tolist(), rising.max(axis=0).tolist()]}
+        return [p0.CharacteristicCurve(log_h, rising[:, k]) for k in range(3)]
+
+    def _prepare_inhibition(self) -> None:
+        """Rule 'development_inhibition': the matrix K and the curves F_i on a uniform grid."""
+        o = self.options
+        self.inhibition = None
+        if not any(o.inhibition_total):
+            return
+        if o.negative_record != "dye_amount":
+            raise ValueError("rule development_inhibition needs negative_record = 'dye_amount'")
+        share = np.full((3, 3), o.inhibition_cross_share / 2.0)
+        np.fill_diagonal(share, 1.0 - o.inhibition_cross_share)
+        k = np.array(o.inhibition_total)[:, None] * share
+        log_h = self.negative_curves[0].log_h
+        amounts = np.stack([c.density for c in self.negative_curves], axis=1)
+        reduced = log_h[:, None] - amounts @ k.T
+        if (np.diff(reduced, axis=0) <= 0.0).any():
+            raise ValueError("rule development_inhibition: the reduced exposure of the neutral does not rise, so F_i does not exist")
+        step = float(log_h[1] - log_h[0])
+        length = len(log_h) + int(np.ceil(np.ptp(reduced, axis=0).max() / step))
+        starts = reduced[0]
+        grid = starts[:, None] + step * np.arange(length)[None, :]
+        free = np.stack([np.interp(grid[i], reduced[:, i], amounts[:, i]) for i in range(3)])
+        self.inhibition = {"k": k, "start": starts, "free": free, "lengths": np.array([int(np.searchsorted(grid[i], reduced[-1, i])) + 1 for i in range(3)]), "step": step}
+
+    def _inhibited_amounts(self, log_h: np.ndarray, amounts: np.ndarray) -> np.ndarray:
+        """Array form of the fixed point, with no image plane: log H and first amounts (N, 3)."""
+        i = self.inhibition
+        grid = i["start"][:, None] + i["step"] * np.arange(i["free"].shape[1])[None, :]
+        for _ in range(INHIBITION_STEPS_POINT):
+            reduced = log_h - amounts @ i["k"].T
+            amounts = np.stack([np.interp(reduced[..., k], grid[k][: i["lengths"][k]], i["free"][k][: i["lengths"][k]]) for k in range(3)], axis=-1)
+        return amounts
+
+    def record_to_status_m(self, record: np.ndarray) -> np.ndarray:
+        """The value of the curve stage (Status M, or dye amounts with rule 'dye_amount_curves') as negative Status M on the scale of the published curves. Shape (N, 3)."""
+        if self.options.negative_record == "status_m":
+            return record
+        f = self.film
+        return f.status_density(f.negative_spectral_density(record), f.w_status_m) - f.status_density(f.negative_dmin, f.w_status_m) + f.negative_curve_dmin
+
     def negative_density(self, q: np.ndarray) -> tuple[np.ndarray, int]:
         out = np.empty_like(q)
         above = 0
@@ -379,6 +480,8 @@ class FilmPreview:
             log_h = crit[k] + log_q[..., k]
             above += int((log_h > curve.log_h[-1]).sum())
             out[..., k] = np.interp(log_h, curve.log_h, curve.density)
+        if self.inhibition is not None:
+            out = self._inhibited_amounts(crit + log_q, out)
         return out, above
 
     # --- stage 4 ------------------------------------------------------------------------------
@@ -386,7 +489,7 @@ class FilmPreview:
     def direct_print_xyz(self, density: np.ndarray) -> tuple[np.ndarray, dict]:
         """Negative Status M (N, 3) to print XYZ (Y of the perfect diffuser = 100), through the stages."""
         film = self.film
-        d = np.atleast_2d(density)
+        d = self.record_to_status_m(np.atleast_2d(density))
         base = film.status_density(film.negative_dmin, film.w_status_m)
         target = d - film.negative_curve_dmin + base
         a, r_negative = solve_amounts(target, film.negative_dmin, film.negative_dyes, film.w_status_m)
@@ -421,7 +524,7 @@ class FilmPreview:
         curves = np.stack([np.pad(c.density, (0, length - len(c.density)), mode="edge") for c in self.paper_curves])
         aim = np.array([c.log_h_at(o.print_midscale_status_a) for c in self.paper_curves])
         xyz, not_negative, not_print, outside = fk.print_nodes(
-            density.astype(np.float64), base - f.negative_curve_dmin, SOLVE_ITERATIONS,
+            self.record_to_status_m(density).astype(np.float64), base - f.negative_curve_dmin, SOLVE_ITERATIONS,
             f.negative_dmin[m], f.negative_dyes[:, m], f.w_status_m[:, m],
             f.negative_dmin[pr], f.negative_dyes[:, pr], f.w_printing[:, pr], np.asarray(f.printer_balance_log10, dtype=np.float64), aim, float(o.print_contrast) * self.printing_gain, float(o.print_flash),
             np.array([c.log_h[0] for c in self.paper_curves]), curves, np.array([len(c.density) for c in self.paper_curves]), float(self.paper_curves[0].log_h[1] - self.paper_curves[0].log_h[0]),
@@ -521,15 +624,34 @@ class FilmPreview:
         if spatial and o.scatter_um:
             sigma = o.scatter_um / pixel
             q = fk.gaussian_blur(q, sigma)
+        if spatial and any(o.layer_spread_um):
+            q = self._spread_layers(q, pixel)
         if spatial and any(o.halation):
             q = fk.mix_exposure(q, fk.gaussian_blur(q, o.halation_um / pixel), np.array(o.halation, dtype=np.float64))
         density, above = fk.negative_density(q, self.film.negative_criterion_log_h, self._neutral, float(o.interlayer_gain), self._curve_start, self._curves_f64, self._curve_lengths, self._curve_step)
+        if self.inhibition is not None:
+            density = self._inhibited_image(q, density, pixel if spatial else 0.0)
         if spatial and o.adjacency_gain:
             density = fk.add_adjacency(density, fk.gaussian_blur(density, o.adjacency_um / pixel), float(o.adjacency_gain))
         if spatial and o.enlarger_flare:
             t = fk.density_to_transmittance(density)
             density = fk.flare_density(t, fk.gaussian_blur(t, o.enlarger_flare_size * max(image.shape[:2])), float(o.enlarger_flare))
         return density, {"moved_by_rule": int(moved), "y_not_positive": int(not_positive), "negative_above_curve_end": int(above), "pixels": int(image.shape[0] * image.shape[1])}
+
+    def _spread_layers(self, q: np.ndarray, pixel: float) -> np.ndarray:
+        """Rule 'layer_spread'. Each layer has its own length, so each one takes its channel of its own blurs."""
+        out = np.empty_like(q)
+        for k, length in enumerate(self.options.layer_spread_um):
+            out[..., k] = sum(weight * fk.gaussian_blur(q, ratio * length / pixel)[..., k] for weight, ratio in SPREAD_GAUSSIANS)
+        return out
+
+    def _inhibited_image(self, q: np.ndarray, amounts: np.ndarray, pixel: float) -> np.ndarray:
+        """Rule 'development_inhibition' on an image. pixel = 0: no image plane."""
+        i = self.inhibition
+        for _ in range(INHIBITION_STEPS_IMAGE if pixel else INHIBITION_STEPS_POINT):
+            inhibitor = fk.gaussian_blur(amounts, self.options.inhibition_um / pixel) if pixel else amounts
+            amounts = fk.inhibited_step(q, inhibitor, self.film.negative_criterion_log_h, i["k"], i["start"], i["free"], i["lengths"], i["step"])
+        return amounts
 
     def render(self, ap1: np.ndarray, detailed: bool = False) -> tuple[np.ndarray, dict]:
         """Linear AP1 to sRGB, through the kernels. detailed adds the percentiles of the gamut distance (slower)."""
@@ -587,6 +709,73 @@ def smooth_reflectance_table(rho: np.ndarray, sigma_near: float, sigma_far: floa
         gram = np.einsum("ni,ai,bi->nab", out, to_xyz, to_xyz, optimize=True)
         scale = np.linalg.solve(gram + 1e-12 * np.trace(gram, axis1=1, axis2=2)[:, None, None] * np.eye(3), error[..., None])[..., 0]
         out = np.maximum(out * (1.0 + scale @ to_xyz), 0.0)
+    return out
+
+
+def light_sector_weight(u: np.ndarray, v: np.ndarray, white_uv: np.ndarray, directions: dict[str, np.ndarray]) -> np.ndarray:
+    """Weight of rule 'light_like_spectra' at the points of u'v'. directions: unit vector per sector, from the white."""
+    du, dv = u - white_uv[0], v - white_uv[1]
+    radius = np.hypot(du, dv)
+
+    def smoothstep(x: np.ndarray) -> np.ndarray:
+        x = np.clip(x, 0.0, 1.0)
+        return x * x * (3.0 - 2.0 * x)
+
+    weight = np.zeros_like(radius)
+    for name, direction in directions.items():
+        angle = np.degrees(np.arccos(np.clip((du * direction[0] + dv * direction[1]) / np.maximum(radius, 1e-12), -1.0, 1.0)))
+        low, high = LIGHT_SECTOR_RADIUS[name]
+        weight = np.maximum(weight, (1.0 - smoothstep((angle - LIGHT_SECTOR_DEGREES[0]) / (LIGHT_SECTOR_DEGREES[1] - LIGHT_SECTOR_DEGREES[0]))) * smoothstep((radius - low) / (high - low)))
+    return weight
+
+
+def light_directions(c: sr.Colorimetry, white_uv: np.ndarray) -> dict[str, np.ndarray]:
+    """Directions of the sectors in u'v', from spectra against the reference light: skylight (lambda^-4, Rayleigh) and a Planckian light of 2500 K."""
+    wl = c.wavelengths
+
+    def direction(spectrum: np.ndarray) -> np.ndarray:
+        xyz = c.xyz(spectrum)
+        offset = np.array([4.0 * xyz[0], 9.0 * xyz[1]]) / (xyz[0] + 15.0 * xyz[1] + 3.0 * xyz[2]) - white_uv
+        return offset / np.hypot(*offset)
+
+    return {"blue": direction(c.e_ref * (550.0 / wl) ** 4), "warm": direction(wl ** -5.0 / np.expm1(1.4388e7 / (wl * 2500.0)))}
+
+
+def light_like_spectra(rho: np.ndarray, c: sr.Colorimetry, white_uv: np.ndarray) -> np.ndarray:
+    """Rule 'light_like_spectra': see the header. rho: (nodes, wavelengths), with Y = 1 under E_ref. A node in a sector that the family cannot reach keeps the measured shape and is counted."""
+    u, v = np.meshgrid(*FilmPreview.uv_axes(), indexing="ij")
+    weight = light_sector_weight(u.ravel(), v.ravel(), white_uv, light_directions(c, white_uv))
+    index = np.flatnonzero(weight > 0.0)
+    to_xyz = c.w_xyz * c.e_ref
+    x = (c.wavelengths - 560.0) / 100.0
+    basis = np.stack([np.ones_like(x), x, x * x])
+    uu, vv = u.ravel()[index], np.maximum(v.ravel()[index], 1e-3)
+    target = np.stack([9.0 * uu / (4.0 * vv), np.ones_like(uu), (12.0 - 3.0 * uu - 20.0 * vv) / (4.0 * vv)], axis=-1)
+    white = (np.ones_like(x) @ to_xyz.T)[None, :]
+    coefficient = np.zeros((len(index), 3))
+    for step in range(1, LIGHT_FIT_STEPS + 1):
+        aim = white + (target - white) * step / LIGHT_FIT_STEPS
+        for _ in range(12):
+            shape = np.exp(np.clip(coefficient @ basis, -60.0, 60.0))
+            error = aim - shape @ to_xyz.T
+            jacobian = np.einsum("ni,ai,bi->nab", shape, to_xyz, basis, optimize=True)
+            jacobian += 1e-10 * np.trace(jacobian, axis1=1, axis2=2)[:, None, None] * np.eye(3)
+            move = np.linalg.solve(jacobian, error[..., None])[..., 0]
+            limit = np.minimum(1.0, 2.0 / np.maximum(np.abs(move).max(axis=1), 1e-12))
+            coefficient += limit[:, None] * move
+    shape = np.exp(np.clip(coefficient @ basis, -60.0, 60.0))
+    error = np.abs(shape @ to_xyz.T - target).max(axis=1) / np.maximum(np.abs(target).max(axis=1), 1e-12)
+    reached = error <= LIGHT_FIT_LIMIT
+    print(f"rule light_like_spectra: nodes in the sectors {len(index)}, not reached {int((~reached).sum())}", flush=True)
+    # The family cannot reach the nodes near and outside the spectral locus. The weight falls to zero toward them, so the table has no step there.
+    reachable = np.ones(u.size)
+    reachable[index[~reached]] = 0.0
+    step = np.array(UV_MAX) / (UV_NODES - 1)
+    fade = np.clip(2.0 * gaussian_filter(reachable.reshape(u.shape), (LIGHT_REACH_FADE / step[0], LIGHT_REACH_FADE / step[1]), mode="nearest").ravel() - 1.0, 0.0, 1.0)
+    fade = fade * fade * (3.0 - 2.0 * fade)
+    used = weight[index[reached], None] * fade[index[reached], None]
+    out = rho.copy()
+    out[index[reached]] = (1.0 - used) * rho[index[reached]] + used * shape[reached]
     return out
 
 

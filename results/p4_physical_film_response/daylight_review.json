@@ -1,0 +1,37 @@
+{
+ "0691416133": {
+  "exposure_stops": 1.44,
+  "share_clipped_after_compression": {
+   "5207": 0.0,
+   "portra": 0.0
+  }
+ },
+ "3224436375": {
+  "exposure_stops": 0.61,
+  "share_clipped_after_compression": {
+   "5207": 0.0,
+   "portra": 0.0
+  }
+ },
+ "5897833591": {
+  "exposure_stops": 1.12,
+  "share_clipped_after_compression": {
+   "5207": 0.0,
+   "portra": 0.0
+  }
+ },
+ "5965296318": {
+  "exposure_stops": 0.94,
+  "share_clipped_after_compression": {
+   "5207": 0.0,
+   "portra": 0.0
+  }
+ },
+ "8471933047": {
+  "exposure_stops": 0.52,
+  "share_clipped_after_compression": {
+   "5207": 0.0,
+   "portra": 0.0
+  }
+ }
+}

@@ -1,0 +1,188 @@
+{
+ "5207": {
+  "red": {
+   "spread_um": 4.95,
+   "sigma_inhibitor_um": 33.75,
+   "boost": 1.0783,
+   "amount_slope_per_log10_h": 0.5013,
+   "inhibition_total": 0.1448,
+   "rms_residual": 0.0074,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    0.776,
+    0.417
+   ]
+  },
+  "green": {
+   "spread_um": 3.02,
+   "sigma_inhibitor_um": 46.32,
+   "boost": 1.0452,
+   "amount_slope_per_log10_h": 0.5475,
+   "inhibition_total": 0.079,
+   "rms_residual": 0.0274,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    0.935,
+    0.632
+   ]
+  },
+  "blue": {
+   "spread_um": 2.83,
+   "sigma_inhibitor_um": 24.27,
+   "boost": 1.1217,
+   "amount_slope_per_log10_h": 0.5317,
+   "inhibition_total": 0.204,
+   "rms_residual": 0.0113,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    1.02,
+    0.733
+   ]
+  }
+ },
+ "5219": {
+  "red": {
+   "spread_um": 5.0,
+   "sigma_inhibitor_um": 60.0,
+   "boost": 1.1062,
+   "amount_slope_per_log10_h": 0.5229,
+   "inhibition_total": 0.1836,
+   "rms_residual": 0.0091,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    true,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    0.787,
+    0.427
+   ]
+  },
+  "green": {
+   "spread_um": 3.41,
+   "sigma_inhibitor_um": 24.37,
+   "boost": 1.1449,
+   "amount_slope_per_log10_h": 0.5138,
+   "inhibition_total": 0.2463,
+   "rms_residual": 0.0043,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    0.971,
+    0.652
+   ]
+  },
+  "blue": {
+   "spread_um": 3.17,
+   "sigma_inhibitor_um": 26.75,
+   "boost": 1.1924,
+   "amount_slope_per_log10_h": 0.5695,
+   "inhibition_total": 0.2833,
+   "rms_residual": 0.019,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    1.062,
+    0.703
+   ]
+  }
+ },
+ "portra": {
+  "red": {
+   "spread_um": 4.53,
+   "sigma_inhibitor_um": 47.19,
+   "boost": 1.1693,
+   "amount_slope_per_log10_h": 0.6862,
+   "inhibition_total": 0.211,
+   "rms_residual": 0.0131,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    0.905,
+    0.5
+   ]
+  },
+  "green": {
+   "spread_um": 3.21,
+   "sigma_inhibitor_um": 32.19,
+   "boost": 1.2652,
+   "amount_slope_per_log10_h": 0.6247,
+   "inhibition_total": 0.3356,
+   "rms_residual": 0.0188,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    1.116,
+    0.747
+   ]
+  },
+  "blue": {
+   "spread_um": 2.63,
+   "sigma_inhibitor_um": 53.02,
+   "boost": 1.1347,
+   "amount_slope_per_log10_h": 0.624,
+   "inhibition_total": 0.1902,
+   "rms_residual": 0.0273,
+   "at_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "mtf_at_20_and_40": [
+    1.051,
+    0.75
+   ]
+  }
+ }
+}

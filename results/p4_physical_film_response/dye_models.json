@@ -1,0 +1,288 @@
+{
+ "isolated_curves_against_neutral": {
+  "kodak_5207": {
+   "amounts": [
+    0.572,
+    0.615,
+    0.652
+   ],
+   "rms_residual": 0.0027,
+   "largest_residual": 0.0067,
+   "lowest_value_per_dye": [
+    0.029,
+    -0.018,
+    -0.004
+   ]
+  },
+  "kodak_5219": {
+   "amounts": [
+    0.739,
+    0.694,
+    0.773
+   ],
+   "rms_residual": 0.0047,
+   "largest_residual": 0.0151,
+   "lowest_value_per_dye": [
+    0.014,
+    -0.04,
+    -0.004
+   ]
+  }
+ },
+ "band_split_against_isolated": {
+  "kodak_5207": {
+   "cut_points": {
+    "red_peak_nm": 683.0,
+    "green_peak_nm": 537.0,
+    "blue_peak_nm": 441.0,
+    "blue_green_cut_nm": 491.0,
+    "green_red_cut_nm": 596.0
+   },
+   "cyan_dye": {
+    "420": {
+     "band_split": 0.0,
+     "isolated": 0.079
+    },
+    "450": {
+     "band_split": 0.0,
+     "isolated": 0.033
+    },
+    "500": {
+     "band_split": 0.0,
+     "isolated": 0.018
+    },
+    "550": {
+     "band_split": 0.023,
+     "isolated": 0.067
+    },
+    "600": {
+     "band_split": 0.225,
+     "isolated": 0.252
+    },
+    "650": {
+     "band_split": 0.542,
+     "isolated": 0.502
+    },
+    "690": {
+     "band_split": 0.611,
+     "isolated": 0.569
+    }
+   },
+   "magenta_dye": {
+    "420": {
+     "band_split": 0.002,
+     "isolated": -0.004
+    },
+    "450": {
+     "band_split": 0.033,
+     "isolated": -0.007
+    },
+    "500": {
+     "band_split": 0.358,
+     "isolated": 0.343
+    },
+    "550": {
+     "band_split": 0.65,
+     "isolated": 0.574
+    },
+    "600": {
+     "band_split": 0.169,
+     "isolated": 0.134
+    },
+    "650": {
+     "band_split": 0.008,
+     "isolated": 0.053
+    },
+    "690": {
+     "band_split": 0.0,
+     "isolated": 0.042
+    }
+   },
+   "yellow_dye": {
+    "420": {
+     "band_split": 0.597,
+     "isolated": 0.527
+    },
+    "450": {
+     "band_split": 0.649,
+     "isolated": 0.652
+    },
+    "500": {
+     "band_split": 0.208,
+     "isolated": 0.206
+    },
+    "550": {
+     "band_split": 0.007,
+     "isolated": 0.037
+    },
+    "600": {
+     "band_split": 0.0,
+     "isolated": 0.005
+    },
+    "650": {
+     "band_split": 0.0,
+     "isolated": -0.001
+    },
+    "690": {
+     "band_split": 0.0,
+     "isolated": -0.002
+    }
+   }
+  },
+  "kodak_5219": {
+   "cut_points": {
+    "red_peak_nm": 688.0,
+    "green_peak_nm": 541.0,
+    "blue_peak_nm": 441.0,
+    "blue_green_cut_nm": 487.0,
+    "green_red_cut_nm": 591.0
+   },
+   "cyan_dye": {
+    "420": {
+     "band_split": 0.0,
+     "isolated": 0.085
+    },
+    "450": {
+     "band_split": 0.0,
+     "isolated": 0.02
+    },
+    "500": {
+     "band_split": 0.0,
+     "isolated": 0.019
+    },
+    "550": {
+     "band_split": 0.043,
+     "isolated": 0.093
+    },
+    "600": {
+     "band_split": 0.311,
+     "isolated": 0.325
+    },
+    "650": {
+     "band_split": 0.69,
+     "isolated": 0.647
+    },
+    "690": {
+     "band_split": 0.772,
+     "isolated": 0.739
+    }
+   },
+   "magenta_dye": {
+    "420": {
+     "band_split": 0.004,
+     "isolated": -0.018
+    },
+    "450": {
+     "band_split": 0.052,
+     "isolated": -0.021
+    },
+    "500": {
+     "band_split": 0.461,
+     "isolated": 0.373
+    },
+    "550": {
+     "band_split": 0.776,
+     "isolated": 0.647
+    },
+    "600": {
+     "band_split": 0.169,
+     "isolated": 0.143
+    },
+    "650": {
+     "band_split": 0.006,
+     "isolated": 0.049
+    },
+    "690": {
+     "band_split": 0.0,
+     "isolated": 0.037
+    }
+   },
+   "yellow_dye": {
+    "420": {
+     "band_split": 0.674,
+     "isolated": 0.616
+    },
+    "450": {
+     "band_split": 0.72,
+     "isolated": 0.771
+    },
+    "500": {
+     "band_split": 0.206,
+     "isolated": 0.276
+    },
+    "550": {
+     "band_split": 0.005,
+     "isolated": 0.081
+    },
+    "600": {
+     "band_split": 0.0,
+     "isolated": 0.014
+    },
+    "650": {
+     "band_split": 0.0,
+     "isolated": -0.0
+    },
+    "690": {
+     "band_split": 0.0,
+     "isolated": -0.002
+    }
+   }
+  }
+ },
+ "portra_neutral_with_cine_dyes_comparison": {
+  "kodak_5207": {
+   "amounts": [
+    0.883,
+    0.84,
+    1.03
+   ],
+   "rms_residual": 0.0527,
+   "largest_residual": 0.1421
+  },
+  "kodak_5219": {
+   "amounts": [
+    0.903,
+    0.772,
+    1.073
+   ],
+   "rms_residual": 0.0495,
+   "largest_residual": 0.1324
+  }
+ },
+ "planck_error_and_table_smoothing": {
+  "Planck 1800 K": {
+   "with_table_smoothing": [
+    0.0044,
+    0.0031,
+    0.0201
+   ],
+   "no_table_smoothing": [
+    0.0073,
+    0.0025,
+    0.0158
+   ],
+   "ap1": [
+    0.3271,
+    0.1309,
+    0.0215
+   ]
+  },
+  "Planck 2500 K": {
+   "with_table_smoothing": [
+    0.0141,
+    0.0024,
+    -0.0076
+   ],
+   "no_table_smoothing": [
+    0.0142,
+    0.0024,
+    -0.0074
+   ],
+   "ap1": [
+    0.2644,
+    0.1545,
+    0.0522
+   ]
+  }
+ }
+}

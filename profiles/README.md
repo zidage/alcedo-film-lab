@@ -9,6 +9,8 @@ stated conditions, the quantity and unit of each axis, and the provenance of the
 | [`kodak_endura_premier.json`](kodak_endura_premier.json) | KODAK PROFESSIONAL ENDURA Premier Paper (RA-4) | E-4070, Revised 12-17, pages 4 and 5 | digitized points (PDF vector paths) |
 | `kodak_5207.json`, `kodak_5219.json`, `kodak_2383.json` | KODAK VISION3 250D 5207, VISION3 500T 5219, VISION 2383 | spectral_film_lut (MIT) at `bcbcfc68` | digitized by that project; linearly resampled by `scripts/poc/p2_negative_print/import_cine_profiles.py`; not checked against Kodak documents |
 
+`import_dyes_and_mtf.py` (step P4) adds the isolated dye curves of 5207 and 5219 and the chart `modulation_transfer` of 5207, 5219, and Portra 400, from spectral_film_lut (MIT) at `bcbcfc68`. These were not checked against Kodak documents. Run it again after `import_cine_profiles.py` or `digitize_kodak_charts.py`.
+
 `digitize_kodak_charts.py` (step P0) writes these files. The curves are resampled on 1 nm
 (spectral charts) or 0.01 log10 lux-seconds (characteristic charts) inside the published domain
 only. There is no smoothing and no extrapolation in the files. The inferred fields of the model
