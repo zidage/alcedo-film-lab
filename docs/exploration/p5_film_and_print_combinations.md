@@ -2,7 +2,7 @@
 
 **Design:** [README section 8](../../README.md#8-route-from-poc-to-mvp), step P5, with decisions U33 and U34.
 **Date:** 2026-10-30.
-**Status:** in progress. Five stocks have profiles, options, numeric checks, and labeled sheets. The user review of the stocks is not done. Sections 11 and 12 add the backlit work of U35 and U37.
+**Status:** in progress. Five stocks have profiles, options, numeric checks, and labeled sheets. The user review of the stocks is not done. Sections 11 and 12 add the backlit work of U35 and U37. Section 26 adds a scan path with three stages (U54).
 
 ## 1. Question
 
@@ -185,6 +185,16 @@ Not measured: band depth on the sweep; L* and C* over the review files; the nigh
 | P5-O20 | Closed (U49): the user chose candidate B of the second review (section 24). | User |
 | P5-O21 | Review two lights by pixel colour on candidate B (section 24). Sheets: `build/tmp/p5/review_two_lights/`. | User |
 | P5-O22 | Run NexFilm on the Hong Kong TIFF files, and review the study of the real 5219 images (section 25). Files: `build/tmp/p5/scan_negative_hk/`, `build/tmp/p5/real_5219/llf/`. | User |
+| P5-O23 | Closed (2026-10-31). The user rejected all results of section 26 (U55). | User |
+| P5-O24 | Think again about the scan path from the orange film base. On hold by U55. | User |
+| P5-O25 | Review the print against candidate B on the 17 files (section 27). Sheets: `build/tmp/p5/review_print_vs_b/`. | User |
+| P5-O26 | Review real 5207 negatives through the display paths (section 28). Sheets: `build/tmp/p5/real_5207/review/`. | User |
+| P5-O27 | One true pair of one dusk scene exists (section 29). A chart or a pair with strong colours is still missing. | User |
+| P5-O28 | The rule `grey_anchor` removes 0.58 stops of the blue layer of 5207, and the pair does not support this removal. Test it on more pairs, and on the other stocks (section 29). | P5 |
+| P5-O29 | Review the mask removal on the real negatives (section 30). Sheets: `build/tmp/p5/real_5207/unmask/`. | User |
+| P5-O30 | Review the real negatives through the 2383 print with no anchor (section 31). Sheets: `build/tmp/p5/real_5207/print/`. | User |
+| P5-O31 | On the print, the simulated negative of the pair is cyan and the real negative is warm. Find the source of the red error, on more pairs (section 31). | P5 |
+| P5-O32 | Review the Hong Kong day files through the print (section 32). Sheets: `build/tmp/p5/hk_day/review/`. | User |
 
 ## 11. Backlit areas of high contrast scenes (U35)
 
@@ -753,3 +763,245 @@ The references are 4 panels from 2 screenshots. The user states that they are re
 **Limits.** The detail map of the references shows block patterns from image compression, so the gain of the finest band can be partly compression. The colour result comes from pooled pixels of 4 references.
 
 **Reading of the author.** Softness in the references comes from three things together: a low and nearly straight slope through the middle tones, a narrower colour axis with warm highlights, and fine detail with less contrast. Candidate B has a sigmoid with a steep middle. A straight density display with a lower placement is the next physical test, and the NexFilm result on the TIFF files is direct evidence for it.
+
+## 26. A scan path with three stages, and density-domain display preparation (U54)
+
+**User result (U55, 2026-10-31):** all results of this section are rejected, candidate D too. The proposal of the author at the end of this section is withdrawn.
+
+**Status:** local library `density_display.py`, and local probes `check_density_display.py`, `probe_density_display.py`, `probe_density_display_stocks.py`, `probe_density_display_scale.py`, and `probe_hue_trace.py`, in `build/tmp/p5/scripts/` (2026-10-31). Logs: `build/tmp/p5/density_display/`. No default of the model changes. No user review yet. All numeric values are review controls.
+
+**User request.** Test the proposals of a third person: keep the scanner apart from the display preparation; split density into an exposure coordinate and a colour residual; use multiscale rendering on the exposure coordinate; keep the scene light apart from the scan balance, with no rule per pixel. Also read Plutino et al. 2025. The user then rejected the first test files as not representative, so the author chose a new set of 17 files from the contact sheets.
+
+**Files.** Night and mixed light: `leica_m11`, `sony_a7r6`, `fuji_gfx100s`, `se275`, `_DSC8148`, `se034`. Portraits: `se015`, `se228`, `se197`, `se127`. Daylight and interior: `hasselblad_x2dii`, `nikon_zf`, `se091`, `nikon_z5`, `canon_r5ii`, `sony_a7cii`, `_DSC4071`. Stocks: 5219 and 5207. The first files stay only as the source of the first observations below.
+
+**Source observations, Plutino et al. 2025** (Signal, Image and Video Processing 19:976, doi 10.1007/s11760-025-04569-8; read from the supplied PDF). One test leader on KODAK 2254 was scanned on 12 cinema scanners.
+
+- The tone encoding differs between scanners, and the DPX metadata does not always state the applied transfer.
+- Glare is always present and depends on the image content, so a LUT cannot compensate for it.
+- Context glare difference on the positive scans, in 16 bit code: 379, 392, 1583, and 542 on scanners 1, 2, 8, and 9, which the paper reads as linear. These are 0.6 % to 2.4 % of full scale, for black marks on a white surround.
+- The paper gives no spread function. It does not study colour negative film or the look of an image.
+
+**Stages.**
+
+| Stage | Operation | Basis |
+| --- | --- | --- |
+| A, negative read | APD density | As in earlier sections |
+| B, scanner | Glare in linear transmittance above the base: t' = (1 - eta) t + eta blur(t), blur of sigma 2 %, 10 %, 35 % of the long edge, weights 0.5, 0.3, 0.2 | eta from the range of the paper. The spread is inferred |
+| C, display preparation | The steps below | Proposed design |
+
+**Stage C.**
+
+- **Tangent split.** v is the tangent of the neutral density per stop at the balance grey, and w = L / v, scaled so that w^T v = 1, with L the Rec. 709 luma weights. x = w^T (D - g), c = (D - g) - x v. There is no inverse H-D curve. On the neutral ramp of the checked stock, x is -5.8 at -6 stops and 4.9 at +6 stops, so the curve of the stock stays in x.
+- **Neutral track.** c_n(x) is c on the neutral ramp of the balance light. Object colour is c_p = c - c_n(x). A chroma gain acts only on c_p, so the crossover of the stock stays at full strength (U36).
+- **Density multiscale.** A fast local Laplacian filter on x, with the remap r_g(x) = x - (1 - alpha) sigma tanh((x - g) / sigma), sigma 1 stop. The remap is linear in alpha, so one set of K pyramids serves all alpha values. Band alpha, finest first: 0.55, 0.65, 0.8, 0.9, 1, 1, for bands from a period of about 0.2 % of a long edge of 1000 pixels. A larger image takes additional finer levels at the alpha of the finest band. Then Y = T(x').
+- **Colour to display.** Form 'channel': a sigmoid per channel on x' + kappa c. Form 'ratio': T on luminance, and colour as log2 ratios in linear Rec. 709. Candidate D is the geometric mean in linear light, with beta 0.4 toward the ratio form. kappa is 1.35 for the ratio form and 1.0 for the channel form, and it falls by 50 % from x = 2 to x = 4.5.
+- **Tone.** T(x) = sigmoid(logit(grey code) + 0.85 x). Grey code 0.40 is the proposal. Candidate B has 0.46.
+
+**Double counting.** At these review sizes one pixel is near 36 um on the film, so the layer spread of 3 to 6 um is below one pixel. At full resolution the finest bands overlap the scale of the film model. The alpha of those levels was not studied.
+
+**Numeric checks (`check_density_display.py`, `probe_density_display_scale.py`). Limits set before the first run.** Stocks: 5219 under D55 and T3200, and 5207 under D55.
+
+| Check | Limit | Result |
+| --- | --- | --- |
+| Split reconstructs D - g | 1e-9 | 1.1e-16 |
+| Multiscale with alpha 1 returns x | 1e-12 stops | 0 |
+| Flat x at alpha 0.5 | 1e-9 stops | 0 |
+| Glare on a flat field | 1e-6 density | 0 |
+| Overshoot at a step edge from -3 to +2 stops, alpha 0.5 | 0.10 stops | 0 |
+| Falls of luma on the neutral ramp, ratio form | 0 | 0 |
+| Green code RMS, long edge 3004 reduced to 751, against long edge 751, `P2625457` on 5219 | 0.02 | 0.018 |
+
+The step edge check uses an ideal edge, and it does not show the absence of a halo on a photograph. The author saw no halo on the viewed sheets, at sheet size only. The RMS is close to its limit, and only one file was tested. `detail_bands` takes 43.4 s on the CPU at a long edge of 3004, so this implementation is not a product path.
+
+**Hue fault of the ratio form (trace, `probe_hue_trace.py`).** With the ratio form alone, yellow walls turn salmon and a cyan sky turns violet (`hasselblad_x2dii`, `leica_m11`). The film path is not the cause: a patch of linear Rec. 709 (1.0, 0.7, 0.12) on 5207 has log2 R/G of +0.51 at the input, +0.55 in the ratio form, and +0.20 in the channel form. The hypothesis of the author is the path above the display range, which moves toward a neutral of equal luminance: a desaturated orange reads as salmon, and clipping per channel moves it toward yellow. This hypothesis was not tested in isolation. The blend removes the visible fault for beta from 0.3 to 0.5 on the viewed files.
+
+**Measured, on the 13 Hong Kong files, 5219, D55, grey code 0.46 (`probe_density_display_scale.py`).** Descriptive, with no limit.
+
+| Measure | Result |
+| --- | --- |
+| Lightness detail, candidate D against B, median by band, finest first | 0.686, 0.775, 0.867, 0.929, 0.971 |
+| Base lightness quantiles 5, 25, 50, 75, 95, 99, B | 0.205, 0.327, 0.490, 0.661, 0.863, 0.940 |
+| The same, candidate D | 0.212, 0.334, 0.493, 0.655, 0.849, 0.929 |
+| The same, real 5219 panels | 0.066, 0.168, 0.311, 0.410, 0.620, 0.903 |
+
+So detail falls while the base lightness stays near B: at grey code 0.46 the multiscale changes the local contrast and not the global tone. The real panels stay much darker, and the scenes differ. A band comparison against the real panels is not reported here. It was computed without the tone map of section 25, so it is not comparable with that section. These 13 files are not in the new file set, because this measurement reuses the method of section 25.
+
+**Author's visual results, not user review.** Sheets: `build/tmp/p5/review_density_display/`, with `pick/` as the sheets for the user. Viewed in full: `leica_m11`, `se228`, `hasselblad_x2dii`, `sony_a7r6`, `se091`, `se275`, `fuji_gfx100s`, `se197`, `_DSC4071`, `_DSC8148`, `nikon_zf`, `se015`. The other files are rendered and not examined. Skin softening was also viewed in crops of the first files `se188` and `P2625457`.
+
+- **Soft, with the global contrast kept.** Skin, road, and wall texture fall, and the eyes and edges of objects stay sharp (`se228`, `se197`, `se015`). The set 0.35 to 0.85 starts to look retouched on skin, so the author keeps 0.55 to 0.9.
+- **Colour.** Skin moves from the grey-yellow of B to a warm and dense colour on `se228` and `se197`. Sunset colour returns on `se091`. Warm highlights keep their colour on `leica_m11`, where B is pale. The sky of `hasselblad_x2dii` has more colour than B.
+- **Stocks stay apart on candidate D** (`stocks/hasselblad_x2dii.jpg`, 7 stocks): deeper reds on Ektar 100, warmer on Gold 200, and a cyan sky on C200. Portra 400 was not run: its accepted options have no rule `grey_anchor`, and a scene light needs this rule.
+- **Whole frame cooler light, with no rule per pixel.** T4300 on 5219 with balance T3200, and D85 on 5207 with balance D55. With 50 % of the offset removed in the scan, a grey wall and a road go slate blue while skin and lamps stay warm (`se228`, `fuji_gfx100s`, `se197`). No object changes hue the way the green skirt of section 24 does, on the viewed files. With no correction the result is strong: violet sky on `leica_m11`, and cool skin on `se197` and `se228`. The cool light acts on everything, so a warm lamp also moves a little.
+- **Spectral Jacobian M (comparison only).** M = J A^-1 from the spectral chain. Hues of flowers and leaves are nearer to the input on `se188`, and skin reads redder. M v against 1 is 0.71 to 0.77 in blue, so the tangent and the Jacobian disagree in that channel. The cause was not traced. The author does not propose M.
+- **Glare 0.6 %.** A small effect on these files: lamps and bright windows fall a little and read softer (`se275`, `sony_a7r6`). The 2.4 % panel on the first files dims highlights more. The author keeps it as a scanner option with eta 0.006.
+- **Grey code.** 0.40 gives more depth on night files (`_DSC8148`) and stays natural on daylight files (`nikon_zf`). 0.34 is dark on daylight files.
+- **Creative cool toe.** A bell in x adds log2 (-0.14, 0, 0.22) per display channel. It gives blue shadows that the scene does not hold. It is labeled as a creative scan colour, and it is not a property of the negative.
+
+**Not solved.** Backlit shadows: the tone of D stays near B in the shadows, so `_DSC4071` is not more open than B. The global tone of the real panels was not reached, and the author did not try to fit it.
+
+**Proposal of the author.** Candidate D with grey code 0.40 as the next base of the scan path. Scene light stays a manual control, with a share of the offset that the scan removes. Glare at 0.6 % stays an option. The creative cool toe stays a separate named control, off by default. Rule `light_by_colour` of section 24 can be dropped if the user accepts the whole frame method.
+
+## 27. The 17 files through the print, against candidate B (U55)
+
+**Status:** local script `build/tmp/p5/scripts/render_print_vs_b.py` (2026-10-31). No default of the model changes. No user review yet. Sheets: `build/tmp/p5/review_print_vs_b/`, 17 files, 2 x 2 panels of long edge 1000, with no plain image. The author viewed `se228`.
+
+**User decisions.** All results of section 26 are rejected. The scan path must be thought through again from the orange film base, and this work is on hold. Output the files through the print, with candidate B as the comparison.
+
+**Method.** The same product input for all panels: +1.5 EV, contrast 15, saturation 1.3. Print: 5219 and 5207 on 2383, scene light D55. Candidate B: section 23, N = 2, scene light D55.
+
+**A choice of the author.** 5219 has balance T3200 by default. So that its print and candidate B have the same scene light and a neutral grey, its print panel uses `balance_light="D55"`. This changes one review option, and the default of the stock stays. A flat AP1 grey of 0.18 through the print gives L*, a*, b* of 45.86, -0.06, 1.21 on 5219 and 45.89, 0.01, 0.97 on 5207.
+
+## 28. Real 5207 negatives of the user (U56)
+
+**Status:** local scripts `inspect_real_5207*.py`, `real_5207_frames.py`, `real_5207_stats.py`, `real_5207_render.py`, and `compare_chuanxi.py`, in `build/tmp/p5/scripts/` (2026-10-31). Outputs: `build/tmp/p5/real_5207/`, local only, because these are private photographs. No default of the model changes. No user review yet.
+
+**User statement.** The user has 5207 scanned on a Hasselblad X5, and asked how it can be used. The user also finds the spectral method weak.
+
+**Source.** `D:/素材/照片/胶片翻拍/2023 5207/2/`: 3 TIFF files of 7992 x 29176 pixels, 16 bit, uncut strips with the orange base, 2 strips per file, about 6 frames per strip. The frame detection gives 34 frames: `f16` holds two half frames. The content is rooms, cats, and mountains. There is no chart.
+
+**Metadata (FlexColor 4.8.13).** Resolution 3200, Gamma 2, FilmType 0, FilmCurve 4, Saturation 15, USMAmount -60, USMRadius 10, ApplyCurves true, ApplyUSM true, input profile Flextight Input. The metadata does not state which of these settings are in the stored pixels. Holder code near 0.046. The film base is stable over the 6 strips: median code near 0.74, 0.525, 0.41.
+
+**Hypotheses.** Code is T^(1/2), from the Gamma setting. The X5 channels stand in for APD; their responsivities are not known.
+
+**Real against simulated negative, no paired scene (`real_5207_stats.py`).** Holder pixels removed. Simulated: the 17 files of section 26, 5207, D55, N = 0. Descriptive, with no limit. The two groups have different scenes and unknown exposure, so a difference can come from the scenes.
+
+| Measure | Real | Simulated, exposure only | Simulated, product grade |
+| --- | --- | --- | --- |
+| Density of the base (real: gamma 2, against a clear gate; simulated: D-min) | 0.26, 0.56, 0.77 | 0.21, 0.55, 0.84 | same |
+| First principal axis, R, G, B to green | 0.847, 1, 1.043 | 0.848, 1, 0.959 | 0.835, 1, 0.972 |
+| Variance off that axis | 2.9 % | 3.3 % | 5.3 % |
+| p99 density above base | 1.06, 1.18, 1.21 | 1.37, 1.54, 1.38 | 1.40, 1.58, 1.41 |
+| Median R - G for G from 0 to 1.4, steps of 0.2 | 0.01, 0.03, 0.00, -0.04, -0.10, -0.13, -0.14 | 0.01, 0.00, -0.02, -0.04, -0.09, -0.13, -0.16 | 0.01, 0.01, -0.01, -0.03, -0.08, -0.12, -0.17 |
+| Median B - G for the same steps | -0.01, -0.05, -0.05, -0.06, 0.02, 0.05, 0.01 | -0.02, -0.06, -0.07, -0.09, -0.08, -0.07, -0.08 | -0.02, -0.06, -0.09, -0.10, -0.08, -0.06, -0.05 |
+
+**Reading (hypothesis).** The simulated negative agrees with the real negative in the base, in the red channel track, and in the exposure direction of red. Blue is further away: from G 0.8 up, B - G differs by about 0.1 density. This is not a proof of the model, because no scene is paired. But it gives no support to the statement that the spectral negative is the main fault of the scan path. The product grade raises the variance off the axis to 1.8 times the real value.
+
+**Real negatives through the display paths (`real_5207_render.py`).** Density above base, one neutral offset per frame as printer lights do, which puts the median G density at 0.58. Print: APD to Status M by a fixed point iteration on `table_apd`, then the 2383 print tables, without the spatial steps of the negative. Candidate B: section 23. Density window: section 13, with no matrix and with the base as the low endpoint. Sheets: `real_5207/review/f<nn>.jpg` and `overview_*.jpg`.
+
+The iteration leaves an error above 0.02 density on some pixels of 17 of the 34 frames, at most 0.40. The share of these pixels was not measured.
+
+**Author's visual results, not user review.** The author viewed the 3 overview sheets and `f14`.
+
+- All three paths give a look near real film prints and scans on rooms and buildings. The density window is the softest and most natural, with open shadows. So the simple rule that gave a thin result on the simulated negatives does not look thin here. The scenes differ, so this is not a direct comparison.
+- The print and candidate B look similar to each other on these frames.
+- The mountain frames `f13` to `f15` are too dark in the print and in candidate B. This comes from the timing rule: a thin sky fills most of the frame, and the median gives -0.41 density. It is not a result of the display paths.
+
+**True pairs.** The search of this section found no pair. The user then found one (section 29). `D:/素材/照片/2023.6川西/` holds 19 Sony ILCE-7RM3 files of a snow mountain with cloud, and 2 NEF files of other scenes. The capture time was not read from the previews, and the framing does not match the viewed frames `f13` to `f17`. The author could not show that it is one scene.
+
+**Not done.** Softness of the real frames by band. Registration of the repeated frames (`f13` to `f15`, `f21` and `f22`, `f29` and `f30`); their median density differs by at most 0.09, and the scene can differ too. Any fit to these frames.
+
+## 29. A true pair: one digital file and the 5207 frames of one scene (U57)
+
+**Status:** local scripts `pair_inspect.py`, `pair_register.py`, `pair_analyse.py`, `pair_flare.py`, and `pair_light.py`, in `build/tmp/p5/scripts/` (2026-10-31). Outputs: `build/tmp/p5/real_5207/pair/`, local only. No default of the model changes. No user review yet. One scene at dusk: snow, rock, cloud, and sky. It holds few colours, and it says nothing about skin or saturated colours. So this section is no calibration.
+
+**Pair.** `D:/Download/_DSC4976.ARW`, Sony ILCE-7RM3, 2023-06-24 20:15:09, 70 mm, f/10, 1/30 s, ISO 100, against frames `f15` and `f14`. The time between the digital and the film frames is not known, and the cloud moved. The lenses differ, and the two cameras had different flare.
+
+**Registration.** An affine fit with SciPy: correlation 0.9687 on `f15` and 0.9357 on `f14`, above the limit of 0.8 set before the run. `f13` reached 0.8418 with a sheared transform, so the author does not use it. The moving cloud is removed by a residual limit of 0.08 density in G: 88.7 % of the pixels of `f15` and 77.3 % of `f14` stay. Blur of sigma 2 pixels on both images.
+
+**Real against simulated negative, pixel by pixel (`pair_analyse.py`).** Density above base. Exposure of the simulated negative: +3.0 stops on `f15` and +3.25 on `f14`, from the smallest G error. Gamma 2 of the scan stays a hypothesis; this agreement supports it, on the middle tones.
+
+| Input | Frame | Median simulated - real, R, G, B | RMS, R, G, B | RMS after an offset per channel |
+| --- | --- | --- | --- | --- |
+| Exposure only | `f15` | 0.011, 0.013, -0.113 | 0.056, 0.048, 0.116 | 0.059, 0.049, 0.030 |
+| Exposure only | `f14` | 0.024, 0.028, -0.107 | 0.064, 0.058, 0.112 | 0.070, 0.060, 0.033 |
+| Product grade | `f15` | 0.013, 0.032, -0.089 | 0.071, 0.063, 0.097 | 0.075, 0.065, 0.036 |
+| Product grade | `f14` | 0.034, 0.053, -0.081 | 0.080, 0.076, 0.092 | 0.089, 0.077, 0.039 |
+
+Two errors stand out: blue is lower in the simulated negative, and the darkest rock is lower in all channels, by about 0.10 to 0.15 density.
+
+**The blue error.** A search for a gain per channel gives (0.06 to 0.07, 0, 0.74) stops on `f15` and (0.07, 0, 0.78) on `f14`, at no flare.
+
+- **White balance alone does not explain it.** The first hypothesis of the author was that the digital decode takes out the blue of dusk. The multipliers of the file do not support this: as shot 2.926, 1, 1.277, and daylight 2.739, 1, 1.369 to green, so a daylight decode adds -0.095, 0, +0.10 stops.
+- **Rule `grey_anchor` explains most of it.** The rule applies a gain per layer so that a grey under D55 lands at the Log H Ref. On 5207 its gain is +0.037, 0, -0.577 stops to green. Section 5 read this spread in the charts as a limit of the charts, and that was a hypothesis. Taken back, and with the daylight decode, the input moves by -0.132, 0, +0.676 stops, with no fitted value.
+
+| Input, `f15`, registered area | Median dD, R, G, B | RMS against real, R, G, B |
+| --- | --- | --- |
+| Real | 0.845, 0.974, 1.042 | - |
+| Now: `grey_anchor`, as shot, +3.0 stops | 0.856, 0.998, 0.952 | 0.058, 0.051, 0.117 |
+| No `grey_anchor`, daylight decode, +3.0 stops | 0.814, 1.014, 1.073 | 0.081, 0.052, 0.036 |
+| The same, with a flare of 12 % of the frame mean, +2.75 stops | 0.799, 0.996, 1.056 | 0.066, 0.036, 0.038 |
+
+Blue falls from 0.117 to 0.036. Red rises from 0.058 to 0.081: the fit asks for a small positive red gain, and this correction gives a negative one. This is not resolved. The X5 channels are not APD, and their blue response is not known, so a scanner difference can hold a part of the blue.
+
+**The dark rock.** A flare share in the scene light lowers the total RMS, with a coarse search: from 0.050 to 0.037 on `f15`, and from 0.055 to 0.040 on `f14`, both at a share of 12 %, with the exposure search taking part in this. The minimum is broad and the exposure grid makes the curve uneven. So the hypothesis is a real veil of the film camera, or a toe of the film that the data sheet does not show. The cameras had different lenses, so a part of the difference can be the flare of the digital camera. This is not separated.
+
+**Author's visual results, not user review.** `pair/sheet_light_f15.jpg`, one fixed printer offset and one fixed window for all panels. The real negative has a lavender sky and blue rock on the print and on candidate B. The simulated negative with the present input is grey and green. With no `grey_anchor` and with the daylight decode, the simulated negative leaves grey and green and goes blue, but it stays more cyan than the lavender of the real negative. This agrees with the red error in the table above: the simulated negative has too little red density here. With the flare the rock also lifts toward the real negative. No per-channel timing is applied, and a real print or scan has one, so the lavender is not a statement on the final look.
+
+**Reading.** On this one scene, the simulated negative is close to the real negative in tone, and the largest error comes from a rule of this lab and not from the spectral chain. So this pair gives no support to the statement that the spectral sampling is the main fault. It says nothing on saturated colours, where the reconstruction has a known loss (section 19).
+
+**Not tested.** Other scenes; other stocks; a run with `grey_anchor` off in the product path, which needs a printer balance by a measured frame; the softness of the real frame against the digital file.
+
+## 30. Mask removal on the real 5207 negatives, with no exposure to the right and no grey anchor (U58)
+
+**Status:** local script `real_5207_unmask.py`, in `build/tmp/p5/scripts/` (2026-10-31). Log: `build/tmp/p5/real_5207/unmask.log`. Sheets: `build/tmp/p5/real_5207/unmask/`, local only. No default of the model changes. No user review yet.
+
+**User decision.** Remove the exposure to the right. Remove `grey_anchor`. Start from the plain APD read, and try to remove the mask on the real film.
+
+**Method.** Input: the 34 frames of section 28, with the same hypotheses: gamma 2, and X5 channels as APD. The three numbers of each method are the display code, after one scale per frame: the p98 of the density luma. So no method uses a colour statistic of the frame, and there is no tone curve.
+
+| Method | Operation |
+| --- | --- |
+| m0, control | Density of the negative with its base, inverted only |
+| m1 | D - base, per channel: a division by the base in linear transmittance |
+| m2 | m1 / neutral density per stop of the data sheet curves at the grey: 0.1518, 0.1734, 0.1568 |
+| m3 | Amounts of the cyan, magenta, and yellow dyes of the profile that give D under APD above the spectral D-min, by `solve_amounts` on a table of 33^3 nodes |
+| m4 | m3 / amount per stop on the neutral ramp: 0.1507, 0.1642, 0.1604 |
+
+The slopes come from the ramp with `grey_anchor=False`. On that ramp a grey has density above base of 0.665, 0.765, 0.798, and amounts of 0.657, 0.710, 0.830.
+
+37 % of the table nodes keep a residual above 0.01 density. These are combinations of density that the dyes cannot make. The share of real pixels on such nodes was not measured.
+
+**Simulated negative with no anchor, on the pair of section 29.** `f15`, `grey_anchor=False`, exposure +3.5 stops from the smallest G error, with no gain per channel and no fitted colour value. Median simulated - real: -0.013, +0.016, -0.013 density. RMS: 0.065, 0.048, 0.032. With the anchor, section 29 has a blue median of -0.113 and a blue RMS of 0.116. So this removal alone takes out the blue error of section 29. One scene.
+
+**Author's visual results, not user review.** The author viewed `overview_m2.jpg`, `overview_m4.jpg`, `f02.jpg`, and `pair_f15.jpg`.
+
+- m0 is strongly cyan and blue, as an inverted orange base must be.
+- m1 takes out the orange, and leaves a green and yellow lean: on `f02` the floor tile is cream and green.
+- m2 gives a neutral grey cat and warm tile on `f02`, and rich colour on rooms. Highlights are near the top of the code, and sky goes lavender on `f13` to `f17`.
+- m3 is cleaner than m1, with a grey cat and more separate reds on `f02`. It has less lean than m1, and it leans less pink than m4.
+- m4 is near m2, more pink on floors and skies.
+- On the pair, the simulated negative stays close to the real negative under all five methods. The rock and the sky are bluer in the simulated negative, and the real negative has more red.
+
+The author has no proof that the cat or the tile is neutral. By U36 these leans are measured as properties and not as faults. The result has no tone curve, so highlights are pale and it does not yet have a display step.
+
+**Not done.** A tone curve after the removal. Fine detail at the full scan resolution. Other stocks. The 3 x 3 regression against the digital file in `pair_report.json` is not reported, because this scene has too few colours for it to be stable.
+
+## 31. The real 5207 negatives through the 2383 print, with no anchor (U59)
+
+**Status:** local script `real_5207_print.py`, in `build/tmp/p5/scripts/` (2026-10-31). Log: `build/tmp/p5/real_5207/print.log`. Sheets: `build/tmp/p5/real_5207/print/`, local only. No default of the model changes. No user review yet.
+
+**User request.** Try the 2383 print, after section 30.
+
+**Method.** `FilmPreview` with `grey_anchor=False` and scene light E_ref. No exposure to the right. The density of the scan goes to Status M by the fixed point iteration of section 28, then through the print tables. The spatial steps of the negative are not applied, because the scan holds them. One neutral density offset per frame, as the printer exposure: the p98 of G density above base lands on the neutral at +2 stops (1.114). Two colour settings:
+
+- Printer default: the table as it is.
+- Fixed colour timing for the roll, a calculation with no statistic of a frame: an offset per channel that moves a grey under D55, with no anchor, to the grey that the table prints as neutral. Grey that the table prints as neutral, above base: 0.665, 0.765, 0.798. Grey under D55: 0.678, 0.756, 0.783. Offset: -0.022, 0, +0.006 density.
+
+The grey under D55 is read from the anchored ramp, shifted per layer by the gain of the anchor. This is an approximation.
+
+The iteration leaves an error of at most 0.46 density on some pixels. The share of these pixels was not measured.
+
+**Author's visual results, not user review.** The author viewed `overview_a.jpg`, `f02.jpg`, and `pair_f15.jpg`. The fixed timing was viewed only on `f02` and `pair_f15`.
+
+- The print of the real negatives has dense colour and warm light, and it reads as a print. The warmth is strong on rooms under artificial light (`f28`, `f31`, `f32`).
+- `f02`: cat and tile are warmer than m3 of section 30, with more depth in shadow.
+- Some frames are too dark: `f05`, `f17`, `f19`, `f21`, `f22`. In these frames the p98 sits on a bright window or sky. This comes from the one number exposure rule of this script.
+- **The print amplifies small density errors.** An offset of only -0.022 in red visibly removes pink on `f15`. On the pair, the real negative is warm with brown rock, and the simulated negative with no anchor at +3.5 stops is cyan with teal rock, though its density errors are small (section 30: median -0.013, +0.016, -0.013, and RMS 0.065 in red). So density RMS alone does not show if a negative is close enough for the print path.
+
+**Not done.** Another exposure rule. The reason for the red error. Any change to the print tables.
+
+## 32. Hong Kong day files through the simulated 5207 and the 2383 print (U60)
+
+**Status:** local script `render_hk_day.py`, in `build/tmp/p5/scripts/` (2026-10-31). Sheets: `build/tmp/p5/hk_day/review/`, local only, 20 files. No default of the model changes. No user review yet.
+
+**User statement.** The print of the real negatives of section 31 is acceptable. Try the Hong Kong day photographs from `D:/素材/照片/2026.5香港/香港/`.
+
+**Method.** 20 RW2 files, decoded at a long edge of 1600, +1.5 EV, 5207, no exposure to the right on the print panels. Panels on each sheet: print with `grey_anchor` off and the product grade; print with `grey_anchor` off and exposure only; print with `grey_anchor` on, scene light D55, and the product grade (section 27); candidate B, N = 2, D55, and the product grade. The print tables with the anchor off are built for the neutral of that option, so the print takes back a large part of the difference between the two negatives. No real film of these scenes exists, so nothing here compares with film.
+
+**Author's visual results, not user review.** The author viewed the overview, and the sheets of `P2625280`, `P2625329`, and `P2625304`. The other sheets are rendered and not examined.
+
+- The print is soft and dense on all three files, with cream highlights, a muted sky with a green lean, and deep shadows.
+- The panels with the anchor on and off are close to each other on these three files. The panel with the anchor off is a little lighter and warmer on `P2625304` and `P2625329`.
+- Exposure only is softer and has less saturation than the product grade: the red taxi and the flowers of `P2625304` are less strong. The product grade keeps stronger reds.
+- Candidate B has whiter highlights, a cooler sky, and harder contrast.
+- Shadows of the market on `P2625280` are heavy in all print panels.

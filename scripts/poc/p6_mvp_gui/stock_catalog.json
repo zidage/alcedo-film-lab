@@ -1,0 +1,633 @@
+{
+ "source": "spectral_film_lut (MIT) commit bcbcfc6861f49cc706dc5d00ea048e4853060aab, digitized by that project; linearly resampled by this lab; not checked against the manufacturer document",
+ "negatives": {
+  "agfa_vista_100": {
+   "name": "Agfa Vista 100",
+   "manufacturer": "Agfa",
+   "medium": "photo",
+   "year": 2001,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0043"
+   ],
+   "iso": 100,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_c200": {
+   "name": "Fuji C200",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2017,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 200,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_eterna_500": {
+   "name": "Fuji Eterna 500",
+   "manufacturer": "Fujifilm",
+   "medium": "cine",
+   "year": 2007,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0066"
+   ],
+   "iso": 500,
+   "exposure_kelvin": 3200,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_eterna_500_vivid": {
+   "name": "Fuji Eterna 500 Vivid",
+   "manufacturer": "Fujifilm",
+   "medium": "cine",
+   "year": 2007,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 500,
+   "exposure_kelvin": 3200,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_natura_1600": {
+   "name": "Fuji Natura 1600",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2003,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 1600,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_pro_160c": {
+   "name": "Fuji Pro 160C",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2004,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0038"
+   ],
+   "iso": 160,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_pro_160s": {
+   "name": "Fuji Pro 160S",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2004,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0009"
+   ],
+   "iso": 160,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_pro_400h": {
+   "name": "Fuji Pro 400H",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2004,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0059"
+   ],
+   "iso": 400,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_superia_reala": {
+   "name": "Fuji Superia Reala",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 1998,
+   "density_measure": "status_m",
+   "profile_existed": false,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0003"
+   ],
+   "iso": 100,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "fuji_superia_xtra_400": {
+   "name": "Fuji Superia X-Tra 400",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 1998,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 400,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  },
+  "kodak_5203": {
+   "name": "Kodak Vision3 50D 5203",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 2011,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0013"
+   ],
+   "iso": 50,
+   "exposure_kelvin": 5500,
+   "published_dyes": true,
+   "mtf_curves": 3
+  },
+  "kodak_5206": {
+   "name": "Kodak Verita 200D 5206",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 2026,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 200,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 3
+  },
+  "kodak_5207": {
+   "name": "Kodak Vision3 250D 5207",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 2009,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 250,
+   "exposure_kelvin": 5500,
+   "published_dyes": true,
+   "mtf_curves": 3
+  },
+  "kodak_5213": {
+   "name": "Kodak Vision3 200T 5213",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 2010,
+   "density_measure": "status_m",
+   "profile_existed": false,
+   "inferred_rules": [],
+   "iso": 200,
+   "exposure_kelvin": 3200,
+   "published_dyes": true,
+   "mtf_curves": 3
+  },
+  "kodak_5219": {
+   "name": "Kodak Vision3 500T 5219",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 2007,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0014"
+   ],
+   "iso": 500,
+   "exposure_kelvin": 3200,
+   "published_dyes": true,
+   "mtf_curves": 3
+  },
+  "kodak_5247": {
+   "name": "Kodak 5247",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1950,
+   "density_measure": "status_m",
+   "profile_existed": false,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0051"
+   ],
+   "iso": 16,
+   "exposure_kelvin": 5500,
+   "published_dyes": true,
+   "mtf_curves": 1
+  },
+  "kodak_5247_II": {
+   "name": "Kodak 5247 II",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1974,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0072",
+    "neutral_from_dyes",
+    "zero_minimum_density"
+   ],
+   "iso": 100,
+   "exposure_kelvin": 5500,
+   "published_dyes": true,
+   "mtf_curves": 1
+  },
+  "kodak_5248": {
+   "name": "Kodak 5248",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1952,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0102",
+    "neutral_from_dyes",
+    "zero_minimum_density"
+   ],
+   "iso": 25,
+   "exposure_kelvin": 5500,
+   "published_dyes": true,
+   "mtf_curves": 1
+  },
+  "kodak_5250": {
+   "name": "Kodak 5250",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1959,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0035",
+    "neutral_from_dyes",
+    "zero_minimum_density"
+   ],
+   "iso": 50,
+   "exposure_kelvin": 5500,
+   "published_dyes": true,
+   "mtf_curves": 1
+  },
+  "kodak_5277": {
+   "name": "Kodak Vision 320T 5277",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1996,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 320,
+   "exposure_kelvin": 3200,
+   "published_dyes": true,
+   "mtf_curves": 3
+  },
+  "kodak_5293": {
+   "name": "Kodak EXR 200T 5293",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1982,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0086",
+    "neutral_from_dyes",
+    "zero_minimum_density"
+   ],
+   "iso": 250,
+   "exposure_kelvin": 5500,
+   "published_dyes": true,
+   "mtf_curves": 1
+  },
+  "kodak_aerocolor": {
+   "name": "Kodak Aerocolor IV 2460",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": 2009,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 125,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 3
+  },
+  "kodak_ektar_100": {
+   "name": "Kodak Ektar 100",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": 2008,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0008"
+   ],
+   "iso": 100,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 3
+  },
+  "kodak_exr_5248": {
+   "name": "Kodak EXR 100T 5248",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1990,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 100,
+   "exposure_kelvin": 3200,
+   "published_dyes": true,
+   "mtf_curves": 3
+  },
+  "kodak_gold_200": {
+   "name": "Kodak Gold 200",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": 2007,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 200,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 3
+  },
+  "kodak_portra_160": {
+   "name": "Kodak Portra 160",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": 2011,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0032"
+   ],
+   "iso": 160,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 3
+  },
+  "kodak_portra_400": {
+   "name": "Kodak Portra 400",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": 2010,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 400,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 3
+  },
+  "kodak_portra_800": {
+   "name": "Kodak Portra 800",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": 1998,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0031"
+   ],
+   "iso": 800,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 3
+  },
+  "kodak_ultramax_400": {
+   "name": "Kodak Ultramax 400",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": 2007,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 400,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 3
+  },
+  "kodak_vericolor_iii": {
+   "name": "Kodak Vericolor III",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": 1983,
+   "density_measure": "status_m",
+   "profile_existed": true,
+   "inferred_rules": [],
+   "iso": 160,
+   "exposure_kelvin": 5500,
+   "published_dyes": false,
+   "mtf_curves": 1
+  }
+ },
+ "prints": {
+  "fuji_3513di": {
+   "name": "Fuji Eterna-CP Type 3513DI",
+   "manufacturer": "Fujifilm",
+   "medium": "cine",
+   "year": 2002,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": []
+  },
+  "fuji_3523XD": {
+   "name": "Fuji Eterna-CP 3523XD",
+   "manufacturer": "Fujifilm",
+   "medium": "cine",
+   "year": 2010,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0017"
+   ]
+  },
+  "fuji_ca_dpII": {
+   "name": "Fuji Crystal Archive DPII",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2006,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": []
+  },
+  "fuji_ca_maxima": {
+   "name": "Fuji Crystal Archive Maxima",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2006,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": []
+  },
+  "fuji_ca_pdII": {
+   "name": "Fuji Crystal Archive Pro PDII",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2003,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": []
+  },
+  "fuji_ca_super_c": {
+   "name": "Fuji Crystal Archive Super Type C",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": 2007,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": []
+  },
+  "fujiflex_new": {
+   "name": "Fujiflex Crystal Archive New Version",
+   "manufacturer": "Fujifilm",
+   "medium": "photo",
+   "year": null,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0019"
+   ]
+  },
+  "fujiflex_old": {
+   "name": "Fujiflex Crystal Archive Old Version",
+   "manufacturer": "Fujifilm",
+   "medium": "Photo",
+   "year": null,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0054"
+   ]
+  },
+  "kodak_2383": {
+   "name": "Kodak Vision 2383",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1998,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0017"
+   ]
+  },
+  "kodak_2393": {
+   "name": "Kodak Vision Premier 2393",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1998,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0027"
+   ]
+  },
+  "kodak_5381": {
+   "name": "Kodak 5381",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1950,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0066"
+   ]
+  },
+  "kodak_5383": {
+   "name": "Kodak 5383",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1974,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0062"
+   ]
+  },
+  "kodak_5384": {
+   "name": "Kodak 5384",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1981,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0083"
+   ]
+  },
+  "kodak_duraflex_plus": {
+   "name": "Kodak Duraflex Plus",
+   "manufacturer": "",
+   "medium": "photo",
+   "year": 2004,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0009"
+   ]
+  },
+  "kodak_endura_premier": {
+   "name": "Kodak Endura Premier Paper",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": null,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0161"
+   ]
+  },
+  "kodak_exr_5386": {
+   "name": "Kodak EXR 5386",
+   "manufacturer": "Kodak",
+   "medium": "cine",
+   "year": 1993,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0017"
+   ]
+  },
+  "kodak_portra_endura": {
+   "name": "Kodak Portra Endura Paper",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": null,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": []
+  },
+  "kodak_supra_endura": {
+   "name": "Kodak Supra Endura Paper",
+   "manufacturer": "Kodak",
+   "medium": "photo",
+   "year": null,
+   "density_measure": "status_a",
+   "profile_existed": true,
+   "inferred_rules": [
+    "running_maximum_curve, largest fall 0.0433"
+   ]
+  }
+ },
+ "not_usable": {
+  "kodak_dye_transfer_negative": {
+   "name": "Kodak Dye Transfer Negative",
+   "reason": "no spectral sensitivity"
+  },
+  "technicolor_v": {
+   "name": "Technicolor V",
+   "reason": "no spectral sensitivity"
+  }
+ }
+}

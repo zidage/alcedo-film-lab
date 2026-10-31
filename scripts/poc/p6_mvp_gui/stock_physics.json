@@ -1,0 +1,420 @@
+{
+ "agfa_vista_100": {
+  "reference_grey_stops_before_rule": [
+   1.732,
+   2.183,
+   2.485
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   3.46,
+   3.46,
+   3.46
+  ],
+  "inhibition_total": [
+   0.0693,
+   0.0829,
+   0.0945
+  ],
+  "largest_rms_residual": 0.0162
+ },
+ "fuji_eterna_500": {
+  "reference_grey_stops_before_rule": [
+   -1.84,
+   0.451,
+   1.728
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   8.04,
+   8.04,
+   8.04
+  ],
+  "inhibition_total": [
+   0.5074,
+   0.5964,
+   0.5462
+  ],
+  "largest_rms_residual": 0.0087
+ },
+ "fuji_eterna_500_vivid": {
+  "reference_grey_stops_before_rule": [
+   -1.84,
+   0.451,
+   1.728
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   6.6,
+   6.6,
+   6.6
+  ],
+  "inhibition_total": [
+   0.4876,
+   0.5415,
+   0.492
+  ],
+  "largest_rms_residual": 0.0145
+ },
+ "fuji_natura_1600": {
+  "reference_grey_stops_before_rule": [
+   0.784,
+   1.139,
+   0.8
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   3.17,
+   3.17,
+   3.17
+  ],
+  "inhibition_total": [
+   0.0434,
+   0.0415,
+   0.05
+  ],
+  "largest_rms_residual": 0.0307
+ },
+ "fuji_pro_160c": {
+  "reference_grey_stops_before_rule": [
+   -1.296,
+   -0.511,
+   0.05
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   2.62,
+   2.62,
+   2.62
+  ],
+  "inhibition_total": [
+   0.2002,
+   0.1848,
+   0.243
+  ],
+  "largest_rms_residual": 0.032
+ },
+ "fuji_pro_160s": {
+  "reference_grey_stops_before_rule": [
+   -0.633,
+   -0.213,
+   -0.245
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   2.66,
+   2.66,
+   2.66
+  ],
+  "inhibition_total": [
+   0.2228,
+   0.211,
+   0.2786
+  ],
+  "largest_rms_residual": 0.0275
+ },
+ "fuji_pro_400h": {
+  "reference_grey_stops_before_rule": [
+   -2.009,
+   -0.894,
+   -0.372
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   4.07,
+   4.07,
+   4.07
+  ],
+  "inhibition_total": [
+   0.1332,
+   0.1544,
+   0.1782
+  ],
+  "largest_rms_residual": 0.0219
+ },
+ "fuji_superia_reala": {
+  "reference_grey_stops_before_rule": [
+   4.327,
+   4.772,
+   5.881
+  ],
+  "relative_sensitivity": true,
+  "layer_spread_um": [
+   3.45,
+   3.45,
+   3.45
+  ],
+  "inhibition_total": [
+   0.2086,
+   0.2456,
+   0.2655
+  ],
+  "largest_rms_residual": 0.0175
+ },
+ "fuji_superia_xtra_400": {
+  "reference_grey_stops_before_rule": [
+   2.281,
+   2.705,
+   3.29
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   3.25,
+   3.25,
+   3.25
+  ],
+  "inhibition_total": [
+   0.2908,
+   0.2357,
+   0.2099
+  ],
+  "largest_rms_residual": 0.0265
+ },
+ "kodak_5203": {
+  "reference_grey_stops_before_rule": [
+   2.485,
+   2.859,
+   3.6
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   6.45,
+   4.48,
+   5.44
+  ],
+  "inhibition_total": [
+   0.6873,
+   0.3124,
+   0.9576
+  ],
+  "largest_rms_residual": 0.0159
+ },
+ "kodak_5206": {
+  "reference_grey_stops_before_rule": [
+   2.529,
+   2.444,
+   2.887
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   6.62,
+   5.35,
+   4.29
+  ],
+  "inhibition_total": [
+   0.1606,
+   0.2833,
+   0.0116
+  ],
+  "largest_rms_residual": 0.0156
+ },
+ "kodak_5213": {
+  "reference_grey_stops_before_rule": [
+   2.757,
+   3.826,
+   5.434
+  ],
+  "relative_sensitivity": true,
+  "layer_spread_um": [
+   5.16,
+   3.32,
+   3.32
+  ],
+  "inhibition_total": [
+   0.4292,
+   0.3022,
+   0.3244
+  ],
+  "largest_rms_residual": 0.0202
+ },
+ "kodak_5247": {
+  "reference_grey_stops_before_rule": [
+   5.66,
+   6.533,
+   9.842
+  ],
+  "relative_sensitivity": true,
+  "layer_spread_um": [
+   3.91,
+   3.91,
+   3.91
+  ],
+  "inhibition_total": [
+   0.1778,
+   0.1677,
+   0.2218
+  ],
+  "largest_rms_residual": 0.0101
+ },
+ "kodak_5247_II": {
+  "reference_grey_stops_before_rule": [
+   1.454,
+   2.542,
+   4.253
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   3.91,
+   3.91,
+   3.91
+  ],
+  "inhibition_total": [
+   0.1446,
+   0.1445,
+   0.1213
+  ],
+  "largest_rms_residual": 0.0101
+ },
+ "kodak_5248": {
+  "reference_grey_stops_before_rule": [
+   5.017,
+   5.889,
+   9.198
+  ],
+  "relative_sensitivity": true,
+  "layer_spread_um": [
+   3.91,
+   3.91,
+   3.91
+  ],
+  "inhibition_total": [
+   0.148,
+   0.2497,
+   0.3887
+  ],
+  "largest_rms_residual": 0.0101
+ },
+ "kodak_5250": {
+  "reference_grey_stops_before_rule": [
+   3.989,
+   4.452,
+   7.862
+  ],
+  "relative_sensitivity": true,
+  "layer_spread_um": [
+   3.91,
+   3.91,
+   3.91
+  ],
+  "inhibition_total": [
+   0.1623,
+   0.2432,
+   0.3842
+  ],
+  "largest_rms_residual": 0.0101
+ },
+ "kodak_5277": {
+  "reference_grey_stops_before_rule": [
+   2.899,
+   3.967,
+   5.52
+  ],
+  "relative_sensitivity": true,
+  "layer_spread_um": [
+   4.72,
+   2.95,
+   2.88
+  ],
+  "inhibition_total": [
+   1.314,
+   0.6147,
+   0.5849
+  ],
+  "largest_rms_residual": 0.0294
+ },
+ "kodak_5293": {
+  "reference_grey_stops_before_rule": [
+   0.447,
+   1.414,
+   2.718
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   4.16,
+   4.16,
+   4.16
+  ],
+  "inhibition_total": [
+   0.1486,
+   0.1525,
+   0.1208
+  ],
+  "largest_rms_residual": 0.0091
+ },
+ "kodak_aerocolor": {
+  "reference_grey_stops_before_rule": [
+   3.151,
+   4.051,
+   3.75
+  ],
+  "relative_sensitivity": true,
+  "layer_spread_um": [
+   5.06,
+   2.91,
+   3.02
+  ],
+  "inhibition_total": [
+   0.3648,
+   0.3289,
+   0.0797
+  ],
+  "largest_rms_residual": 0.026
+ },
+ "kodak_exr_5248": {
+  "reference_grey_stops_before_rule": [
+   0.094,
+   1.329,
+   2.679
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   4.86,
+   2.42,
+   1.75
+  ],
+  "inhibition_total": [
+   0.3779,
+   0.2008,
+   0.3805
+  ],
+  "largest_rms_residual": 0.0256
+ },
+ "kodak_ultramax_400": {
+  "reference_grey_stops_before_rule": [
+   3.271,
+   3.57,
+   3.936
+  ],
+  "relative_sensitivity": true,
+  "layer_spread_um": [
+   5.53,
+   2.9,
+   2.99
+  ],
+  "inhibition_total": [
+   0.3007,
+   0.2827,
+   0.0605
+  ],
+  "largest_rms_residual": 0.03
+ },
+ "kodak_vericolor_iii": {
+  "reference_grey_stops_before_rule": [
+   -2.004,
+   -0.773,
+   -0.175
+  ],
+  "relative_sensitivity": false,
+  "layer_spread_um": [
+   3.67,
+   3.67,
+   3.67
+  ],
+  "inhibition_total": [
+   0.2098,
+   0.2129,
+   0.2087
+  ],
+  "largest_rms_residual": 0.0259
+ }
+}

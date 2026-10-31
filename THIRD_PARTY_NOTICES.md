@@ -17,6 +17,8 @@ code and data that the repository contains or reuses, with their notices.
   and 5219, and the modulation transfer curves of 5207, 5219, and Portra 400. Through
   `scripts/poc/p5_film_and_print_combinations/digitize_stock_charts.py`: all digitized data of
   Fujicolor C200, and the spectral sensitivity of KODAK GOLD 200.
+  Through `scripts/poc/p6_mvp_gui/import_sfl_profiles.py`: all other colour negative and print
+  materials of that project in `profiles/`.
 - Use without reuse: `compare_spectral_film_lut.py` reads its digitized data and Status tables as
   comparison data only. These files are not in this repository.
 
@@ -43,6 +45,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## NegPy
+
+- Source: <https://github.com/marcinz606/NegPy>, commit
+  `cce849adf4d9183f3e9aad667784d7227f83833e`, GPL-3.0 (see its `LICENSE`).
+- Reused in `scripts/poc/p6_mvp_gui/frontier_scan.py`: the form of the frame window, the print
+  curve, the auto density and grade, and the lab scanner stage, with the constants of its profile
+  `frontier`, written again on NumPy from `docs/PIPELINE.md` and `negpy/features/exposure/`.
+- Read at run time, not in this repository: `negpy/features/exposure/print_luts/frontier.npz`. Its
+  `NOTICE.md` states that this table derives from the tables of the Fujifilm Frontier 350/370 A1
+  system software v7.6. The license review of vendor data is open (README U27). The release must
+  state that this is a style simulation with no endorsement from any manufacturer.
 
 ## ACES (aces-dev)
 

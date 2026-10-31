@@ -14,6 +14,8 @@ stated conditions, the quantity and unit of each axis, and the provenance of the
 
 `import_dyes_and_mtf.py` (step P4) adds the isolated dye curves of 5207 and 5219 and the chart `modulation_transfer` of 5207, 5219, and Portra 400, from spectral_film_lut (MIT) at `bcbcfc68`. These were not checked against Kodak documents. Run it again after `import_cine_profiles.py` or `digitize_kodak_charts.py`.
 
+`import_sfl_profiles.py` (step P6) writes all other colour negative and print materials of spectral_film_lut (MIT) at `bcbcfc68`, and it does not change an existing file. Each of these files has the field `inferred_rules`. [`stock_catalog.json`](../scripts/poc/p6_mvp_gui/stock_catalog.json) lists them, and `kodak_dye_transfer_negative` and `technicolor_v` as not usable, because they have no spectral sensitivity. `fit_stock_physics.py` applies rule `relative_sensitivity_level` to the stocks whose chart has no absolute level. These values were not checked against the manufacturer documents.
+
 `digitize_kodak_charts.py` (step P0) writes these files. The curves are resampled on 1 nm
 (spectral charts) or 0.01 log10 lux-seconds (characteristic charts) inside the published domain
 only. There is no smoothing and no extrapolation in the files. The inferred fields of the model
