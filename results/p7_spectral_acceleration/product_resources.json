@@ -2,7 +2,7 @@
  "schema_version": 1,
  "manifest": {
   "schema_version": 1,
-  "lab_commit": "40cee4138c8f1499593a2c62451e8337f7e12643",
+  "lab_commit": "2c6c14cf5def6cb1044759a6227b411cf29dd183-dirty",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
@@ -16,8 +16,8 @@
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
-    "bytes": 70926472,
-    "sha256": "55390cb27dd6664bb43b956e28aa0ac4634d0523ded9efaac9e271ed45921eed"
+    "bytes": 25127352,
+    "sha256": "9cdf5f2187b717d97618049fe8f04e458c165c62df7bb7c4a329c341212cfbde"
    }
   }
  },
@@ -40,9 +40,95 @@
   "kodak_portra_400 on kodak_endura_premier on daylight": 0.0,
   "fuji_eterna_500 on kodak_2383 on street_mixed": 2.220446049250313e-16
  },
+ "compact_table": {
+  "mantissa_bits": 12,
+  "first_wavelength_nm": 360.0,
+  "wavelength_count": 346,
+  "nodes_kept": 18103,
+  "nodes": 36864,
+  "uv_relative_limit": 0.0002,
+  "display_code_limit": 0.5,
+  "checks": {
+   "kodak_exr_5248 on fuji_ca_dpII on daylight": {
+    "uv_relative": 0.00010530209798397086,
+    "display_largest_code": {
+     "se188": 0.0014743208885192871,
+     "_DSC8148": 0.002317875623703003,
+     "digital_ap1": 0.0018011033535003662,
+     "neutral_ramp": 0.0001823902130126953,
+     "random_colours": 0.004704147577285767
+    }
+   },
+   "kodak_5207 on fuji_3523XD on reference": {
+    "uv_relative": 0.00010342252092293928,
+    "display_largest_code": {
+     "se188": 0.0011399388313293457,
+     "_DSC8148": 0.001519918441772461,
+     "digital_ap1": 0.0014173239469528198,
+     "neutral_ramp": 0.00018998980522155762,
+     "random_colours": 0.002469867467880249
+    }
+   },
+   "fuji_c200 on fujiflex_old on led": {
+    "uv_relative": 0.00010842871304970014,
+    "display_largest_code": {
+     "se188": 0.0018239021301269531,
+     "_DSC8148": 0.0025306642055511475,
+     "digital_ap1": 0.0016491115093231201,
+     "neutral_ramp": 0.0003115832805633545,
+     "random_colours": 0.003997385501861572
+    }
+   },
+   "kodak_5203 on fuji_ca_pdII on tungsten": {
+    "uv_relative": 0.00011667835807374136
+   },
+   "kodak_5219 on kodak_supra_endura on street_sodium": {
+    "uv_relative": 9.820720284813003e-05
+   },
+   "fuji_eterna_500 on fuji_ca_pdII on interior_warm": {
+    "uv_relative": 0.00010024942765143874
+   },
+   "agfa_vista_100 on kodak_5383 on reference": {
+    "uv_relative": 8.973425871455402e-05
+   },
+   "kodak_5247 on kodak_5384 on daylight": {
+    "uv_relative": 9.72585803741773e-05
+   },
+   "kodak_5207 on kodak_2383 on reference": {
+    "uv_relative": 0.00010342252092293928,
+    "display_largest_code": {
+     "se188": 0.001322329044342041,
+     "_DSC8148": 0.0017859041690826416,
+     "digital_ap1": 0.0010943412780761719,
+     "neutral_ramp": 0.000174790620803833,
+     "random_colours": 0.002021491527557373
+    }
+   },
+   "kodak_portra_400 on kodak_endura_premier on daylight": {
+    "uv_relative": 0.00011185274424518433,
+    "display_largest_code": {
+     "se188": 0.0017023086547851562,
+     "_DSC8148": 0.0019758939743041992,
+     "digital_ap1": 0.0017023086547851562,
+     "neutral_ramp": 0.0002887845039367676,
+     "random_colours": 0.005418509244918823
+    }
+   },
+   "fuji_eterna_500 on kodak_2383 on street_mixed": {
+    "uv_relative": 0.0001002333348196537,
+    "display_largest_code": {
+     "se188": 0.002720654010772705,
+     "_DSC8148": 0.0030550360679626465,
+     "digital_ap1": 0.001497119665145874,
+     "neutral_ramp": 0.0003191828727722168,
+     "random_colours": 0.004658550024032593
+    }
+   }
+  }
+ },
  "expected": {
   "kodak_5207__kodak_2383__reference.bin": {
-   "bytes": 7476128,
+   "bytes": 8397864,
    "table_counts": {
     "negative_not_reached": 0,
     "print_not_reached": 138032,
@@ -51,7 +137,7 @@
    }
   },
   "kodak_portra_400__kodak_endura_premier__daylight.bin": {
-   "bytes": 7476144,
+   "bytes": 8397872,
    "table_counts": {
     "negative_not_reached": 0,
     "print_not_reached": 149214,
@@ -60,7 +146,7 @@
    }
   },
   "fuji_eterna_500__kodak_2383__street_mixed.bin": {
-   "bytes": 7476136,
+   "bytes": 8397872,
    "table_counts": {
     "negative_not_reached": 0,
     "print_not_reached": 118935,
@@ -69,5 +155,5 @@
    }
   }
  },
- "seconds": 111.6
+ "seconds": 120.0
 }
