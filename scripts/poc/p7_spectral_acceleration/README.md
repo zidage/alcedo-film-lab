@@ -31,6 +31,7 @@ $P -I scripts/poc/p7_spectral_acceleration/check_fast_image_steps.py RAW1 RAW2
 $P -I scripts/poc/p7_spectral_acceleration/sweep_paper_axis.py       # about 10 min
 $P -I scripts/poc/p7_spectral_acceleration/measure_table_threads.py
 $P -I scripts/poc/p7_spectral_acceleration/build_product_resources.py  # about 2 min
+$P -I scripts/poc/p7_spectral_acceleration/build_display_expected.py   # about 1 min; sRGB values for the kernel tests of Alcedo Studio
 ```
 
 To install only the library in an environment that exists:
