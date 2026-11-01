@@ -2,7 +2,7 @@
 
 Input: AP1 arrays of the full review, never committed.
 Output (local only): build/tmp/p3/review_print/<name>.jpg, one sheet per file with a label on every panel, and build/tmp/p3/review_print/single/<name>_<stock>_print.jpg.
-Step: P3, README section 8.
+Step: P3, ROADMAP section 8.
 """
 
 from __future__ import annotations

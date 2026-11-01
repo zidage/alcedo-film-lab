@@ -1,7 +1,7 @@
 """Review sheets of the Python MVP, with a label on every panel. Local only, because the inputs are photographs.
 
-Input: AP1 arrays of the earlier steps under build/tmp/ (names below). Output: build/tmp/p6/review/<file>_<set>.jpg. Step: P6, README U61.
-Sets: 'negatives_frontier' and 'negatives_print', all negatives; 'prints', all print materials on 5207; 'options', the spectral prior and the scene lights on 5207 by both methods.
+Input: AP1 arrays of the earlier steps under build/tmp/ (names below). Output: build/tmp/p6/review/<file>_<set>.jpg. Step: P6, ROADMAP U61.
+Sets: 'negatives_apd' and 'negatives_print', all negatives; 'prints', all print materials on 5207; 'options', the spectral prior and the scene lights on 5207 by both methods.
 """
 
 from __future__ import annotations
@@ -56,14 +56,14 @@ def main() -> int:
             for negative, entry in mp.CATALOG["negatives"].items():
                 material = DEFAULT_PRINT[entry["medium"].lower()]
                 settings = replace(base, negative=negative, method=method, print_material=material)
-                label = f"{entry['name']} | Frontier" if method == "frontier" else f"{entry['name']} | {mp.CATALOG['prints'][material]['name']}"
+                label = f"{entry['name']} | APD, ACES output" if method == "apd" else f"{entry['name']} | {mp.CATALOG['prints'][material]['name']}"
                 panels.append((label[:52], pipeline.render_array(ap1, settings)))
             write_sheet(OUT / f"{name}_negatives_{method}.jpg", panels)
         panels = [(f"5207 | {entry['name']}"[:52], pipeline.render_array(ap1, replace(base, print_material=material))) for material, entry in mp.CATALOG["prints"].items()]
         write_sheet(OUT / f"{name}_prints.jpg", panels)
         panels = []
         for method in mp.METHODS:
-            title = "Frontier" if method == "frontier" else "2383 print"
+            title = "APD, ACES output" if method == "apd" else "2383 print"
             for prior in mp.SPECTRAL_PRIORS:
                 panels.append((f"5207 | {title} | prior {prior}", pipeline.render_array(ap1, replace(base, method=method, spectral_prior=prior))))
             for light in ("daylight", "tungsten", "fluorescent", "led", "sodium", "street_mixed"):

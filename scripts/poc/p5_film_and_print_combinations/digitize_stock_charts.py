@@ -1,8 +1,8 @@
 """Write the profiles of Portra 160, Portra 800, Ektar 100, Gold 200, and Fujicolor C200, and check the values against a second source.
 
-Input: the data sheets in build/tmp/p5/sources/ (fetch_sources.py); the data files of spectral_film_lut (MIT, README U11) at commit bcbcfc68, read as literals, first argument: the src/spectral_film_lut directory of a local clone.
+Input: the data sheets in build/tmp/p5/sources/ (fetch_sources.py); the data files of spectral_film_lut (MIT, ROADMAP U11) at commit bcbcfc68, read as literals, first argument: the src/spectral_film_lut directory of a local clone.
 Output: profiles/kodak_portra_160.json, kodak_portra_800.json, kodak_ektar_100.json, kodak_gold_200.json, fuji_c200.json; results/p5_film_and_print_combinations/source_checks.json.
-Step: P5, README section 8, decision U34.
+Step: P5, ROADMAP section 8, decision U34.
 
 Values per stock:
 - Kodak charts that are one vector path per curve: digitized by this lab, with the functions of digitize_kodak_charts.py (P0). No smoothing, no extrapolation.
@@ -251,7 +251,7 @@ def other_edition_chart(pdf: Path, chart: Chart) -> Chart:
 def main() -> int:
     sfl_root = Path(sys.argv[1])
     checks: dict = {"limits_rms": LIMITS, "edition_limit": EDITION_LIMIT, "fragment_limit_pt": FRAGMENT_LIMIT_PT}
-    note = "Values digitized by this lab from a manufacturer data sheet, and values of spectral_film_lut where the chart states it. The source document is not distributed (README U10); see profiles/README.md."
+    note = "Values digitized by this lab from a manufacturer data sheet, and values of spectral_film_lut where the chart states it. The source document is not distributed (ROADMAP U10); see profiles/README.md."
     quantities = {"characteristic": ("log10_exposure_lux_s", "status_m_density", 0.01), "spectral_sensitivity": ("wavelength_nm", "log10_sensitivity_cm2_per_erg", 1.0), "spectral_dye_density": ("wavelength_nm", "diffuse_spectral_density", 1.0), "modulation_transfer": ("spatial_frequency_cycles_per_mm", "response", 1.0)}
     for name, stock in STOCKS.items():
         pdf = SOURCES / stock["pdf"]

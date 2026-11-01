@@ -1,8 +1,8 @@
-"""Review of the scanner models fitted to chart scans. TEST ONLY: the fits use public measurements with no stated license (README U28), so no output may leave the local build directory.
+"""Review of the scanner models fitted to chart scans. TEST ONLY: the fits use public measurements with no stated license (ROADMAP U28), so no output may leave the local build directory.
 
 Input: build/tmp/p3/fitted_scanner/fits.json, AP1 arrays of the full review, build/tmp/p3/filmanalyzer/measurements.json.
 Output (local only): build/tmp/p3/fitted_scanner/review/<name>.png, overview_*.png, chart.png, with a label on every panel.
-Step: P3, README section 8.
+Step: P3, ROADMAP section 8.
 """
 
 from __future__ import annotations

@@ -14,7 +14,7 @@ Scripts of step P5 ([report](../../../docs/exploration/p5_film_and_print_combina
 | `render_scan_inversion.py --export` | AP1 arrays | 16 bit negatives in `build/tmp/p5/scan_negative/`, `build/tmp/p5/review_inversion/*.jpg` with a label on every panel (local only), `results/p5_film_and_print_combinations/inversion_shadows.json` |
 | `render_density_window.py` | AP1 arrays; optional `--reference` with the JPEG files of NexFilm | `build/tmp/p5/review_density_window/*.jpg` with a label on every panel (local only), `results/p5_film_and_print_combinations/density_window.json` |
 | `compare_spektrafilm_sheets.py --inputs-only` | AP1 arrays | `build/tmp/p5/input_compare/` (local only) |
-| `render_spektrafilm_stocks.py` | those arrays; the local spektrafilm clone and its environment (external comparison only, README U18) | `build/tmp/p5/out_spektrafilm/*.png` (local only) |
+| `render_spektrafilm_stocks.py` | those arrays; the local spektrafilm clone and its environment (external comparison only, ROADMAP U18) | `build/tmp/p5/out_spektrafilm/*.png` (local only) |
 | `compare_spektrafilm_sheets.py` | both of the above | `build/tmp/p5/review_spektrafilm/*.jpg` with a label on every panel (local only) |
 
 The P0, P1, P2, P3, and P4 sources and tables must be present.

@@ -34,7 +34,7 @@ A maintainer is the repository owner or a collaborator with write access. Mainta
 plan and track all work.
 
 - A maintainer issue can include the cause, the required behavior, the method, the acceptance
-  criteria, and a proposed fix. When a report or [README.md](README.md) already records the
+  criteria, and a proposed fix. When a report or [ROADMAP.md](ROADMAP.md) already records the
   analysis, link the exact section. Do not copy the full analysis into the issue.
 - A tracking issue groups related issues as sub-issues.
 - A pull request that resolves an issue names it with `Fixes #<number>` or `Closes #<number>`.

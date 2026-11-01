@@ -1,11 +1,11 @@
 """Write the profiles of all colour negative and colour print materials of spectral_film_lut, and the stock catalog of step P6.
 
-Input: first argument, the src/spectral_film_lut directory of a local clone of spectral_film_lut (MIT, README U11) at commit bcbcfc68.
+Input: first argument, the src/spectral_film_lut directory of a local clone of spectral_film_lut (MIT, ROADMAP U11) at commit bcbcfc68.
 The data modules of that project run with a local FilmData class, so that the transforms of a data file (for example dataclasses.replace) stay as the project wrote them.
 Its other code does not run.
 Output: profiles/<module>.json for each material that has no profile, in the schema of the earlier profiles; stock_catalog.json next to this script (facts per material); a table on stdout.
 An existing profile does not change, because the accepted stocks of P0 to P5 use it.
-Step: P6, README section 8.
+Step: P6, ROADMAP section 8.
 
 Rules, each recorded in the profile and in the catalog:
 - resampled linearly on 1 nm, 1 cycle/mm, or 0.01 log10 lux-seconds inside the digitized domain, with no extrapolation;

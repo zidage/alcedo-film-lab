@@ -5,7 +5,7 @@ the CIE tables and the Status A / Status M table in build/tmp/p0/sources/ (see s
 Output: a ReferenceModel object with one function per physical stage. The checks and the
 convergence study in run_p0_checks.py use it.
 
-Step: P0 (data and reference), README sections 4 and 8. The stages and their quantities:
+Step: P0 (data and reference), ROADMAP sections 4 and 8. The stages and their quantities:
 
 1. camera exposure: spectral exposure H_e(lambda) in erg/cm^2/nm (radiometric energy units).
 2. negative layer exposure: Q_i = integral H_e * S_i d(lambda). S_i = 10^(log sensitivity) in

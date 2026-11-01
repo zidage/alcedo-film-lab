@@ -6,7 +6,7 @@ results/p2_negative_print/preview_checks.json.
 
 With --variants, each image shows the plain encoding and every entry of VARIANTS side by side.
 
-Step: P2, README section 8 and decision U17. Each output image shows the same data twice: left, the
+Step: P2, ROADMAP section 8 and decision U17. Each output image shows the same data twice: left, the
 linear camera colour with the same exposure and a plain sRGB encoding; right, the film preview.
 
 Checks (limits set before the first run):

@@ -1,6 +1,6 @@
 # P2: Negative and print (appearance baseline)
 
-**Design:** [README section 8](../../README.md#8-route-from-poc-to-mvp), step P2, with decisions U17
+**Design:** [ROADMAP section 8](../../ROADMAP.md#8-route-from-poc-to-mvp), step P2, with decisions U17
 (the final appearance is the priority, so the renders come first), U18 (an appearance baseline), and
 U19 (darkroom process, cine stocks).
 **Date:** 2026-10-30.

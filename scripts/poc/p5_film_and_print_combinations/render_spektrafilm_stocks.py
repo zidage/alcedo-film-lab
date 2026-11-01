@@ -1,8 +1,8 @@
-"""Comparison run of spektrafilm at 3bb2c2d2 (external, GPLv3, README U18; nothing is reused) on the graded input, with its profiles of the six stocks and its Portra Endura paper.
+"""Comparison run of spektrafilm at 3bb2c2d2 (external, GPLv3, ROADMAP U18; nothing is reused) on the graded input, with its profiles of the six stocks and its Portra Endura paper.
 
 Input: build/tmp/p5/input_compare/<name>.npy, linear AP1 after product_input(), from compare_spektrafilm_sheets.py --inputs-only. Never committed.
 Output (local only): build/tmp/p5/out_spektrafilm/<name>_<stock>.png. Default settings, its own automatic exposure, no grain.
-Step: P5, README section 8. Run it with the Python environment of the baseline (build/tmp/baseline/venv_spektra).
+Step: P5, ROADMAP section 8. Run it with the Python environment of the baseline (build/tmp/baseline/venv_spektra).
 """
 
 import sys

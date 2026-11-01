@@ -364,7 +364,7 @@ def main() -> int:
         print(f"{spec.chart_id}: {len(chart_out['curves'])} curves, tick residual x {tc['x_max_residual']:.2e} y {tc['y_max_residual']:.2e}")
 
     note = ("Values digitized by this lab from a manufacturer data sheet. The source document is "
-            "not distributed (README U10); see profiles/README.md.")
+            "not distributed (ROADMAP U10); see profiles/README.md.")
     for name, profile in profiles.items():
         profile["redistribution_note"] = note
         path = PROFILE_DIR / f"{name}.json"

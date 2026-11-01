@@ -1,8 +1,8 @@
 """Softer settings of the direct inversion with APD, on 5207, Portra 400, and 5219, on landscape files. Rules 'soft_scan' and 'density_crosstalk' of aces_scan.py.
 
-Input: AP1 arrays of the full review, never committed. Reference scans of build/tmp/p3/refs/ when they exist (public pages with no license for this use; style reference only, README U28).
+Input: AP1 arrays of the full review, never committed. Reference scans of build/tmp/p3/refs/ when they exist (public pages with no license for this use; style reference only, ROADMAP U28).
 Output (local only): build/tmp/p3/review_soft/<name>.jpg, one sheet per file, reference_compare.jpg, with a label on every panel.
-Step: P3, README section 8.
+Step: P3, ROADMAP section 8.
 """
 
 from __future__ import annotations

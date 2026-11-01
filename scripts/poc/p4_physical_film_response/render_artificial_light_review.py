@@ -2,7 +2,7 @@
 
 Input: a directory of RAW files, first argument (never committed). Decoded arrays are cached in build/tmp/p4/input_artificial/.
 Output (local only): build/tmp/p4/review_artificial/<name>.jpg, one sheet per file, with a label on every panel. results/p4_physical_film_response/artificial_light_review.json holds the exposure and the share of pixels that stay clipped.
-Step: P4, README section 8. The light of a panel is an explicit review choice (README U21, U22); no panel detects a light. Portra 400 stays on E_ref, because its options have no grey anchor for another scene light.
+Step: P4, ROADMAP section 8. The light of a panel is an explicit review choice (ROADMAP U21, U22); no panel detects a light. Portra 400 stays on E_ref, because its options have no grey anchor for another scene light.
 """
 
 from __future__ import annotations

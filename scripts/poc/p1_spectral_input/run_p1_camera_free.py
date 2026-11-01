@@ -1,4 +1,4 @@
-"""Camera-free method, near-black rule, and revised acceptance criteria of step P1 (README U14, U15).
+"""Camera-free method, near-black rule, and revised acceptance criteria of step P1 (ROADMAP U14, U15).
 
 Input: the libraries of run_p1_checks.py; the RAW library for section E.
 Output: results/p1_spectral_input/camera_free/*.json.

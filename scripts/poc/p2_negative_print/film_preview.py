@@ -3,7 +3,7 @@
 Input: the P0 evaluator and profiles, the P1 reconstruction and reflectance datasets, RAW files.
 Output: library used by render_review_images.py. Tables are cached in build/tmp/p2/.
 
-Step: P2, README section 8, with decision U17: the user reviews the rendered appearance first.
+Step: P2, ROADMAP section 8, with decision U17: the user reviews the rendered appearance first.
 This is a review tool. It uses reduced images and CPU tables; it is not the product path.
 
 Execution: render() and the print table use the compiled kernels of fast_kernels.py. The array methods of this class
@@ -46,7 +46,7 @@ Review controls (U17). They are named here so that they are not read as measurem
 - viewing_flare: surface reflection of the print, added to the reflectance (P0 item I13; physical
   effect, value not measured).
 
-Darkroom controls (README U19). Each one is a step of a real process. The values are review controls,
+Darkroom controls (ROADMAP U19). Each one is a step of a real process. The values are review controls,
 not measurements. Image-plane steps use the frame width of the option frame_mm:
 - scatter_um, halation, halation_um: light scatter in the emulsion and light that returns from the film
   base, in layer exposure, before development. Halation reaches the red-sensitive layer first.
@@ -70,7 +70,7 @@ curves, the dye data and the lamp gave a blue slope about 20 % lower than green 
 a blue shadow on a neutral, and a real camera stock and print stock are designed to avoid this, so it is treated as an
 error of the data and of the printer model. It is computed on the curves, so a scene light can still cause a crossover.
 
-Scene light (README U20). The input is white balanced, so it holds a reflectance colour and not the light.
+Scene light (ROADMAP U20). The input is white balanced, so it holds a reflectance colour and not the light.
 Rule 'relight': the reflectance shape of the reconstruction is multiplied by the spectrum of scene_light
 (Y of the light = 1), and the layers integrate that radiance. A grey under a light that is not the balance
 light of the stock lands on the curves at different places per layer, as on real film. Option print_timing:
@@ -217,7 +217,7 @@ class FilmOptions:
         return hashlib.sha256(json.dumps(fields, sort_keys=True).encode()).hexdigest()[:12]
 
 
-# Review options after the darkroom comparison (README U19), for RAW input through product_input().
+# Review options after the darkroom comparison (ROADMAP U19), for RAW input through product_input().
 # The input is product_input(): the default grade of the product comes before the film. So the chain has no interlayer
 # gain, and print_contrast takes back about the mid-grey slope of the grade (0.92 / 2^0.15 = 0.83). The value 0.85 comes from a sweep with the chroma of spektrafilm output as the target (U18; P2 report, section 8.5), so it is not independent.
 DARKROOM = dict(uv_smooth=(0.006, 0.025), interlayer_gain=0.0, print_flash=0.02, print_contrast=0.85, viewing_flare=0.003, scatter_um=10.0,
@@ -227,11 +227,11 @@ DARKROOM = dict(uv_smooth=(0.006, 0.025), interlayer_gain=0.0, print_flash=0.02,
 # follows the comparison with spektrafilm on a display (U18); it is a review control.
 CINE_GREY_STATUS_A = 0.85
 
-# Scene lights that the user selects (README U21). Default: daylight. One representative CIE spectrum per type;
+# Scene lights that the user selects (ROADMAP U21). Default: daylight. One representative CIE spectrum per type;
 # real lamps of a type differ, and this table does not claim to match a lamp.
 PRODUCT_LIGHTS = {"daylight": "D55", "tungsten": "T3200", "fluorescent": "FL11", "led": "LED-B3", "sodium": "HP1"}
 
-# Scenes that the user selects in place of one light (README U22, step P3). Each one is a global mixture of named
+# Scenes that the user selects in place of one light (ROADMAP U22, step P3). Each one is a global mixture of named
 # spectra; the weights are shares of the luminance and the author's choice, not measurements of a place.
 # One spectrum applies to every pixel of the image: see the P3 report for what this cannot do.
 SCENE_PRESETS = {

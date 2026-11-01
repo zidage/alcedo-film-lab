@@ -1,7 +1,7 @@
 """Limit the optical spread and the development inhibition of the new negatives from their modulation transfer curves, and find the stocks with a relative sensitivity chart.
 
 Input: profiles/<negative>.json; the model form and the bounds of fit_mtf.py (P4). Output: stock_physics.json next to this script, and a table on stdout.
-Step: P6, README U61. The form, the bounds, and the inference rules are those of P4 and P5. One curve for all layers: the three records use one fit of the spread and the boost, as C200 in P5.
+Step: P6, ROADMAP U61. The form, the bounds, and the inference rules are those of P4 and P5. One curve for all layers: the three records use one fit of the spread and the boost, as C200 in P5.
 
 Rule 'relative_sensitivity_level', with a limit set before the first run: a grey of the reference light at the exposure of the grey that lands more than 3 stops from the criterion, as the mean of the three layers,
 means that the chart has no absolute level. The script moves the sensitivity of each layer in the profile, so that each layer lands on the criterion, and records the rule in the profile. Rule grey_anchor then sets the balance of such a stock (see mvp_pipeline.py),

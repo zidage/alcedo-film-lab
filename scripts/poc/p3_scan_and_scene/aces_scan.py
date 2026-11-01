@@ -3,7 +3,7 @@
 Input: a FilmPreview of step P2 (the negative), the APD tables of SMPTE ST 2065-2 (read at run time from
 build/tmp/p3/sources/, see fetch_sources.py), OpenColorIO for the output transforms.
 Output: library used by check_scan_path.py and render_scan_review.py.
-Step: P3, README section 8, decision U23. Inside this path only, the ACES output transform is the display rendering.
+Step: P3, ROADMAP section 8, decision U23. Inside this path only, the ACES output transform is the display rendering.
 
 Stages:
 1. Scanner: rule 'ideal_apd_scanner'. Equation 1 of ST 2065-2 on the spectral density of the negative, at the 2 nm nodes of the

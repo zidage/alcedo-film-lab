@@ -1,7 +1,7 @@
 # P3: scene presets and scanned-negative output
 
 Scripts of step P3 ([report](../../../docs/exploration/p3_scan_and_scene.md)). They take the negative of P2 through an ideal APD scanner, ADX10, and the ACES 1.3 and 2.0
-output transforms, and they review global scene mixtures (README U21, U22, U23). This is a CPU review tool, not the product path.
+output transforms, and they review global scene mixtures (ROADMAP U21, U22, U23). This is a CPU review tool, not the product path.
 
 | Script | Input | Output |
 | --- | --- | --- |
@@ -12,9 +12,9 @@ output transforms, and they review global scene mixtures (README U21, U22, U23).
 | `render_scan_review.py` | AP1 arrays of the P2 baseline | `build/tmp/p3/renders/<name>_<stock>.png` (local only), `results/p3_scan_and_scene/scan_review.json` |
 | `compare_film_analyzer.py` | `build/tmp/p3/filmanalyzer/measurements.json` (local, public chart measurements, no license stated) | `results/p3_scan_and_scene/film_analyzer_compare.json`; the values of the scans stay in `build/tmp/p3/filmanalyzer/real_summary.json` |
 | `render_full_review.py` | RAW files of signatureedits.com and of the Alcedo Studio sample images, night arrays | `build/tmp/p3/review/images/` and `overview_*.png` with a label on every panel (local only), `results/p3_scan_and_scene/full_review.json` |
-| `fit_scanner_to_chart.py` | `build/tmp/p3/filmanalyzer/measurements.json` (local). Test only, README U28 | `build/tmp/p3/fitted_scanner/fits.json` (local only) |
-| `render_fitted_scanner_review.py` | The fits, AP1 arrays. Test only, README U28 | `build/tmp/p3/fitted_scanner/review/*.png` with a label on every panel (local only) |
-| `render_soft_scan_review.py` | AP1 arrays; reference scans under `build/tmp/p3/refs/` when present (style reference only, README U30) | `build/tmp/p3/review_soft/*.jpg` with a label on every panel (local only) |
+| `fit_scanner_to_chart.py` | `build/tmp/p3/filmanalyzer/measurements.json` (local). Test only, ROADMAP U28 | `build/tmp/p3/fitted_scanner/fits.json` (local only) |
+| `render_fitted_scanner_review.py` | The fits, AP1 arrays. Test only, ROADMAP U28 | `build/tmp/p3/fitted_scanner/review/*.png` with a label on every panel (local only) |
+| `render_soft_scan_review.py` | AP1 arrays; reference scans under `build/tmp/p3/refs/` when present (style reference only, ROADMAP U30) | `build/tmp/p3/review_soft/*.jpg` with a label on every panel (local only) |
 | `render_print_apd_review.py` | AP1 arrays | `build/tmp/p3/review_crosstalk/*` with a label on every panel (local only), `results/p3_scan_and_scene/crosstalk_checks.json` |
 | `render_scanner_light_review.py` | AP1 arrays; local copies of `noritsu-tool` and of the FlexColor installer data under `build/tmp/p3/scanners/` | `build/tmp/p3/review_light/*.png` with a label on every panel (local only), `results/p3_scan_and_scene/scanner_light.json` |
 | `render_scene_review.py` | AP1 arrays of the night files | `build/tmp/p3/renders/scene_<name>.png` (local only), `results/p3_scan_and_scene/scene_review.json` |

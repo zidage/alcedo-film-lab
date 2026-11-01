@@ -1,8 +1,8 @@
-"""Sheets that put each P5 stock of this lab above the same stock of spektrafilm (external comparison only, README U18).
+"""Sheets that put each P5 stock of this lab above the same stock of spektrafilm (external comparison only, ROADMAP U18).
 
 Input: AP1 arrays as in render_p5_review.py; build/tmp/p5/out_spektrafilm/ from render_spektrafilm_stocks.py. Command line: --inputs-only writes the graded arrays for that script.
 Output (local only): build/tmp/p5/input_compare/<name>.npy, build/tmp/p5/review_spektrafilm/<name>.jpg, one sheet per file, with a label on every panel.
-Step: P5, README section 8. The two chains have different exposure rules, so the tone level does not compare directly.
+Step: P5, ROADMAP section 8. The two chains have different exposure rules, so the tone level does not compare directly.
 """
 
 from __future__ import annotations

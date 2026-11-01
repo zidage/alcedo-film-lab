@@ -1,7 +1,7 @@
 # P0: Data and host spectral reference (Portra 400 and Endura Premier)
 
-**Design:** [README section 8](../../README.md#8-route-from-poc-to-mvp), step P0, and
-[section 4](../../README.md#4-proposed-image-pipeline).
+**Design:** [ROADMAP section 8](../../ROADMAP.md#8-route-from-poc-to-mvp), step P0, and
+[section 4](../../ROADMAP.md#4-proposed-image-pipeline).
 **Date:** 2026-10-29.
 **Status:** measurements done. O1 is decided. User review of the inferred fields, the tolerances,
 and open items O2 to O6 is open. Section 10 compares P0 with spectral_film_lut and measures its
@@ -99,8 +99,8 @@ hashes are in [`sources.json`](../../scripts/poc/p0_data_and_reference/sources.j
 
 | Source | Edition | SHA-256 | License | Use |
 | --- | --- | --- | --- | --- |
-| KODAK PROFESSIONAL PORTRA 400 Film, E-4050 | Revised 2-16 | `e83ac677...e97e3a` | manufacturer data; the PDF is not distributed (README U10) | page 4: characteristic (Status M), spectral sensitivity, spectral dye density (D-min, midscale neutral) |
-| KODAK PROFESSIONAL ENDURA Premier Paper, E-4070 | Revised 12-17 | `94ead00f...7982e` | manufacturer data; the PDF is not distributed (README U10) | page 4: characteristic (Status A), spectral sensitivity; page 5: dye spectral density (Y, M, C) |
+| KODAK PROFESSIONAL PORTRA 400 Film, E-4050 | Revised 2-16 | `e83ac677...e97e3a` | manufacturer data; the PDF is not distributed (ROADMAP U10) | page 4: characteristic (Status M), spectral sensitivity, spectral dye density (D-min, midscale neutral) |
+| KODAK PROFESSIONAL ENDURA Premier Paper, E-4070 | Revised 12-17 | `94ead00f...7982e` | manufacturer data; the PDF is not distributed (ROADMAP U10) | page 4: characteristic (Status A), spectral sensitivity; page 5: dye spectral density (Y, M, C) |
 | CIE 1931 2 degree CMFs, 1 nm | DOI 10.25039/CIE.DS.xvudnb9b | `fa663e35...713c1` | CC BY-SA 4.0 | XYZ, lux-seconds |
 | CIE daylight components S0, S1, S2 | CIE 015:2018 | `4056cf7c...8c6be` | CC BY-SA 4.0 | D50, D55 |
 | CIE D65, CIE A, 1 nm | ISO/CIE 11664-2 | `e76f210b...32cb`, `61ef23fe...3c1` | CC BY-SA 4.0 | test spectra; printer lamp |
@@ -401,7 +401,7 @@ Observations:
 
 | ID | Item | Owner |
 | --- | --- | --- |
-| O1 | Publication of the digitized values. **Decided 2026-10-29 (README U10):** the generated data (profiles, results) can be published; the original Kodak PDFs are not distributed ([profiles/README.md](../../profiles/README.md#source-documents-not-distributed)). | Closed |
+| O1 | Publication of the digitized values. **Decided 2026-10-29 (ROADMAP U10):** the generated data (profiles, results) can be published; the original Kodak PDFs are not distributed ([profiles/README.md](../../profiles/README.md#source-documents-not-distributed)). | Closed |
 | O2 | Source for the Portra negative density above 700 nm and for isolated dye spectra (measurement or other publication). | User decision, then P2 |
 | O3 | Verify the colormath Status M and Status A tables against ISO 5-3:2009. | P1 or P2 |
 | O4 | The E-4070 paper exposure light, criterion density, and base spectrum; the E-4050 "Daylight" CCT and the exposure of the midscale neutral. Ask Kodak Alaris or measure. | User decision |
@@ -494,7 +494,7 @@ the interlayer effects and the strength of the masking couplers.
 
 ### 10.4 Measured: the spectral_film_lut methods in the P0 evaluator
 
-spectral_film_lut is MIT, so its methods can be adopted as they are (README U11). Three methods
+spectral_film_lut is MIT, so its methods can be adopted as they are (ROADMAP U11). Three methods
 were ported into `film_spectral_reference.py`, with the parameters of commit `bcbcfc68`. The
 notice is in [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md). The three methods:
 

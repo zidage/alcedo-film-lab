@@ -1,7 +1,7 @@
 """W2, W3, W4: numeric checks of the development inhibition, the density timing, and the layer spread.
 
 Input: the P2 and P3 libraries, no photo. Output: results/p4_physical_film_response/film_response.json.
-Step: P4, README section 8. Limits set before the first run (P4 report section 4):
+Step: P4, ROADMAP section 8. Limits set before the first run (P4 report section 4):
 - W2: the neutral curve against the published Status M curve, inside the published domain: largest error <= 0.02 density;
 - W2: a saturated colour ramp from -3 to +3 stops: largest fall of any Status M record <= 0.001 density;
 - W2: the fixed point on an image with INHIBITION_STEPS_IMAGE steps against the array form with no image plane: largest difference <= 0.002 in dye amount on a flat colour field;

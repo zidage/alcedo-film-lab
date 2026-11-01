@@ -2,7 +2,7 @@
 
 Input: linear AP1 arrays from dump_portraits.py and night_probe.py of P2 (build/tmp/baseline/), never committed.
 Output: build/tmp/p3/renders/*.png (local only) and results/p3_scan_and_scene/scan_review.json.
-Step: P3, README section 8, decision U23. Each image goes through product_input() of P2.
+Step: P3, ROADMAP section 8, decision U23. Each image goes through product_input() of P2.
 
 Path B uses the same negative as path A. A pixel of the negative has three free dye amounts, so ADX10 and negative Status M
 hold the same information where ADX10 does not clip. Therefore a print from the scan is the print from this negative

@@ -2,7 +2,7 @@
 
 Scripts of step P2 ([report](../../../docs/exploration/p2_negative_and_print.md)). They render real
 RAW files through the selected P1 reconstruction, the Portra 400 negative, and the Endura print for
-user review (README U17, U18). This is a CPU review tool, not the product path.
+user review (ROADMAP U17, U18). This is a CPU review tool, not the product path.
 
 | Script | Input | Output |
 | --- | --- | --- |

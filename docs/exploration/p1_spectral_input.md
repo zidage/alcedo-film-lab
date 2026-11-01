@@ -1,14 +1,14 @@
 # P1: Spectral input (AP1 to Portra 400 layer exposure)
 
-**Design:** [README section 8](../../README.md#8-route-from-poc-to-mvp), step P1, and sections
-[3.1](../../README.md#31-spectral-reconstruction-and-layer-exposure),
-[6.1](../../README.md#61-separate-spectral-shape-from-exposure), and
-[6.3](../../README.md#63-evaluate-the-response-of-metamers).
+**Design:** [ROADMAP section 8](../../ROADMAP.md#8-route-from-poc-to-mvp), step P1, and sections
+[3.1](../../ROADMAP.md#31-spectral-reconstruction-and-layer-exposure),
+[6.1](../../ROADMAP.md#61-separate-spectral-shape-from-exposure), and
+[6.3](../../ROADMAP.md#63-evaluate-the-response-of-metamers).
 **Date:** 2026-10-29 to 2026-10-30.
 **Status:** measurements done for the spectral input. **RGC is out of scope of this step** (user
 decision U13, 2026-10-29); the RGC verification and its location stay open (section 9).
 The user decided on 2026-10-30 that the DRT receives no camera identity and delegated the
-near-black rule and the tolerances to this step (README U14 to U16, sections 7.14 to 7.19). User
+near-black rule and the tolerances to this step (ROADMAP U14 to U16, sections 7.14 to 7.19). User
 review of the recommendation is open. U17 (2026-10-30) sets the final appearance as the priority;
 section 8 is the selected route after that decision.
 
@@ -136,7 +136,7 @@ tables, Kodak profiles) come from step P0.
 | Alcedo Studio RAW test library (44 files of 21 cameras) | local, supplied by the user | not distributed | section 7.12 |
 
 The dataset list follows the open sets that the Fotufilm measured prior uses (Fotufilm
-THIRD_PARTY_NOTICES at `96623ba0`; README U12: reference). No Fotufilm code or table is used.
+THIRD_PARTY_NOTICES at `96623ba0`; ROADMAP U12: reference). No Fotufilm code or table is used.
 
 ### 3.2 Machine and software
 
@@ -174,7 +174,7 @@ Run history (all result files come from the final solver):
 ### 4.2 Candidates
 
 All five candidates are homogeneous of degree 1: the spectral shape depends on the chromaticity
-only (README section 6.1). Definitions: module docstring of
+only (ROADMAP section 6.1). Definitions: module docstring of
 [`spectral_reconstruction.py`](../../scripts/poc/p1_spectral_input/spectral_reconstruction.py).
 
 | Name | Method | Source | Linear in AP1 |
@@ -183,7 +183,7 @@ only (README section 6.1). Definitions: module docstring of
 | `jakob_hanika_sigmoid` | rho = algebraic sigmoid of a quadratic in wavelength; batched Levenberg-Marquardt in CIELAB; continuation from the grey of the same L* for hard targets | Jakob and Hanika 2019; normalization 2 max(rgb) of pbrt-v4 `RGBIlluminantSpectrum` (rule only, no code) | no |
 | `measured_prior_linear` | rho = C A^T (A C A^T)^-1 XYZ; C = second moment of measured reflectances at 5 nm knots | minimum-norm (Wiener-type) estimate | yes |
 | `measured_prior_nonnegative` | minimum rho^T C^-1 rho with A rho = XYZ, rho >= 0; primal active-set QP (Nocedal and Wright, algorithm 16.3, null-space steps), started from a penalized NNLS | this lab | no |
-| `measured_prior_local` | as `measured_prior_linear`, with C built from the 256 training spectra nearest in u'v' (Gaussian weights, sigma 0.01), blended 5 % with the global C | this lab; the chromaticity-indexed prior idea of README section 3.1 | no |
+| `measured_prior_local` | as `measured_prior_linear`, with C built from the 256 training spectra nearest in u'v' (Gaussian weights, sigma 0.01), blended 5 % with the global C | this lab; the chromaticity-indexed prior idea of ROADMAP section 3.1 | no |
 
 Prior rules: each dataset has the same total weight in C (rule `prior_dataset_weight`); ridge
 1e-4 * trace(C) / n (rule `prior_ridge`). The prior matrices are made at run time from the
@@ -226,7 +226,7 @@ the order of the red-layer error; the tolerances were not changed after it.
 | XYZ reproduction inside the domain | Delta E*ab <= 0.1 | below visibility |
 | Layer exposure "stable", per dataset and daylight light | Status M error p95 <= 0.01 and max <= 0.03, each channel | P0: 0.1 log H channel offset gives C*ab 13 on the print grey; 0.01 density (about 0.017 log H at gamma 0.6) is near the P0 grey tolerance |
 | Exposure scaling | relative 1e-12 (linear), 1e-9 (QP), 1e-6 (iterative sigmoid fit) | float64; solver stop rule |
-| Near black and every probe | finite output for every input; domain failures counted | README section 9 |
+| Near black and every probe | finite output for every input; domain failures counted | ROADMAP section 9 |
 
 ### 4.6 Data rules
 
@@ -711,7 +711,7 @@ section replaces the earlier recommendation of the camera population prior.
    and a second prior for non-camera input. Add it only if the user review finds a skin problem
    that the print stage cannot correct.
 4. **Use the U15 criteria as guidance, not as a requirement of later steps.** The user review of the
-   rendered images decides. The numeric checks of README section 9 that protect the physical
+   rendered images decides. The numeric checks of ROADMAP section 9 that protect the physical
    stages stay (scaling, finite output, stage separation).
 5. **For P6, tabulate by chromaticity and reference light.** Only 1.3 % of real pixels need the QP
    (section 7.19).
@@ -746,7 +746,7 @@ Not measured in P1:
   (`RGBIlluminantSpectrum`); no pbrt code is used.
 - The film sensitivity variant (section 7.11) uses the spectral_film_lut method ported in P0
   (MIT; [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md)).
-- The dataset selection follows Fotufilm's notices (reference, README U12).
+- The dataset selection follows Fotufilm's notices (reference, ROADMAP U12).
 - The datasets are read at run time and are not distributed. The CC BY 4.0 datasets
   (Gutierrez et al., ISSA) are credited in this report and in THIRD_PARTY_NOTICES.md. No prior
   matrix made from them is committed.

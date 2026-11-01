@@ -1,7 +1,7 @@
 """Numeric checks of the five P5 stocks on the Endura print, and the same measurements on the accepted Portra 400 as a comparison.
 
 Input: the P2 to P4 libraries and the P5 profiles, no photo. Output: results/p5_film_and_print_combinations/stock_chain.json.
-Step: P5, README section 8, decision U34. Limits set before the first run, the same as P4 (P4 report sections 4 and 5):
+Step: P5, ROADMAP section 8, decision U34. Limits set before the first run, the same as P4 (P4 report sections 4 and 5):
 - the neutral curve against the published Status M curve, inside the published domain: largest error <= 0.02 density;
 - a saturated colour ramp from -3 to +3 stops: largest fall of any Status M record <= 0.001 density;
 - the fixed point on an image against the array form on flat colour fields: largest difference <= 0.002 in dye amount;

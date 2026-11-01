@@ -2,7 +2,7 @@
 
 Input: sources.json (URL, expected SHA-256, license, and use of each file).
 Output: build/tmp/p3/sources/, with the APD tables unpacked to build/tmp/p3/sources/st2065-2/. The files are not committed.
-Step: P3, README section 8. A hash that differs stops the script with an error.
+Step: P3, ROADMAP section 8. A hash that differs stops the script with an error.
 """
 
 from __future__ import annotations

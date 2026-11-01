@@ -1,6 +1,6 @@
 """Checks of the user controls of the Python MVP. The limits were set before the first run.
 
-Input: first argument, an AP1 array (.npy) of a photo. Output: results/p6_python_mvp/controls.json, and a line per check on stdout. Step: P6, README U62.
+Input: first argument, an AP1 array (.npy) of a photo. Output: results/p6_python_mvp/controls.json, and a line per check on stdout. Step: P6, ROADMAP U62.
 A failed check stays in the results with its value, and the exit code is 1. All cases use 5207 on 2383 and the two methods, except the check of the inhibition, which uses all negatives.
 
 | Check | Behaviour and comparison rule | Limit |
@@ -10,6 +10,7 @@ A failed check stays in the results with its value, and the exit code is 1. All 
 | Other method | A control of one method at its high end, on the other method: largest difference of code | 0 |
 | Bad value | A value outside the range stops with an error that names the control | error |
 | Inhibition | The high end of the inhibition on each negative: the curves F_i exist | no error |
+| LAD aim | Each accepted stock on the APD method: a neutral image of 0.18, with no grade, in ADX10 against code value 445, largest difference per channel | 5 code values (0.01 density) |
 """
 
 from __future__ import annotations
@@ -35,14 +36,14 @@ def main() -> int:
     ramp = base_checks.test_image()
     pipeline = mp.Pipeline()
     base = mp.RenderSettings()
-    flat = replace(base, exposure_ev=0.0, contrast=0.0, saturation=1.0, scanner_stage=False)
+    flat = replace(base, exposure_ev=0.0, contrast=0.0, saturation=1.0)
     default = {method: pipeline.render_array(photo, replace(base, method=method)) for method in mp.METHODS}
     result: dict = {"input": Path(sys.argv[1]).name, "controls": {}, "other_method": {}}
     failures = []
     # print_timing has an effect only when the scene light is not the reference light.
     context = {"print_timing": {"scene_light": "tungsten"}}
     extra = {"display_white": {"low": "paper"}, "gamut_compress": {"low": False}}
-    cases = [(c.name, c.methods, {"low": c.low, "high": c.high}) for c in mp.CONTROLS] + [(name, mp.PRINT, ends) for name, ends in extra.items()]
+    cases = [(c.name, c.methods, {"low": c.low, "high": c.high}) for c in mp.CONTROLS] + [(name, mp.PRINT, ends) for name, ends in extra.items()] + [("apd_output", mp.SCAN, {"low": "aces13"}), ("apd_lad_aim", mp.SCAN, {"low": False})]
     for name, methods, ends in cases:
         row: dict = {}
         for method in methods:
@@ -75,7 +76,7 @@ def main() -> int:
     for control in mp.CONTROLS:
         if control.methods == mp.BOTH:
             continue
-        other = "frontier" if control.methods == mp.PRINT else "print"
+        other = "apd" if control.methods == mp.PRINT else "print"
         largest = float(np.abs(pipeline.render_array(photo, replace(base, method=other, **{control.name: control.high})) - default[other]).max())
         result["other_method"][control.name] = largest
         if largest != 0.0:
@@ -100,6 +101,14 @@ def main() -> int:
         except ValueError as error:
             result["inhibition_high_end"][negative] = str(error)
             failures.append(f"inhibition {negative}: {error}")
+    result["lad_aim"] = {}
+    neutral = np.full((32, 32, 3), 0.18, dtype=np.float32)
+    for negative in mp.ACCEPTED_STOCKS:
+        code = pipeline.scan_model(replace(base, negative=negative, method="apd")).adx10(neutral)[0].mean(axis=(0, 1))
+        result["lad_aim"][negative] = np.round(code, 2).tolist()
+        print(negative, "ADX10 of a neutral", result["lad_aim"][negative], flush=True)
+        if np.abs(code - 445.0).max() > 5.0:
+            failures.append(f"LAD aim {negative} {result['lad_aim'][negative]}")
     t = time.perf_counter()
     pipeline.print_model(replace(base, halation_scale=2.0))
     result["model_load_with_cached_table_s"] = round(time.perf_counter() - t, 2)

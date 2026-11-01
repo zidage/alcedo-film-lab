@@ -1,8 +1,8 @@
 # Modern film workflow: how a scanned negative gets a film look
 
 **Date:** 2026-10-30.
-**Use:** input to step P3 of the [README route](../../README.md#8-route-from-poc-to-mvp) (decision U23).
-**Status:** source audit. The ADX to ACES path ran in the [P3 report](../exploration/p3_scan_and_scene.md), and the user dropped it (README U26). This lab did not measure a scanner. Section 11 of that report lists the classic scanner data.
+**Use:** input to step P3 of the [ROADMAP route](../../ROADMAP.md#8-route-from-poc-to-mvp) (decision U23).
+**Status:** source audit. The ADX to ACES path ran in the [P3 report](../exploration/p3_scan_and_scene.md), and the user dropped it (ROADMAP U26). This lab did not measure a scanner. Section 11 of that report lists the classic scanner data.
 
 ## 1. Summary
 
@@ -29,7 +29,7 @@
 | A facility creates a show LUT, and it also makes dailies film prints and print screenings on a film production. | [FotoKem blog](https://fotokem.com/blog/) | Facility, no technical values |
 
 Not all film-look traits come from the display preparation. Grain, halation, and gate weave are in the real negative and
-the real transport. Alcedo Studio keeps its own grain (README). Halation is an approximate control of P2. Gate weave
+the real transport. Alcedo Studio keeps its own grain (ROADMAP). Halation is an approximate control of P2. Gate weave
 is not in this lab.
 
 ## 3. The ACES and ADX facts
@@ -78,7 +78,7 @@ Yellowmoon uses light classes (daylight, tungsten, fluorescent, LED) with probab
 blends tables by class. It also has manual presets, from its
 [pipeline document](https://github.com/ngriaznov/yellowmoon/blob/main/docs/02-colour-pipeline.md). This agrees with U22:
 a scene can be a weighted mixture of classes. Its sensor map is a 3x3 matrix per light; this lab does not adopt that
-for the film input (README, P1 route). Its own report states that most of its fit lights miss its limits.
+for the film input (ROADMAP, P1 route). Its own report states that most of its fit lights miss its limits.
 
 ## 5a. Direct scanning without a print
 

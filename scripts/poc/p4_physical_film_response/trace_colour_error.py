@@ -1,7 +1,7 @@
 """W1: trace the colour error of the direct inversion through the dye chain, for each dye model.
 
 Input: aces_scan.py and the P2 library, no photo. Output: results/p4_physical_film_response/colour_trace.json.
-Step: P4, README section 8, work item W1. Limits set before the first run (P4 report section 4):
+Step: P4, ROADMAP section 8, work item W1. Limits set before the first run (P4 report section 4):
 - for each case, the coefficient from AP1 blue to the red record: the sum of the stages equals the total of an end-to-end fit within 0.01;
 - the base and a neutral density through the dye model agree with the Status M reconstruction: p95 error <= 0.01 density, over the neutral ramp.
 A 3x3 matrix in this script is a comparison measurement of the chain. It is not a candidate transform.

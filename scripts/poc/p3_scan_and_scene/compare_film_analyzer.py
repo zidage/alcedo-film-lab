@@ -2,7 +2,7 @@
 
 Input: build/tmp/p3/filmanalyzer/measurements.json (public measurements of Film Analyzer, license not stated, not committed).
 Output: results/p3_scan_and_scene/film_analyzer_compare.json, with statistics of the paths against the scans; build/tmp/p3/filmanalyzer/real_summary.json (local only), with the values of the scans.
-Step: P3, README section 8. The user asked to understand the effect of direct scanning; the data is a reference and the model is not fitted to it.
+Step: P3, ROADMAP section 8. The user asked to understand the effect of direct scanning; the data is a reference and the model is not fitted to it.
 
 Method. Each chart patch of the reference (Lab under D50) goes to linear AP1 and through a path, with no product grade, because the
 real film had none. The Lab values of the site come from its own process (scanner, lab, inversion, flare, target light), which this script does not model,

@@ -6,9 +6,9 @@ characteristic curves; Endura chain for section I).
 Output: results/p1_spectral_input/*.json (summaries) and build/tmp/p1/eval/*.npz (per-sample
 arrays for the plots).
 
-Step: P1, README section 8: held-out XYZ and layer-exposure errors, exposure scaling, metamer
+Step: P1, ROADMAP section 8: held-out XYZ and layer-exposure errors, exposure scaling, metamer
 comparison, near-black and saturated-light probes. RGC is out of scope of this step (user
-decision of 2026-10-29, README U13); all inputs here are without RGC.
+decision of 2026-10-29, ROADMAP U13); all inputs here are without RGC.
 
 Sections (each one writes one JSON file):
 A. reference_white.json: ACES white against E_ref; Mallett-Yuksel basis fit.

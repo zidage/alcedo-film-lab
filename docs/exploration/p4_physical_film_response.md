@@ -1,6 +1,6 @@
 # P4: Physical colour and film response
 
-**Design:** [README section 8](../../README.md#8-route-from-poc-to-mvp), step P4, with decision U31.
+**Design:** [ROADMAP section 8](../../ROADMAP.md#8-route-from-poc-to-mvp), step P4, with decision U31.
 **Date:** 2026-10-30.
 **Status:** closed (2026-10-30, U32). All four work items are measured, and the numeric checks pass. The user accepts the look of the print. The direct inversion is set aside and has no accepted look. Section 15 lists the open items. Sections 1 to 7 are the plan, and sections 8 to 16 the results.
 
@@ -247,7 +247,7 @@ Review control `P4_TONE` (display grey 0.32, black 0.004, `log_contrast` 0.92, `
 
 ## 11. W2: interlayer inhibition
 
-Rule `development_inhibition`: a_i = F_i(log H_i - sum_j K_ij G * a_j). F_i is computed so that a neutral returns the published curve. This rule is not independent of spektrafilm (correction of 2026-10-31, [P6 report](p6_python_mvp.md), section 5.2): no code or value of spektrafilm is used, but the first step of the fixed point is the same algorithm as `compute_density_curves_before_dir_couplers` and `compute_exposure_correction_dir_couplers` in `model/couplers.py`, and README section 3.2 records that the initial research read that method. It needs the dye amount record, and it stops with an error otherwise. `P4_PHYSICAL` turns `adjacency_gain` off, because the published modulation transfer already includes the edge effect.
+Rule `development_inhibition`: a_i = F_i(log H_i - sum_j K_ij G * a_j). F_i is computed so that a neutral returns the published curve. This rule is not independent of spektrafilm (correction of 2026-10-31, [P6 report](p6_python_mvp.md), section 5.2): no code or value of spektrafilm is used, but the first step of the fixed point is the same algorithm as `compute_density_curves_before_dir_couplers` and `compute_exposure_correction_dir_couplers` in `model/couplers.py`, and ROADMAP section 3.2 records that the initial research read that method. It needs the dye amount record, and it stops with an error otherwise. `P4_PHYSICAL` turns `adjacency_gain` off, because the published modulation transfer already includes the edge effect.
 
 Parameters, from the published modulation transfer. The form is M(f) = 1 / (1 + (2 pi s f)^2) * B / (1 + (B - 1) exp(-2 pi^2 sigma_d^2 f^2)). A Gaussian spread left an RMS residual of 0.03 to 0.07, and the exponential spread leaves 0.004 to 0.027. Script `fit_mtf.py`, results [`mtf_fit.json`](../../results/p4_physical_film_response/mtf_fit.json). Red, green, blue:
 
@@ -370,7 +370,7 @@ Author's visual results, not user review (2026-10-30). The files are 8 Sony RAW 
 
 ### Comparison with spektrafilm on 13 daylight files
 
-Author's visual results, not user review (2026-10-30). The files are the 8 mountain files and 5 files of temples, a street, and a coast. Each sheet has the plain image, the graded input, the P4 print of 5207 and Portra 400, and spektrafilm at 3bb2c2d2 (external comparison only, README U18). The spektrafilm panels use Vision3 250D with 2383, and Portra 400 with Portra Endura, with its default settings, its own automatic exposure, no grain, and the same graded input. The sheets are local, in `build/tmp/p4/review_spektra_compare/`.
+Author's visual results, not user review (2026-10-30). The files are the 8 mountain files and 5 files of temples, a street, and a coast. Each sheet has the plain image, the graded input, the P4 print of 5207 and Portra 400, and spektrafilm at 3bb2c2d2 (external comparison only, ROADMAP U18). The spektrafilm panels use Vision3 250D with 2383, and Portra 400 with Portra Endura, with its default settings, its own automatic exposure, no grain, and the same graded input. The sheets are local, in `build/tmp/p4/review_spektra_compare/`.
 
 - Dark areas are as dark or darker on spektrafilm with 250D (`_DSC2197`, `_DSC4063`, `_DSC4069`, `_DSC4071`). So the loss of shadow detail on these files is not only a fault of the P4 print. The author's earlier note on these shadows is too strong.
 - On Portra 400 the shadows have a similar level. They are blue-black on the P4 print and more neutral on spektrafilm.

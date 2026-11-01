@@ -1,6 +1,6 @@
 # P5: Other film and print combinations
 
-**Design:** [README section 8](../../README.md#8-route-from-poc-to-mvp), step P5, with decisions U33 and U34.
+**Design:** [ROADMAP section 8](../../ROADMAP.md#8-route-from-poc-to-mvp), step P5, with decisions U33 and U34.
 **Date:** 2026-10-30.
 **Status:** in progress. Five stocks have profiles, options, numeric checks, and labeled sheets. The user review of the stocks is not done. Sections 11 and 12 add the backlit work of U35 and U37. Section 26 adds a scan path with three stages (U54).
 
@@ -124,7 +124,7 @@ The mean C* does not rank a look. Gold 200 has no inhibition, so its value is no
 
 Script: `render_p5_review.py`. Local only: `build/tmp/p5/review/<name>.jpg`, 56 files (6 portraits, 37 landscape files, 5 daylight files, 8 mountain files), with a label on every panel. Results: [`review.json`](../../results/p5_film_and_print_combinations/review.json). Panel sizes follow the cached arrays, about 750 pixels on the long side for the portraits and most landscape files, so the small-scale effects of `layer_spread` are not visible.
 
-Comparison with spektrafilm at 3bb2c2d2 (external comparison only, README U18; nothing is reused): `render_spektrafilm_stocks.py` and `compare_spektrafilm_sheets.py`, 7 files, the six stocks on its Portra Endura paper, with its default settings, its own automatic exposure, and no grain. Sheets: `build/tmp/p5/review_spektrafilm/`.
+Comparison with spektrafilm at 3bb2c2d2 (external comparison only, ROADMAP U18; nothing is reused): `render_spektrafilm_stocks.py` and `compare_spektrafilm_sheets.py`, 7 files, the six stocks on its Portra Endura paper, with its default settings, its own automatic exposure, and no grain. Sheets: `build/tmp/p5/review_spektrafilm/`.
 
 ### Author's visual results, not user review
 

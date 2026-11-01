@@ -1,10 +1,10 @@
 """Write profiles of KODAK VISION3 250D 5207, VISION3 500T 5219 and VISION 2383 from spectral_film_lut.
 
-Input: the data files of spectral_film_lut (MIT, README U11) at commit bcbcfc68, read as literals. The code
+Input: the data files of spectral_film_lut (MIT, ROADMAP U11) at commit bcbcfc68, read as literals. The code
 of that project does not run. Path: first argument, the src/spectral_film_lut directory of a local clone.
 Output: profiles/kodak_5207.json, kodak_5219.json, kodak_2383.json, with the schema of the P0 profiles.
 
-Step: P2, README U19. The values are the digitization of spectral_film_lut, not of this lab. Rules:
+Step: P2, ROADMAP U19. The values are the digitization of spectral_film_lut, not of this lab. Rules:
 - resampled linearly on 1 nm or 0.01 log10 lux-seconds inside the digitized domain, no extrapolation;
 - 5207: its curve axis is in stops around the exposure 12.5 / ISO lux seconds (spectral_film_lut definition);
 - a rising curve keeps its running maximum, because a digitized point can fall by a small amount

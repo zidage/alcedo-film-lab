@@ -2,7 +2,7 @@
 
 Input: AP1 arrays of the full review (build/tmp/p3/input/), never committed. Output (local only): build/tmp/p3/review_crosstalk/<name>.jpg, one large sheet per file, and sweep.png, with a label on every panel.
 results/p3_scan_and_scene/crosstalk_checks.json holds the checks: neutrals do not change, the record never reverses, and the sweep has no break above the value of the input.
-Step: P3, README section 8, decision U29.
+Step: P3, ROADMAP section 8, decision U29.
 """
 
 from __future__ import annotations

@@ -2,7 +2,7 @@
 
 Input: AP1 arrays as in render_p5_review.py. Command line: --reference DIR compares with the JPEG files that NexFilm wrote from the Portra 400 TIFF files of render_scan_inversion.py --export, in the sorted order of REFERENCE_ORDER; names of files follow (default: the 8 mountain files and 3 portraits).
 Output (local only): build/tmp/p5/review_density_window/<name>.jpg with a label on every panel. results/p5_film_and_print_combinations/density_window.json holds the check, the shadow statistics of the mountain files, and the distance between stocks.
-Step: P5, README section 8, decision U38. Limit of the check: mean RMSE at most 6 of 255 on the 11 files. The author set it after a local probe measured 5.14 on the same files, so it guards against a later change and is not an independent test.
+Step: P5, ROADMAP section 8, decision U38. Limit of the check: mean RMSE at most 6 of 255 on the 11 files. The author set it after a local probe measured 5.14 on the same files, so it guards against a later change and is not an independent test.
 
 Rule 'density_window_inversion'. Reuse with a label: the method of the uncalibrated Auto Invert of NexFilm (https://github.com/BillyDu-TJ/NexFilm, commit fbd7113f4b0d34c0fa84fc8601b6c5a13a742df1, GPL-3.0-only): the file is read as linear sRGB and goes to linear ProPhoto; density per channel; a window per channel whose endpoints come from the same pixels (WINDOW_TAIL of the sorted density luma); the normalized density goes through ProPhoto to sRGB, with no transfer curve. This code is written for this lab. The one change: NexFilm finds the low endpoint in the frame, and here it is the unexposed film. In the files of the user the border of unexposed film fills the low tail, so both give the same value.
 """

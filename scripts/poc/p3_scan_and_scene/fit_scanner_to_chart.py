@@ -1,7 +1,7 @@
-"""Fit a scanner model to public chart scans of real film. TEST ONLY: no license is stated for the data, so the results stay local and no product path may use them (README U28).
+"""Fit a scanner model to public chart scans of real film. TEST ONLY: no license is stated for the data, so the results stay local and no product path may use them (ROADMAP U28).
 
 Input: build/tmp/p3/filmanalyzer/measurements.json (not committed), the P2 negative.
-Output (local only): build/tmp/p3/fitted_scanner/fits.json. Step: P3, README section 8.
+Output (local only): build/tmp/p3/fitted_scanner/fits.json. Step: P3, ROADMAP section 8.
 
 Model, for one negative and one scanner. d = reading of the scanner (equation 1 of ST 2065-2 with fitted bands) above the base.
     d' = d C                                 density crosstalk (unit diagonal)
@@ -244,7 +244,7 @@ def run(label: str, stock: str, set_name: str, other: tuple[str, str] | None, da
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     data = json.loads(SOURCE.read_text(encoding="utf-8"))["sets"]
-    result = {"note": "TEST ONLY. Fitted to public measurements with no stated license. Not for a product path (README U28).",
+    result = {"note": "TEST ONLY. Fitted to public measurements with no stated license. Not for a product path (ROADMAP U28).",
               "5207_xt5": run("5207_xt5", "5207", "5207_xt5", ("portra", "portra400_xt5"), data),
               "5207_ls9000": run("5207_ls9000", "5207", "5207_ls9000", ("5219", "5219_ls9000"), data)}
     shifts = {k: result[k]["film_exposure_shift_stops"] for k in ("5207_xt5", "5207_ls9000")}

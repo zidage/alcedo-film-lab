@@ -1,7 +1,7 @@
 """W1: rule 'light_like_spectra': the layer exposure of light-like spectra against the true spectrum, and the cost on measured reflectances.
 
 Input: the P2 library and the P1 reflectance sets, no photo. Output: results/p4_physical_film_response/light_spectra.json.
-Step: P4, README section 8, work item W1. Limits set before the first run with the rule:
+Step: P4, ROADMAP section 8, work item W1. Limits set before the first run with the rule:
 - light-like spectra (daylight 8000, 12000, 20000 K; D55 x lambda^-2, lambda^-4; Planckian 1800, 2500 K; D55 x lambda^+4), each one white balanced by the scene light D55: |reconstruction - true| <= 0.03 log10 in each layer, on 5207;
 - ISSA skin: p95 of |reconstruction - true| grows by at most 0.005 log10 in each layer;
 - XYZ of the table nodes inside AP1: p99 relative error at most 0.015 (P3 section 13.1 reports 1.2 % at this percentile for the smoothing alone).

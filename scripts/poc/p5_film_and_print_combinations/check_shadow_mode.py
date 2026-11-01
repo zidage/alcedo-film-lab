@@ -1,7 +1,7 @@
 """Numeric checks of rule 'overexposed_negative' and rule 'contrast_mask' on the six stocks.
 
 Input: the P2 to P4 libraries and the P5 profiles, no photo. Output: results/p5_film_and_print_combinations/shadow_mode.json.
-Step: P5, README section 8, decision U35. Limits set before the first run:
+Step: P5, ROADMAP section 8, decision U35. Limits set before the first run:
 - the mask table at zero density against the print table: largest difference <= 1e-6 in cube root XYZ;
 - a mask density halfway between two tables against a table made at that density: largest error <= 0.002 in cube root XYZ;
 - a flat mid grey keeps its print value, with the mask, with 2 stops, and with both: largest change of L* <= 0.1;

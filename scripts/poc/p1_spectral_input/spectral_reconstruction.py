@@ -7,7 +7,7 @@ training reflectances of the measured prior (spectral_datasets.py).
 Output: reconstruction objects. Each one returns the spectral radiance on the 1 nm grid and a
 domain mask (False where the method cannot represent the input).
 
-Step: P1 (spectral input), README sections 3.1, 6.1, and 8.
+Step: P1 (spectral input), ROADMAP sections 3.1, 6.1, and 8.
 
 Quantities:
 - Radiance L(lambda) is relative: the perfect white diffuser under the scene light has Y = 1.
@@ -20,7 +20,7 @@ Quantities:
   Its chromaticity (0.321681, 0.337673) is the ACES white. Reflectance-type models produce
   L = E_ref * rho; rho is a relative reflectance shape.
 
-Every candidate is homogeneous of degree 1 (README section 6.1): the spectral shape depends on
+Every candidate is homogeneous of degree 1 (ROADMAP section 6.1): the spectral shape depends on
 the chromaticity only, and the brightness is a scale factor. A linear candidate is homogeneous by
 construction; a nonlinear candidate solves its shape on the input divided by a positive norm of
 the input and multiplies the result by that norm.

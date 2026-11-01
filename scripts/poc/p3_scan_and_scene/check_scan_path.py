@@ -1,7 +1,7 @@
 """Numeric checks of the scanned-negative path and of the scene mixtures.
 
 Input: aces_scan.py, the P2 library, no photo. Output: results/p3_scan_and_scene/scan_checks.json.
-Step: P3, README section 8. Limits set before the first run:
+Step: P3, ROADMAP section 8. Limits set before the first run:
 - encoding: APD above D-min 0 and 1 give code values (95, 95, 95) and (595, 555, 570), error <= 1e-9;
 - the ported ADX10 to ACES transform against the OpenColorIO built-in ADX10_to_ACES2065-1: relative error <= 1e-3 where |ACES| > 1e-3;
 - code value 445 gives ACES 0.18, relative error <= 1e-4;

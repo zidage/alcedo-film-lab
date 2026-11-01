@@ -1,7 +1,7 @@
 """Limit the optical spread and the development inhibition of the P5 stocks from the modulation transfer curves of their profiles.
 
 Input: the chart modulation_transfer of the negative profiles; the model form and the bounds of fit_mtf.py (P4). Output: results/p5_film_and_print_combinations/mtf_fit.json.
-Step: P5, README section 8, decision U34.
+Step: P5, ROADMAP section 8, decision U34.
 
 The form, the bounds, and the inference rules are those of P4. C200: the chart has one curve, so the three records use one fit of the spread and the boost, and only the slope of each layer differs. Gold 200: E-7022 has no chart, so the stock has no entry.
 """

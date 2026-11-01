@@ -2,7 +2,7 @@
 
 Input: linear AP1 arrays of the night files (build/tmp/baseline/night/, from night_probe.py of P2), never committed.
 Output: build/tmp/p3/renders/scene_<name>.png (local only) and results/p3_scan_and_scene/scene_review.json.
-Step: P3, README section 8, decisions U21 and U22. Stock: 5219 + 2383, print_timing 0.75, the input of product_input().
+Step: P3, ROADMAP section 8, decisions U21 and U22. Stock: 5219 + 2383, print_timing 0.75, the input of product_input().
 
 Grid, row 1: daylight | sodium (one light) | street_mixed | street_sodium; row 2: street_led | interior_warm | interior_office | street_mixed through
 the scan and ACES 2.0 (matched to the print grey).

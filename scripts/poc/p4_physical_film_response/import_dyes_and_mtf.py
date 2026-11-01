@@ -1,10 +1,10 @@
 """Add the isolated dye curves and the modulation transfer curves of spectral_film_lut to the negative profiles.
 
-Input: the data files of spectral_film_lut (MIT, README U11) at commit bcbcfc68, read as literals; the code of that project does not run.
+Input: the data files of spectral_film_lut (MIT, ROADMAP U11) at commit bcbcfc68, read as literals; the code of that project does not run.
 Path: first argument, the src/spectral_film_lut directory of a local clone.
 Output: profiles/kodak_5207.json and kodak_5219.json get the curves cyan_dye, magenta_dye, yellow_dye in the chart spectral_dye_density and a chart modulation_transfer.
 profiles/kodak_portra_400.json gets only the chart modulation_transfer, because that project has no isolated dye curves for this stock, and E-4050 does not publish them.
-Step: P4, README section 8, work items W1 and W4. Run this script after import_cine_profiles.py, which writes the cine profiles again.
+Step: P4, ROADMAP section 8, work items W1 and W4. Run this script after import_cine_profiles.py, which writes the cine profiles again.
 
 Rules: resampled linearly on 1 nm or on 1 cycle/mm inside the digitized domain, no smoothing, no extrapolation. The digitized negative values of a dye curve stay.
 """

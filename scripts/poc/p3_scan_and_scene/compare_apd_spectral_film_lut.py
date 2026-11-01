@@ -2,7 +2,7 @@
 
 Input: build/tmp/p3/sources/st2065-2/st2065-2a-2020.csv, the local clone build/tmp/baseline/src_sfl/repo at bcbcfc68.
 Output: results/p3_scan_and_scene/apd_table_comparison.json.
-Step: P3, README section 8. Check (limit set before the run): each table normalized to its sum per channel, max difference <= 1e-4
+Step: P3, ROADMAP section 8. Check (limit set before the run): each table normalized to its sum per channel, max difference <= 1e-4
 at the common wavelengths. The file reads the source text and does not import that project.
 """
 

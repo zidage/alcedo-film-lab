@@ -3,7 +3,7 @@
 Input: AP1 arrays of the full review (build/tmp/p3/input/, build/tmp/baseline/night/), never committed.
 Output (local only): build/tmp/p3/review_light/<name>.png, a label on every panel. results/p3_scan_and_scene/scanner_light.json holds the neutral ramp and the
 hue change of chart colours for each light.
-Step: P3, README section 8, decision U26: the error that a scanner adds is wanted.
+Step: P3, ROADMAP section 8, decision U26: the error that a scanner adds is wanted.
 
 Rule 'frontier_sp3000_light_estimate': three bands read by eye from a spectrum picture of the SP3000 on a public forum
 (https://forums.negativelabpro.com/t/optimize-nlp-for-rgb-light-sources/4012, source of the picture not stated): peaks 465, 540, 632 nm, widths at half height 16, 34, 16 nm.
@@ -17,7 +17,7 @@ not committed. How FlexColor prepares its positive before this table is not repr
 Rule 'noritsu_ls600_tone' (panel 'Noritsu', when the local file exists): the 20-point base tone curve of the LS-600 software (variant 00000005), as recovered by noritsu-tool (MIT; the numbers come from
 Noritsu software), one curve per channel. Inferred: the curve input is density above the base over a fixed range, and the output is a display code value. The range is set so that the 18 % grey shows the same sRGB value as the
 direct inversion, with the grey 0.7 density above the base (the aim of ADX). That software normalizes the range per frame and has later colour stages; neither is reproduced here.
-These panels are style simulations and carry no endorsement of a manufacturer (README U27).
+These panels are style simulations and carry no endorsement of a manufacturer (ROADMAP U27).
 """
 
 from __future__ import annotations

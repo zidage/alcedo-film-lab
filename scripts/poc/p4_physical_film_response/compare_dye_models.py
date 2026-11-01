@@ -1,7 +1,7 @@
 """W1: what the sources specify about the dyes of each stock: the isolated dye curves against the published neutral, the band split against the isolated curves, and the cause of the largest error of rule 'light_like_spectra'.
 
 Input: the negative profiles, the P2 library. Output: results/p4_physical_film_response/dye_models.json.
-Step: P4, README section 8, work item W1. No limit applies: these are measured properties of the sources. Test: if the isolated curves hold the side absorption of analytical dyes with no mask, their sum exceeds the neutral above D-min by the mask that the dyes consumed. If the curves are net of the mask, the sum equals the neutral within the digitization.
+Step: P4, ROADMAP section 8, work item W1. No limit applies: these are measured properties of the sources. Test: if the isolated curves hold the side absorption of analytical dyes with no mask, their sum exceeds the neutral above D-min by the mask that the dyes consumed. If the curves are net of the mask, the sum equals the neutral within the digitization.
 """
 
 from __future__ import annotations

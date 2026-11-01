@@ -2,7 +2,7 @@
 
 Input: AP1 arrays as in render_p5_review.py. Command line: names of files (default: the 8 mountain files and 3 portraits).
 Output (local only): build/tmp/p5/review_mask/<name>.jpg.
-Step: P5, README section 8, decision U35. The options of the mask are inferred, and no default of the model uses them.
+Step: P5, ROADMAP section 8, decision U35. The options of the mask are inferred, and no default of the model uses them.
 """
 
 from __future__ import annotations

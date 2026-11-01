@@ -3,7 +3,7 @@
 Input: RAW files of build/tmp/baseline/signature_edits/raw/ and of the Alcedo Studio sample images, AP1 arrays of the night files. Never committed.
 Output (local only): build/tmp/p3/review/images/<category>__<name>.png, one sheet with a label on every panel;
 build/tmp/p3/review/overview_<category>_<n>.png, one row per image; results/p3_scan_and_scene/full_review.json (statistics and the files that failed).
-Step: P3, README section 8. The input of each panel is product_input() of P2. Scene light D55 for the cine stocks, print_timing 0.75.
+Step: P3, ROADMAP section 8. The input of each panel is product_input() of P2. Scene light D55 for the cine stocks, print_timing 0.75.
 
 A file that LibRaw cannot read is named in the JSON and in no sheet. No other file replaces it.
 Run with no arguments for all files, or with --limit N for the first N files of each category.

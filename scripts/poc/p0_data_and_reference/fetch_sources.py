@@ -4,7 +4,7 @@ Input: sources.json (URL, expected SHA-256, license, and use of each file).
 Output: the files in build/tmp/p0/sources/ and the source manifest
 results/p0_data_and_reference/source_manifest.json (file, size, SHA-256, verification result).
 
-Step: P0 (data and reference), README section 8. The script stops with an error when a hash
+Step: P0 (data and reference), ROADMAP section 8. The script stops with an error when a hash
 differs from the expected value; it does not continue with a different file.
 """
 

@@ -1,7 +1,7 @@
 """W2 and W4: limit the optical spread and the development inhibition of each layer from the published modulation transfer curves.
 
 Input: the chart modulation_transfer of the negative profiles, the P2 library for the slope of the dye amount curves. Output: results/p4_physical_film_response/mtf_fit.json.
-Step: P4, README section 8, work items W2 and W4.
+Step: P4, ROADMAP section 8, work items W2 and W4.
 
 Model of one record (inferred form; the curves do not separate the two effects by themselves):
     M(f) = 1 / (1 + (2 pi s f)^2) * B / (1 + (B - 1) exp(-2 pi^2 sigma_d^2 f^2))

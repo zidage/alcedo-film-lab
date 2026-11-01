@@ -2,7 +2,7 @@
 
 Input: a directory of RAW files, first argument (never committed). Decoded arrays are cached in build/tmp/p4/input_daylight_1400/.
 Output (local only): build/tmp/p4/review_daylight/<name>.jpg, one sheet per file, with a label on every panel. results/p4_physical_film_response/daylight_review.json holds the exposure and the share of pixels that stay clipped.
-Step: P4, README section 8. The scene light of each stock is the fixed choice of the earlier reviews: D55 for 5207, E_ref for Portra 400. No panel detects a light.
+Step: P4, ROADMAP section 8. The scene light of each stock is the fixed choice of the earlier reviews: D55 for 5207, E_ref for Portra 400. No panel detects a light.
 """
 
 from __future__ import annotations

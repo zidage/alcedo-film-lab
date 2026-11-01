@@ -1,9 +1,9 @@
 """The print of 5219 on night RAW files: the P3 chain against the P4 options, under the scene lights that a night photo can need. The direct inversion is not in this review, at the request of the user.
 
 Input: a directory of RAW files, first argument (never committed). Decoded arrays are cached in build/tmp/p4/input_night/.
-Comparison panels: spektrafilm (external comparison only, README U18), from render_spektrafilm_night.py. A missing output of that script stops this script. Run order: this script with --inputs-only, render_spektrafilm_night.py, this script.
+Comparison panels: spektrafilm (external comparison only, ROADMAP U18), from render_spektrafilm_night.py. A missing output of that script stops this script. Run order: this script with --inputs-only, render_spektrafilm_night.py, this script.
 Output (local only): build/tmp/p4/review_night/<name>.jpg, one sheet per file, with a label on every panel. results/p4_physical_film_response/night_review.json holds the light that the RAW white gives, and the share of pixels that stay clipped.
-Step: P4, README section 8, open item P4-O7. The stock is 5219 because the user asked for it. The light of a panel is an explicit review choice (README U21, U22); no panel detects a light.
+Step: P4, ROADMAP section 8, open item P4-O7. The stock is 5219 because the user asked for it. The light of a panel is an explicit review choice (ROADMAP U21, U22); no panel detects a light.
 """
 
 from __future__ import annotations

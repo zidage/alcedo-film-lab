@@ -5,7 +5,7 @@ build/tmp/p0/sources/.
 Output: functions that return the reflectances of each dataset on the model grid (360-840 nm,
 1 nm, the grid of the P0 evaluator) and the relative spectral power of the test light sources.
 
-Step: P1 (spectral input), README section 8. Rules that change a measured value (each one is
+Step: P1 (spectral input), ROADMAP section 8. Rules that change a measured value (each one is
 named in the function that applies it and in the P1 report):
 
 - 'reflectance_unit': ISSA gives percent; the values are divided by 100.

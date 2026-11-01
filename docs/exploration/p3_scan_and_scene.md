@@ -1,6 +1,6 @@
 # P3: Scene presets and scanned-negative output
 
-**Design:** [README section 8](../../README.md#8-route-from-poc-to-mvp), step P3, with decisions U21, U22 (scene choice) and
+**Design:** [ROADMAP section 8](../../ROADMAP.md#8-route-from-poc-to-mvp), step P3, with decisions U21, U22 (scene choice) and
 U23 (scan, ADX, ACES output). Source audit: [modern film workflow](../research/modern_film_scan_workflow.md).
 **Date:** 2026-10-30.
 **Status:** closed for now (2026-10-30). Both parts run on real files and the numeric checks pass. The user review of the look does not accept the result: the soft settings of APD do not look like film, and the colours are strange. These items move to [P4](p4_physical_film_response.md). Sections 10 to 13 record the later work, and section 2 summarizes the first runs.

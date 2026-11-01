@@ -1,13 +1,13 @@
 """Checks of the Python MVP. The limits were set before the first run.
 
-Input: stock_catalog.json, a RAW file (first argument). Output: results/p6_python_mvp/checks.json, and a line per check on stdout. Step: P6, README U61.
+Input: stock_catalog.json, a RAW file (first argument). Output: results/p6_python_mvp/checks.json, and a line per check on stdout. Step: P6, ROADMAP U61.
 A failed check stays in the results with its value, and the exit code is 1.
 
 | Check | Behaviour and comparison rule | Limit |
 | RAW size | The long edge of the decoded image is 2048 | exact |
-| Finite | Every negative on its default print and on the Frontier method, every print with 5207: the output of a test image is finite and in 0 to 1 | no failure |
+| Finite | Every negative on its default print and on the APD method, every print with 5207: the output of a test image is finite and in 0 to 1 | no failure |
 | Neutral ramp, print | Display G code falls along a neutral ramp from -5 to +5 stops | 0.002 |
-| Neutral ramp, scan | The same on the Frontier method, with no lab scanner stage | 0.002 |
+| Neutral ramp, scan | The same on the APD method | 0.002 |
 | Repeatable | The same settings give the same image twice | 0 |
 | Spectral prior | The two priors differ on a saturated patch, mean of absolute code | above 0.001 |
 | Scene light | Each light runs on 5207 by both methods, and the output is finite; 'tungsten' differs from 'daylight', mean of absolute code | above 0.002 |
@@ -57,15 +57,15 @@ def main() -> int:
     result["raw"] = {k: record[k] for k in ("sensor_long_edge", "half_size_decode", "processed_long_edge", "model_load_s", "decode_s", "render_s")}
     if record["processed_long_edge"] != mp.DEFAULT_LONG_EDGE:
         failures.append("raw size")
-    frontier_image, frontier_record = pipeline.render_file(raw, replace(mp.RenderSettings(), method="frontier"))
-    result["raw"]["frontier_render_s"] = frontier_record["render_s"]
+    apd_image, apd_record = pipeline.render_file(raw, replace(mp.RenderSettings(), method="apd"))
+    result["raw"]["apd_render_s"] = apd_record["render_s"]
 
     for negative, entry in mp.CATALOG["negatives"].items():
         row: dict = {}
         material = DEFAULT_PRINT[entry["medium"].lower()]
         for method in mp.METHODS:
             t = time.perf_counter()
-            settings = replace(flat, negative=negative, method=method, print_material=material, scanner_stage=False)
+            settings = replace(flat, negative=negative, method=method, print_material=material)
             try:
                 image = pipeline.render_array(source, settings)
                 row[method] = {"fall": round(largest_fall(image), 5), "range": [round(float(image.min()), 4), round(float(image.max()), 4)], "s": round(time.perf_counter() - t, 1)}
@@ -91,7 +91,7 @@ def main() -> int:
             failures.append(f"run print {material}: {error}")
         print(material, json.dumps(result["prints"][material]), flush=True)
 
-    base = replace(flat, method="frontier", scanner_stage=True)
+    base = replace(flat, method="apd")
     result["repeat_largest_difference"] = float(np.abs(pipeline.render_array(source, base) - pipeline.render_array(source, base)).max())
     if result["repeat_largest_difference"] != 0.0:
         failures.append("repeatable")

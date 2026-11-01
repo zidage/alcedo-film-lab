@@ -2,7 +2,7 @@
 
 Input: AP1 arrays as in render_p5_review.py. Command line: --export writes TIFF files; names of files follow (default: the 8 mountain files and 3 portraits).
 Output (local only): build/tmp/p5/scan_negative/<stock>/<name>_linear.tif and <name>_gamma22.tif; build/tmp/p5/review_inversion/<name>.jpg with a label on every panel. results/p5_film_and_print_combinations/inversion_shadows.json holds the shadow statistics of the mountain files: pixels with L* from 6 to 35 in the plain image, and pixels above L* 85 in the plain image.
-Step: P5, README section 8, decision U37. The scan is the APD reading of the negative (ST 2065-2), as linear transmittance, with a border of unexposed film. A real program can read these files.
+Step: P5, ROADMAP section 8, decision U37. The scan is the APD reading of the negative (ST 2065-2), as linear transmittance, with a border of unexposed film. A real program can read these files.
 
 Rule 'auto_negative_inversion'. This is a model of that kind of program, from general descriptions: it is not a copy of a named program, and no value comes from one. Per channel: density above the film base, D = D_scan - D_base; the range of the frame, lo and hi, at percentiles AUTO_PERCENTILES; t = (D - lo) / (hi - lo), clipped; option 'median': a power per channel moves the median of t to the mean of the three medians; code = t^c / (t^c + (1 - t)^c). The code goes to the display channel, with no matrix. The percentiles and c are review controls, chosen by eye. The range and the balance follow the image, so the same stock can change between frames.
 """

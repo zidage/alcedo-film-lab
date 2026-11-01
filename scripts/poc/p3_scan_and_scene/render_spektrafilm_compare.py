@@ -1,8 +1,8 @@
-"""Comparison sheets: spektrafilm (external comparison only, README U18), the print path, and soft C of the direct inversion, on the landscape files and three stocks.
+"""Comparison sheets: spektrafilm (external comparison only, ROADMAP U18), the print path, and soft C of the direct inversion, on the landscape files and three stocks.
 
 Input: build/tmp/baseline/out_spektrafilm_landscape/, build/tmp/p3/review_print/single/ (run render_print_landscape_review.py first), AP1 arrays. None of these are committed.
 Output (local only): build/tmp/p3/review_spektrafilm/<name>.jpg, with a label on every panel. spektrafilm has default settings, its own exposure, no grain, and no product grade.
-Step: P3, README section 8.
+Step: P3, ROADMAP section 8.
 """
 
 from __future__ import annotations

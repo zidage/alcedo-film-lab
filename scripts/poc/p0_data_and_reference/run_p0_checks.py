@@ -274,7 +274,7 @@ SPECTRAL_FILM_LUT_VARIANTS = {
 
 
 def spectral_film_lut_variants(options: ref.ModelOptions) -> dict:
-    """The P0 checks and the ramp with the methods adopted from spectral_film_lut (README U11)."""
+    """The P0 checks and the ramp with the methods adopted from spectral_film_lut (ROADMAP U11)."""
     rows = {}
     for name, change in SPECTRAL_FILM_LUT_VARIANTS.items():
         model = ref.ReferenceModel(1.0, replace(options, **change))

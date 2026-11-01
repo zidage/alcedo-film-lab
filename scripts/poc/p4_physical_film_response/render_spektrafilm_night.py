@@ -1,8 +1,8 @@
-"""Comparison run of spektrafilm at 3bb2c2d2 (external, GPLv3, README U18; nothing is reused) on the night files, with its Vision3 500T and 2383 profiles.
+"""Comparison run of spektrafilm at 3bb2c2d2 (external, GPLv3, ROADMAP U18; nothing is reused) on the night files, with its Vision3 500T and 2383 profiles.
 
 Input: build/tmp/p4/input_night/<name>.npy (linear AP1, as decoded) and <name>_graded.npy (the same after product_input()), from render_night_review.py --inputs-only. Never committed.
 Output (local only): build/tmp/baseline/out_spektrafilm_night/<name>_ungraded.png and <name>_graded.png. Default settings, its own automatic exposure, no grain.
-Step: P4, README section 8. Run it with the Python environment of the baseline (build/tmp/baseline/venv_spektra).
+Step: P4, ROADMAP section 8. Run it with the Python environment of the baseline (build/tmp/baseline/venv_spektra).
 """
 
 import sys

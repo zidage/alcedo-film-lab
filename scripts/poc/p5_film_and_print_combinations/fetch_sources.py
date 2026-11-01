@@ -2,7 +2,7 @@
 
 Input: sources.json (URL, expected SHA-256, license, and use of each file).
 Output: build/tmp/p5/sources/. The files are not committed.
-Step: P5, README section 8. A hash that differs stops the script with an error.
+Step: P5, ROADMAP section 8. A hash that differs stops the script with an error.
 """
 
 from __future__ import annotations

@@ -2,7 +2,7 @@
 
 Input: AP1 arrays, never committed: build/tmp/p3/input/ (landscape files), the portrait arrays of P2, build/tmp/p4/input_daylight_1400/, build/tmp/p4/input_shangrila/. Command line: names of files (default: all of them).
 Output (local only): build/tmp/p5/review/<name>.jpg. results/p5_film_and_print_combinations/review.json holds the exposure and the share of pixels that stay clipped.
-Step: P5, README section 8, decision U34. The Portra 400 panel has the accepted P4 options. The panel 'Gold 200 | Portra 160 MTF' is a comparison only: it takes the spread and the inhibition of another stock, which no default of the model does.
+Step: P5, ROADMAP section 8, decision U34. The Portra 400 panel has the accepted P4 options. The panel 'Gold 200 | Portra 160 MTF' is a comparison only: it takes the spread and the inhibition of another stock, which no default of the model does.
 """
 
 from __future__ import annotations

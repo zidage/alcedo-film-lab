@@ -7,6 +7,9 @@ build/
 *.jpg
 *.jpeg
 *.png
+# The figures of the README (ROADMAP U65) are the only images in the repository.
+!docs/images/*.jpg
+!docs/images/*.png
 *.tif
 *.tiff
 *.exr

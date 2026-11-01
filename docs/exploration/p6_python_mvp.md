@@ -1,8 +1,8 @@
 # P6: Python MVP
 
-**Design:** [README section 8](../../README.md#8-route-from-poc-to-mvp), step P6, with decision U61.
+**Design:** [ROADMAP section 8](../../ROADMAP.md#8-route-from-poc-to-mvp), step P6, with decision U61.
 **Date:** 2026-10-31.
-**Status:** in progress. The checks pass. The user ran the desktop viewer and judged the result very good (2026-10-31). The review sheets were stopped at the request of the user, who runs the program, so the look of most new stocks has no review.
+**Status:** in progress. **The Frontier method is dropped (U64).** Section 5.3 states the APD method that replaces it, and the text about Frontier in the other sections, and `results/p6_python_mvp/checks.json`, are the record of the earlier state. The checks pass. The user ran the desktop viewer and judged the result very good (2026-10-31). The review sheets were stopped at the request of the user, who runs the program, so the look of most new stocks has no review.
 
 ## 1. Question
 
@@ -103,6 +103,27 @@ These items are not independent:
 
 The sizes are sizes of an effect on 5207 and 2383 and on Portra 400 and Endura. They are not scores, and the user did not review them. The first three items act on the print only. So the Frontier method has only the link of the inhibition; its tone and colour come from NegPy and the Frontier table.
 
+## 5.3 The APD method (U64)
+
+The user dropped the Frontier method and asked for APD as its requirements state. The chain is `ScanPreview` of `aces_scan.py` (P3): equation 1 of ST 2065-2 at its 2 nm nodes, equation 2 of ST 2065-3 with no rounding (float pipeline) and with the clip to 0 to 1023, one offset per channel in ADX10 that sets a neutral at code value 445, the ADX10 to ACES transform of aces-dev v1.3.1, and an ACES output transform (default ACES 2.0, Rec. 709, 100 nit; ACES 1.3 is an option). The P3 checks of the encoding and the transform are the checks of this code; this code did not change. The standards do not define another display rendering.
+
+Controls: scanner light (default 0), LAD aim (default on), ACES output, and timing, now shared with the print. `frontier_scan.py` and `fetch_frontier_tables.py` are removed. `build/tmp/p6/vendor/frontier.npz` stays local and nothing reads it.
+
+Checks: `check_p6_controls.py` on 5207 passes with 0 failures: 40 cases at the ends of the controls, smallest effect 0.00085, largest fall on the neutral ramp 0. A neutral of 0.18 on the 8 accepted stocks is in ADX10 441.2 to 447.0 (limit 445 +/- 5). The offset comes from a flat spectrum, and the image goes through the reconstruction, so the difference stays. Not run: `check_p6_mvp.py`, so the other 22 negatives have no check on this method.
+
+Local script `build/tmp/p6_spektrafilm_audit/apd_shadows.py`, 5 files with the product grade. Shadow pixels: L* below 25 in the print of the same stock. Columns: shadow L*, shadow b*, median L*, C* p95.
+
+| Stock | Print | APD, ACES 2.0 | APD, ACES 2.0, scanner light +0.5 | APD, no LAD aim |
+| --- | --- | --- | --- | --- |
+| 5207 | 12.3, 4.2, 33.3, 36.2 | 8.4, 1.6, 27.1, 27.0 | 13.2, 2.3, 34.4, 28.3 | 8.1, -1.7, 26.6, 26.8 |
+| 5219 | 12.3, 2.5, 33.4, 35.2 | 7.9, 1.5, 26.8, 27.9 | 12.7, 2.2, 34.0, 29.4 | 10.4, -11.2, 30.7, 36.7 |
+| Portra 400 | 12.2, 1.2, 33.3, 48.0 | 7.5, 3.2, 26.5, 32.9 | 11.8, 4.5, 33.6, 34.0 | 12.4, -0.9, 34.8, 41.6 |
+
+- The offset per channel of the LAD aim removes the blue of the earlier scan path (shadow b* of 5219 on Frontier: -15.7).
+- As in P3, the standard chain is darker than the print and has less chroma, because the ADX to ACES transform has no print stock. The user rejected this path on 2026-10-30 (U26), before P4. There is no user review of it on the current negative.
+- The differences between stocks are small when each stock has its grey at code value 445. Time at 2048 pixels with a loaded model: APD 2.98 s, print 1.91 s, in the same run.
+- The APD responsivities are SMPTE copyright, and the license in their archive covers XML schemas only. The product must not include that table before a review. A table derived from it for a stock has an open question too.
+
 ## 6. Source of the Frontier decision
 
 Local probes of 2026-10-31, in `build/tmp/p5/scripts/` (`probe_scanner_taste.py`, `probe_scanner_chain.py`, `probe_scanner_stocks.py`). Sheets: `build/tmp/p5/scanner_taste/`, `scanner_chain/`, `scanner_stocks/`.
@@ -123,5 +144,5 @@ See the [script README](../../scripts/poc/p6_mvp_gui/README.md).
 | P6-O2 | Confirm the reading of the spectral prior option (section 4). | User |
 | P6-O3 | Closed: the user ran the viewer. The controls of section 5.1 ran with no display only, until the user opens them. | User |
 | P6-O4 | Review the look of the new stocks and the pairs that did not run. | User |
-| P6-O5 | Closed by U63: the product includes the Frontier table, and the user accepts the license risk. The release text with the non-endorsement statement and the NegPy notice stays open. | User |
+| P6-O5 | Closed by U64: the Frontier method is dropped, so its table does not ship. New: review the SMPTE terms for the APD responsivities and the tables derived from them. | User |
 | P6-O6 | `fuji_superia_reala`, `kodak_5213`, and the other stocks of rule `relative_sensitivity_level`: check that the rule does not take away a real tungsten or stock balance. | P6 |

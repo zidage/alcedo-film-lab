@@ -2,7 +2,7 @@
 
 Input: AP1 arrays of the full review of P3 (build/tmp/p3/input/, never committed), the portrait arrays of P2. Command line: --set NAME (a key of SETS), then file names (default: the landscape files and portraits).
 Output (local only): build/tmp/p4/review_<set>/<file>.jpg, sweep.png. results/p4_physical_film_response/sweep_<set>.json holds the largest second difference along the hue sweep (limit 0.02, P4 report section 5).
-Step: P4, README section 8.
+Step: P4, ROADMAP section 8.
 """
 
 from __future__ import annotations

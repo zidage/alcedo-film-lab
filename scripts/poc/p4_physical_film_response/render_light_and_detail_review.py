@@ -2,10 +2,10 @@
 
 Input: RAW files under build/tmp/baseline/signature_edits/raw/ and the sample images found through build/tmp/p3/raw_index.json if present, never committed. Command line: file names.
 Output (local only): build/tmp/p4/review_light/<name>.jpg, build/tmp/p4/review_detail/<name>.jpg, with a label on every panel. results/p4_physical_film_response/estimated_light.json holds the white and the light of each file.
-Step: P4, README section 8, work items W3 and W4.
+Step: P4, ROADMAP section 8, work items W3 and W4.
 
 Rule 'light_from_raw_white': the camera white balance and the camera matrix of the RAW file give the XYZ of the neutral, and the McCamy formula gives a correlated colour temperature. At 4000 K and above the light is a CIE daylight; below 4000 K it is a Planckian light.
-This is a review of the principle. README U21 keeps the light as a manual choice in the product: a RAW white cannot show that a light is fluorescent or LED.
+This is a review of the principle. ROADMAP U21 keeps the light as a manual choice in the product: a RAW white cannot show that a light is fluorescent or LED.
 """
 
 from __future__ import annotations

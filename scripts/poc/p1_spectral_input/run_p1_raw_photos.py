@@ -6,8 +6,8 @@ reconstruction candidates, and the training reflectances.
 Output: results/p1_spectral_input/raw_photos.json. No pixel data and no image is written to the
 repository; the report names each file and gives only statistics.
 
-Step: P1, README section 8 ("near-black and saturated-light probes ... residual domain
-failures"). The README does not add a RAW decoder by default; the user supplied the RAW library
+Step: P1, ROADMAP section 8 ("near-black and saturated-light probes ... residual domain
+failures"). The ROADMAP does not add a RAW decoder by default; the user supplied the RAW library
 for this step. LibRaw (through rawpy) decodes the files.
 
 Method per file:
@@ -19,7 +19,7 @@ Method per file:
    balance of the file, in log R/G and log B/G (the rawtoaces method of light selection).
 3. IDT: camera RGB -> scene XYZ fitted on the rawtoaces 190 patches under that light, in CIELAB
    with the white preserved, without chromatic adaptation (run_p1_checks.fit_idt). AP1 = the
-   colorimetry of the scene radiance. No RGC is applied (README U13).
+   colorimetry of the scene radiance. No RGC is applied (ROADMAP U13).
 4. Statistics over every unclipped pixel at full resolution: Y <= 0, an AP1 component < 0,
    outside the spectral locus (no non-negative spectrum has this XYZ), outside the Rec. 709
    triangle with the E_ref white (Mallett-Yuksel basis weight < 0). Each statistic is also

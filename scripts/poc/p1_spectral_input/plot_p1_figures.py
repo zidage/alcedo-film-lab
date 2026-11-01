@@ -13,7 +13,7 @@ Output: results/p1_spectral_input/plots/*.png:
 Also writes results/p1_spectral_input/skin_band_error.json: the mean reflectance difference
 (reconstruction minus truth) and the share of the blue- and red-layer exposure error per
 wavelength band, for the data of skin_spectrum.png.
-Step: P1, README section 8.
+Step: P1, ROADMAP section 8.
 """
 
 from __future__ import annotations

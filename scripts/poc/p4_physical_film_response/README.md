@@ -13,7 +13,7 @@ Scripts of step P4 ([report](../../../docs/exploration/p4_physical_film_response
 | `render_p4_review.py` | AP1 arrays of P3 (`build/tmp/p3/input/`) | `build/tmp/p4/review_<set>/*.jpg` with a label on every panel (local only), `results/p4_physical_film_response/sweep_<set>.json` |
 | `render_light_and_detail_review.py` | RAW files of `build/tmp/baseline/signature_edits/raw/` | `build/tmp/p4/review_light/`, `build/tmp/p4/review_detail/` (local only), `results/p4_physical_film_response/estimated_light.json` |
 | `render_night_review.py` | a directory of RAW files, first argument | `build/tmp/p4/review_night/*.jpg` with a label on every panel (local only), `results/p4_physical_film_response/night_review.json` |
-| `render_spektrafilm_night.py` | the arrays of `render_night_review.py --inputs-only`; the local spektrafilm clone and its environment (external comparison only, README U18) | `build/tmp/baseline/out_spektrafilm_night/*.png` (local only) |
+| `render_spektrafilm_night.py` | the arrays of `render_night_review.py --inputs-only`; the local spektrafilm clone and its environment (external comparison only, ROADMAP U18) | `build/tmp/baseline/out_spektrafilm_night/*.png` (local only) |
 | `render_daylight_review.py` | a directory of RAW files, first argument | `build/tmp/p4/review_daylight/*.jpg` with a label on every panel (local only), `results/p4_physical_film_response/daylight_review.json` |
 | `render_artificial_light_review.py` | a directory of RAW files, first argument | `build/tmp/p4/review_artificial/*.jpg` with a label on every panel (local only), `results/p4_physical_film_response/artificial_light_review.json` |
 

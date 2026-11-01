@@ -50,13 +50,9 @@ SOFTWARE.
 
 - Source: <https://github.com/marcinz606/NegPy>, commit
   `cce849adf4d9183f3e9aad667784d7227f83833e`, GPL-3.0 (see its `LICENSE`).
-- Reused in `scripts/poc/p6_mvp_gui/frontier_scan.py`: the form of the frame window, the print
-  curve, the auto density and grade, and the lab scanner stage, with the constants of its profile
-  `frontier`, written again on NumPy from `docs/PIPELINE.md` and `negpy/features/exposure/`.
-- Read at run time, not in this repository: `negpy/features/exposure/print_luts/frontier.npz`. Its
-  `NOTICE.md` states that this table derives from the tables of the Fujifilm Frontier 350/370 A1
-  system software v7.6. The user decided that the product includes this table (README U63). The table
-  has no license from Fujifilm. The release must credit NegPy and state that this is a style simulation with no endorsement from any manufacturer.
+- The current tree has no code or table from NegPy. Earlier commits of this repository have
+  `scripts/poc/p6_mvp_gui/frontier_scan.py`, written from `docs/PIPELINE.md` and
+  `negpy/features/exposure/` of NegPy. The user dropped that method (ROADMAP U64).
 
 ## ACES (aces-dev)
 
@@ -94,7 +90,7 @@ The name A.M.P.A.S. and the names of contributors are not used to endorse this p
 | --- | --- | --- |
 | CIE colour-matching functions and illuminants | CC BY-SA 4.0 | downloaded by `fetch_sources.py` |
 | python-colormath `density_standards.py` (ANSI Status A and M tables) | BSD-3-Clause | downloaded by `fetch_sources.py`, read as data |
-| Kodak data sheets E-4050 and E-4070 | not distributed (README U10) | downloaded by `fetch_sources.py`; the digitized values in `profiles/` are made by this lab |
+| Kodak data sheets E-4050 and E-4070 | not distributed (ROADMAP U10) | downloaded by `fetch_sources.py`; the digitized values in `profiles/` are made by this lab |
 | rawtoaces-data (Academy Software Foundation), commit `e9b8503c`: 190 training spectra, 21 camera sensitivities | Apache-2.0 | P1: downloaded by `scripts/poc/p1_spectral_input/fetch_sources.py`, read as data |
 | Gutierrez, Silva, Fanchini, Morimoto, Barrionuevo, Sandoval-Salinas, *Spectral dataset of natural objects' reflectance from the Southern cone of South America*, doi:10.6084/m9.figshare.25705380 (v4) | CC BY 4.0 | P1: test and prior training data, read at run time; no derived table is committed |
 | Lu et al., *The International Skin Spectra Archive (ISSA)*, doi:10.6084/m9.figshare.28228571 (v4) | CC BY 4.0 | P1: test and prior training data, read at run time; no derived table is committed |
@@ -112,7 +108,7 @@ Low-Dimensional Function Space for Efficient Spectral Upsampling* (Eurographics 
 primal active-set method of J. Nocedal and S. Wright, *Numerical Optimization* (2nd ed.,
 algorithm 16.3). The brightness normalization 2 max(rgb) of the sigmoid follows pbrt-v4
 `RGBIlluminantSpectrum` (rule only; no pbrt-v4 code is used). The P1 dataset selection follows
-the Fotufilm third-party notices (reference, README U12).
+the Fotufilm third-party notices (reference, ROADMAP U12).
 
 P5 reuses, with a label, the method of the uncalibrated Auto Invert of [NexFilm](https://github.com/BillyDu-TJ/NexFilm)
 (commit `fbd7113f4b0d34c0fa84fc8601b6c5a13a742df1`, GPL-3.0-only, the license of this project) in
@@ -122,7 +118,7 @@ lab, and the repository contains no NexFilm source file. The user also ran NexFi
 program on local files.
 
 P2 runs spektrafilm (`3bb2c2d2`, GPLv3; profiles CC BY-SA 4.0) and the Fotufilm engine (v1.14.1,
-Apache-2.0; profiles CC BY-SA 4.0) as external programs to compare appearance (README U18). This
+Apache-2.0; profiles CC BY-SA 4.0) as external programs to compare appearance (ROADMAP U18). This
 repository contains no code, table, or profile from them. The P2 exposure target, display white
 choice, and interlayer gain were selected by comparison with spektrafilm output, so that appearance is
 not an independent result. Of these, only the display white still acts in P6. Also not independent of
@@ -130,5 +126,7 @@ spektrafilm in P6: `CINE_GREY_STATUS_A` and the default `print_contrast`, select
 output; and rule `development_inhibition`, whose first step is the method of spektrafilm
 `model/couplers.py`, written for this lab with values fitted here. See the P6 report, section 5.2. P2 test portraits come from the free RAW collection of
 [Signature Edits](https://www.signatureedits.com/free-raw-photos/) under its
-[license](https://www.signatureedits.com/free-raw-license-terms/). The photos stay local and are not
-redistributed here; each photo stays the work of its photographer.
+[license](https://www.signatureedits.com/free-raw-license-terms/). The RAW files stay local and are not
+redistributed here; each photo stays the work of its photographer. The figures in `docs/images/` are
+processed versions of four of these photos and of two photos of the project owner and are not under GPL-3.0; see `docs/images/CREDITS.md`. They also
+show the output of spektrafilm on those photos as an external comparison.
