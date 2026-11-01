@@ -174,6 +174,18 @@ The user reports faults on the Fuji stocks other than C200. In `mvp_pipeline.lig
 
 Rule `grey_off_the_curve` of `fit_stock_physics.py`, with the limit set before its first run: more than 1 stop on any layer. The largest value of an accepted stock is 0.84. The stock then takes rule `grey_anchor`. The rule changes 13 stocks: Fuji Eterna 500, Eterna 500 Vivid, Natura 1600, Pro 160C, Pro 160S, Pro 400H, Superia X-Tra 400; Kodak 5203, 5247 II, 5293, EXR 5248, Vericolor III; Agfa Vista 100. No profile changes; only `stock_physics.json` does. The inference is that these charts have no usable level; the sources do not state this. This does not neutralize a stock: the gains act at the grey of the balance light, so a crossover of the stock stays. Labeled sheets before and after are local, under `build/tmp/p7/stock_repair/`. The user accepts the result (U72).
 
+### 5.5 Resources for the product
+
+`build_product_resources.py` makes the files that Alcedo Studio ships (phase F1 of its [Film Print DRT Plan](https://github.com/zidage/AlcedoStudio/blob/main/docs/roadmap/alcedo_studio/edit/film_print_drt_plan.md)) and the lab values of its host tests. Results: [`product_resources.json`](../../results/p7_spectral_acceleration/product_resources.json). The files stay under `build/tmp/`, and they do not go into Git.
+
+| File | Content | Size |
+| --- | --- | --- |
+| `film_stock_bundle.bin` | 30 negatives, 18 print materials, the scene spectra, and the common values | 2.7 MB |
+| `film_print_setup.bin` | Printer balance of each of the 5940 selections, layer gain, printing gain, aim, display matrix | 167 KB |
+| `film_reflectance_table.bin` | `reflectance_over_uv_light`, 192^2 x 481 float32 | 70.9 MB |
+
+The product has fixed hidden controls, so these scalar values are constants. Rule `setup_without_tables` calculates them with the methods of `FilmPreview` with no table build, so all selections take about 2 minutes. The script builds the complete `FilmPreview` for 11 selections and compares: the largest difference is 2.2e-16, against a limit of 1e-9. A value that the bundle holds once must be identical in each selection that uses it, or the script stops.
+
 ## 6. Not measured
 
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.

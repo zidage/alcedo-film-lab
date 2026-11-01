@@ -11,6 +11,7 @@ Scripts of step P7 ([report](../../../docs/exploration/p7_spectral_acceleration.
 | `sweep_inhibition_steps.py` | a RAW file, an AP1 array | `results/p7_spectral_acceleration/inhibition_steps.json` |
 | `sweep_paper_axis.py` | the same | stdout: error and time for each node count and axis power |
 | `measure_table_threads.py` | profiles, reflectance tables | stdout: wall time and CPU time of each stage |
+| `build_product_resources.py` | profiles, catalog, reflectance table | `build/tmp/p7/product_resources/resources/` (shipped by Alcedo Studio), `.../expected/` (lab values of its host tests), `results/p7_spectral_acceleration/product_resources.json` |
 
 `film_preview.py` imports `alcedo_film_tables`. If the module is not installed, the import stops with an error, and there is no other path for the tables. Install it again after a change of the C++ source.
 
@@ -29,6 +30,7 @@ $P -I scripts/poc/p7_spectral_acceleration/check_film_tables.py      # about 7 m
 $P -I scripts/poc/p7_spectral_acceleration/check_fast_image_steps.py RAW1 RAW2
 $P -I scripts/poc/p7_spectral_acceleration/sweep_paper_axis.py       # about 10 min
 $P -I scripts/poc/p7_spectral_acceleration/measure_table_threads.py
+$P -I scripts/poc/p7_spectral_acceleration/build_product_resources.py  # about 2 min
 ```
 
 To install only the library in an environment that exists:
