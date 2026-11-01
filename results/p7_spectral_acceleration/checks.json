@@ -61,25 +61,25 @@
   "pass": true
  },
  "time_s": {
-  "model_with_empty_stage_memory": 0.993,
-  "print_table_with_empty_stage_memory": 0.733,
-  "model_new_control_value": 0.274,
-  "print_table_new_control_value": 0.0152,
-  "scan_model_new_negative": 0.562,
-  "apd_table": 0.066
+  "model_with_empty_stage_memory": 0.876,
+  "print_table_with_empty_stage_memory": 0.646,
+  "model_new_control_value": 0.302,
+  "print_table_new_control_value": 0.0164,
+  "scan_model_new_negative": 0.439,
+  "apd_table": 0.053
  },
  "time_first": {
-  "value": 0.7330796000023838,
+  "value": 0.6456078999908641,
   "limit": 2.0,
   "pass": true
  },
  "time_control": {
-  "value": 0.015185399999609217,
+  "value": 0.016439200000604615,
   "limit": 0.05,
   "pass": true
  },
  "time_apd": {
-  "value": 0.06581289999303408,
+  "value": 0.05274489999283105,
   "limit": 1.0,
   "pass": true
  },
@@ -118,9 +118,9 @@
     },
     "nikon_zf": {
      "median": 0.0257,
-     "p99": 0.055,
+     "p99": 0.0549,
      "p999": 0.0806,
-     "largest": 0.5475
+     "largest": 0.5481
     },
     "_DSC4063": {
      "median": 0.0267,
@@ -132,7 +132,7 @@
      "median": 0.0213,
      "p99": 0.0508,
      "p999": 0.0824,
-     "largest": 0.9669
+     "largest": 0.9655
     },
     "digital_ap1": {
      "median": 0.0508,
@@ -154,7 +154,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.9669,
+    "value": 0.9655,
     "limit": 4.0,
     "pass": true
    },
@@ -176,43 +176,43 @@
      "median": 0.0173,
      "p99": 0.034,
      "p999": 0.0371,
-     "largest": 0.0949
+     "largest": 0.0948
     },
     "se228": {
      "median": 0.0285,
-     "p99": 0.0476,
+     "p99": 0.0475,
      "p999": 0.0519,
-     "largest": 0.1098
+     "largest": 0.11
     },
     "leica_m11": {
      "median": 0.0227,
      "p99": 0.0805,
-     "p999": 0.0939,
-     "largest": 0.1142
+     "p999": 0.0938,
+     "largest": 0.1141
     },
     "nikon_zf": {
      "median": 0.024,
      "p99": 0.0603,
      "p999": 0.0838,
-     "largest": 0.3968
+     "largest": 0.3976
     },
     "_DSC4063": {
      "median": 0.0263,
      "p99": 0.0759,
      "p999": 0.0925,
-     "largest": 0.1162
+     "largest": 0.1163
     },
     "_DSC8148": {
      "median": 0.0218,
      "p99": 0.0538,
-     "p999": 0.0849,
-     "largest": 0.8981
+     "p999": 0.085,
+     "largest": 0.8961
     },
     "digital_ap1": {
      "median": 0.0527,
-     "p99": 0.1045,
-     "p999": 0.1105,
-     "largest": 0.1165
+     "p99": 0.1046,
+     "p999": 0.1106,
+     "largest": 0.1166
     }
    },
    "table_counts": {
@@ -223,12 +223,12 @@
    },
    "neutral_ramp_8bit": 0.0561,
    "p999": {
-    "value": 0.1105,
+    "value": 0.1106,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.8981,
+    "value": 0.8961,
     "limit": 4.0,
     "pass": true
    },
@@ -250,7 +250,7 @@
      "median": 0.012,
      "p99": 0.0305,
      "p999": 0.0359,
-     "largest": 0.0625
+     "largest": 0.0626
     },
     "se228": {
      "median": 0.0155,
@@ -261,30 +261,30 @@
     "leica_m11": {
      "median": 0.0153,
      "p99": 0.0474,
-     "p999": 0.1015,
-     "largest": 0.5068
+     "p999": 0.1012,
+     "largest": 0.5056
     },
     "nikon_zf": {
      "median": 0.0136,
      "p99": 0.0388,
      "p999": 0.0552,
-     "largest": 0.5453
+     "largest": 0.5536
     },
     "_DSC4063": {
      "median": 0.019,
      "p99": 0.0461,
      "p999": 0.0561,
-     "largest": 0.4601
+     "largest": 0.4606
     },
     "_DSC8148": {
      "median": 0.0136,
      "p99": 0.0316,
      "p999": 0.0533,
-     "largest": 0.7428
+     "largest": 0.7517
     },
     "digital_ap1": {
      "median": 0.031,
-     "p99": 0.0667,
+     "p99": 0.0666,
      "p999": 0.0688,
      "largest": 0.0697
     }
@@ -297,12 +297,12 @@
    },
    "neutral_ramp_8bit": 0.0391,
    "p999": {
-    "value": 0.1015,
+    "value": 0.1012,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.7428,
+    "value": 0.7517,
     "limit": 4.0,
     "pass": true
    },
@@ -335,32 +335,32 @@
     "leica_m11": {
      "median": 0.016,
      "p99": 0.0477,
-     "p999": 0.0585,
-     "largest": 0.2452
+     "p999": 0.0586,
+     "largest": 0.2492
     },
     "nikon_zf": {
      "median": 0.0122,
      "p99": 0.0376,
      "p999": 0.0545,
-     "largest": 0.472
+     "largest": 0.4588
     },
     "_DSC4063": {
      "median": 0.0186,
      "p99": 0.0496,
      "p999": 0.0583,
-     "largest": 0.0692
+     "largest": 0.0691
     },
     "_DSC8148": {
      "median": 0.0145,
      "p99": 0.0332,
-     "p999": 0.0561,
-     "largest": 0.7741
+     "p999": 0.0562,
+     "largest": 0.7742
     },
     "digital_ap1": {
      "median": 0.0379,
      "p99": 0.0633,
      "p999": 0.066,
-     "largest": 0.0687
+     "largest": 0.0686
     }
    },
    "table_counts": {
@@ -376,7 +376,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.7741,
+    "value": 0.7742,
     "limit": 4.0,
     "pass": true
    },
@@ -403,38 +403,38 @@
     "se228": {
      "median": 0.0148,
      "p99": 0.0224,
-     "p999": 0.0264,
-     "largest": 0.0566
+     "p999": 0.0263,
+     "largest": 0.0567
     },
     "leica_m11": {
      "median": 0.0149,
-     "p99": 0.0399,
-     "p999": 0.0482,
-     "largest": 0.4356
+     "p99": 0.04,
+     "p999": 0.0483,
+     "largest": 0.3997
     },
     "nikon_zf": {
      "median": 0.0118,
-     "p99": 0.0321,
+     "p99": 0.0322,
      "p999": 0.0447,
-     "largest": 0.3386
+     "largest": 0.3311
     },
     "_DSC4063": {
      "median": 0.0182,
      "p99": 0.0372,
      "p999": 0.0464,
-     "largest": 0.064
+     "largest": 0.0641
     },
     "_DSC8148": {
      "median": 0.0144,
      "p99": 0.0291,
      "p999": 0.0435,
-     "largest": 0.6294
+     "largest": 0.6236
     },
     "digital_ap1": {
      "median": 0.03,
      "p99": 0.0514,
      "p999": 0.057,
-     "largest": 0.0621
+     "largest": 0.062
     }
    },
    "table_counts": {
@@ -450,7 +450,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.6294,
+    "value": 0.6236,
     "limit": 4.0,
     "pass": true
    },
@@ -471,44 +471,44 @@
     "se188": {
      "median": 0.0114,
      "p99": 0.0291,
-     "p999": 0.0334,
-     "largest": 0.1656
+     "p999": 0.0335,
+     "largest": 0.1126
     },
     "se228": {
      "median": 0.0123,
      "p99": 0.0245,
-     "p999": 0.027,
-     "largest": 0.0612
+     "p999": 0.0272,
+     "largest": 0.0613
     },
     "leica_m11": {
      "median": 0.0157,
-     "p99": 0.08,
-     "p999": 0.247,
-     "largest": 0.6312
+     "p99": 0.0743,
+     "p999": 0.2342,
+     "largest": 0.6418
     },
     "nikon_zf": {
      "median": 0.0129,
      "p99": 0.0326,
-     "p999": 0.1188,
-     "largest": 0.6323
+     "p999": 0.1232,
+     "largest": 0.6326
     },
     "_DSC4063": {
-     "median": 0.0177,
-     "p99": 0.0411,
+     "median": 0.0178,
+     "p99": 0.0412,
      "p999": 0.0541,
-     "largest": 0.5307
+     "largest": 0.5223
     },
     "_DSC8148": {
      "median": 0.0136,
      "p99": 0.0285,
      "p999": 0.049,
-     "largest": 0.6867
+     "largest": 0.6833
     },
     "digital_ap1": {
      "median": 0.0258,
      "p99": 0.0515,
      "p999": 0.0565,
-     "largest": 0.0586
+     "largest": 0.0587
     }
    },
    "table_counts": {
@@ -519,12 +519,12 @@
    },
    "neutral_ramp_8bit": 0.0393,
    "p999": {
-    "value": 0.247,
+    "value": 0.2342,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.6867,
+    "value": 0.6833,
     "limit": 4.0,
     "pass": true
    },
@@ -626,19 +626,19 @@
      "median": 0.0141,
      "p99": 0.0222,
      "p999": 0.0277,
-     "largest": 0.0583
+     "largest": 0.0582
     },
     "leica_m11": {
      "median": 0.0159,
      "p99": 0.0364,
      "p999": 0.0449,
-     "largest": 0.3681
+     "largest": 0.3659
     },
     "nikon_zf": {
      "median": 0.0133,
      "p99": 0.0321,
      "p999": 0.0453,
-     "largest": 0.4947
+     "largest": 0.4979
     },
     "_DSC4063": {
      "median": 0.0175,
@@ -649,8 +649,8 @@
     "_DSC8148": {
      "median": 0.0135,
      "p99": 0.0292,
-     "p999": 0.0427,
-     "largest": 0.6896
+     "p999": 0.0426,
+     "largest": 0.6917
     },
     "digital_ap1": {
      "median": 0.0216,
@@ -672,7 +672,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.6896,
+    "value": 0.6917,
     "limit": 4.0,
     "pass": true
    },
@@ -712,7 +712,7 @@
      "median": 0.0121,
      "p99": 0.0301,
      "p999": 0.0441,
-     "largest": 0.5234
+     "largest": 0.523
     },
     "_DSC4063": {
      "median": 0.0175,
@@ -724,7 +724,7 @@
      "median": 0.0151,
      "p99": 0.0276,
      "p999": 0.0435,
-     "largest": 0.6865
+     "largest": 0.6866
     },
     "digital_ap1": {
      "median": 0.0244,
@@ -746,7 +746,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.6865,
+    "value": 0.6866,
     "limit": 4.0,
     "pass": true
    },
@@ -758,74 +758,74 @@
   },
   "fuji_pro_400h on kodak_supra_endura": {
    "all_table_nodes_8bit": {
-    "median": 0.0252,
-    "p99": 0.1238,
-    "p999": 0.3311,
-    "largest": 1.1128
+    "median": 0.0203,
+    "p99": 0.3023,
+    "p999": 0.7028,
+    "largest": 2.4679
    },
    "photos": {
     "se188": {
-     "median": 0.0117,
-     "p99": 0.0246,
-     "p999": 0.0292,
-     "largest": 0.0317
+     "median": 0.0125,
+     "p99": 0.0293,
+     "p999": 0.034,
+     "largest": 0.0573
     },
     "se228": {
-     "median": 0.0118,
-     "p99": 0.0151,
-     "p999": 0.0155,
-     "largest": 0.0288
+     "median": 0.0166,
+     "p99": 0.0292,
+     "p999": 0.0323,
+     "largest": 0.0579
     },
     "leica_m11": {
-     "median": 0.0129,
-     "p99": 0.0327,
-     "p999": 0.0355,
-     "largest": 0.043
+     "median": 0.014,
+     "p99": 0.0382,
+     "p999": 0.0474,
+     "largest": 0.0573
     },
     "nikon_zf": {
-     "median": 0.0143,
-     "p99": 0.0279,
-     "p999": 0.029,
-     "largest": 0.2836
+     "median": 0.011,
+     "p99": 0.0319,
+     "p999": 0.0435,
+     "largest": 0.525
     },
     "_DSC4063": {
-     "median": 0.0135,
-     "p99": 0.0336,
-     "p999": 0.0348,
-     "largest": 0.0365
+     "median": 0.017,
+     "p99": 0.0407,
+     "p999": 0.0472,
+     "largest": 0.0585
     },
     "_DSC8148": {
-     "median": 0.0118,
-     "p99": 0.0206,
-     "p999": 0.031,
-     "largest": 0.426
+     "median": 0.0137,
+     "p99": 0.0292,
+     "p999": 0.0453,
+     "largest": 0.7521
     },
     "digital_ap1": {
-     "median": 0.0126,
-     "p99": 0.0153,
-     "p999": 0.0156,
-     "largest": 0.016
+     "median": 0.0279,
+     "p99": 0.0503,
+     "p999": 0.0542,
+     "largest": 0.0567
     }
    },
    "table_counts": {
     "negative_not_reached": 0,
-    "print_not_reached": 54973,
-    "paper_exposure_outside_curve": 4427,
+    "print_not_reached": 130009,
+    "paper_exposure_outside_curve": 0,
     "nodes": 274625
    },
-   "neutral_ramp_8bit": 0.0328,
+   "neutral_ramp_8bit": 0.0342,
    "p999": {
-    "value": 0.0355,
+    "value": 0.0542,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.426,
+    "value": 0.7521,
     "limit": 4.0,
     "pass": true
    },
    "ramp": {
-    "value": 0.0328,
+    "value": 0.0342,
     "limit": 0.5,
     "pass": true
    }
@@ -844,7 +844,7 @@
      "median": 0.0226,
      "p99": 0.0506,
      "p999": 0.0839,
-     "largest": 0.808
+     "largest": 0.8042
     },
     "se188": {
      "median": 0.0207,
@@ -866,7 +866,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.808,
+    "value": 0.8042,
     "limit": 4.0,
     "pass": true
    },
@@ -888,7 +888,7 @@
      "median": 0.0217,
      "p99": 0.0524,
      "p999": 0.0785,
-     "largest": 0.6677
+     "largest": 0.6674
     },
     "se188": {
      "median": 0.0169,
@@ -910,7 +910,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.6677,
+    "value": 0.6674,
     "limit": 4.0,
     "pass": true
    },
@@ -975,8 +975,8 @@
     "_DSC8148": {
      "median": 0.0214,
      "p99": 0.0515,
-     "p999": 0.0844,
-     "largest": 1.2284
+     "p999": 0.0843,
+     "largest": 1.221
     },
     "se188": {
      "median": 0.0159,
@@ -993,12 +993,12 @@
    },
    "neutral_ramp_8bit": 0.0563,
    "p999": {
-    "value": 0.0844,
+    "value": 0.0843,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 1.2284,
+    "value": 1.221,
     "limit": 4.0,
     "pass": true
    },
@@ -1020,7 +1020,7 @@
      "median": 0.023,
      "p99": 0.0598,
      "p999": 0.0949,
-     "largest": 1.1471
+     "largest": 1.1456
     },
     "se188": {
      "median": 0.0171,
@@ -1042,7 +1042,7 @@
     "pass": true
    },
    "largest": {
-    "value": 1.1471,
+    "value": 1.1456,
     "limit": 4.0,
     "pass": true
    },
@@ -1064,7 +1064,7 @@
      "median": 0.0164,
      "p99": 0.0452,
      "p999": 0.079,
-     "largest": 0.8491
+     "largest": 0.8489
     },
     "se188": {
      "median": 0.0159,
@@ -1086,7 +1086,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.8491,
+    "value": 0.8489,
     "limit": 4.0,
     "pass": true
    },
@@ -1108,7 +1108,7 @@
      "median": 0.0239,
      "p99": 0.0551,
      "p999": 0.0778,
-     "largest": 0.1089
+     "largest": 0.1088
     },
     "se188": {
      "median": 0.0205,
@@ -1130,7 +1130,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.1089,
+    "value": 0.1088,
     "limit": 4.0,
     "pass": true
    },
@@ -1151,14 +1151,14 @@
     "_DSC8148": {
      "median": 0.0152,
      "p99": 0.0498,
-     "p999": 0.1885,
-     "largest": 1.1797
+     "p999": 0.1884,
+     "largest": 1.1785
     },
     "se188": {
      "median": 0.0148,
      "p99": 0.0409,
      "p999": 0.0503,
-     "largest": 0.6051
+     "largest": 0.6045
     }
    },
    "table_counts": {
@@ -1169,12 +1169,12 @@
    },
    "neutral_ramp_8bit": 0.2548,
    "p999": {
-    "value": 0.1885,
+    "value": 0.1884,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 1.1797,
+    "value": 1.1785,
     "limit": 4.0,
     "pass": true
    },
@@ -1196,7 +1196,7 @@
      "median": 0.0213,
      "p99": 0.0505,
      "p999": 0.0858,
-     "largest": 1.0468
+     "largest": 1.0502
     },
     "se188": {
      "median": 0.0165,
@@ -1218,7 +1218,7 @@
     "pass": true
    },
    "largest": {
-    "value": 1.0468,
+    "value": 1.0502,
     "limit": 4.0,
     "pass": true
    },
@@ -1284,7 +1284,7 @@
      "median": 0.0239,
      "p99": 0.0542,
      "p999": 0.0852,
-     "largest": 0.9704
+     "largest": 0.9691
     },
     "se188": {
      "median": 0.0174,
@@ -1306,7 +1306,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.9704,
+    "value": 0.9691,
     "limit": 4.0,
     "pass": true
    },
@@ -1328,7 +1328,7 @@
      "median": 0.0138,
      "p99": 0.0407,
      "p999": 0.0688,
-     "largest": 0.9367
+     "largest": 0.9354
     },
     "se188": {
      "median": 0.0128,
@@ -1350,7 +1350,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.9367,
+    "value": 0.9354,
     "limit": 4.0,
     "pass": true
    },
@@ -1372,7 +1372,7 @@
      "median": 0.0213,
      "p99": 0.0508,
      "p999": 0.0824,
-     "largest": 0.9669
+     "largest": 0.9655
     },
     "se188": {
      "median": 0.0159,
@@ -1394,7 +1394,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.9669,
+    "value": 0.9655,
     "limit": 4.0,
     "pass": true
    },
@@ -1416,7 +1416,7 @@
      "median": 0.0213,
      "p99": 0.0508,
      "p999": 0.0824,
-     "largest": 0.9669
+     "largest": 0.9655
     },
     "se188": {
      "median": 0.0159,
@@ -1438,7 +1438,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.9669,
+    "value": 0.9655,
     "limit": 4.0,
     "pass": true
    },
@@ -1459,8 +1459,8 @@
     "_DSC8148": {
      "median": 0.0154,
      "p99": 0.0309,
-     "p999": 0.0522,
-     "largest": 0.6196
+     "p999": 0.0523,
+     "largest": 0.6085
     },
     "se188": {
      "median": 0.0142,
@@ -1477,12 +1477,12 @@
    },
    "neutral_ramp_8bit": 0.039,
    "p999": {
-    "value": 0.0522,
+    "value": 0.0523,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.6196,
+    "value": 0.6085,
     "limit": 4.0,
     "pass": true
    },
@@ -1504,7 +1504,7 @@
      "median": 0.0141,
      "p99": 0.029,
      "p999": 0.0514,
-     "largest": 0.7026
+     "largest": 0.7073
     },
     "se188": {
      "median": 0.0125,
@@ -1526,7 +1526,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.7026,
+    "value": 0.7073,
     "limit": 4.0,
     "pass": true
    },
@@ -1592,13 +1592,13 @@
      "median": 0.0135,
      "p99": 0.0319,
      "p999": 0.0528,
-     "largest": 0.5551
+     "largest": 0.5927
     },
     "se188": {
      "median": 0.0119,
      "p99": 0.0307,
      "p999": 0.0365,
-     "largest": 0.0574
+     "largest": 0.0575
     }
    },
    "table_counts": {
@@ -1614,7 +1614,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.5551,
+    "value": 0.5927,
     "limit": 4.0,
     "pass": true
    },
@@ -1634,15 +1634,15 @@
    "photos": {
     "_DSC8148": {
      "median": 0.0151,
-     "p99": 0.0314,
+     "p99": 0.0313,
      "p999": 0.0492,
-     "largest": 0.606
+     "largest": 0.6092
     },
     "se188": {
      "median": 0.0126,
      "p99": 0.032,
      "p999": 0.0364,
-     "largest": 0.0472
+     "largest": 0.0475
     }
    },
    "table_counts": {
@@ -1658,7 +1658,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.606,
+    "value": 0.6092,
     "limit": 4.0,
     "pass": true
    },
@@ -1679,8 +1679,8 @@
     "_DSC8148": {
      "median": 0.0128,
      "p99": 0.0294,
-     "p999": 0.05,
-     "largest": 0.6226
+     "p999": 0.0499,
+     "largest": 0.6299
     },
     "se188": {
      "median": 0.013,
@@ -1697,12 +1697,12 @@
    },
    "neutral_ramp_8bit": 0.0389,
    "p999": {
-    "value": 0.05,
+    "value": 0.0499,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.6226,
+    "value": 0.6299,
     "limit": 4.0,
     "pass": true
    },
@@ -1723,8 +1723,8 @@
     "_DSC8148": {
      "median": 0.0156,
      "p99": 0.0307,
-     "p999": 0.0449,
-     "largest": 0.7194
+     "p999": 0.0448,
+     "largest": 0.6896
     },
     "se188": {
      "median": 0.0132,
@@ -1741,12 +1741,12 @@
    },
    "neutral_ramp_8bit": 0.0314,
    "p999": {
-    "value": 0.0449,
+    "value": 0.0448,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.7194,
+    "value": 0.6896,
     "limit": 4.0,
     "pass": true
    },
@@ -1767,14 +1767,14 @@
     "_DSC8148": {
      "median": 0.0112,
      "p99": 0.0325,
-     "p999": 0.082,
-     "largest": 0.665
+     "p999": 0.0819,
+     "largest": 0.6697
     },
     "se188": {
      "median": 0.0097,
      "p99": 0.0359,
      "p999": 0.0727,
-     "largest": 0.3695
+     "largest": 0.3722
     }
    },
    "table_counts": {
@@ -1785,12 +1785,12 @@
    },
    "neutral_ramp_8bit": 0.0405,
    "p999": {
-    "value": 0.082,
+    "value": 0.0819,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.665,
+    "value": 0.6697,
     "limit": 4.0,
     "pass": true
    },
@@ -1812,13 +1812,13 @@
      "median": 0.0145,
      "p99": 0.0304,
      "p999": 0.0503,
-     "largest": 0.744
+     "largest": 0.7503
     },
     "se188": {
      "median": 0.0123,
      "p99": 0.0318,
      "p999": 0.0358,
-     "largest": 0.0538
+     "largest": 0.0539
     }
    },
    "table_counts": {
@@ -1834,7 +1834,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.744,
+    "value": 0.7503,
     "limit": 4.0,
     "pass": true
    },
@@ -1855,14 +1855,14 @@
     "_DSC8148": {
      "median": 0.0145,
      "p99": 0.0282,
-     "p999": 0.0502,
-     "largest": 0.6541
+     "p999": 0.0501,
+     "largest": 0.6597
     },
     "se188": {
      "median": 0.0124,
      "p99": 0.023,
      "p999": 0.0269,
-     "largest": 0.0666
+     "largest": 0.0668
     }
    },
    "table_counts": {
@@ -1873,12 +1873,12 @@
    },
    "neutral_ramp_8bit": 0.034,
    "p999": {
-    "value": 0.0502,
+    "value": 0.0501,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.6541,
+    "value": 0.6597,
     "limit": 4.0,
     "pass": true
    },
@@ -1900,13 +1900,13 @@
      "median": 0.015,
      "p99": 0.0344,
      "p999": 0.0549,
-     "largest": 0.7462
+     "largest": 0.7552
     },
     "se188": {
      "median": 0.0131,
      "p99": 0.0306,
      "p999": 0.036,
-     "largest": 0.0618
+     "largest": 0.0619
     }
    },
    "table_counts": {
@@ -1922,7 +1922,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.7462,
+    "value": 0.7552,
     "limit": 4.0,
     "pass": true
    },
@@ -1943,14 +1943,14 @@
     "_DSC8148": {
      "median": 0.0079,
      "p99": 0.0284,
-     "p999": 0.0459,
-     "largest": 0.7141
+     "p999": 0.0458,
+     "largest": 0.7226
     },
     "se188": {
      "median": 0.0082,
      "p99": 0.0299,
      "p999": 0.0352,
-     "largest": 0.0523
+     "largest": 0.0524
     }
    },
    "table_counts": {
@@ -1961,12 +1961,12 @@
    },
    "neutral_ramp_8bit": 0.0383,
    "p999": {
-    "value": 0.0459,
+    "value": 0.0458,
     "limit": 1.0,
     "pass": true
    },
    "largest": {
-    "value": 0.7141,
+    "value": 0.7226,
     "limit": 4.0,
     "pass": true
    },
@@ -1988,13 +1988,13 @@
      "median": 0.0136,
      "p99": 0.0316,
      "p999": 0.0533,
-     "largest": 0.7428
+     "largest": 0.7517
     },
     "se188": {
      "median": 0.012,
      "p99": 0.0305,
      "p999": 0.0359,
-     "largest": 0.0625
+     "largest": 0.0626
     }
    },
    "table_counts": {
@@ -2010,7 +2010,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.7428,
+    "value": 0.7517,
     "limit": 4.0,
     "pass": true
    },
@@ -2032,13 +2032,13 @@
      "median": 0.0136,
      "p99": 0.0316,
      "p999": 0.0533,
-     "largest": 0.7428
+     "largest": 0.7517
     },
     "se188": {
      "median": 0.012,
      "p99": 0.0305,
      "p999": 0.0359,
-     "largest": 0.0625
+     "largest": 0.0626
     }
    },
    "table_counts": {
@@ -2054,7 +2054,7 @@
     "pass": true
    },
    "largest": {
-    "value": 0.7428,
+    "value": 0.7517,
     "limit": 4.0,
     "pass": true
    },

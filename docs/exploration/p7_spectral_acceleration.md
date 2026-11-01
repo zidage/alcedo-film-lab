@@ -9,11 +9,13 @@ Can staged tables reproduce the direct evaluator, and can the table construction
 ## 2. Result summary
 
 - **One C++ library builds the tables.** `film_tables.hpp` has no dependency on Python or Qt. The Python viewer calls it through nanobind. The CMake target `film_tables` is a static library for the product. It is not yet linked into Alcedo Studio.
-- **The print table has three stages (rule `staged_print_table`).** A new value of a print control now takes 0.015 s for the table and 0.27 s for the model. Before this step it took about 5.7 s and about 8 s.
+- **The print table has three stages (rule `staged_print_table`).** A new value of a print control now takes 0.016 s for the table and 0.30 s for the model. Before this step it took about 5.7 s and about 8 s.
 - **No print table or APD table goes to disk (U68).** The table directory went from 845 MB to 203 MB. The spectral stages stay in memory for the life of the process.
-- **The error is small on photos.** On 7 photos, 10 stock pairs, and 28 control cases: p99.9 at most 0.25 of an 8 bit code value, largest 1.23. On a neutral ramp: largest 0.25. All 125 checks pass. On all table nodes the largest error is 6.4 code values, on colours that no test photo reached.
+- **The error is small on photos.** On 7 photos, 10 stock pairs, and 28 control cases: p99.9 at most 0.23 of an 8 bit code value, largest 1.22. On a neutral ramp: largest 0.25. All 125 checks pass. On all table nodes the largest error is 6.4 code values, on colours that no test photo reached.
 - **Table construction was already multithreaded, and it stays so.** The longest stage reaches 17.3 CPU seconds per second of wall time on 20 hardware threads.
-- **The user has not reviewed this result.** The image differs slightly from the image of P6. A render at 2048 pixels did not get faster, because this step changes the tables and not the per-pixel kernels.
+- **Image-plane rules for speed (U70).** Two inhibition steps, a half-size blur from a sigma of 4 pixels, and a spread in two passes. 24 of 30 negatives stay inside the limits against P6; 6 with strong inhibition do not (section 5.3).
+- **Stock repair (U71).** 13 stocks whose grey fell onto the toe now take rule `grey_anchor` (section 5.4).
+- **User review (U72, 2026-11-01).** The user accepts the final rules and the stock repair.
 
 ## 3. Inputs
 
@@ -48,7 +50,7 @@ So a language change alone gives a factor of 4 on the print table. The stages gi
 | --- | --- | --- | --- |
 | A | Negative record to log10 of the unbalanced paper exposure | Negative, printer lamp, paper sensitivity | 0.09 s |
 | B | Paper Status A to print XYZ, by the dye solve of the paper | Paper, viewing light | 0.63 s |
-| C | Printer lights, print contrast, flash, paper curves, trilinear read of stage B, surface reflection | Print controls | 0.015 s |
+| C | Printer lights, print contrast, flash, paper curves, trilinear read of stage B, surface reflection | Print controls | 0.016 s |
 
 Stage C makes the same 65^3 table as before, so the per-pixel kernels do not change. Stages A and B are kept in memory by a hash of their input values, so a kept stage cannot be out of date.
 
@@ -78,21 +80,21 @@ Script: `check_film_tables.py`. Results: [`checks.json`](../../results/p7_spectr
 | Status M record, largest difference | 1.5e-11 | 1e-9 |
 | Paper stage, largest relative XYZ difference | 1.9e-11 | 1e-9 |
 | APD table, largest density difference | 1.8e-15 | 1e-9 |
-| 10 stock pairs on 7 photos, 8 bit code, p99.9 | 0.25 | 1.0 |
+| 10 stock pairs on 7 photos, 8 bit code, p99.9 | 0.23 | 1.0 |
 | The same, largest | 0.97 | 4.0 |
 | The same, neutral ramp, largest | 0.06 | 0.5 |
 | 7 print table controls at both ends, 2 stocks, 2 photos, p99.9 | 0.19 | 1.0 |
-| The same, largest | 1.23 | 4.0 |
+| The same, largest | 1.22 | 4.0 |
 | The same, neutral ramp, largest | 0.25 | 0.5 |
 | Table at mask density 0, largest difference of the cube root | 2.4e-7 | 1e-6 |
 | New files in the table directory | 0 | 0 |
-| Print table with empty stage memory | 0.73 s | 2 s |
-| Print table for a new control value | 0.015 s | 0.05 s |
-| APD table | 0.066 s | 1 s |
+| Print table with empty stage memory | 0.65 s | 2 s |
+| Print table for a new control value | 0.016 s | 0.05 s |
+| APD table | 0.053 s | 1 s |
 
 Error on all 274625 table nodes, with no limit: p99 at most 0.83, largest 6.38 code values (control cases). Most nodes are colours that no photo reaches.
 
-Model times of the same run: 0.99 s with empty stage memory, 0.27 s for a new control value, 0.56 s for a scan model of a new negative.
+Model times of the same run: 0.88 s with empty stage memory, 0.30 s for a new control value, 0.44 s for a scan model of a new negative.
 
 ### 5.1 Multithreading
 
@@ -109,21 +111,71 @@ Stages A and B use nearly all threads. The model build waited mostly for the fil
 
 ### 5.2 Checks of the earlier steps
 
-The checks of the earlier steps ran on the new tables, with the following differences. These runs were before the reflectance table was kept in memory, which does not change a value. Their output files were restored after the comparison, so the reports of those steps keep their numbers. The timing values of these runs are not evidence, because several ran side by side.
+The checks of the earlier steps ran on the final rules, with the following differences, except `run_p0_checks.py`, which ran before the rules for speed and does not use them. Their output files were restored after the comparison, so the reports of those steps keep their numbers. The timing values of these runs are not evidence, because several ran side by side.
 
 | Check | Result |
 | --- | --- |
 | `run_p0_checks.py` | The same 3 failed checks as the committed results |
-| `check_fast_kernels.py`, `check_scan_path.py`, `check_film_response.py`, `check_stock_chain.py` | The pass values do not change |
+| `check_fast_kernels.py`, `check_scan_path.py`, `check_film_response.py` | The pass values do not change |
+| `check_stock_chain.py` | One new failure, from `inhibition_two_steps`: `image_against_point` on Ektar 100, 0.0059 dye amount against the limit 0.002. The check expects the steps on an image to converge to the steps of a point. |
 | `check_shadow_mode.py` | The same failures as the committed results: `table_interpolation` on 6 stocks, `plus_3_stops_change` on Gold 200 |
 | `check_p6_mvp.py` | 0 failures, on `_DSC8148.ARW`; the committed run used `P2625273.RW2` |
 | `check_p6_controls.py` | 0 failures, on the committed input. On `digital_ap1.npy`, a file with no strong highlight, 5 cases of "no effect" for halation length and gamut compression; this is a property of that input |
 
 The command line and the window each rendered `_DSC8148.ARW` after the stored tables were deleted.
 
+### 5.3 Rules for speed on images (U70)
+
+The user sets speed before numeric accuracy. The final rules:
+
+- `spread_per_layer_pass`: two passes, each with one Gaussian per layer, in place of six blurs. The largest difference on 2 RAW files and 3 stocks is 0, so this rule has no cost in accuracy.
+- `inhibition_two_steps`: two fixed-point steps in place of 4.
+- `inhibitor_on_half_size`: a half-size blur when the sigma is at least 4 pixels. At 2048 pixels (sigma about 2) it stays at full size.
+
+Script: `sweep_inhibition_steps.py`, results [`inhibition_steps.json`](../../results/p7_spectral_acceleration/inhibition_steps.json): all 30 negatives on their default print, against 4 full-size steps, on one array at 2048 pixels and `_DSC8148.ARW` at 6000 pixels. The limits are mean 0.5, p99.9 2.0, largest 5.0. The case `2048, 2 half` of this file is from before the 4 pixel rule, so the final form at 2048 pixels is `2048, 2 full`.
+
+| Case | 2048 pixels: inside the limits | Worst mean, p99.9, largest | 6000 pixels: inside the limits | Worst mean, p99.9, largest |
+| --- | --- | --- | --- | --- |
+| 1 step, half-size | 6 of 30 | 9.17, 51.6, 57.6 | 20 of 30 | 13.16, 33.2, 47.5 |
+| 2 steps, half-size | 8 of 30 | 2.73, 20.8, 39.1 | **24 of 30** | **3.11, 9.9, 14.3** |
+| 1 step, full size | 21 of 30 | 8.99, 51.3, 52.2 | 20 of 30 | 13.16, 33.2, 47.4 |
+| 2 steps, full size | **24 of 30** | **2.31, 11.1, 12.7** | 24 of 30 | 3.11, 9.9, 14.3 |
+
+**6 negatives are outside the limits with the final rules, and they stay failed:** `kodak_5277`, `fuji_eterna_500`, `fuji_eterna_500_vivid`, `kodak_5203`, `kodak_aerocolor`, and `kodak_ektar_100`. These have strong inhibition. Ektar 100 is an accepted stock: at 6000 pixels 0.76 mean, 2.04 p99.9, 2.87 largest. The 4 steps of P6 are themselves not a converged value for the strongest stocks, for example `kodak_5277`. The first conclusion of this step, one step, came from 5207 and Portra 400 only, and the sweep over all stocks replaced it.
+
+`check_fast_image_steps.py` ([`image_steps.json`](../../results/p7_spectral_acceleration/image_steps.json)), on `_DSC8148.ARW` (6000 pixels) and `se188.nef` (4310 pixels):
+
+| Check | 5207 on 2383 | Portra 400 on Endura | Ektar 100 on Endura | Limit |
+| --- | --- | --- | --- | --- |
+| Spread in two passes against six blurs, largest | 0 | 0 | 0 | 0.5 |
+| Final rules against 4 full-size steps, mean | 0.002 | 0.028 | **0.760 (fail)** | 0.5 |
+| The same, p99.9 | 0.020 | 0.164 | **2.04 (fail)** | 2.0 |
+| The same, largest | 0.041 | 0.481 | 2.83 | 5.0 |
+| Flat neutral at -3, 0, +3 stops, largest | 0.004 | 0.019 | 0.031 | 0.1 |
+| Neutral ramp with no image plane, largest | 0 | 0 | 0 | 0 |
+
+Render time on the CPU, Portra 400 on Endura: 6.55 s to 2.98 s at 6000 pixels, 3.08 s to 1.62 s at 4310 pixels. The time on the GPU is not known.
+
+A sweep (local, labeled crops under `build/tmp/p7/blur_sweep/`) also tried one Gaussian per layer for the spread. It differs by up to 83 code values at lamp edges and makes the edges harder, so the rule keeps the two Gaussians. Light spread off differs by a mean of about 3.8 at 6000 pixels and by 0.00 at about 2000 pixels, so this effect is a property of the full-size image.
+
+### 5.4 Stock repair (U71)
+
+The user reports faults on the Fuji stocks other than C200. In `mvp_pipeline.light_conditions`, C200 had rule `grey_anchor` by name. A grey of the balance light, through the layer exposure of the pipeline, against its exposure on the curve (stops per layer; largest R-G code difference on a neutral at -2, 0, +2 stops, before and after):
+
+| Stock | Stops | R-G before | R-G after |
+| --- | --- | --- | --- |
+| Portra 400 (accepted, no change) | +0.28, +0.41, +0.06 | 4.3 | 4.3 |
+| Fuji Eterna 500 | -3.56, -2.54, -2.18 | 47.5 | 8.3 |
+| Fuji Eterna 500 Vivid | -3.56, -2.56, -2.06 | 54.1 | 8.5 |
+| Fuji Pro 160C | -4.25, -3.87, -3.66 | 25.3 | 7.9 |
+| Fuji Pro 160S | -3.72, -3.53, -3.66 | 15.9 | 9.7 |
+| Fuji Pro 400H | -3.74, -2.79, -2.58 | 27.2 | 12.1 |
+| Kodak Vericolor III | -4.27, -3.29, -2.98 | 33.9 | 2.5 |
+
+Rule `grey_off_the_curve` of `fit_stock_physics.py`, with the limit set before its first run: more than 1 stop on any layer. The largest value of an accepted stock is 0.84. The stock then takes rule `grey_anchor`. The rule changes 13 stocks: Fuji Eterna 500, Eterna 500 Vivid, Natura 1600, Pro 160C, Pro 160S, Pro 400H, Superia X-Tra 400; Kodak 5203, 5247 II, 5293, EXR 5248, Vericolor III; Agfa Vista 100. No profile changes; only `stock_physics.json` does. The inference is that these charts have no usable level; the sources do not state this. This does not neutralize a stock: the gains act at the grey of the balance light, so a crossover of the stock stays. Labeled sheets before and after are local, under `build/tmp/p7/stock_repair/`. The user accepts the result (U72).
+
 ## 6. Not measured
 
-- The user review of the image. The differences are small by the numbers, and the appearance decision belongs to the user.
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.
 - Coverage of the negative and print density ranges by photos.
 - The other 21 negatives and 14 print materials have no comparison with the reference. `check_p6_mvp.py` shows only that their output is finite and in range.
@@ -133,7 +185,7 @@ The command line and the window each rendered `_DSC8148.ARW` after the stored ta
 
 ## 7. Recommendation
 
-Keep this form. The next costs of a render are in the per-pixel code, which P8 replaces: on the APD path, `table_apd` on SciPy, `adx10_to_aces` on NumPy, and the OpenColorIO output. The stages of this table fit the product: the host builds stages A and B, and a control change sends one new table to the GPU.
+Keep this form. The stages of this table fit the product: the host builds stages A and B, and a new film, print material, or scene light sends one new table to the GPU. The three sliders of the product (U69) act on the image and build no table. The next step is the port to Alcedo Studio (U70).
 
 ## 8. Commands
 
@@ -143,6 +195,5 @@ See [the script README](../../scripts/poc/p7_spectral_acceleration/README.md).
 
 | Item | Owner |
 | --- | --- |
-| Review the image against P6 | User |
 | Check continuity at the table cell boundaries, and the density coverage | Lab |
-| Link `film_tables` into Alcedo Studio, and build it on macOS | Product port |
+| The phases of the [Film Print DRT Plan](https://github.com/zidage/AlcedoStudio/blob/main/docs/roadmap/alcedo_studio/edit/film_print_drt_plan.md) | Product port |

@@ -16,6 +16,7 @@ from numba import njit, prange
 
 LOG10 = 2.302585092994046
 LARGE_SIGMA = 12.0
+HALF_SIZE_SMALLEST_SIGMA = 4.0  # rule 'inhibitor_on_half_size': below this the reduction changes the result (P7 report, section 5.3)
 
 
 @njit(fastmath=True)
@@ -271,6 +272,55 @@ def gaussian_blur(image: np.ndarray, sigma: float) -> np.ndarray:
     factor = int(sigma / 6.0)
     rows, columns = max(round(h / factor), 2), max(round(w / factor), 2)
     # The box reduction and the bilinear enlargement both add variance (in reduced pixels: 1/12 and 1/6).
+    kernel_y = _kernel(float(np.sqrt((sigma * rows / h) ** 2 - 0.25)))
+    kernel_x = _kernel(float(np.sqrt((sigma * columns / w) ** 2 - 0.25)))
+    return _enlarge(_blur_fir(_reduce(image, rows, columns), kernel_y, kernel_x), h, w)
+
+
+@njit(parallel=True, fastmath=True, cache=True)
+def _blur_fir_per_layer(image, kernels):
+    """Separable blur with one kernel per layer in one pass, with the boundary rule 'reflect' of scipy.ndimage. kernels: (3, 2 r + 1)."""
+    h, w = image.shape[:2]
+    radius = (kernels.shape[1] - 1) // 2
+    out = np.empty_like(image)
+    middle = np.empty_like(image)
+    for i in prange(h):
+        for j in range(w):
+            r0 = r1 = r2 = 0.0
+            for m in range(-radius, radius + 1):
+                c = (j + m) % (2 * w)
+                if c >= w:
+                    c = 2 * w - 1 - c
+                r0 += kernels[0, m + radius] * image[i, c, 0]
+                r1 += kernels[1, m + radius] * image[i, c, 1]
+                r2 += kernels[2, m + radius] * image[i, c, 2]
+            middle[i, j, 0], middle[i, j, 1], middle[i, j, 2] = r0, r1, r2
+    for i in prange(h):
+        out[i] = 0.0
+        for m in range(-radius, radius + 1):
+            c = (i + m) % (2 * h)
+            if c >= h:
+                c = 2 * h - 1 - c
+            for j in range(w):
+                out[i, j, 0] += kernels[0, m + radius] * middle[c, j, 0]
+                out[i, j, 1] += kernels[1, m + radius] * middle[c, j, 1]
+                out[i, j, 2] += kernels[2, m + radius] * middle[c, j, 2]
+    return out
+
+
+def gaussian_blur_per_layer(image: np.ndarray, sigmas: tuple[float, float, float]) -> np.ndarray:
+    """Rule 'spread_per_layer_pass': a Gaussian of its own sigma on each layer, in one pass. A sigma of 0 keeps the layer."""
+    kernels = [_kernel(float(sigma)) if sigma > 0.0 else np.ones(1, dtype=np.float32) for sigma in sigmas]
+    radius = max((len(kernel) - 1) // 2 for kernel in kernels)
+    return _blur_fir_per_layer(image, np.stack([np.pad(kernel, radius - (len(kernel) - 1) // 2) for kernel in kernels]))
+
+
+def gaussian_blur_half_size(image: np.ndarray, sigma: float) -> np.ndarray:
+    """Rule 'inhibitor_on_half_size': from HALF_SIZE_SMALLEST_SIGMA, a Gaussian on a half-size image, with bilinear enlargement. The sigma takes out the variance of the box reduction and the enlargement. A smaller sigma stays at full size."""
+    if sigma < HALF_SIZE_SMALLEST_SIGMA:
+        return gaussian_blur(image, sigma)
+    h, w = image.shape[:2]
+    rows, columns = max(h // 2, 2), max(w // 2, 2)
     kernel_y = _kernel(float(np.sqrt((sigma * rows / h) ** 2 - 0.25)))
     kernel_x = _kernel(float(np.sqrt((sigma * columns / w) ** 2 - 0.25)))
     return _enlarge(_blur_fir(_reduce(image, rows, columns), kernel_y, kernel_x), h, w)

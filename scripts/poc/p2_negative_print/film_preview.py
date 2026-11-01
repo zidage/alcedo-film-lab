@@ -105,6 +105,8 @@ Rule 'contrast_mask' (options mask_*, step P5, U35). The darkroom method for a h
 D_ref is the pan density of a grey mask_reference_stops from mid grey, and k (mask_knee_density) is the toe of the mask film. The printer lights take back the mask density of a grey. A neutral density moves each paper layer by the same log10 exposure, so the colour comes from the paper and the dyes. A table per mask density holds this, and print_display_masked reads it. Inferred, with no source: the panchromatic response (flat from 400 to 650 nm), mask_gamma, the reference, the toe, and the length of the blur (the spacer between the mask and the negative). A blur has the halo of the real method.
 
 Rule 'layer_spread' (option layer_spread_um, step P4): an exponential spread of the light per layer, in layer exposure, with the length from the published modulation transfer. A sum of two Gaussians stands for the exponential (constants SPREAD_GAUSSIANS, largest error in the transfer function 0.028).
+Rule 'spread_per_layer_pass' (step P7): each of the two Gaussians is one pass with a kernel per layer, so this rule has two blur passes in place of six, with the same result.
+Rules for speed (step P7, ROADMAP U70, where speed comes before numeric accuracy): 'inhibition_two_steps' runs two fixed-point steps on an image (INHIBITION_STEPS_IMAGE), and 'inhibitor_on_half_size' blurs the inhibitor on a half-size image when its sigma is at least 4 pixels. A value on the neutral ramp keeps the published curve, because the first amounts are the fixed point there. A flat neutral of an image is near that ramp, and check_fast_image_steps.py states the difference.
 """
 
 from __future__ import annotations
@@ -149,7 +151,7 @@ MASK_DENSITY_START = -0.05
 MASK_DENSITY_STEP = 0.05
 MASK_DENSITY_NODES = 16  # up to 0.70 density
 MASK_PAN_NM = (400.0, 650.0)
-INHIBITION_STEPS_IMAGE = 4
+INHIBITION_STEPS_IMAGE = 2  # ROADMAP U70; step P4 used 4, and sweep_inhibition_steps.py of step P7 states the difference
 INHIBITION_STEPS_POINT = 16
 METER_CAP = 16.0
 # Product default of a RAW file in Alcedo Studio: alcedo_studio/src/include/edit/graph/pipeline_document.hpp.
@@ -804,16 +806,14 @@ class FilmPreview:
 
     def _spread_layers(self, q: np.ndarray, pixel: float) -> np.ndarray:
         """Rule 'layer_spread'. Each layer has its own length, so each one takes its channel of its own blurs."""
-        out = np.empty_like(q)
-        for k, length in enumerate(self.options.layer_spread_um):
-            out[..., k] = sum(weight * fk.gaussian_blur(q, ratio * length / pixel)[..., k] for weight, ratio in SPREAD_GAUSSIANS)
-        return out
+        lengths = np.asarray(self.options.layer_spread_um, dtype=np.float64)
+        return sum(weight * fk.gaussian_blur_per_layer(q, tuple(ratio * lengths / pixel)) for weight, ratio in SPREAD_GAUSSIANS)
 
     def _inhibited_image(self, q: np.ndarray, amounts: np.ndarray, pixel: float) -> np.ndarray:
         """Rule 'development_inhibition' on an image. pixel = 0: no image plane."""
         i = self.inhibition
         for _ in range(INHIBITION_STEPS_IMAGE if pixel else INHIBITION_STEPS_POINT):
-            inhibitor = fk.gaussian_blur(amounts, self.options.inhibition_um / pixel) if pixel else amounts
+            inhibitor = fk.gaussian_blur_half_size(amounts, self.options.inhibition_um / pixel) if pixel else amounts
             amounts = fk.inhibited_step(q, inhibitor, self.film.negative_criterion_log_h, i["k"], i["start"], i["free"], i["lengths"], i["step"])
         return amounts
 

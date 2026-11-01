@@ -7,6 +7,9 @@ Rule 'relative_sensitivity_level', with a limit set before the first run: a grey
 means that the chart has no absolute level. The script moves the sensitivity of each layer in the profile, so that each layer lands on the criterion, and records the rule in the profile. Rule grey_anchor then sets the balance of such a stock (see mvp_pipeline.py),
 so the three values have no effect on the colour of the result. Accepted stocks do not change and are not fitted.
 A stock that the model cannot run is recorded with its real error, and the pipeline refuses it.
+
+Rule 'grey_off_the_curve' (step P7, limit set before the first run): an 18 % grey of the balance light of the stock, through the layer exposure of the pipeline, lands more than GREY_OFF_CURVE_LIMIT_STOPS from the exposure of the grey on the curve of any layer.
+Its chart then has no usable level, and the grey falls onto the toe. The stock takes rule grey_anchor, as C200 does. The profile does not change, because the gains of rule grey_anchor replace the level of the chart. The limit of rule 'relative_sensitivity_level' uses another exposure path, and it does not find these stocks.
 """
 
 from __future__ import annotations
@@ -26,6 +29,7 @@ from fit_mtf import BOUNDS, response  # noqa: E402
 
 fp = mp.fp
 RELATIVE_LIMIT_STOPS = 3.0
+GREY_OFF_CURVE_LIMIT_STOPS = 1.0  # rule 'grey_off_the_curve' (step P7); the 8 accepted stocks have at most 0.84 stops
 RULE = "relative_sensitivity_level"
 
 
@@ -67,6 +71,11 @@ def main() -> int:
             print(negative, json.dumps(entry), flush=True)
             continue
         film = model.film
+        # Rule 'grey_off_the_curve', in the terms of rule grey_anchor: the grey of the balance light against the curve, per layer.
+        balance = "T3200" if mp.CATALOG["negatives"][negative].get("exposure_kelvin", 5500) < 4500 else "D55"
+        grey_stops = np.log2(model.c.layer_exposure(0.18 * model.light(balance)) / 10.0 ** (film.options.midscale_log_h - film.negative_criterion_log_h))
+        entry["grey_stops_at_balance_light"] = np.round(grey_stops, 3).tolist()
+        entry["relative_sensitivity"] = relative or bool(np.abs(grey_stops).max() > GREY_OFF_CURVE_LIMIT_STOPS)
         chart = mp.fp.p0.load_profile(negative)["charts"].get("modulation_transfer")
         if chart:
             names = ("red", "green", "blue") if "red" in chart["curves"] else ("all_layers",) * 3

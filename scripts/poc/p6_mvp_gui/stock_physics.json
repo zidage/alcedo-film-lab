@@ -5,7 +5,12 @@
    2.183,
    2.485
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -1.905,
+   -1.82,
+   -1.879
+  ],
   "layer_spread_um": [
    3.46,
    3.46,
@@ -24,7 +29,12 @@
    0.451,
    1.728
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.562,
+   -2.544,
+   -2.184
+  ],
   "layer_spread_um": [
    8.04,
    8.04,
@@ -43,7 +53,12 @@
    0.451,
    1.728
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.556,
+   -2.556,
+   -2.065
+  ],
   "layer_spread_um": [
    6.6,
    6.6,
@@ -62,7 +77,12 @@
    1.139,
    0.8
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -0.98,
+   -1.275,
+   -1.345
+  ],
   "layer_spread_um": [
    3.17,
    3.17,
@@ -81,7 +101,12 @@
    -0.511,
    0.05
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -4.25,
+   -3.868,
+   -3.664
+  ],
   "layer_spread_um": [
    2.62,
    2.62,
@@ -100,7 +125,12 @@
    -0.213,
    -0.245
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.721,
+   -3.533,
+   -3.662
+  ],
   "layer_spread_um": [
    2.66,
    2.66,
@@ -119,7 +149,12 @@
    -0.894,
    -0.372
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.745,
+   -2.795,
+   -2.58
+  ],
   "layer_spread_um": [
    4.07,
    4.07,
@@ -134,11 +169,16 @@
  },
  "fuji_superia_reala": {
   "reference_grey_stops_before_rule": [
-   4.327,
-   4.772,
-   5.881
+   0.0,
+   0.0,
+   0.0
   ],
   "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.908,
+   -4.77,
+   -4.239
+  ],
   "layer_spread_um": [
    3.45,
    3.45,
@@ -157,7 +197,12 @@
    2.705,
    3.29
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -1.307,
+   -0.82,
+   -0.199
+  ],
   "layer_spread_um": [
    3.25,
    3.25,
@@ -176,7 +221,12 @@
    2.859,
    3.6
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -1.061,
+   -0.91,
+   -0.371
+  ],
   "layer_spread_um": [
    6.45,
    4.48,
@@ -196,6 +246,11 @@
    2.887
   ],
   "relative_sensitivity": false,
+  "grey_stops_at_balance_light": [
+   0.167,
+   0.096,
+   0.36
+  ],
   "layer_spread_um": [
    6.62,
    5.35,
@@ -210,11 +265,16 @@
  },
  "kodak_5213": {
   "reference_grey_stops_before_rule": [
-   2.757,
-   3.826,
-   5.434
+   -0.0,
+   -0.0,
+   -0.0
   ],
   "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -2.998,
+   -3.929,
+   -5.026
+  ],
   "layer_spread_um": [
    5.16,
    3.32,
@@ -229,11 +289,16 @@
  },
  "kodak_5247": {
   "reference_grey_stops_before_rule": [
-   5.66,
-   6.533,
-   9.842
+   0.0,
+   -0.0,
+   0.0
   ],
   "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -2.686,
+   -3.749,
+   -4.04
+  ],
   "layer_spread_um": [
    3.91,
    3.91,
@@ -252,7 +317,12 @@
    2.542,
    4.253
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -2.455,
+   -1.46,
+   -0.031
+  ],
   "layer_spread_um": [
    3.91,
    3.91,
@@ -267,11 +337,16 @@
  },
  "kodak_5248": {
   "reference_grey_stops_before_rule": [
-   5.017,
-   5.889,
-   9.198
+   0.0,
+   -0.0,
+   0.0
   ],
   "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -2.863,
+   -2.976,
+   -4.228
+  ],
   "layer_spread_um": [
    3.91,
    3.91,
@@ -286,11 +361,16 @@
  },
  "kodak_5250": {
   "reference_grey_stops_before_rule": [
-   3.989,
-   4.452,
-   7.862
+   0.0,
+   -0.0,
+   0.0
   ],
   "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.095,
+   -3.32,
+   -3.879
+  ],
   "layer_spread_um": [
    3.91,
    3.91,
@@ -305,11 +385,16 @@
  },
  "kodak_5277": {
   "reference_grey_stops_before_rule": [
-   2.899,
-   3.967,
-   5.52
+   -0.0,
+   -0.0,
+   0.0
   ],
   "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.358,
+   -4.234,
+   -5.351
+  ],
   "layer_spread_um": [
    4.72,
    2.95,
@@ -328,7 +413,12 @@
    1.414,
    2.718
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.41,
+   -2.563,
+   -1.504
+  ],
   "layer_spread_um": [
    4.16,
    4.16,
@@ -343,11 +433,16 @@
  },
  "kodak_aerocolor": {
   "reference_grey_stops_before_rule": [
-   3.151,
-   4.051,
-   3.75
+   0.0,
+   0.0,
+   0.0
   ],
   "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.58,
+   -4.185,
+   -4.285
+  ],
   "layer_spread_um": [
    5.06,
    2.91,
@@ -366,7 +461,12 @@
    1.329,
    2.679
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -3.074,
+   -2.728,
+   -2.316
+  ],
   "layer_spread_um": [
    4.86,
    2.42,
@@ -381,11 +481,16 @@
  },
  "kodak_ultramax_400": {
   "reference_grey_stops_before_rule": [
-   3.271,
-   3.57,
-   3.936
+   -0.0,
+   0.0,
+   -0.0
   ],
   "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -2.862,
+   -3.221,
+   -3.393
+  ],
   "layer_spread_um": [
    5.53,
    2.9,
@@ -404,7 +509,12 @@
    -0.773,
    -0.175
   ],
-  "relative_sensitivity": false,
+  "relative_sensitivity": true,
+  "grey_stops_at_balance_light": [
+   -4.269,
+   -3.292,
+   -2.982
+  ],
   "layer_spread_um": [
    3.67,
    3.67,

@@ -1,0 +1,274 @@
+{
+ "limits": {
+  "spread_largest": 0.5,
+  "speed_mean": 0.5,
+  "speed_p999": 2.0,
+  "speed_largest": 5.0,
+  "flat_largest": 0.1,
+  "ramp_largest": 0.0
+ },
+ "stocks": {
+  "5207 on 2383": {
+   "photos": {
+    "_DSC8148": {
+     "size": [
+      4006,
+      6000
+     ],
+     "spread_two_passes": {
+      "mean": 0.0,
+      "p99": 0.0,
+      "p999": 0.0,
+      "largest": 0.0
+     },
+     "speed_rules": {
+      "mean": 0.0017,
+      "p99": 0.0086,
+      "p999": 0.0203,
+      "largest": 0.0413
+     },
+     "all_against_p6": {
+      "mean": 0.0017,
+      "p99": 0.0086,
+      "p999": 0.0203,
+      "largest": 0.0413
+     },
+     "seconds_p6_form": 16.48,
+     "seconds_now": 3.23
+    },
+    "se188": {
+     "size": [
+      2868,
+      4310
+     ],
+     "spread_two_passes": {
+      "mean": 0.0,
+      "p99": 0.0,
+      "p999": 0.0,
+      "largest": 0.0
+     },
+     "speed_rules": {
+      "mean": 0.0024,
+      "p99": 0.0114,
+      "p999": 0.0133,
+      "largest": 0.0293
+     },
+     "all_against_p6": {
+      "mean": 0.0024,
+      "p99": 0.0114,
+      "p999": 0.0133,
+      "largest": 0.0293
+     },
+     "seconds_p6_form": 3.05,
+     "seconds_now": 1.51
+    }
+   },
+   "spread": {
+    "value": 0.0,
+    "limit": 0.5,
+    "pass": true
+   },
+   "speed_mean": {
+    "value": 0.0024,
+    "limit": 0.5,
+    "pass": true
+   },
+   "speed_p999": {
+    "value": 0.0203,
+    "limit": 2.0,
+    "pass": true
+   },
+   "speed_largest": {
+    "value": 0.0413,
+    "limit": 5.0,
+    "pass": true
+   },
+   "flat_neutral": {
+    "value": 0.0039,
+    "limit": 0.1,
+    "pass": true
+   },
+   "neutral_ramp": {
+    "value": 0.0,
+    "limit": 0.0,
+    "pass": true
+   }
+  },
+  "Portra 400 on Endura": {
+   "photos": {
+    "_DSC8148": {
+     "size": [
+      4006,
+      6000
+     ],
+     "spread_two_passes": {
+      "mean": 0.0,
+      "p99": 0.0,
+      "p999": 0.0,
+      "largest": 0.0
+     },
+     "speed_rules": {
+      "mean": 0.0275,
+      "p99": 0.1129,
+      "p999": 0.1637,
+      "largest": 0.4814
+     },
+     "all_against_p6": {
+      "mean": 0.0275,
+      "p99": 0.1129,
+      "p999": 0.1637,
+      "largest": 0.4814
+     },
+     "seconds_p6_form": 6.55,
+     "seconds_now": 2.98
+    },
+    "se188": {
+     "size": [
+      2868,
+      4310
+     ],
+     "spread_two_passes": {
+      "mean": 0.0,
+      "p99": 0.0,
+      "p999": 0.0,
+      "largest": 0.0
+     },
+     "speed_rules": {
+      "mean": 0.0264,
+      "p99": 0.0872,
+      "p999": 0.1419,
+      "largest": 0.3045
+     },
+     "all_against_p6": {
+      "mean": 0.0264,
+      "p99": 0.0872,
+      "p999": 0.1419,
+      "largest": 0.3045
+     },
+     "seconds_p6_form": 3.08,
+     "seconds_now": 1.62
+    }
+   },
+   "spread": {
+    "value": 0.0,
+    "limit": 0.5,
+    "pass": true
+   },
+   "speed_mean": {
+    "value": 0.0275,
+    "limit": 0.5,
+    "pass": true
+   },
+   "speed_p999": {
+    "value": 0.1637,
+    "limit": 2.0,
+    "pass": true
+   },
+   "speed_largest": {
+    "value": 0.4814,
+    "limit": 5.0,
+    "pass": true
+   },
+   "flat_neutral": {
+    "value": 0.0192,
+    "limit": 0.1,
+    "pass": true
+   },
+   "neutral_ramp": {
+    "value": 0.0,
+    "limit": 0.0,
+    "pass": true
+   }
+  },
+  "Ektar 100 on Endura": {
+   "photos": {
+    "_DSC8148": {
+     "size": [
+      4006,
+      6000
+     ],
+     "spread_two_passes": {
+      "mean": 0.0,
+      "p99": 0.0,
+      "p999": 0.0,
+      "largest": 0.0
+     },
+     "speed_rules": {
+      "mean": 0.7596,
+      "p99": 1.8334,
+      "p999": 2.0373,
+      "largest": 2.8291
+     },
+     "all_against_p6": {
+      "mean": 0.7596,
+      "p99": 1.8334,
+      "p999": 2.0373,
+      "largest": 2.8291
+     },
+     "seconds_p6_form": 6.53,
+     "seconds_now": 2.98
+    },
+    "se188": {
+     "size": [
+      2868,
+      4310
+     ],
+     "spread_two_passes": {
+      "mean": 0.0,
+      "p99": 0.0,
+      "p999": 0.0,
+      "largest": 0.0
+     },
+     "speed_rules": {
+      "mean": 0.5918,
+      "p99": 1.6121,
+      "p999": 1.8322,
+      "largest": 2.3414
+     },
+     "all_against_p6": {
+      "mean": 0.5918,
+      "p99": 1.6121,
+      "p999": 1.8322,
+      "largest": 2.3414
+     },
+     "seconds_p6_form": 3.1,
+     "seconds_now": 1.57
+    }
+   },
+   "spread": {
+    "value": 0.0,
+    "limit": 0.5,
+    "pass": true
+   },
+   "speed_mean": {
+    "value": 0.7596,
+    "limit": 0.5,
+    "pass": false
+   },
+   "speed_p999": {
+    "value": 2.0373,
+    "limit": 2.0,
+    "pass": false
+   },
+   "speed_largest": {
+    "value": 2.8291,
+    "limit": 5.0,
+    "pass": true
+   },
+   "flat_neutral": {
+    "value": 0.0307,
+    "limit": 0.1,
+    "pass": true
+   },
+   "neutral_ramp": {
+    "value": 0.0,
+    "limit": 0.0,
+    "pass": true
+   }
+  }
+ },
+ "failed": [
+  "Ektar 100 on Endura, speed rules mean",
+  "Ektar 100 on Endura, speed rules p99.9"
+ ]
+}
