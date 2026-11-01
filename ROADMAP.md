@@ -10,7 +10,7 @@ principles and source measurements. The implementation must support **CUDA, Meta
 The research combines useful ideas from **Fotufilm** and **spektrafilm**, with independent code
 and data preparation where practical.
 
-**Status (2026-10-31): P0 to P6 have results; P7, P8, and the MVP are not started.** The Python
+**Status (2026-10-31): P0 to P7 have results; P8 and the MVP are not started.** The Python
 program of P6 takes a RAW file to an image by the print or by the APD scan, on 30 negatives and 18
 print materials, on the CPU. There is no GPU measurement. The product integration is not done. The step index is
 [docs/exploration/README.md](docs/exploration/README.md). Agent rules are in
@@ -112,6 +112,7 @@ until experiments support them.
 | U65 | (2026-10-31) The user reports that the current result looks good. The repository gets a public README with the whole process, the results, figures, and the difference from spektrafilm. The former README becomes this file. Figures can use processed photos of Signature Edits (exception to the photo rule of AGENTS.md, for these files only). Its license does not grant the image of a recognizable person, a brand, or a work of art, so the figures from it show landscapes and still lifes only. |
 | U66 | (2026-10-31) The two mountain photos of the README are not attractive. The user replaces them with two of their own Hong Kong photos, `P2625280` and `P2625314`, at +3 EV in place of +1.5 EV, because both are underexposed. These files are a second exception to the photo rule of AGENTS.md. |
 | U67 | (2026-10-31) The README is an introduction and not a summary of experiments: it presents the current MVP and its algorithm, with no step list and no Lab analysis. This replaces the part of U65 on the whole process in the README. The process stays in the reports. |
+| U68 | (2026-10-31) The first priority after P6 is the speed of table construction. The final logic runs in C++, and the user keeps testing in the Python viewer, so one C++ library builds the tables for both. The print tables and the APD tables are not stored on disk: they are built when a model needs them and dropped after use. See the [P7 report](docs/exploration/p7_spectral_acceleration.md). |
 | U24 | (2026-10-30) The film chain is evaluated after the default Color Grade of Alcedo Studio for RAW files (contrast +15, saturation 1.3), because the DRT receives the graded image. The chain does not repeat that colour gain and contrast. See the [P2 report](docs/exploration/p2_negative_and_print.md), section 8.5. |
 
 The target source license is GPL-3.0-only. Third-party code, measurements, profiles, and derived
@@ -328,7 +329,7 @@ negative density, changing its appearance, or adopting either reference project'
 P0 is measured (2026-10-29, [report](docs/exploration/p0_data_and_reference.md)). P1 is measured
 for the spectral input (2026-10-30, [report](docs/exploration/p1_spectral_input.md)); its RGC
 part is open (U13). P2 is in progress ([report](docs/exploration/p2_negative_and_print.md)). P3 is
-closed for now (2026-10-30, [report](docs/exploration/p3_scan_and_scene.md)); its look items move to P4. P4 is closed: the user accepts the look of its print (U32), and the direct inversion is set aside (2026-10-30, [report](docs/exploration/p4_physical_film_response.md)). P5 has results (2026-10-30 and 2026-10-31, [report](docs/exploration/p5_film_and_print_combinations.md)). P6 runs, and the user reports that its result looks good (2026-10-31, [report](docs/exploration/p6_python_mvp.md)). P7, P8, and the MVP are **not started**. They are experimental deliverables, not claims of product support. Define numerical tolerances before evaluating each candidate.
+closed for now (2026-10-30, [report](docs/exploration/p3_scan_and_scene.md)); its look items move to P4. P4 is closed: the user accepts the look of its print (U32), and the direct inversion is set aside (2026-10-30, [report](docs/exploration/p4_physical_film_response.md)). P5 has results (2026-10-30 and 2026-10-31, [report](docs/exploration/p5_film_and_print_combinations.md)). P6 runs, and the user reports that its result looks good (2026-10-31, [report](docs/exploration/p6_python_mvp.md)). P7 has results for the table construction (2026-10-31, [report](docs/exploration/p7_spectral_acceleration.md)); its check of the table cell boundaries is open. P8 and the MVP are **not started**. They are experimental deliverables, not claims of product support. Define numerical tolerances before evaluating each candidate.
 
 | Step | Question and work | Required evidence |
 | --- | --- | --- |

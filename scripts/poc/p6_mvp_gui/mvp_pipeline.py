@@ -1,7 +1,7 @@
 """The shared pipeline of the Python MVP: RAW file to display image, by the print method or the APD scan method.
 
 Input: a RAW file that LibRaw reads, a negative and a print material of stock_catalog.json, a scene light, a spectral prior, and the product grade.
-Output: sRGB display code (float32) with its parameters. No value of a frame is kept between renders; the tables stay in build/tmp/p2/tables/.
+Output: sRGB display code (float32) with its parameters. No value of a frame is kept between renders. The print and APD tables are built in memory and are not stored (ROADMAP U68); the reflectance tables stay in build/tmp/p2/tables/.
 Step: P6, ROADMAP U61 and U64. The negative chain and the print are those of P2 to P5 (film_preview.py). The APD method is the path of P3 (aces_scan.py): APD (ST 2065-2), ADX10 (ST 2065-3), the mid grey at code value 445, ADX10 to ACES, and an ACES output transform.
 
 Rules of this step:
@@ -213,7 +213,7 @@ def decode_raw(path: Path, colorimetry, long_edge: int = DEFAULT_LONG_EDGE) -> t
 
 
 class Pipeline:
-    """One render at a time. It keeps the models of the last settings, because a new model reads its tables from disk."""
+    """One render at a time. It keeps the models of the last settings, because a new model reads the reflectance tables and computes its weights."""
 
     def __init__(self) -> None:
         self._models: dict[tuple, object] = {}

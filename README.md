@@ -15,7 +15,7 @@ This repository holds the Python MVP of the film rendering module for [Alcedo St
 - **Scene light as a spectrum.** Choose daylight, tungsten, fluorescent, LED, sodium, or a mixture for night scenes. The choice changes what each film layer receives, so it is more than a white balance.
 - **13 model controls:** overexposure, development inhibition, light spread, halation, lens flare, print contrast, paper flash, enlarger flare, and others.
 - **RAW input** through LibRaw, at 2048 pixels on the long edge.
-- **Usable speed on a CPU:** at 2048 pixels on an Intel Core i7-12700H, a render takes 1.91 s by the print and 2.98 s by the APD scan, with a loaded model. The first use of a negative and print pair builds its table in about 7 s.
+- **Usable speed on a CPU:** at 2048 pixels on an Intel Core i7-12700H, a render takes 1.91 s by the print and 2.98 s by the APD scan, with a loaded model. The first use of a negative and print pair builds its table and model in about 1 s, and a new value of a print control takes about 0.3 s.
 
 ![The window of the program](docs/images/window.png)
 
@@ -138,7 +138,7 @@ This is a calculation of a darkroom print:
 6. **Viewing.** A viewing light goes through the print dyes to XYZ, and a small surface reflection is added. The display white is a perfect reflector, so paper white stays below display white.
 7. **Display.** A gamut compression, in the style of the ACES Reference Gamut Compression, acts on linear Rec. 709. Then sRGB encoding.
 
-Steps 2 to 6 have no dependence on the image position, so they compile to a table over negative density. This is why the print is fast. The table comes from the spectral calculation, and each new material or value builds a new one.
+Steps 2 to 6 have no dependence on the image position, so they compile to a table over negative density. This is why the print is fast. The table comes from the spectral calculation in stages, so a new material builds new stages, and a new value of a print control only composes them again.
 
 ### 6b. Output by the APD scan
 

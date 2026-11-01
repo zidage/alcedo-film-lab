@@ -6,7 +6,7 @@ output transforms, and they review global scene mixtures (ROADMAP U21, U22, U23)
 | Script | Input | Output |
 | --- | --- | --- |
 | `fetch_sources.py` | `sources.json` | `build/tmp/p3/sources/` (not committed), hashes checked |
-| `aces_scan.py` | P2 library, APD table, OpenColorIO | library: scanner, encoding, transform, output; APD table cache in `build/tmp/p2/tables/` |
+| `aces_scan.py` | P2 library, APD table, OpenColorIO | library: scanner, encoding, transform, output; the APD table comes from the C++ library of P7, in memory |
 | `check_scan_path.py` | the library, no photo | `results/p3_scan_and_scene/scan_checks.json` |
 | `compare_apd_spectral_film_lut.py` | APD table, local clone of spectral_film_lut | `results/p3_scan_and_scene/apd_table_comparison.json` |
 | `render_scan_review.py` | AP1 arrays of the P2 baseline | `build/tmp/p3/renders/<name>_<stock>.png` (local only), `results/p3_scan_and_scene/scan_review.json` |

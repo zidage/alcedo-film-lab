@@ -13,9 +13,9 @@ Scripts of step P6 ([report](../../../docs/exploration/p6_python_mvp.md), ROADMA
 | `check_p6_controls.py` | an AP1 array at 2048 pixels | `results/p6_python_mvp/controls.json` |
 | `render_p6_review.py` | AP1 arrays of the earlier steps | `build/tmp/p6/review/*.jpg` with a label on every panel (local only) |
 
-The tables and the sources of P0 to P5 must be present. A first use of a negative and print pair builds its table in about 7 seconds, in `build/tmp/p2/tables/`.
+The tables and the sources of P0 to P5 must be present. A first use of a negative and print pair builds its table and model in about 1 second, in memory (P7, ROADMAP U68).
 
-The window and the command line have the controls of `mvp_pipeline.CONTROLS` (ROADMAP U62). `p6_mvp_cli.py --help` lists them with their ranges. A new value of a control that is part of the print table (print contrast, paper flash, surface reflection, print grey density shift, print timing, overexposure, development inhibition) builds and stores one more table of 6.6 MB, and this takes about 6 seconds. These tables stay in `build/tmp/p2/tables/` until they are deleted. If the directory is empty, the next run builds the spectral tables again from the sources of P1 in `build/tmp/p1/sources/`, and this reads the ISSA workbook through `openpyxl`.
+The window and the command line have the controls of `mvp_pipeline.CONTROLS` (ROADMAP U62). `p6_mvp_cli.py --help` lists them with their ranges. A new value of a control that is part of the print table (print contrast, paper flash, surface reflection, print grey density shift, print timing, overexposure, development inhibition) composes one more table in about 0.02 seconds, and the model takes about 0.3 seconds. These tables are not stored. If `build/tmp/p2/tables/` is empty, the next run builds the reflectance tables again from the sources of P1 in `build/tmp/p1/sources/`, and this reads the ISSA workbook through `openpyxl`.
 
 ## Commands
 

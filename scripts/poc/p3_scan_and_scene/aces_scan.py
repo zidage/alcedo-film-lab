@@ -134,19 +134,12 @@ class ScanPreview:
         return self.apd(film.negative_spectral_density(amounts)), residual
 
     def _build_table(self) -> np.ndarray:
-        # The scan depends on the negative only, so the cache key has the choices of the negative and not the print or the light.
-        o = self.negative.options
-        name = "apd_table" if self.scanner_name == "apd" else f"scan_table_{self.scanner_name}"
-        record = "" if o.negative_record == "status_m" else f"_{o.negative_record}"
-        path = fp.CACHE_DIR / f"{name}_{o.negative_profile}_{o.negative_dye_basis}_{o.density_outside}{record}.npy"
-        if path.exists():
-            return np.load(path)
-        grid = self.negative.density_grid
-        nodes = np.stack(np.meshgrid(*grid, indexing="ij"), axis=-1)
-        apd = np.concatenate([self.direct_apd(chunk)[0] for chunk in np.array_split(nodes.reshape(-1, 3), 64)])
-        table = apd.reshape(nodes.shape)
-        np.save(path, table)
-        return table
+        # Equation 1 of ST 2065-2 on the nodes, in the C++ library of step P7. The table is not stored (ROADMAP U68).
+        film = self.negative.film
+        nodes = np.stack(np.meshgrid(*self.negative.density_grid, indexing="ij"), axis=-1)
+        amounts, _ = self.negative.table_amounts(nodes.reshape(-1, 3))
+        response = fp.film_tables.log10_band_response(film.negative_dmin[self.apd_nodes], film.negative_dyes[:, self.apd_nodes], self.apd_weights, amounts)
+        return (np.log10(self.apd_weights.sum(axis=1)) - response).reshape(nodes.shape)
 
     def table_apd(self, status_m: np.ndarray) -> np.ndarray:
         grid = self.negative.density_grid

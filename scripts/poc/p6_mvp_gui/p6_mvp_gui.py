@@ -98,7 +98,7 @@ class MainWindow(QMainWindow):
         export_button.clicked.connect(self.export)
         reset_button = QPushButton("Reset the controls below")
         reset_button.clicked.connect(self.reset_controls)
-        self.status = QLabel("Open a RAW file. A first use of a material builds its table.")
+        self.status = QLabel("Open a RAW file.")
         self.status.setWordWrap(True)
         panel = QVBoxLayout()
         panel.addWidget(open_button)

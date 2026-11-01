@@ -303,7 +303,9 @@ class SpectralGrid:
         self.fine_wavelengths = WAVELENGTH_START_NM + self.fine_step_nm * np.arange(fine_count + 1)
         if self.rule == "projected" and ratio > 1:
             distance = np.abs(self.fine_wavelengths[None, :] - self.wavelengths[:, None]) / self.step_nm
-            self._hat = np.clip(1.0 - distance, 0.0, None)
+            # A fine sample has one or two working nodes, so the integration matrix is stored by its nonzero values.
+            self._hat_node, self._hat_fine = np.nonzero(distance < 1.0)
+            self._hat_value = 1.0 - distance[self._hat_node, self._hat_fine]
 
     def weights(self, fine_values: np.ndarray, fine_support: np.ndarray | None = None) -> np.ndarray:
         """Integration weights (rows, nodes) of a fixed function given on the fine grid."""
@@ -317,7 +319,7 @@ class SpectralGrid:
             return np.stack([nodes[k] * support_trapezoid_weights(self.step_nm, support[k]) for k in range(len(nodes))])
         fine_weights = np.stack([fine_values[k] * support_trapezoid_weights(self.fine_step_nm, fine_support[k])
                                  for k in range(len(fine_values))])
-        return fine_weights @ self._hat.T
+        return np.stack([np.bincount(self._hat_node, self._hat_value * row[self._hat_fine], minlength=len(self.wavelengths)) for row in fine_weights])
 
     @staticmethod
     def integrate(variable_values: np.ndarray, weights: np.ndarray) -> np.ndarray:

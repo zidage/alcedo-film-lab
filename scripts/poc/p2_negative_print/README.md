@@ -6,8 +6,8 @@ user review (ROADMAP U17, U18). This is a CPU review tool, not the product path.
 
 | Script | Input | Output |
 | --- | --- | --- |
-| `film_preview.py` | P0 and P1 libraries, profiles, datasets | library: stages and tables; cache in `build/tmp/p2/tables/` |
-| `fast_kernels.py` | arrays from the library | compiled parallel kernels of `render()` and of the print table (numba) |
+| `film_preview.py` | P0 and P1 libraries, profiles, datasets | library: stages and tables; reflectance tables in `build/tmp/p2/tables/`, print tables in memory only |
+| `fast_kernels.py` | arrays from the library | compiled parallel kernels of `render()`, and the reference form of the print table (numba) |
 | `check_fast_kernels.py` | the library, a synthetic image | comparison with the array reference, `results/p2_negative_print/fast_kernels.json` |
 | `profile_preview.py` | the library, a synthetic image | render times on the console |
 | `render_review_images.py` | the library, RAW files | `build/tmp/p2/renders/*.png` (local only), `results/p2_negative_print/*.json` |
@@ -26,8 +26,7 @@ $E/venv/Scripts/python -I scripts/poc/p2_negative_print/render_review_images.py 
 $E/venv/Scripts/python -I scripts/poc/p2_negative_print/render_review_images.py --variants  # plain and every entry of VARIANTS
 ```
 
-The first run builds the u'v' table (about 5 min) and one print table per print option set (about
-3 s). The first run also compiles the kernels and caches them in `__pycache__/`. Change the options in `VARIANTS` of `render_review_images.py`.
+The first run builds the u'v' table (about 5 min). The print tables come from the C++ library of P7 (`scripts/poc/p7_spectral_acceleration/`), in memory. The first run also compiles the kernels and caches them in `__pycache__/`. Change the options in `VARIANTS` of `render_review_images.py`.
 
 ## Baseline comparison
 

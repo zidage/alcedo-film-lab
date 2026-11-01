@@ -1,14 +1,18 @@
 """Film preview renderer of step P2: linear AP1 to a display image through Portra 400 and Endura.
 
 Input: the P0 evaluator and profiles, the P1 reconstruction and reflectance datasets, RAW files.
-Output: library used by render_review_images.py. Tables are cached in build/tmp/p2/.
+Output: library used by render_review_images.py. The reflectance tables over u'v' stay in build/tmp/p2/tables/. The print tables are not stored (ROADMAP U68).
 
 Step: P2, ROADMAP section 8, with decision U17: the user reviews the rendered appearance first.
 This is a review tool. It uses reduced images and CPU tables; it is not the product path.
 
-Execution: render() and the print table use the compiled kernels of fast_kernels.py. The array methods of this class
+Execution: render() uses the compiled kernels of fast_kernels.py, and the print table uses the C++ library alcedo_film_tables (step P7, scripts/poc/p7_spectral_acceleration/). The array methods of this class
 (layer_exposure, negative_density, direct_print_xyz, print_xyz, reference_render) are the reference;
-check_fast_kernels.py compares the two.
+check_fast_kernels.py compares the kernels with them, and check_film_tables.py of step P7 compares the print table.
+
+Rule 'staged_print_table' (step P7). The print table has three stages, so that a print control does not repeat a spectral integral: the negative record to log10 of the unbalanced paper exposure (no solve with rule 'dye_amount_curves', because the record is the dye amounts);
+paper Status A to XYZ, on PAPER_TABLE_NODES per axis, with more nodes at a low density (PAPER_AXIS_POWER); and a composition with the printer lights, print contrast, flash, paper curves, and surface reflection. The composition reads the second stage by trilinear interpolation of the cube root, so it differs a little from a dye solve per node. check_film_tables.py states the size.
+This process keeps the two spectral stages in memory (STAGE_TABLES_KEPT); nothing goes to disk. print_not_reached of table_counts reads the nearest node of the paper table.
 
 Stages (each one stays separate):
 1. Input: RAW through LibRaw with the camera white balance, to XYZ (D65), Bradford adaptation to the
@@ -106,11 +110,12 @@ Rule 'layer_spread' (option layer_spread_um, step P4): an exponential spread of 
 from __future__ import annotations
 
 import hashlib
-import json
 import sys
-from dataclasses import asdict, dataclass
+from collections.abc import Callable, Iterable
+from dataclasses import dataclass
 from pathlib import Path
 
+import alcedo_film_tables as film_tables
 import numpy as np
 from scipy.ndimage import gaussian_filter, map_coordinates
 
@@ -128,7 +133,11 @@ CACHE_DIR = REPO_ROOT / "build" / "tmp" / "p2" / "tables"
 UV_NODES = 192
 UV_MAX = (0.66, 0.62)
 DENSITY_NODES = 65
+PAPER_TABLE_NODES = 65
+PAPER_AXIS_POWER = 2.0  # node k of a Status A axis: start + range * (k / (nodes - 1)) ^ power
+STAGE_TABLES_KEPT = 8  # spectral stages of rule 'staged_print_table' that this process keeps in memory
 SOLVE_ITERATIONS = 16
+SOLVE_REACHED_LIMIT = 1e-4
 UV_SMOOTH_BLEND = (0.05, 0.15)  # u'v' distance from the white where sigma_near changes to sigma_far
 LIGHT_SECTOR_DEGREES = (30.0, 60.0)  # angle from the direction of a sector: full weight, then a smoothstep to zero
 LIGHT_SECTOR_RADIUS = {"blue": (0.006, 0.02), "warm": (0.05, 0.09)}  # u'v' distance from the white: zero weight, then a smoothstep to full weight
@@ -158,8 +167,28 @@ def bradford_matrix(source_xyz: np.ndarray, target_xyz: np.ndarray) -> np.ndarra
     return np.linalg.inv(BRADFORD) @ np.diag(gain) @ BRADFORD
 
 
-NOT_IN_PRINT_TABLE = ("light_spectra", "uv_smooth", "layer_spread_um", "inhibition_um", "gamut_compress", "gamut_threshold", "gamut_limit", "gamut_power", "scene_flare", "display_white", "frame_mm", "scatter_um", "halation", "halation_um",
-                      "adjacency_gain", "adjacency_um", "enlarger_flare", "enlarger_flare_size", "mask_gamma", "mask_reference_stops", "mask_knee_density", "mask_um")
+_stage_tables: dict[str, object] = {}
+_reflectance_shapes: dict[tuple, np.ndarray] = {}  # the file of a reflectance table is read once per process; the shapes have no dependence on a stock
+
+
+def kept_stage_table(name: str, inputs: Iterable[np.ndarray], build: Callable[[], object]) -> object:
+    """Rule 'staged_print_table': a spectral stage, kept in memory by the values of its input, so it cannot be out of date. The oldest one goes first."""
+    digest = hashlib.sha256(name.encode())
+    for values in inputs:
+        array = np.asarray(values, dtype=np.float64)
+        digest.update(repr(array.shape).encode())
+        digest.update(array.tobytes())
+    key = digest.hexdigest()
+    if key not in _stage_tables:
+        if len(_stage_tables) >= STAGE_TABLES_KEPT:
+            _stage_tables.pop(next(iter(_stage_tables)))
+        _stage_tables[key] = build()
+    return _stage_tables[key]
+
+
+def spectral_support(weights: np.ndarray) -> np.ndarray:
+    """The nodes where the weights of an integral are not zero."""
+    return np.flatnonzero(np.any(weights != 0.0, axis=0))
 
 
 @dataclass(frozen=True)
@@ -209,12 +238,6 @@ class FilmOptions:
     mask_reference_stops: float = -1.0
     mask_knee_density: float = 0.15
     mask_um: float = 1000.0
-
-    def key(self) -> str:
-        fields = {k: v for k, v in asdict(self).items() if k not in NOT_IN_PRINT_TABLE}
-        if not fields["overexposure_stops"]:
-            del fields["overexposure_stops"]  # the tables of the earlier steps stay valid
-        return hashlib.sha256(json.dumps(fields, sort_keys=True).encode()).hexdigest()[:12]
 
 
 # Review options after the darkroom comparison (ROADMAP U19), for RAW input through product_input().
@@ -319,7 +342,7 @@ class FilmPreview:
         self._apply_overexposure()
         self.printing_gain = self._printing_gain()
         self.uv_table = self._load_uv_table()
-        self.density_grid, self.print_table, self.table_counts = self._load_print_table()
+        self.density_grid, self.print_table, self.table_counts = self._build_print_table()
         self._prepare_display()
         self._prepare_kernels()
         self._prepare_mask()
@@ -424,6 +447,12 @@ class FilmPreview:
 
     def _load_uv_table(self) -> np.ndarray:
         # Rule 'relight': see the header. Fast, so that a light does not need a new reconstruction.
+        key = (self.options.uv_smooth, self.options.light_spectra)
+        if key not in _reflectance_shapes:
+            _reflectance_shapes[key] = self._final_reflectance_table()
+        return self.c.layer_exposure(_reflectance_shapes[key] * self.scene_spectrum[None, :]).reshape(UV_NODES, UV_NODES, 3)
+
+    def _final_reflectance_table(self) -> np.ndarray:
         rho = self._load_reflectance_table().astype(np.float64)
         white = self.c.xyz(self.c.e_ref)
         white_uv = np.array([4.0 * white[0], 9.0 * white[1]]) / (white[0] + 15.0 * white[1] + 3.0 * white[2])
@@ -443,7 +472,7 @@ class FilmPreview:
             else:
                 rho = light_like_spectra(rho, self.c, white_uv)
                 np.save(path, rho.astype(np.float32))
-        return self.c.layer_exposure(rho * self.scene_spectrum[None, :]).reshape(UV_NODES, UV_NODES, 3)
+        return rho
 
     def layer_exposure(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
         shape = ap1.shape
@@ -564,13 +593,9 @@ class FilmPreview:
             "paper_exposure_outside_curve": clipped}
 
     def _print_nodes(self, density: np.ndarray) -> tuple[np.ndarray, dict]:
-        """The kernel form of direct_print_xyz. Each integral uses only the nodes where its weights are not zero."""
+        """The kernel form of direct_print_xyz, with a dye solve per node. The reference of check_film_tables.py. Each integral uses only the nodes where its weights are not zero."""
         f, o = self.film, self.options
-
-        def support(weights: np.ndarray) -> np.ndarray:
-            return np.flatnonzero(np.any(weights != 0.0, axis=0))
-
-        m, pr, st, vi = support(f.w_status_m), support(f.w_printing), support(f.w_status_a), support(f.w_viewing[f.viewing_name])
+        m, pr, st, vi = spectral_support(f.w_status_m), spectral_support(f.w_printing), spectral_support(f.w_status_a), spectral_support(f.w_viewing[f.viewing_name])
         w_view = f.w_viewing[f.viewing_name]
         base = f.status_density(f.negative_dmin, f.w_status_m)
         length = max(len(c.density) for c in self.paper_curves)
@@ -585,18 +610,61 @@ class FilmPreview:
             f.paper_base[vi], f.paper_dyes[:, vi], w_view[:, vi], o.viewing_flare * f.white_xyz(), 100.0 / w_view[1].sum())
         return xyz, {"negative_not_reached": int(not_negative), "print_not_reached": int(not_print), "paper_exposure_outside_curve": int(outside)}
 
-    def _load_print_table(self) -> tuple[list[np.ndarray], np.ndarray, dict]:
-        path = CACHE_DIR / f"print_table_{self.options.key()}.npz"
+    def table_amounts(self, record: np.ndarray) -> tuple[np.ndarray, int]:
+        """The dye amounts of table nodes of the negative record (N, 3), with the count that the dye solve did not reach. With rule 'dye_amount_curves' the record is the amounts."""
+        if self.options.negative_record == "dye_amount":
+            return record, 0
+        f = self.film
+        m = spectral_support(f.w_status_m)
+        targets = record + f.status_density(f.negative_dmin, f.w_status_m) - f.negative_curve_dmin
+        return film_tables.solve_dye_amounts(f.negative_dmin[m], f.negative_dyes[:, m], f.w_status_m[:, m], targets, SOLVE_ITERATIONS, SOLVE_REACHED_LIMIT)
+
+    def _negative_stage(self, grid: list[np.ndarray]) -> tuple[np.ndarray, int]:
+        """Rule 'staged_print_table': log10 of the unbalanced paper exposure on the nodes of the negative record, and the count that the dye solve did not reach."""
+        f = self.film
+        pr = spectral_support(f.w_printing)
+
+        def build() -> tuple[np.ndarray, int]:
+            nodes = np.stack(np.meshgrid(*grid, indexing="ij"), axis=-1).reshape(-1, 3)
+            amounts, not_reached = self.table_amounts(nodes)
+            return film_tables.log10_band_response(f.negative_dmin[pr], f.negative_dyes[:, pr], f.w_printing[:, pr], amounts), not_reached
+
+        record = float(self.options.negative_record == "dye_amount")
+        return kept_stage_table("negative", (record, *grid, f.negative_dmin, f.negative_dyes, f.negative_curve_dmin, f.w_status_m, f.w_printing), build)
+
+    def _paper_stage(self) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        """Rule 'staged_print_table': the first and the step of the Status A axes, the cube root of print XYZ with no surface reflection, and where the dye solve did not reach."""
+        f = self.film
+        w_view = f.w_viewing[f.viewing_name]
+        st, vi = spectral_support(f.w_status_a), spectral_support(w_view)
+        start = np.array([c.density.min() for c in self.paper_curves])
+        axis_range = np.array([c.density.max() for c in self.paper_curves]) - start
+
+        def build() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+            table, not_reached = film_tables.build_paper_table(f.paper_base[st], f.paper_dyes[:, st], f.w_status_a[:, st], f.paper_base[vi], f.paper_dyes[:, vi], w_view[:, vi],
+                                                               100.0 / w_view[1].sum(), start, axis_range, PAPER_AXIS_POWER, PAPER_TABLE_NODES, SOLVE_ITERATIONS, SOLVE_REACHED_LIMIT)
+            return start, axis_range, table, not_reached
+
+        return kept_stage_table("paper", (start, axis_range, float(PAPER_AXIS_POWER), float(PAPER_TABLE_NODES), f.paper_base, f.paper_dyes, f.w_status_a, w_view), build)
+
+    def _compose_print_table(self, grid: list[np.ndarray], balance: np.ndarray) -> tuple[np.ndarray, dict]:
+        """Rule 'staged_print_table': the table of this printer balance, and its counts. This stage has no spectral integral."""
+        f, o = self.film, self.options
+        paper_log, negative_not_reached = self._negative_stage(grid)
+        start, axis_range, paper_table, not_reached = self._paper_stage()
+        length = max(len(c.density) for c in self.paper_curves)
+        curves = np.stack([np.pad(c.density, (0, length - len(c.density)), mode="edge") for c in self.paper_curves])
+        lengths = np.array([len(c.density) for c in self.paper_curves], dtype=np.int64)
+        aim = np.array([c.log_h_at(o.print_midscale_status_a) for c in self.paper_curves])
+        table, outside, print_not_reached = film_tables.compose_print_table(paper_log, np.asarray(balance, dtype=np.float64), aim, float(o.print_contrast) * self.printing_gain, float(o.print_flash), o.viewing_flare * f.white_xyz(),
+                                                                            curves, lengths, np.array([c.log_h[0] for c in self.paper_curves]), float(self.paper_curves[0].log_h[1] - self.paper_curves[0].log_h[0]), start, axis_range, PAPER_AXIS_POWER, paper_table, not_reached)
+        if not np.isfinite(table).all():
+            raise FloatingPointError(f"the print table of {o.negative_profile} on {o.print_profile} has values that are not finite")
+        return table.reshape(DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 3), {"negative_not_reached": int(negative_not_reached), "print_not_reached": int(print_not_reached), "paper_exposure_outside_curve": int(outside), "nodes": DENSITY_NODES ** 3}
+
+    def _build_print_table(self) -> tuple[list[np.ndarray], np.ndarray, dict]:
         grid = [np.linspace(c.density.min(), c.density.max(), DENSITY_NODES) for c in self.negative_curves]
-        if path.exists():
-            z = np.load(path)
-            return grid, z["table"], json.loads(str(z["counts"]))
-        rr, gg, bb = np.meshgrid(*grid, indexing="ij")
-        d = np.stack([rr, gg, bb], axis=-1).reshape(-1, 3)
-        xyz, counts = self._print_nodes(d)
-        counts["nodes"] = len(d)
-        table = np.cbrt(xyz).reshape(DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 3)
-        np.savez(path, table=table, counts=json.dumps(counts))
+        table, counts = self._compose_print_table(grid, self.film.printer_balance_log10)
         return grid, table, counts
 
     def print_xyz(self, density: np.ndarray) -> np.ndarray:
@@ -697,21 +765,11 @@ class FilmPreview:
         if not o.mask_gamma:
             return
         f = self.film
-        path = CACHE_DIR / f"print_table_{o.key()}_mask.npz"
         rr, gg, bb = np.meshgrid(*self.density_grid, indexing="ij")
         nodes = np.stack([rr, gg, bb], axis=-1).reshape(-1, 3)
         densities = MASK_DENSITY_START + MASK_DENSITY_STEP * np.arange(MASK_DENSITY_NODES)
-        if path.exists():
-            tables = np.load(path)["tables"]
-        else:
-            balance = np.asarray(f.printer_balance_log10, dtype=np.float64).copy()
-            tables = np.empty((MASK_DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 3), dtype=np.float32)
-            for k, density in enumerate(densities):
-                f.printer_balance_log10 = balance - density
-                tables[k] = np.cbrt(self._print_nodes(nodes)[0]).reshape(DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 3)
-            f.printer_balance_log10 = balance
-            np.savez(path, tables=tables)
-        self._mask_tables = tables
+        balance = np.asarray(f.printer_balance_log10, dtype=np.float64)
+        self._mask_tables = np.stack([self._compose_print_table(self.density_grid, balance - density)[0] for density in densities]).astype(np.float32)
         # The pan response: the printer lamp, flat inside MASK_PAN_NM. Stored as the cube root in three channels, so print_display reads it.
         pan = (10.0 ** (-f.negative_spectral_density(self._record_amounts(nodes))) @ self._mask_lamp()) / self._mask_lamp().sum()
         self._mask_pan = np.repeat(np.cbrt(pan).reshape(DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 1), 3, axis=-1).astype(np.float32)

@@ -84,6 +84,10 @@ UNDISCLOSED.
 
 The name A.M.P.A.S. and the names of contributors are not used to endorse this project. The complete license terms are in `LICENSE.md` of that tag.
 
+## nanobind
+
+nanobind (Wenzel Jakob), BSD-3-Clause, <https://github.com/wjakob/nanobind>. P7: the Python module `alcedo_film_tables` compiles against it. pip downloads it at build time. It is not in this repository, and the product library `film_tables` does not use it.
+
 ## Data read at run time (not in this repository)
 
 | Data | License | Use |

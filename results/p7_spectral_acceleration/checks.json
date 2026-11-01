@@ -1,0 +1,2069 @@
+{
+ "limits": {
+  "weights": 1e-12,
+  "band": 1e-11,
+  "record": 1e-09,
+  "status_m": 1e-09,
+  "paper": 1e-09,
+  "apd": 1e-09,
+  "p999": 1.0,
+  "largest": 4.0,
+  "ramp": 0.5,
+  "mask": 1e-06,
+  "time_first_s": 2.0,
+  "time_control_s": 0.05,
+  "time_apd_s": 1.0
+ },
+ "photos": [
+  "se188",
+  "se228",
+  "leica_m11",
+  "nikon_zf",
+  "_DSC4063",
+  "_DSC8148",
+  "digital_ap1"
+ ],
+ "weights": {
+  "value": 4.440892098500626e-16,
+  "limit": 1e-12,
+  "pass": true
+ },
+ "band_response": {
+  "value": 8.881784197001252e-16,
+  "limit": 1e-11,
+  "pass": true
+ },
+ "paper_stage": {
+  "value": 1.89965125116325e-11,
+  "limit": 1e-09,
+  "pass": true,
+  "nodes": 1785
+ },
+ "apd_table": {
+  "value": 1.7763568394002505e-15,
+  "limit": 1e-09,
+  "pass": true
+ },
+ "status_m_record": {
+  "value": 1.5437429112807877e-11,
+  "limit": 1e-09,
+  "pass": true,
+  "nodes": 3684
+ },
+ "record_is_amounts": {
+  "value": 1.7763568394002505e-15,
+  "limit": 1e-09,
+  "pass": true
+ },
+ "mask": {
+  "value": 2.3841188934170532e-07,
+  "limit": 1e-06,
+  "pass": true
+ },
+ "time_s": {
+  "model_with_empty_stage_memory": 0.993,
+  "print_table_with_empty_stage_memory": 0.733,
+  "model_new_control_value": 0.274,
+  "print_table_new_control_value": 0.0152,
+  "scan_model_new_negative": 0.562,
+  "apd_table": 0.066
+ },
+ "time_first": {
+  "value": 0.7330796000023838,
+  "limit": 2.0,
+  "pass": true
+ },
+ "time_control": {
+  "value": 0.015185399999609217,
+  "limit": 0.05,
+  "pass": true
+ },
+ "time_apd": {
+  "value": 0.06581289999303408,
+  "limit": 1.0,
+  "pass": true
+ },
+ "disk": {
+  "value": 0.0,
+  "limit": 0.0,
+  "pass": true,
+  "files": []
+ },
+ "stocks": {
+  "kodak_5207 on kodak_2383": {
+   "all_table_nodes_8bit": {
+    "median": 0.0248,
+    "p99": 0.7366,
+    "p999": 1.2092,
+    "largest": 3.4024
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0159,
+     "p99": 0.0341,
+     "p999": 0.0388,
+     "largest": 0.0773
+    },
+    "se228": {
+     "median": 0.0268,
+     "p99": 0.0471,
+     "p999": 0.049,
+     "largest": 0.1086
+    },
+    "leica_m11": {
+     "median": 0.0217,
+     "p99": 0.0804,
+     "p999": 0.0916,
+     "largest": 0.1079
+    },
+    "nikon_zf": {
+     "median": 0.0257,
+     "p99": 0.055,
+     "p999": 0.0806,
+     "largest": 0.5475
+    },
+    "_DSC4063": {
+     "median": 0.0267,
+     "p99": 0.0735,
+     "p999": 0.0866,
+     "largest": 0.1065
+    },
+    "_DSC8148": {
+     "median": 0.0213,
+     "p99": 0.0508,
+     "p999": 0.0824,
+     "largest": 0.9669
+    },
+    "digital_ap1": {
+     "median": 0.0508,
+     "p99": 0.0966,
+     "p999": 0.1043,
+     "largest": 0.1082
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138032,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0558,
+   "p999": {
+    "value": 0.1043,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.9669,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0558,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5219 on kodak_2383": {
+   "all_table_nodes_8bit": {
+    "median": 0.0222,
+    "p99": 0.7189,
+    "p999": 1.238,
+    "largest": 4.6545
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0173,
+     "p99": 0.034,
+     "p999": 0.0371,
+     "largest": 0.0949
+    },
+    "se228": {
+     "median": 0.0285,
+     "p99": 0.0476,
+     "p999": 0.0519,
+     "largest": 0.1098
+    },
+    "leica_m11": {
+     "median": 0.0227,
+     "p99": 0.0805,
+     "p999": 0.0939,
+     "largest": 0.1142
+    },
+    "nikon_zf": {
+     "median": 0.024,
+     "p99": 0.0603,
+     "p999": 0.0838,
+     "largest": 0.3968
+    },
+    "_DSC4063": {
+     "median": 0.0263,
+     "p99": 0.0759,
+     "p999": 0.0925,
+     "largest": 0.1162
+    },
+    "_DSC8148": {
+     "median": 0.0218,
+     "p99": 0.0538,
+     "p999": 0.0849,
+     "largest": 0.8981
+    },
+    "digital_ap1": {
+     "median": 0.0527,
+     "p99": 0.1045,
+     "p999": 0.1105,
+     "largest": 0.1165
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138116,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0561,
+   "p999": {
+    "value": 0.1105,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.8981,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0561,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier": {
+   "all_table_nodes_8bit": {
+    "median": 0.0167,
+    "p99": 0.3007,
+    "p999": 0.757,
+    "largest": 2.9441
+   },
+   "photos": {
+    "se188": {
+     "median": 0.012,
+     "p99": 0.0305,
+     "p999": 0.0359,
+     "largest": 0.0625
+    },
+    "se228": {
+     "median": 0.0155,
+     "p99": 0.0259,
+     "p999": 0.0287,
+     "largest": 0.0706
+    },
+    "leica_m11": {
+     "median": 0.0153,
+     "p99": 0.0474,
+     "p999": 0.1015,
+     "largest": 0.5068
+    },
+    "nikon_zf": {
+     "median": 0.0136,
+     "p99": 0.0388,
+     "p999": 0.0552,
+     "largest": 0.5453
+    },
+    "_DSC4063": {
+     "median": 0.019,
+     "p99": 0.0461,
+     "p999": 0.0561,
+     "largest": 0.4601
+    },
+    "_DSC8148": {
+     "median": 0.0136,
+     "p99": 0.0316,
+     "p999": 0.0533,
+     "largest": 0.7428
+    },
+    "digital_ap1": {
+     "median": 0.031,
+     "p99": 0.0667,
+     "p999": 0.0688,
+     "largest": 0.0697
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 148430,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0391,
+   "p999": {
+    "value": 0.1015,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.7428,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0391,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_160 on kodak_endura_premier": {
+   "all_table_nodes_8bit": {
+    "median": 0.0198,
+    "p99": 0.2647,
+    "p999": 0.7009,
+    "largest": 1.5974
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0133,
+     "p99": 0.0292,
+     "p999": 0.0347,
+     "largest": 0.0578
+    },
+    "se228": {
+     "median": 0.0169,
+     "p99": 0.0284,
+     "p999": 0.0304,
+     "largest": 0.0715
+    },
+    "leica_m11": {
+     "median": 0.016,
+     "p99": 0.0477,
+     "p999": 0.0585,
+     "largest": 0.2452
+    },
+    "nikon_zf": {
+     "median": 0.0122,
+     "p99": 0.0376,
+     "p999": 0.0545,
+     "largest": 0.472
+    },
+    "_DSC4063": {
+     "median": 0.0186,
+     "p99": 0.0496,
+     "p999": 0.0583,
+     "largest": 0.0692
+    },
+    "_DSC8148": {
+     "median": 0.0145,
+     "p99": 0.0332,
+     "p999": 0.0561,
+     "largest": 0.7741
+    },
+    "digital_ap1": {
+     "median": 0.0379,
+     "p99": 0.0633,
+     "p999": 0.066,
+     "largest": 0.0687
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 145041,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0379,
+   "p999": {
+    "value": 0.066,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.7741,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0379,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_800 on kodak_endura_premier": {
+   "all_table_nodes_8bit": {
+    "median": 0.017,
+    "p99": 0.3106,
+    "p999": 0.7359,
+    "largest": 3.5266
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0119,
+     "p99": 0.0293,
+     "p999": 0.034,
+     "largest": 0.0422
+    },
+    "se228": {
+     "median": 0.0148,
+     "p99": 0.0224,
+     "p999": 0.0264,
+     "largest": 0.0566
+    },
+    "leica_m11": {
+     "median": 0.0149,
+     "p99": 0.0399,
+     "p999": 0.0482,
+     "largest": 0.4356
+    },
+    "nikon_zf": {
+     "median": 0.0118,
+     "p99": 0.0321,
+     "p999": 0.0447,
+     "largest": 0.3386
+    },
+    "_DSC4063": {
+     "median": 0.0182,
+     "p99": 0.0372,
+     "p999": 0.0464,
+     "largest": 0.064
+    },
+    "_DSC8148": {
+     "median": 0.0144,
+     "p99": 0.0291,
+     "p999": 0.0435,
+     "largest": 0.6294
+    },
+    "digital_ap1": {
+     "median": 0.03,
+     "p99": 0.0514,
+     "p999": 0.057,
+     "largest": 0.0621
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 141975,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0378,
+   "p999": {
+    "value": 0.057,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.6294,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0378,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_ektar_100 on kodak_endura_premier": {
+   "all_table_nodes_8bit": {
+    "median": 0.0157,
+    "p99": 0.3116,
+    "p999": 0.7647,
+    "largest": 2.4523
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0114,
+     "p99": 0.0291,
+     "p999": 0.0334,
+     "largest": 0.1656
+    },
+    "se228": {
+     "median": 0.0123,
+     "p99": 0.0245,
+     "p999": 0.027,
+     "largest": 0.0612
+    },
+    "leica_m11": {
+     "median": 0.0157,
+     "p99": 0.08,
+     "p999": 0.247,
+     "largest": 0.6312
+    },
+    "nikon_zf": {
+     "median": 0.0129,
+     "p99": 0.0326,
+     "p999": 0.1188,
+     "largest": 0.6323
+    },
+    "_DSC4063": {
+     "median": 0.0177,
+     "p99": 0.0411,
+     "p999": 0.0541,
+     "largest": 0.5307
+    },
+    "_DSC8148": {
+     "median": 0.0136,
+     "p99": 0.0285,
+     "p999": 0.049,
+     "largest": 0.6867
+    },
+    "digital_ap1": {
+     "median": 0.0258,
+     "p99": 0.0515,
+     "p999": 0.0565,
+     "largest": 0.0586
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 145877,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0393,
+   "p999": {
+    "value": 0.247,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.6867,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0393,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_gold_200 on kodak_endura_premier": {
+   "all_table_nodes_8bit": {
+    "median": 0.017,
+    "p99": 0.3477,
+    "p999": 0.7533,
+    "largest": 1.6428
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0124,
+     "p99": 0.0306,
+     "p999": 0.0339,
+     "largest": 0.0562
+    },
+    "se228": {
+     "median": 0.0147,
+     "p99": 0.0235,
+     "p999": 0.0265,
+     "largest": 0.067
+    },
+    "leica_m11": {
+     "median": 0.016,
+     "p99": 0.0442,
+     "p999": 0.0549,
+     "largest": 0.1711
+    },
+    "nikon_zf": {
+     "median": 0.0119,
+     "p99": 0.0325,
+     "p999": 0.0461,
+     "largest": 0.4209
+    },
+    "_DSC4063": {
+     "median": 0.0188,
+     "p99": 0.0392,
+     "p999": 0.0507,
+     "largest": 0.064
+    },
+    "_DSC8148": {
+     "median": 0.0138,
+     "p99": 0.0283,
+     "p999": 0.0491,
+     "largest": 0.594
+    },
+    "digital_ap1": {
+     "median": 0.0267,
+     "p99": 0.0474,
+     "p999": 0.0534,
+     "largest": 0.0646
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 128548,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0384,
+   "p999": {
+    "value": 0.0549,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.594,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0384,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "fuji_c200 on kodak_endura_premier": {
+   "all_table_nodes_8bit": {
+    "median": 0.0148,
+    "p99": 0.3197,
+    "p999": 0.7591,
+    "largest": 2.0321
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0125,
+     "p99": 0.0307,
+     "p999": 0.0363,
+     "largest": 0.0624
+    },
+    "se228": {
+     "median": 0.0141,
+     "p99": 0.0222,
+     "p999": 0.0277,
+     "largest": 0.0583
+    },
+    "leica_m11": {
+     "median": 0.0159,
+     "p99": 0.0364,
+     "p999": 0.0449,
+     "largest": 0.3681
+    },
+    "nikon_zf": {
+     "median": 0.0133,
+     "p99": 0.0321,
+     "p999": 0.0453,
+     "largest": 0.4947
+    },
+    "_DSC4063": {
+     "median": 0.0175,
+     "p99": 0.0383,
+     "p999": 0.0469,
+     "largest": 0.0582
+    },
+    "_DSC8148": {
+     "median": 0.0135,
+     "p99": 0.0292,
+     "p999": 0.0427,
+     "largest": 0.6896
+    },
+    "digital_ap1": {
+     "median": 0.0216,
+     "p99": 0.0469,
+     "p999": 0.0503,
+     "largest": 0.0579
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 130126,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0392,
+   "p999": {
+    "value": 0.0503,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.6896,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0392,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on fuji_ca_maxima": {
+   "all_table_nodes_8bit": {
+    "median": 0.0231,
+    "p99": 0.3684,
+    "p999": 0.7327,
+    "largest": 3.0581
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0123,
+     "p99": 0.0247,
+     "p999": 0.0277,
+     "largest": 0.0595
+    },
+    "se228": {
+     "median": 0.016,
+     "p99": 0.0242,
+     "p999": 0.0258,
+     "largest": 0.0635
+    },
+    "leica_m11": {
+     "median": 0.0166,
+     "p99": 0.0458,
+     "p999": 0.0561,
+     "largest": 0.0676
+    },
+    "nikon_zf": {
+     "median": 0.0121,
+     "p99": 0.0301,
+     "p999": 0.0441,
+     "largest": 0.5234
+    },
+    "_DSC4063": {
+     "median": 0.0175,
+     "p99": 0.0385,
+     "p999": 0.0509,
+     "largest": 0.0653
+    },
+    "_DSC8148": {
+     "median": 0.0151,
+     "p99": 0.0276,
+     "p999": 0.0435,
+     "largest": 0.6865
+    },
+    "digital_ap1": {
+     "median": 0.0244,
+     "p99": 0.0426,
+     "p999": 0.0447,
+     "largest": 0.0509
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 75096,
+    "paper_exposure_outside_curve": 2191,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.036,
+   "p999": {
+    "value": 0.0561,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.6865,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.036,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "fuji_pro_400h on kodak_supra_endura": {
+   "all_table_nodes_8bit": {
+    "median": 0.0252,
+    "p99": 0.1238,
+    "p999": 0.3311,
+    "largest": 1.1128
+   },
+   "photos": {
+    "se188": {
+     "median": 0.0117,
+     "p99": 0.0246,
+     "p999": 0.0292,
+     "largest": 0.0317
+    },
+    "se228": {
+     "median": 0.0118,
+     "p99": 0.0151,
+     "p999": 0.0155,
+     "largest": 0.0288
+    },
+    "leica_m11": {
+     "median": 0.0129,
+     "p99": 0.0327,
+     "p999": 0.0355,
+     "largest": 0.043
+    },
+    "nikon_zf": {
+     "median": 0.0143,
+     "p99": 0.0279,
+     "p999": 0.029,
+     "largest": 0.2836
+    },
+    "_DSC4063": {
+     "median": 0.0135,
+     "p99": 0.0336,
+     "p999": 0.0348,
+     "largest": 0.0365
+    },
+    "_DSC8148": {
+     "median": 0.0118,
+     "p99": 0.0206,
+     "p999": 0.031,
+     "largest": 0.426
+    },
+    "digital_ap1": {
+     "median": 0.0126,
+     "p99": 0.0153,
+     "p999": 0.0156,
+     "largest": 0.016
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 54973,
+    "paper_exposure_outside_curve": 4427,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0328,
+   "p999": {
+    "value": 0.0355,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.426,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0328,
+    "limit": 0.5,
+    "pass": true
+   }
+  }
+ },
+ "controls": {
+  "kodak_5207 on kodak_2383, overexposure_stops = -2.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0327,
+    "p99": 0.5945,
+    "p999": 1.0372,
+    "largest": 4.8779
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0226,
+     "p99": 0.0506,
+     "p999": 0.0839,
+     "largest": 0.808
+    },
+    "se188": {
+     "median": 0.0207,
+     "p99": 0.0338,
+     "p999": 0.0393,
+     "largest": 0.0973
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 171037,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0446,
+   "p999": {
+    "value": 0.0839,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.808,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0446,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, overexposure_stops = 4.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0135,
+    "p99": 0.583,
+    "p999": 1.2378,
+    "largest": 4.2639
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0217,
+     "p99": 0.0524,
+     "p999": 0.0785,
+     "largest": 0.6677
+    },
+    "se188": {
+     "median": 0.0169,
+     "p99": 0.0351,
+     "p999": 0.0376,
+     "largest": 0.0986
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 26346,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0548,
+   "p999": {
+    "value": 0.0785,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.6677,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0548,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, inhibition_scale = 0.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0248,
+    "p99": 0.7366,
+    "p999": 1.2092,
+    "largest": 3.4024
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0212,
+     "p99": 0.0493,
+     "p999": 0.0802,
+     "largest": 1.0123
+    },
+    "se188": {
+     "median": 0.0161,
+     "p99": 0.0338,
+     "p999": 0.0381,
+     "largest": 0.0719
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138032,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.053,
+   "p999": {
+    "value": 0.0802,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 1.0123,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.053,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, inhibition_scale = 1.5": {
+   "all_table_nodes_8bit": {
+    "median": 0.0248,
+    "p99": 0.7366,
+    "p999": 1.2092,
+    "largest": 3.4024
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0214,
+     "p99": 0.0515,
+     "p999": 0.0844,
+     "largest": 1.2284
+    },
+    "se188": {
+     "median": 0.0159,
+     "p99": 0.0345,
+     "p999": 0.0392,
+     "largest": 0.0861
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138032,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0563,
+   "p999": {
+    "value": 0.0844,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 1.2284,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0563,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, print_grey_shift = -0.3": {
+   "all_table_nodes_8bit": {
+    "median": 0.0291,
+    "p99": 0.6694,
+    "p999": 1.1334,
+    "largest": 5.2983
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.023,
+     "p99": 0.0598,
+     "p999": 0.0949,
+     "largest": 1.1471
+    },
+    "se188": {
+     "median": 0.0171,
+     "p99": 0.0368,
+     "p999": 0.0443,
+     "largest": 0.1149
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 157951,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0624,
+   "p999": {
+    "value": 0.0949,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 1.1471,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0624,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, print_grey_shift = 0.4": {
+   "all_table_nodes_8bit": {
+    "median": 0.0212,
+    "p99": 0.7928,
+    "p999": 1.2777,
+    "largest": 4.8843
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0164,
+     "p99": 0.0452,
+     "p999": 0.079,
+     "largest": 0.8491
+    },
+    "se188": {
+     "median": 0.0159,
+     "p99": 0.0361,
+     "p999": 0.0411,
+     "largest": 0.0859
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 116682,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0449,
+   "p999": {
+    "value": 0.079,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.8491,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0449,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, print_contrast = 0.5": {
+   "all_table_nodes_8bit": {
+    "median": 0.0262,
+    "p99": 0.7041,
+    "p999": 1.2033,
+    "largest": 5.8575
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0239,
+     "p99": 0.0551,
+     "p999": 0.0778,
+     "largest": 0.1089
+    },
+    "se188": {
+     "median": 0.0205,
+     "p99": 0.0341,
+     "p999": 0.0448,
+     "largest": 0.0684
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 22791,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0545,
+   "p999": {
+    "value": 0.0778,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.1089,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0545,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, print_contrast = 1.3": {
+   "all_table_nodes_8bit": {
+    "median": 0.017,
+    "p99": 0.5747,
+    "p999": 1.1535,
+    "largest": 4.1805
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0152,
+     "p99": 0.0498,
+     "p999": 0.1885,
+     "largest": 1.1797
+    },
+    "se188": {
+     "median": 0.0148,
+     "p99": 0.0409,
+     "p999": 0.0503,
+     "largest": 0.6051
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 205025,
+    "paper_exposure_outside_curve": 3748,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.2548,
+   "p999": {
+    "value": 0.1885,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 1.1797,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.2548,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, print_flash = 0.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0244,
+    "p99": 0.7172,
+    "p999": 1.1848,
+    "largest": 4.3447
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0213,
+     "p99": 0.0505,
+     "p999": 0.0858,
+     "largest": 1.0468
+    },
+    "se188": {
+     "median": 0.0165,
+     "p99": 0.0355,
+     "p999": 0.041,
+     "largest": 0.0894
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 149001,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0575,
+   "p999": {
+    "value": 0.0858,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 1.0468,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0575,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, print_flash = 0.2": {
+   "all_table_nodes_8bit": {
+    "median": 0.0229,
+    "p99": 0.8278,
+    "p999": 1.2976,
+    "largest": 6.3768
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0199,
+     "p99": 0.0517,
+     "p999": 0.0785,
+     "largest": 0.1119
+    },
+    "se188": {
+     "median": 0.0181,
+     "p99": 0.0388,
+     "p999": 0.0453,
+     "largest": 0.0781
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 56185,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0581,
+   "p999": {
+    "value": 0.0785,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.1119,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0581,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, viewing_flare = 0.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0249,
+    "p99": 0.7389,
+    "p999": 1.2126,
+    "largest": 4.0632
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0239,
+     "p99": 0.0542,
+     "p999": 0.0852,
+     "largest": 0.9704
+    },
+    "se188": {
+     "median": 0.0174,
+     "p99": 0.0355,
+     "p999": 0.0394,
+     "largest": 0.0839
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138032,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.057,
+   "p999": {
+    "value": 0.0852,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.9704,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.057,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, viewing_flare = 0.03": {
+   "all_table_nodes_8bit": {
+    "median": 0.0228,
+    "p99": 0.7199,
+    "p999": 1.1923,
+    "largest": 5.9675
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0138,
+     "p99": 0.0407,
+     "p999": 0.0688,
+     "largest": 0.9367
+    },
+    "se188": {
+     "median": 0.0128,
+     "p99": 0.0299,
+     "p999": 0.0355,
+     "largest": 0.066
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138032,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0474,
+   "p999": {
+    "value": 0.0688,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.9367,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0474,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, print_timing = 0.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0248,
+    "p99": 0.7366,
+    "p999": 1.2092,
+    "largest": 3.4024
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0213,
+     "p99": 0.0508,
+     "p999": 0.0824,
+     "largest": 0.9669
+    },
+    "se188": {
+     "median": 0.0159,
+     "p99": 0.0341,
+     "p999": 0.0388,
+     "largest": 0.0773
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138032,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0558,
+   "p999": {
+    "value": 0.0824,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.9669,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0558,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_5207 on kodak_2383, print_timing = 1.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0248,
+    "p99": 0.7366,
+    "p999": 1.2092,
+    "largest": 3.4024
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0213,
+     "p99": 0.0508,
+     "p999": 0.0824,
+     "largest": 0.9669
+    },
+    "se188": {
+     "median": 0.0159,
+     "p99": 0.0341,
+     "p999": 0.0388,
+     "largest": 0.0773
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138032,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0558,
+   "p999": {
+    "value": 0.0824,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.9669,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0558,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, overexposure_stops = -2.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0275,
+    "p99": 0.201,
+    "p999": 0.6051,
+    "largest": 2.0134
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0154,
+     "p99": 0.0309,
+     "p999": 0.0522,
+     "largest": 0.6196
+    },
+    "se188": {
+     "median": 0.0142,
+     "p99": 0.0318,
+     "p999": 0.0369,
+     "largest": 0.0496
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 126033,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.039,
+   "p999": {
+    "value": 0.0522,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.6196,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.039,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, overexposure_stops = 4.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.012,
+    "p99": 0.2333,
+    "p999": 0.7659,
+    "largest": 1.9994
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0141,
+     "p99": 0.029,
+     "p999": 0.0514,
+     "largest": 0.7026
+    },
+    "se188": {
+     "median": 0.0125,
+     "p99": 0.0269,
+     "p999": 0.0288,
+     "largest": 0.0463
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 15961,
+    "paper_exposure_outside_curve": 27598,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0308,
+   "p999": {
+    "value": 0.0514,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.7026,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0308,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, inhibition_scale = 0.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0167,
+    "p99": 0.3007,
+    "p999": 0.757,
+    "largest": 2.9441
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0136,
+     "p99": 0.0307,
+     "p999": 0.0517,
+     "largest": 0.5867
+    },
+    "se188": {
+     "median": 0.0123,
+     "p99": 0.0303,
+     "p999": 0.0361,
+     "largest": 0.0532
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 148430,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0393,
+   "p999": {
+    "value": 0.0517,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.5867,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0393,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, inhibition_scale = 1.5": {
+   "all_table_nodes_8bit": {
+    "median": 0.0167,
+    "p99": 0.3007,
+    "p999": 0.757,
+    "largest": 2.9441
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0135,
+     "p99": 0.0319,
+     "p999": 0.0528,
+     "largest": 0.5551
+    },
+    "se188": {
+     "median": 0.0119,
+     "p99": 0.0307,
+     "p999": 0.0365,
+     "largest": 0.0574
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 148430,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.039,
+   "p999": {
+    "value": 0.0528,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.5551,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.039,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, print_grey_shift = -0.3": {
+   "all_table_nodes_8bit": {
+    "median": 0.0201,
+    "p99": 0.2495,
+    "p999": 0.7001,
+    "largest": 1.4846
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0151,
+     "p99": 0.0314,
+     "p999": 0.0492,
+     "largest": 0.606
+    },
+    "se188": {
+     "median": 0.0126,
+     "p99": 0.032,
+     "p999": 0.0364,
+     "largest": 0.0472
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 147558,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0385,
+   "p999": {
+    "value": 0.0492,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.606,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0385,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, print_grey_shift = 0.4": {
+   "all_table_nodes_8bit": {
+    "median": 0.0149,
+    "p99": 0.329,
+    "p999": 0.7691,
+    "largest": 1.919
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0128,
+     "p99": 0.0294,
+     "p999": 0.05,
+     "largest": 0.6226
+    },
+    "se188": {
+     "median": 0.013,
+     "p99": 0.0288,
+     "p999": 0.033,
+     "largest": 0.0549
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 140606,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0389,
+   "p999": {
+    "value": 0.05,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.6226,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0389,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, print_contrast = 0.5": {
+   "all_table_nodes_8bit": {
+    "median": 0.0203,
+    "p99": 0.4163,
+    "p999": 0.7633,
+    "largest": 3.5899
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0156,
+     "p99": 0.0307,
+     "p999": 0.0449,
+     "largest": 0.7194
+    },
+    "se188": {
+     "median": 0.0132,
+     "p99": 0.0226,
+     "p999": 0.0248,
+     "largest": 0.0645
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 77148,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0314,
+   "p999": {
+    "value": 0.0449,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.7194,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0314,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, print_contrast = 1.3": {
+   "all_table_nodes_8bit": {
+    "median": 0.0132,
+    "p99": 0.1774,
+    "p999": 0.6782,
+    "largest": 2.19
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0112,
+     "p99": 0.0325,
+     "p999": 0.082,
+     "largest": 0.665
+    },
+    "se188": {
+     "median": 0.0097,
+     "p99": 0.0359,
+     "p999": 0.0727,
+     "largest": 0.3695
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 170657,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0405,
+   "p999": {
+    "value": 0.082,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.665,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0405,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, print_flash = 0.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0167,
+    "p99": 0.2742,
+    "p999": 0.721,
+    "largest": 3.2974
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0145,
+     "p99": 0.0304,
+     "p999": 0.0503,
+     "largest": 0.744
+    },
+    "se188": {
+     "median": 0.0123,
+     "p99": 0.0318,
+     "p999": 0.0358,
+     "largest": 0.0538
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 150729,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0382,
+   "p999": {
+    "value": 0.0503,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.744,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0382,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, print_flash = 0.2": {
+   "all_table_nodes_8bit": {
+    "median": 0.0167,
+    "p99": 0.4154,
+    "p999": 0.7896,
+    "largest": 2.319
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0145,
+     "p99": 0.0282,
+     "p999": 0.0502,
+     "largest": 0.6541
+    },
+    "se188": {
+     "median": 0.0124,
+     "p99": 0.023,
+     "p999": 0.0269,
+     "largest": 0.0666
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 108382,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.034,
+   "p999": {
+    "value": 0.0502,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.6541,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.034,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, viewing_flare = 0.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0169,
+    "p99": 0.3018,
+    "p999": 0.7613,
+    "largest": 2.9547
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.015,
+     "p99": 0.0344,
+     "p999": 0.0549,
+     "largest": 0.7462
+    },
+    "se188": {
+     "median": 0.0131,
+     "p99": 0.0306,
+     "p999": 0.036,
+     "largest": 0.0618
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 148430,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0391,
+   "p999": {
+    "value": 0.0549,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.7462,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0391,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, viewing_flare = 0.03": {
+   "all_table_nodes_8bit": {
+    "median": 0.0152,
+    "p99": 0.2974,
+    "p999": 0.7401,
+    "largest": 2.7089
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0079,
+     "p99": 0.0284,
+     "p999": 0.0459,
+     "largest": 0.7141
+    },
+    "se188": {
+     "median": 0.0082,
+     "p99": 0.0299,
+     "p999": 0.0352,
+     "largest": 0.0523
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 148430,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0383,
+   "p999": {
+    "value": 0.0459,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.7141,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0383,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, print_timing = 0.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0167,
+    "p99": 0.3007,
+    "p999": 0.757,
+    "largest": 2.9441
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0136,
+     "p99": 0.0316,
+     "p999": 0.0533,
+     "largest": 0.7428
+    },
+    "se188": {
+     "median": 0.012,
+     "p99": 0.0305,
+     "p999": 0.0359,
+     "largest": 0.0625
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 148430,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0391,
+   "p999": {
+    "value": 0.0533,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.7428,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0391,
+    "limit": 0.5,
+    "pass": true
+   }
+  },
+  "kodak_portra_400 on kodak_endura_premier, print_timing = 1.0": {
+   "all_table_nodes_8bit": {
+    "median": 0.0167,
+    "p99": 0.3007,
+    "p999": 0.757,
+    "largest": 2.9441
+   },
+   "photos": {
+    "_DSC8148": {
+     "median": 0.0136,
+     "p99": 0.0316,
+     "p999": 0.0533,
+     "largest": 0.7428
+    },
+    "se188": {
+     "median": 0.012,
+     "p99": 0.0305,
+     "p999": 0.0359,
+     "largest": 0.0625
+    }
+   },
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 148430,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   },
+   "neutral_ramp_8bit": 0.0391,
+   "p999": {
+    "value": 0.0533,
+    "limit": 1.0,
+    "pass": true
+   },
+   "largest": {
+    "value": 0.7428,
+    "limit": 4.0,
+    "pass": true
+   },
+   "ramp": {
+    "value": 0.0391,
+    "limit": 0.5,
+    "pass": true
+   }
+  }
+ },
+ "failed": []
+}
