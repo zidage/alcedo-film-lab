@@ -184,7 +184,7 @@ Rule `grey_off_the_curve` of `fit_stock_physics.py`, with the limit set before i
 | `film_print_setup.bin` | Printer balance of each of the 5940 selections, layer gain, printing gain, aim, display matrix | 167 KB |
 | `film_reflectance_table.bin` | `reflectance_over_uv_light`, 192^2 x 481 float32 | 70.9 MB |
 
-The product has fixed hidden controls, so these scalar values are constants. Rule `setup_without_tables` calculates them with the methods of `FilmPreview` with no table build, so all selections take about 2 minutes. The script builds the complete `FilmPreview` for 11 selections and compares: the largest difference is 2.2e-16, against a limit of 1e-9. A value that the bundle holds once must be identical in each selection that uses it, or the script stops.
+The product has fixed hidden controls, so these scalar values are constants. Rule `setup_without_tables` calculates them with the methods of `FilmPreview` with no table build, so all selections take about 2 minutes. The script builds the complete `FilmPreview` for 11 selections and compares: the largest difference is 1.8e-15, against a limit of 1e-9. A value that the bundle holds once must be identical in each selection that uses it, or the script stops.
 
 ## 6. Not measured
 
