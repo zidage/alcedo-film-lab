@@ -1,0 +1,541 @@
+{
+ "input": "check_input_2048.npy",
+ "controls": {
+  "overexposure_stops": {
+   "print_low": {
+    "value": -2.0,
+    "effect": 0.01223,
+    "fall": 0.0,
+    "range": [
+     0.0536,
+     0.937
+    ],
+    "s": 2.1
+   },
+   "print_high": {
+    "value": 4.0,
+    "effect": 0.02964,
+    "fall": 0.0,
+    "range": [
+     0.013,
+     0.8474
+    ],
+    "s": 1.5
+   },
+   "frontier_low": {
+    "value": -2.0,
+    "effect": 0.07784,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9603
+    ],
+    "s": 6.9
+   },
+   "frontier_high": {
+    "value": 4.0,
+    "effect": 0.2162,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     1.0
+    ],
+    "s": 6.0
+   }
+  },
+  "inhibition_scale": {
+   "print_low": {
+    "value": 0.0,
+    "effect": 0.00615,
+    "fall": 0.0,
+    "range": [
+     0.0126,
+     0.9269
+    ],
+    "s": 2.8
+   },
+   "print_high": {
+    "value": 1.5,
+    "effect": 0.00337,
+    "fall": 0.0,
+    "range": [
+     0.014,
+     0.9353
+    ],
+    "s": 1.5
+   },
+   "frontier_low": {
+    "value": 0.0,
+    "effect": 0.00472,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9787
+    ],
+    "s": 6.4
+   },
+   "frontier_high": {
+    "value": 1.5,
+    "effect": 0.00289,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9864
+    ],
+    "s": 8.2
+   }
+  },
+  "layer_spread_scale": {
+   "print_low": {
+    "value": 0.0,
+    "effect": 0.00091,
+    "fall": 0.0,
+    "range": [
+     0.0128,
+     0.9352
+    ],
+    "s": 1.7
+   },
+   "print_high": {
+    "value": 3.0,
+    "effect": 0.01008,
+    "fall": 0.0,
+    "range": [
+     0.0167,
+     0.9027
+    ],
+    "s": 2.1
+   },
+   "frontier_low": {
+    "value": 0.0,
+    "effect": 0.0011,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9887
+    ],
+    "s": 7.6
+   },
+   "frontier_high": {
+    "value": 3.0,
+    "effect": 0.01039,
+    "fall": 0.0,
+    "range": [
+     0.0075,
+     0.9545
+    ],
+    "s": 6.2
+   }
+  },
+  "halation_scale": {
+   "print_low": {
+    "value": 0.0,
+    "effect": 0.0011,
+    "fall": 0.0,
+    "range": [
+     0.0132,
+     0.9331
+    ],
+    "s": 1.7
+   },
+   "print_high": {
+    "value": 8.0,
+    "effect": 0.0068,
+    "fall": 0.0,
+    "range": [
+     0.0173,
+     0.9253
+    ],
+    "s": 1.4
+   },
+   "frontier_low": {
+    "value": 0.0,
+    "effect": 0.00128,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9865
+    ],
+    "s": 6.3
+   },
+   "frontier_high": {
+    "value": 8.0,
+    "effect": 0.00707,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9703
+    ],
+    "s": 6.0
+   }
+  },
+  "halation_um": {
+   "print_low": {
+    "value": 20.0,
+    "effect": 0.00088,
+    "fall": 0.0,
+    "range": [
+     0.0134,
+     0.9324
+    ],
+    "s": 1.2
+   },
+   "print_high": {
+    "value": 500.0,
+    "effect": 0.00107,
+    "fall": 0.0,
+    "range": [
+     0.014,
+     0.9322
+    ],
+    "s": 1.7
+   },
+   "frontier_low": {
+    "value": 20.0,
+    "effect": 0.00099,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9847
+    ],
+    "s": 7.5
+   },
+   "frontier_high": {
+    "value": 500.0,
+    "effect": 0.00097,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.985
+    ],
+    "s": 6.3
+   }
+  },
+  "scene_flare": {
+   "print_high": {
+    "value": 0.02,
+    "effect": 0.02652,
+    "fall": 0.0,
+    "range": [
+     0.0285,
+     0.9321
+    ],
+    "s": 2.0
+   },
+   "frontier_high": {
+    "value": 0.02,
+    "effect": 0.01767,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9883
+    ],
+    "s": 6.2
+   }
+  },
+  "print_grey_shift": {
+   "print_low": {
+    "value": -0.3,
+    "effect": 0.11202,
+    "fall": 0.0,
+    "range": [
+     0.029,
+     0.9488
+    ],
+    "s": 2.2
+   },
+   "print_high": {
+    "value": 0.4,
+    "effect": 0.09898,
+    "fall": 0.0,
+    "range": [
+     0.0107,
+     0.9059
+    ],
+    "s": 1.4
+   }
+  },
+  "print_contrast": {
+   "print_low": {
+    "value": 0.5,
+    "effect": 0.07927,
+    "fall": 0.0,
+    "range": [
+     0.0576,
+     0.8258
+    ],
+    "s": 1.4
+   },
+   "print_high": {
+    "value": 1.3,
+    "effect": 0.06415,
+    "fall": 0.0,
+    "range": [
+     0.0052,
+     0.9676
+    ],
+    "s": 1.4
+   }
+  },
+  "print_flash": {
+   "print_low": {
+    "value": 0.0,
+    "effect": 0.00897,
+    "fall": 0.0,
+    "range": [
+     0.0139,
+     0.9417
+    ],
+    "s": 1.7
+   },
+   "print_high": {
+    "value": 0.2,
+    "effect": 0.07721,
+    "fall": 0.0,
+    "range": [
+     0.013,
+     0.8329
+    ],
+    "s": 3.0
+   }
+  },
+  "enlarger_flare": {
+   "print_low": {
+    "value": 0.0,
+    "effect": 0.00125,
+    "fall": 0.0,
+    "range": [
+     0.0136,
+     0.936
+    ],
+    "s": 2.9
+   },
+   "print_high": {
+    "value": 0.1,
+    "effect": 0.01126,
+    "fall": 0.0,
+    "range": [
+     0.0148,
+     0.9043
+    ],
+    "s": 4.2
+   }
+  },
+  "viewing_flare": {
+   "print_low": {
+    "value": 0.0,
+    "effect": 0.00647,
+    "fall": 0.0,
+    "range": [
+     0.0037,
+     0.9308
+    ],
+    "s": 2.8
+   },
+   "print_high": {
+    "value": 0.03,
+    "effect": 0.04479,
+    "fall": 0.0,
+    "range": [
+     0.0911,
+     0.9451
+    ],
+    "s": 2.3
+   }
+  },
+  "print_timing": {
+   "print_low": {
+    "value": 0.0,
+    "effect": 0.07394,
+    "fall": 0.0,
+    "range": [
+     0.0102,
+     0.9522
+    ],
+    "s": 6.3
+   }
+  },
+  "scan_density_aim": {
+   "frontier_low": {
+    "value": 0.4,
+    "effect": 0.15467,
+    "fall": 0.0,
+    "range": [
+     0.0334,
+     1.0
+    ],
+    "s": 55.0
+   },
+   "frontier_high": {
+    "value": 1.2,
+    "effect": 0.14149,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9021
+    ],
+    "s": 7.1
+   }
+  },
+  "scan_grade": {
+   "frontier_low": {
+    "value": 0.5,
+    "effect": 0.08947,
+    "fall": 0.0,
+    "range": [
+     0.1189,
+     0.8259
+    ],
+    "s": 6.7
+   },
+   "frontier_high": {
+    "value": 1.5,
+    "effect": 0.07054,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     1.0
+    ],
+    "s": 6.3
+   }
+  },
+  "scan_window_percentile": {
+   "frontier_low": {
+    "value": 90.0,
+    "effect": 0.02156,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9792
+    ],
+    "s": 5.7
+   },
+   "frontier_high": {
+    "value": 100.0,
+    "effect": 0.00562,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9789
+    ],
+    "s": 5.8
+   }
+  },
+  "scan_denoise": {
+   "frontier_low": {
+    "value": 0.0,
+    "effect": 0.00284,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9696
+    ],
+    "s": 7.4
+   },
+   "frontier_high": {
+    "value": 6.0,
+    "effect": 0.0031,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     1.0
+    ],
+    "s": 6.2
+   }
+  },
+  "scan_sharpen": {
+   "frontier_low": {
+    "value": 0.0,
+    "effect": 0.00457,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9678
+    ],
+    "s": 5.9
+   },
+   "frontier_high": {
+    "value": 1.0,
+    "effect": 0.00555,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     1.0
+    ],
+    "s": 6.7
+   }
+  },
+  "display_white": {
+   "print_low": {
+    "value": "paper",
+    "effect": 0.04176,
+    "fall": 0.0,
+    "range": [
+     0.0193,
+     0.9824
+    ],
+    "s": 1.5
+   }
+  },
+  "gamut_compress": {
+   "print_low": {
+    "value": false,
+    "effect": 0.00128,
+    "fall": 0.0,
+    "range": [
+     0.0,
+     0.9322
+    ],
+    "s": 1.3
+   }
+  }
+ },
+ "other_method": {
+  "print_grey_shift": 0.0,
+  "print_contrast": 0.0,
+  "print_flash": 0.0,
+  "enlarger_flare": 0.0,
+  "viewing_flare": 0.0,
+  "print_timing": 0.0,
+  "scan_density_aim": 0.0,
+  "scan_grade": 0.0,
+  "scan_window_percentile": 0.0,
+  "scan_denoise": 0.0,
+  "scan_sharpen": 0.0
+ },
+ "bad_value_error": "print_contrast = 9.0: outside its range 0.5 to 1.3",
+ "inhibition_high_end": {
+  "agfa_vista_100": "ok",
+  "fuji_c200": "ok",
+  "fuji_eterna_500": "ok",
+  "fuji_eterna_500_vivid": "ok",
+  "fuji_natura_1600": "ok",
+  "fuji_pro_160c": "ok",
+  "fuji_pro_160s": "ok",
+  "fuji_pro_400h": "ok",
+  "fuji_superia_reala": "ok",
+  "fuji_superia_xtra_400": "ok",
+  "kodak_5203": "ok",
+  "kodak_5206": "ok",
+  "kodak_5207": "ok",
+  "kodak_5213": "ok",
+  "kodak_5219": "ok",
+  "kodak_5247": "ok",
+  "kodak_5247_II": "ok",
+  "kodak_5248": "ok",
+  "kodak_5250": "ok",
+  "kodak_5277": "ok",
+  "kodak_5293": "ok",
+  "kodak_aerocolor": "ok",
+  "kodak_ektar_100": "ok",
+  "kodak_exr_5248": "ok",
+  "kodak_gold_200": "ok",
+  "kodak_portra_160": "ok",
+  "kodak_portra_400": "ok",
+  "kodak_portra_800": "ok",
+  "kodak_ultramax_400": "ok",
+  "kodak_vericolor_iii": "ok"
+ },
+ "model_load_with_cached_table_s": 0.49,
+ "failures": []
+}

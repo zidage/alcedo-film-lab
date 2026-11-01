@@ -92,6 +92,7 @@ Rule 'development_inhibition' (options inhibition_*, step P4, needs negative_rec
     a_i = F_i(log H_i - sum_j K_ij G * a_j)
 G is a Gaussian of the length inhibition_um in the image plane. F_i is computed so that the neutral ramp returns the published curve exactly: on a neutral, F_i maps log H - sum_j K_ij a_j(log H) to a_i(log H). So the published curve holds for a neutral and a large flat area, and a colour, where the layers differ, gets less inhibition from the layers that developed less.
 The total of K per layer comes from the published modulation transfer (fit_mtf.py of step P4). Its split between the layers has no source and is inferred. Solve: fixed-point steps from the uninhibited amounts.
+Not independent: the first step is the method of spektrafilm model/couplers.py, with no code or value from it (P6 report, section 5.2; THIRD_PARTY_NOTICES.md).
 
 Rule 'overexposed_negative' (option overexposure_stops, step P5, U35). The negative takes N more stops, and the printer lights take them back, so that a grey keeps its print value. The shadows move off the toe of the negative, and the highlights use the latitude of the negative.
 
@@ -218,7 +219,7 @@ class FilmOptions:
 
 # Review options after the darkroom comparison (README U19), for RAW input through product_input().
 # The input is product_input(): the default grade of the product comes before the film. So the chain has no interlayer
-# gain, and print_contrast takes back about the mid-grey slope of the grade (0.92 / 2^0.15 = 0.83).
+# gain, and print_contrast takes back about the mid-grey slope of the grade (0.92 / 2^0.15 = 0.83). The value 0.85 comes from a sweep with the chroma of spektrafilm output as the target (U18; P2 report, section 8.5), so it is not independent.
 DARKROOM = dict(uv_smooth=(0.006, 0.025), interlayer_gain=0.0, print_flash=0.02, print_contrast=0.85, viewing_flare=0.003, scatter_um=10.0,
                 halation=(0.03, 0.008, 0.0), adjacency_gain=0.25, enlarger_flare=0.01, gamut_compress=True)
 

@@ -4,7 +4,7 @@ Input: density above the film base (H, W, 3) from the APD read of a negative; fr
 Output: sRGB display code. Step: P6, README U61.
 
 Reuse (GPL-3, THIRD_PARTY_NOTICES.md): the form of the window, the print curve, the auto density and grade, and the lab scanner stage follow NegPy cce849ad, docs/PIPELINE.md sections 2, 3, and 6,
-written again here on NumPy. The table frontier.npz comes from NegPy, which derives it from the tables of the Fujifilm Frontier 350/370 software. It stays local (README U27).
+written again here on NumPy. The table frontier.npz comes from NegPy, which derives it from the tables of the Fujifilm Frontier 350/370 software. It stays out of this repository, and the product includes it (README U63).
 Not used: HyperTone (U61), cast removal (U36), the textured cell vote of the NegPy meters. The result is near NegPy and it is not the output of NegPy.
 """
 
@@ -27,6 +27,8 @@ D_MIN, D_MAX, TOE_SHARPNESS, SHOULDER_SHARPNESS, MIDTONE_GAMMA, GAMMA_WIDTH, SLO
 PRINT_DENSITY_AIM = 0.75
 ASSUMED_ANCHOR = 0.46
 WINDOW_PERCENTILE = 99.5
+CHROMA_DENOISE_SIGMA = 2.5
+SHARPEN_AMOUNT = 0.25
 
 
 def load_table(path: Path = FRONTIER_TABLE) -> tuple[np.ndarray, np.ndarray]:
@@ -71,10 +73,10 @@ def lab_to_linear(lab: np.ndarray) -> np.ndarray:
     return (t * WHITE_D65) @ XYZ_TO_ADOBE.T
 
 
-def scanner_stage(linear: np.ndarray) -> np.ndarray:
-    """NegPy section 6 at its defaults: chroma denoise 2.5, skin protection 0.5, unsharp mask 0.25 with radius 1 and masking 0.1, on the render buffer."""
+def scanner_stage(linear: np.ndarray, denoise_sigma: float = CHROMA_DENOISE_SIGMA, sharpen: float = SHARPEN_AMOUNT) -> np.ndarray:
+    """NegPy section 6: chroma denoise 2.5, skin protection 0.5, unsharp mask 0.25 with radius 1 and masking 0.1, on the render buffer. The defaults are those of NegPy."""
     lab = linear_to_lab(linear)
-    sigma = 2.5
+    sigma = denoise_sigma
     low = np.stack([gaussian_filter(lab[..., k], sigma, mode="nearest") for k in (1, 2)], axis=-1)
     gradient = np.hypot(*np.gradient(low[..., 0])) + np.hypot(*np.gradient(low[..., 1]))
     keep = smoothstep(1.0, 2.5, sigma * gradient)[..., None]
@@ -89,26 +91,26 @@ def scanner_stage(linear: np.ndarray) -> np.ndarray:
     limited = chroma + skin * (knee - chroma)
     ab = ab * (limited / np.maximum(chroma, 1e-6))[..., None]
     detail = lightness - gaussian_filter(lightness, 1.0, mode="nearest")
-    gain = 0.25 * 2.5 * smoothstep(0.25, 0.33, np.abs(detail)) * smoothstep(0.5, 1.0, np.hypot(*np.gradient(lightness))) * (1.0 / 3.0 + 2.0 / 3.0 * smoothstep(0.0, 35.0, lightness))
+    gain = sharpen * 2.5 * smoothstep(0.25, 0.33, np.abs(detail)) * smoothstep(0.5, 1.0, np.hypot(*np.gradient(lightness))) * (1.0 / 3.0 + 2.0 / 3.0 * smoothstep(0.0, 35.0, lightness))
     sharp = np.clip(lightness + detail * gain, minimum_filter(lightness, 3) - 2.0, maximum_filter(lightness, 3) + 1.0)
     return lab_to_linear(np.concatenate([sharp[..., None], ab], axis=-1))
 
 
-def print_density(delta: np.ndarray) -> np.ndarray:
-    """Density above base to the density of the scanner print curve. The frame window and the two meters are statistics of this frame."""
+def print_density(delta: np.ndarray, density_aim: float = PRINT_DENSITY_AIM, grade: float = 1.0, window_percentile: float = WINDOW_PERCENTILE) -> np.ndarray:
+    """Density above base to the density of the scanner print curve. The frame window and the two meters are statistics of this frame. grade scales the slope of the auto grade, and the limits of the slope stay."""
     luma = delta @ DENSITY_LUMA
-    dense = np.maximum(delta[luma >= np.percentile(luma, WINDOW_PERCENTILE)].mean(axis=0), 0.3)
+    dense = np.maximum(delta[luma >= np.percentile(luma, window_percentile)].mean(axis=0), 0.3)
     x = 1.0 - delta / dense
     density_range = float(dense.mean())
     texture = max(float(np.percentile(luma, 90.0) - np.percentile(luma, 10.0)), 0.1)
     grade_range = 0.85 * density_range * min(0.6 + 0.4 * 0.9 / texture, 1.2 * 0.9 / texture)
-    slope = float(np.clip(2.9 * np.clip(grade_range, 0.3, 3.5) / 1.15 * SLOPE_GAIN, 2.0, 10.0))
+    slope = float(np.clip(2.9 * np.clip(grade_range, 0.3, 3.5) / 1.15 * SLOPE_GAIN * grade, 2.0, 10.0))
     mean_x = x.mean(axis=-1)
     low, high = np.percentile(mean_x, (5.0, 95.0))
     trimmed = mean_x[(mean_x >= low) & (mean_x <= high)]
     meter = 0.5 * (float(trimmed.mean()) + 0.5 * (low + high))
     anchor = ASSUMED_ANCHOR + float(np.clip(0.2 * (meter - ASSUMED_ANCHOR), -0.12, 0.12))
-    v1_aim = D_MAX - inverse_softplus(TOE_SHARPNESS * (D_MAX - PRINT_DENSITY_AIM)) / TOE_SHARPNESS
+    v1_aim = D_MAX - inverse_softplus(TOE_SHARPNESS * (D_MAX - density_aim)) / TOE_SHARPNESS
     v_aim = D_MIN + inverse_softplus(SHOULDER_SHARPNESS * (v1_aim - D_MIN)) / SHOULDER_SHARPNESS
     lo, up = v_aim - MIDTONE_GAMMA * GAMMA_WIDTH, v_aim + MIDTONE_GAMMA * GAMMA_WIDTH
     for _ in range(60):
@@ -121,15 +123,16 @@ def print_density(delta: np.ndarray) -> np.ndarray:
     return D_MAX - softplus(TOE_SHARPNESS * (D_MAX - v)) / TOE_SHARPNESS
 
 
-def scan_to_display(delta: np.ndarray, table: tuple[np.ndarray, np.ndarray], lab_stage: bool = True) -> np.ndarray:
+def scan_to_display(delta: np.ndarray, table: tuple[np.ndarray, np.ndarray], lab_stage: bool = True, density_aim: float = PRINT_DENSITY_AIM, grade: float = 1.0, window_percentile: float = WINDOW_PERCENTILE,
+                    denoise_sigma: float = CHROMA_DENOISE_SIGMA, sharpen: float = SHARPEN_AMOUNT) -> np.ndarray:
     """Density above base (H, W, 3) to sRGB display code."""
     lut, e_max = table
     nodes = lut.shape[0] - 1
     scale = 10.0 ** -D_MIN
-    linear = scale * table_lookup(lut, np.clip(print_density(delta) - D_MIN, 0.0, e_max) / e_max * nodes)
+    linear = scale * table_lookup(lut, np.clip(print_density(delta, density_aim, grade, window_percentile) - D_MIN, 0.0, e_max) / e_max * nodes)
     black = scale * table_lookup(lut, np.minimum(np.full((1, 1, 3), D_MAX - D_MIN), e_max) / e_max * nodes)[0, 0]
     black_luminance = float(black @ ADOBE_TO_XYZ[1])
     linear = np.clip((linear - black_luminance) / (1.0 - black_luminance), 0.0, None)
     if lab_stage:
-        linear = scanner_stage(linear)
+        linear = scanner_stage(linear, denoise_sigma, sharpen)
     return srgb_encode(np.clip(linear @ ADOBE_TO_REC709.T, 0.0, 1.0))

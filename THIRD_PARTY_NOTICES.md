@@ -55,8 +55,8 @@ SOFTWARE.
   `frontier`, written again on NumPy from `docs/PIPELINE.md` and `negpy/features/exposure/`.
 - Read at run time, not in this repository: `negpy/features/exposure/print_luts/frontier.npz`. Its
   `NOTICE.md` states that this table derives from the tables of the Fujifilm Frontier 350/370 A1
-  system software v7.6. The license review of vendor data is open (README U27). The release must
-  state that this is a style simulation with no endorsement from any manufacturer.
+  system software v7.6. The user decided that the product includes this table (README U63). The table
+  has no license from Fujifilm. The release must credit NegPy and state that this is a style simulation with no endorsement from any manufacturer.
 
 ## ACES (aces-dev)
 
@@ -125,7 +125,10 @@ P2 runs spektrafilm (`3bb2c2d2`, GPLv3; profiles CC BY-SA 4.0) and the Fotufilm 
 Apache-2.0; profiles CC BY-SA 4.0) as external programs to compare appearance (README U18). This
 repository contains no code, table, or profile from them. The P2 exposure target, display white
 choice, and interlayer gain were selected by comparison with spektrafilm output, so that appearance is
-not an independent result. P2 test portraits come from the free RAW collection of
+not an independent result. Of these, only the display white still acts in P6. Also not independent of
+spektrafilm in P6: `CINE_GREY_STATUS_A` and the default `print_contrast`, selected by comparison with its
+output; and rule `development_inhibition`, whose first step is the method of spektrafilm
+`model/couplers.py`, written for this lab with values fitted here. See the P6 report, section 5.2. P2 test portraits come from the free RAW collection of
 [Signature Edits](https://www.signatureedits.com/free-raw-photos/) under its
 [license](https://www.signatureedits.com/free-raw-license-terms/). The photos stay local and are not
 redistributed here; each photo stays the work of its photographer.

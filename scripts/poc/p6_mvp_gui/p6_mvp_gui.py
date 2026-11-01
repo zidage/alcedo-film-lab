@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 from PySide6.QtCore import QObject, Qt, QThread, QTimer, Signal, Slot
 from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox, QFileDialog, QFormLayout, QHBoxLayout, QLabel, QMainWindow, QPushButton, QScrollArea, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox, QFileDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QMainWindow, QPushButton, QScrollArea, QSpinBox, QVBoxLayout, QWidget)
 
 import mvp_pipeline as mp
 
@@ -25,15 +25,15 @@ class RenderWorker(QObject):
     def __init__(self) -> None:
         super().__init__()
         self.pipeline = mp.Pipeline()
-        self._source: tuple[Path, np.ndarray, dict] | None = None
+        self._source: tuple[tuple[Path, int], np.ndarray, dict] | None = None
 
-    @Slot(object, object)
-    def render(self, path: Path, settings: mp.RenderSettings) -> None:
+    @Slot(object, object, int)
+    def render(self, path: Path, settings: mp.RenderSettings, long_edge: int) -> None:
         try:
             colorimetry = self.pipeline.colorimetry(settings) if settings.validate() is None else None
-            if self._source is None or self._source[0] != path:
-                ap1, decode = mp.decode_raw(path, colorimetry)
-                self._source = (path, ap1, decode)
+            if self._source is None or self._source[0] != (path, long_edge):
+                ap1, decode = mp.decode_raw(path, colorimetry, long_edge)
+                self._source = ((path, long_edge), ap1, decode)
             _, ap1, decode = self._source
             image = self.pipeline.render_array(ap1, settings)
             self.finished.emit(image, {"input": str(path), "settings": mp.asdict(settings), **decode})
@@ -42,7 +42,7 @@ class RenderWorker(QObject):
 
 
 class MainWindow(QMainWindow):
-    request = Signal(object, object)
+    request = Signal(object, object, int)
 
     def __init__(self) -> None:
         super().__init__()
@@ -66,14 +66,35 @@ class MainWindow(QMainWindow):
         self.stage = QCheckBox("Lab scanner stage")
         self.stage.setChecked(defaults.scanner_stage)
         self.stage.toggled.connect(self.schedule)
+        self.long_edge = QSpinBox()
+        self.long_edge.setRange(512, 16000)
+        self.long_edge.setSingleStep(512)
+        self.long_edge.setValue(mp.DEFAULT_LONG_EDGE)
+        self.long_edge.setKeyboardTracking(False)
+        self.long_edge.valueChanged.connect(self.schedule)
+        self.display_white = self._combo({"reflector": {"name": "Perfect reflector"}, "paper": {"name": "Paper"}}, defaults.display_white)
+        self.gamut = QCheckBox("Display gamut compression")
+        self.gamut.setChecked(defaults.gamut_compress)
+        self.gamut.toggled.connect(self.schedule)
+        self.controls: dict[str, QDoubleSpinBox] = {}
+        groups = {}
+        for control in mp.CONTROLS:
+            spin = self._spin(control.low, control.high, getattr(defaults, control.name), control.step, control.decimals)
+            spin.setToolTip(control.note)
+            self.controls[control.name] = spin
+            groups.setdefault(control.group, QFormLayout()).addRow(control.label, spin)
+        groups["Print"].addRow("Display white", self.display_white)
+        groups["Print"].addRow("", self.gamut)
         form = QFormLayout()
         for label, widget in (("Negative", self.negative), ("Method", self.method), ("Print material", self.print_material), ("Scene light", self.light), ("Spectral prior", self.prior),
-                              ("Exposure (EV)", self.exposure), ("Contrast", self.contrast), ("Saturation", self.saturation), ("", self.stage)):
+                              ("Exposure (EV)", self.exposure), ("Contrast", self.contrast), ("Saturation", self.saturation), ("", self.stage), ("Long edge (pixels)", self.long_edge)):
             form.addRow(label, widget)
         open_button = QPushButton("Open RAW...")
         open_button.clicked.connect(self.open_raw)
         export_button = QPushButton("Export...")
         export_button.clicked.connect(self.export)
+        reset_button = QPushButton("Reset the controls below")
+        reset_button.clicked.connect(self.reset_controls)
         self.status = QLabel("Open a RAW file. A first use of a material builds its table.")
         self.status.setWordWrap(True)
         panel = QVBoxLayout()
@@ -81,16 +102,26 @@ class MainWindow(QMainWindow):
         panel.addLayout(form)
         panel.addWidget(export_button)
         panel.addWidget(self.status)
+        panel.addWidget(reset_button)
+        self.groups = {}
+        for name, layout in groups.items():
+            self.groups[name] = QGroupBox(name)
+            self.groups[name].setLayout(layout)
+            panel.addWidget(self.groups[name])
         panel.addStretch(1)
         side = QWidget()
         side.setLayout(panel)
-        side.setFixedWidth(340)
+        side_scroll = QScrollArea()
+        side_scroll.setWidget(side)
+        side_scroll.setWidgetResizable(True)
+        side_scroll.setFixedWidth(400)
+        side_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.view = QLabel(alignment=Qt.AlignmentFlag.AlignCenter)
         scroll = QScrollArea()
         scroll.setWidget(self.view)
         scroll.setWidgetResizable(True)
         root = QHBoxLayout()
-        root.addWidget(side)
+        root.addWidget(side_scroll)
         root.addWidget(scroll, 1)
         central = QWidget()
         central.setLayout(root)
@@ -106,14 +137,17 @@ class MainWindow(QMainWindow):
 
     def _combo(self, entries: dict, current: str) -> QComboBox:
         box = QComboBox()
+        box.setSizeAdjustPolicy(QComboBox.SizeAdjustPolicy.AdjustToMinimumContentsLengthWithIcon)
+        box.setMinimumContentsLength(16)
         for key, entry in entries.items():
             box.addItem(entry["name"], key)
         box.setCurrentIndex(box.findData(current))
         box.currentIndexChanged.connect(self.schedule)
         return box
 
-    def _spin(self, low: float, high: float, value: float, step: float) -> QDoubleSpinBox:
+    def _spin(self, low: float, high: float, value: float, step: float, decimals: int = 2) -> QDoubleSpinBox:
         spin = QDoubleSpinBox()
+        spin.setDecimals(decimals)
         spin.setRange(low, high)
         spin.setSingleStep(step)
         spin.setValue(value)
@@ -123,16 +157,33 @@ class MainWindow(QMainWindow):
 
     def settings(self) -> mp.RenderSettings:
         return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
-                                 spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(), scanner_stage=self.stage.isChecked())
+                                 spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(), scanner_stage=self.stage.isChecked(),
+                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), **{name: spin.value() for name, spin in self.controls.items()})
+
+    @Slot()
+    def reset_controls(self) -> None:
+        defaults = mp.RenderSettings()
+        widgets = [*self.controls.values(), self.display_white, self.gamut]
+        for widget in widgets:
+            widget.blockSignals(True)
+        for name, spin in self.controls.items():
+            spin.setValue(getattr(defaults, name))
+        self.display_white.setCurrentIndex(self.display_white.findData(defaults.display_white))
+        self.gamut.setChecked(defaults.gamut_compress)
+        for widget in widgets:
+            widget.blockSignals(False)
+        self.schedule()
 
     def _update_visibility(self) -> None:
         scan = self.method.currentData() == "frontier"
         self.print_material.setEnabled(not scan)
         self.stage.setEnabled(scan)
+        self.groups["Print"].setEnabled(not scan)
+        self.groups["Scan"].setEnabled(scan)
 
     @Slot()
     def schedule(self) -> None:
-        if not hasattr(self, "stage") or not hasattr(self, "worker"):
+        if not hasattr(self, "worker"):
             return
         self._update_visibility()
         if self.path is None:
@@ -142,7 +193,7 @@ class MainWindow(QMainWindow):
             return
         self.busy = True
         self.status.setText("Rendering...")
-        self.request.emit(self.path, self.settings())
+        self.request.emit(self.path, self.settings(), self.long_edge.value())
 
     @Slot()
     def open_raw(self) -> None:

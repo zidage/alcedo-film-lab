@@ -8,3 +8,4 @@ pillow>=11
 tifffile>=2026.1
 opencolorio>=2.4
 pyside6-essentials>=6.10
+openpyxl>=3.1

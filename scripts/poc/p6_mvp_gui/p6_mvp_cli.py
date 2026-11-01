@@ -1,7 +1,7 @@
 """Command line of the Python MVP: one RAW file to one TIFF or JPEG, by the print method or the Frontier scan method.
 
 Input: a RAW file; the options below. Output: the image and a parameter file <output>.json. Step: P6, README U61.
-Usage: p6_mvp_cli.py INPUT OUTPUT [--negative NAME] [--method print|frontier] [--print-material NAME] [--scene-light NAME] [--spectral-prior NAME] [--list].
+Usage: p6_mvp_cli.py INPUT OUTPUT [--negative NAME] [--method print|frontier] [--print-material NAME] [--scene-light NAME] [--spectral-prior NAME] [--list], and one option per entry of mvp_pipeline.CONTROLS, for example --print-contrast 1.0.
 """
 
 from __future__ import annotations
@@ -28,6 +28,10 @@ def main() -> int:
     parser.add_argument("--saturation", type=float, default=defaults.saturation)
     parser.add_argument("--no-scanner-stage", action="store_true", help="Frontier method: no chroma denoise, skin protection, or unsharp mask.")
     parser.add_argument("--long-edge", type=int, default=mp.DEFAULT_LONG_EDGE)
+    for control in mp.CONTROLS:
+        parser.add_argument("--" + control.name.replace("_", "-"), type=float, default=getattr(defaults, control.name), help=f"{control.note} Range {control.low} to {control.high}. Method: {', '.join(control.methods)}.")
+    parser.add_argument("--display-white", default=defaults.display_white, choices=mp.DISPLAY_WHITES, help="Print method: 'reflector' keeps the paper base, and 'paper' maps the paper to display white.")
+    parser.add_argument("--no-gamut-compress", action="store_true", help="Print method: clip in place of rule rgc_style_display_compression.")
     parser.add_argument("--list", action="store_true", help="List the materials and stop.")
     args = parser.parse_args()
     if args.list:
@@ -42,7 +46,8 @@ def main() -> int:
     if args.input is None or args.output is None:
         parser.error("INPUT and OUTPUT are necessary")
     settings = mp.RenderSettings(negative=args.negative, method=args.method, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior,
-                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, scanner_stage=not args.no_scanner_stage)
+                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, scanner_stage=not args.no_scanner_stage, display_white=args.display_white, gamut_compress=not args.no_gamut_compress,
+                                 **{control.name: getattr(args, control.name) for control in mp.CONTROLS})
     image, record = mp.Pipeline().render_file(args.input, settings, args.long_edge)
     for path in mp.write_outputs(image, record, args.output):
         print(path)
