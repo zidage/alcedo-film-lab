@@ -1,0 +1,73 @@
+{
+ "schema_version": 1,
+ "manifest": {
+  "schema_version": 1,
+  "lab_commit": "40cee4138c8f1499593a2c62451e8337f7e12643",
+  "resources": {
+   "stock_bundle": {
+    "file": "film_stock_bundle.bin",
+    "bytes": 2737224,
+    "sha256": "a3f271f3b872ee6cace15912f726ee3ac1453834120c908ef16f28610606dd32"
+   },
+   "print_setup": {
+    "file": "film_print_setup.bin",
+    "bytes": 166936,
+    "sha256": "fafe7e71f11c0d89daae8cf15f0b1c5d32c7aae16dde54eabaa17523d9b67ef3"
+   },
+   "reflectance_table": {
+    "file": "film_reflectance_table.bin",
+    "bytes": 70926472,
+    "sha256": "55390cb27dd6664bb43b956e28aa0ac4634d0523ded9efaac9e271ed45921eed"
+   }
+  }
+ },
+ "selections": {
+  "negatives": 30,
+  "print_materials": 18,
+  "scene_lights": 11
+ },
+ "setup_difference_limit": 1e-09,
+ "setup_difference": {
+  "kodak_exr_5248 on fuji_ca_dpII on daylight": 0.0,
+  "kodak_5207 on fuji_3523XD on reference": 0.0,
+  "fuji_c200 on fujiflex_old on led": 0.0,
+  "kodak_5203 on fuji_ca_pdII on tungsten": 0.0,
+  "kodak_5219 on kodak_supra_endura on street_sodium": 0.0,
+  "fuji_eterna_500 on fuji_ca_pdII on interior_warm": 0.0,
+  "agfa_vista_100 on kodak_5383 on reference": 1.7763568394002505e-15,
+  "kodak_5247 on kodak_5384 on daylight": 1.7763568394002505e-15,
+  "kodak_5207 on kodak_2383 on reference": 0.0,
+  "kodak_portra_400 on kodak_endura_premier on daylight": 0.0,
+  "fuji_eterna_500 on kodak_2383 on street_mixed": 2.220446049250313e-16
+ },
+ "expected": {
+  "kodak_5207__kodak_2383__reference.bin": {
+   "bytes": 7476128,
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 138032,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   }
+  },
+  "kodak_portra_400__kodak_endura_premier__daylight.bin": {
+   "bytes": 7476144,
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 149214,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   }
+  },
+  "fuji_eterna_500__kodak_2383__street_mixed.bin": {
+   "bytes": 7476136,
+   "table_counts": {
+    "negative_not_reached": 0,
+    "print_not_reached": 118935,
+    "paper_exposure_outside_curve": 0,
+    "nodes": 274625
+   }
+  }
+ },
+ "seconds": 111.6
+}
