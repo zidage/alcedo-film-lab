@@ -182,9 +182,27 @@ Rule `grey_off_the_curve` of `fit_stock_physics.py`, with the limit set before i
 | --- | --- | --- |
 | `film_stock_bundle.bin` | 30 negatives, 18 print materials, the scene spectra, and the common values | 2.7 MB |
 | `film_print_setup.bin` | Printer balance of each of the 5940 selections, layer gain, printing gain, aim, display matrix | 167 KB |
-| `film_reflectance_table.bin` | `reflectance_over_uv_light`, 192^2 x 481 float32 | 70.9 MB |
+| `film_reflectance_table.bin` | Compact form of `reflectance_over_uv_light` (rule `compact_reflectance_table`) | 25.1 MB |
 
 The product has fixed hidden controls, so these scalar values are constants. Rule `setup_without_tables` calculates them with the methods of `FilmPreview` with no table build, so all selections take about 2 minutes. The script builds the complete `FilmPreview` for 11 selections and compares: the largest difference is 1.8e-15, against a limit of 1e-9. A value that the bundle holds once must be identical in each selection that uses it, or the script stops.
+
+Rule `compact_reflectance_table` (user decision of 2026-11-01): the complete table of 70.9 MB took 38.7 MB after xz, because the low mantissa bits of a float32 have almost no repeated patterns. The file now holds 346 of 481 wavelengths (360 to 705 nm, where a weight of a negative is not zero), only the u'v' nodes that a read can reach after rule `spectral_locus_projection`, and 12 mantissa bits. Each byte of a float32 is in its own plane. The steps, on this table alone, with xz:
+
+| Form | After xz | Largest relative u'v' difference |
+| --- | --- | --- |
+| Complete | 38.7 MB | 0 |
+| Byte planes | 29.7 MB | 0 |
+| Also only the used wavelengths | 18.8 MB | 0 |
+| Also only the nodes that a read can reach | 14.2 MB | 0 on these nodes |
+| Also 16 mantissa bits | 9.0 MB | 7.5e-6 |
+| **Also 12 mantissa bits (shipped)** | **5.6 MB** | **1.1e-4** |
+| Also 8 mantissa bits | 3.2 MB | 1.8e-3 |
+
+The sizes of this table are from a probe with zeros at the removed nodes; the size of the shipped file is in the results.
+
+Two other forms do not work on this table. Wavelength knots of 2, 5, or 10 nm with linear interpolation, and a linear 16 bit scale, give u'v' errors above 1, because the table holds values up to 2.8e8. The largest of these is at 364 nm, near the end of the range of the reference light. The cause is an inference, and this step did not check it.
+
+Checks of the shipped form, with the limits written before the first run: on 11 selections the largest relative u'v' difference is 1.2e-4 (limit 2e-4). The removed nodes hold NaN, and the layer exposure stays finite on 3 photos, a ramp, 512^2 random colours, and the edge of the hull. On 6 selections the final sRGB differs by at most 0.0054 of an 8 bit code (limit 0.5). A new stock with a weight outside the wavelength band needs a new file; the product stops with an error that names the stock.
 
 ## 6. Not measured
 

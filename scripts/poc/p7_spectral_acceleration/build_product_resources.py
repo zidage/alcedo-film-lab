@@ -9,7 +9,9 @@ Each resource is one array file: 8 bytes 'ALCDFILM', a little-endian uint64 head
 | manifest.json | Schema version, lab commit, and the file name, size, and SHA-256 of each resource |
 | film_stock_bundle.bin | Per negative, per paper, each scene spectrum, and the values that are the same for all stocks. The header holds the catalog names. |
 | film_print_setup.bin | The scalar values of each film, print material, and scene light: printer balance, layer gain, printing gain, aim, display matrix |
-| film_reflectance_table.bin | reflectance_over_uv_light, 192^2 x 481 float32 |
+| film_reflectance_table.bin | The compact form of reflectance_over_uv_light, by rule 'compact_reflectance_table' |
+
+Rule 'compact_reflectance_table' (user decision of 2026-11-01): the file holds only the wavelengths where a weight of a negative is not zero, only the u'v' nodes that a read can reach after rule 'spectral_locus_projection', and values rounded to 12 mantissa bits. Each byte of a float32 is in its own plane, so that the compression of the installer finds the repeated high bytes. A node that a read can reach: it is inside the hull, or it is 1 node from such a node, or it is a corner of a cell that the edge of the hull crosses.
 
 The hidden controls of the product have their default values (Film Print DRT Plan, section 1), so each selection has fixed scalar values. Rule 'setup_without_tables': the values come from the methods of FilmPreview with no table build. The checks of this script build the complete FilmPreview for some selections and compare.
 
@@ -17,6 +19,9 @@ The hidden controls of the product have their default values (Film Print DRT Pla
 | Setup | Each value of the print setup and of the bundle against the complete FilmPreview, 3 expected selections and 8 random ones: largest absolute difference | 1e-9 |
 | Shared values | A value that the bundle holds once (per negative, per paper, per pair) is the same in each selection that uses it: largest absolute difference | 0 |
 | Print table | The expected table is the table of the complete FilmPreview, and it is finite | finite |
+| Compact table, u'v' | The table from the compact form against the complete table, on the nodes that it keeps, each of the selections of the Setup check: largest relative difference | 2e-4 |
+| Compact table, nodes | The removed nodes hold NaN. Layer exposure of photos, a ramp, random colours, and the hull edge, for the same selections, is finite | finite |
+| Compact table, display | Final sRGB against the complete table, on the images of the check above except the hull edge, 3 expected and 3 random selections, 8 bit code, per pixel the largest channel difference | largest at most 0.5 |
 """
 
 from __future__ import annotations
@@ -33,6 +38,8 @@ from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
+from scipy.ndimage import binary_dilation
+from scipy.spatial import ConvexHull
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p6_mvp_gui"))
@@ -48,6 +55,11 @@ RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources
 EXPECTED_SELECTIONS = (("kodak_5207", "kodak_2383", "reference"), ("kodak_portra_400", "kodak_endura_premier", "daylight"), ("fuji_eterna_500", "kodak_2383", "street_mixed"))
 RANDOM_CHECKS = 8
 SETUP_LIMIT = 1e-9
+MANTISSA_BITS = 12
+UV_RELATIVE_LIMIT = 2e-4
+DISPLAY_CODE_LIMIT = 0.5
+RENDER_PHOTOS = {"se188": "p3/input/se188", "_DSC8148": "baseline/night/_DSC8148_ap1", "digital_ap1": "p5/real_5207/pair/digital_ap1"}
+RENDER_RANDOM_SELECTIONS = 3
 
 
 def write_arrays(path: Path, arrays: dict[str, np.ndarray], metadata: dict | None = None) -> None:
@@ -265,6 +277,110 @@ def check_setup(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], met
     return model, largest
 
 
+def hull_edge_uv(c: sr.Colorimetry) -> np.ndarray:
+    """Dense points on the edge of the hull of LocusProjection, in u'v'. A line in (X/Y, Z/Y) stays a line in u'v'."""
+    columns = c.a_ref_knots.T
+    columns = columns[columns[:, 1] > 0]
+    points = np.stack([columns[:, 0] / columns[:, 1], columns[:, 2] / columns[:, 1]], axis=1)
+    corners = points[ConvexHull(points).vertices]
+    denominator = corners[:, 0] + 15.0 + 3.0 * corners[:, 1]
+    corners_uv = np.stack([4.0 * corners[:, 0] / denominator, 9.0 / denominator], axis=1)
+    shares = np.linspace(0.0, 1.0, 2000, endpoint=False)[None, :, None]
+    return (corners_uv[:, None, :] * (1.0 - shares) + np.roll(corners_uv, -1, axis=0)[:, None, :] * shares).reshape(-1, 2)
+
+
+def reachable_nodes(model: fp.FilmPreview, nodes: int) -> np.ndarray:
+    """Rule 'compact_reflectance_table': the (nodes, nodes) mask of the nodes that a bilinear read can reach."""
+    projection = sr.LocusProjection(model.c)
+    u, v = fp.FilmPreview.uv_axes()
+    uu, vv = np.meshgrid(u, np.maximum(v, 1e-3), indexing="ij")
+    p = np.stack([9.0 * uu / (4.0 * vv), (12.0 - 3.0 * uu - 20.0 * vv) / (4.0 * vv)], axis=-1)
+    room = -(projection.offsets + projection.normals @ projection.white)
+    inside = np.all((p - projection.white) @ projection.normals.T <= room, axis=-1)
+    mask = binary_dilation(inside, structure=np.ones((3, 3), dtype=bool))
+    edge = hull_edge_uv(model.c)
+    cell = np.floor(edge / np.array(fp.UV_MAX) * (nodes - 1)).astype(np.int64)
+    for du in (0, 1):
+        for dv in (0, 1):
+            mask[np.clip(cell[:, 0] + du, 0, nodes - 1), np.clip(cell[:, 1] + dv, 0, nodes - 1)] = True
+    return mask
+
+
+def round_mantissa(values: np.ndarray, bits: int) -> np.ndarray:
+    """Round to the nearest value with this count of mantissa bits. A carry moves into the exponent, which is correct for a positive value."""
+    if (values < 0.0).any() or not np.isfinite(values).all():
+        raise ValueError("the reflectance table must be finite and not negative")
+    drop = 23 - bits
+    raw = values.view(np.uint32)
+    rounded = ((raw + np.uint32(1 << (drop - 1))) & np.uint32((0xFFFFFFFF << drop) & 0xFFFFFFFF)).view(np.float32)
+    return np.where(values == 0.0, np.float32(0.0), rounded)
+
+
+def compact_arrays(table: np.ndarray, bundle: dict[str, np.ndarray], mask: np.ndarray) -> tuple[dict[str, np.ndarray], np.ndarray]:
+    """The arrays of the file and the dense table that they mean, with zero at each removed value."""
+    weights = np.stack([value for name, value in bundle.items() if name.endswith("/exposure_weights")])
+    used = np.flatnonzero(np.any(weights != 0.0, axis=(0, 1)))
+    first, count = int(used[0]), int(used[-1] - used[0] + 1)
+    rows = round_mantissa(table[mask][:, first:first + count], MANTISSA_BITS)
+    data = rows.astype("<f4").tobytes()
+    planes = np.frombuffer(b"".join(data[plane::4] for plane in range(4)), dtype=np.uint8).reshape(4, -1)
+    dense = np.zeros_like(table)
+    dense[mask, first:first + count] = rows
+    arrays = {"byte_planes": planes, "node_index": np.flatnonzero(mask.ravel()).astype(np.int32), "uv_nodes": np.array(table.shape[0], dtype=np.int32), "first_wavelength": np.array(first, dtype=np.int32), "wavelength_count": np.array(count, dtype=np.int32)}
+    return arrays, dense
+
+
+def uv_of(model: fp.FilmPreview, dense: np.ndarray) -> np.ndarray:
+    return model.c.layer_exposure(dense.reshape(-1, dense.shape[-1]).astype(np.float64) * model.scene_spectrum[None, :]).reshape(fp.UV_NODES, fp.UV_NODES, 3)
+
+
+def check_images(c: sr.Colorimetry, default: mp.RenderSettings) -> tuple[dict[str, np.ndarray], np.ndarray]:
+    """The images of check 'Compact table, display', and the hull edge as one more image for check 'Compact table, nodes'."""
+    images = {}
+    for name, path in RENDER_PHOTOS.items():
+        photo = np.ascontiguousarray(np.load(REPO_ROOT / "build" / "tmp" / f"{path}.npy"), dtype=np.float32)
+        images[name] = np.ascontiguousarray(fp.fk.product_grade(photo, float(default.exposure_ev), float(default.contrast), float(default.saturation)), dtype=np.float32)
+    images["neutral_ramp"] = np.outer(0.18 * 2.0 ** np.linspace(-5.0, 5.0, 241), np.ones(3)).astype(np.float32)[None]
+    colours = np.random.default_rng(20261101)
+    images["random_colours"] = (colours.uniform(-0.5, 1.0, (512, 512, 3)) * 2.0 ** colours.uniform(-6.0, 5.0, (512, 512, 1))).astype(np.float32)
+    uv = hull_edge_uv(c)
+    y = np.ones(len(uv))
+    xyz = np.stack([9.0 * uv[:, 0] / (4.0 * uv[:, 1]), y, (12.0 - 3.0 * uv[:, 0] - 20.0 * uv[:, 1]) / (4.0 * uv[:, 1])], axis=1)
+    return images, (xyz @ c.xyz_to_ap1.T).astype(np.float32)[None]
+
+
+def check_compact(model: fp.FilmPreview, dense: np.ndarray, mask: np.ndarray, images: dict[str, np.ndarray], edge: np.ndarray, render: bool) -> dict:
+    """The three checks of the compact table on one selection. A failed limit stops the script."""
+    complete_uv = np.asarray(model.uv_table, dtype=np.float64)
+    compact_uv = uv_of(model, dense)
+    scale = np.maximum(np.abs(complete_uv), np.abs(compact_uv))[mask]
+    relative = float((np.abs(complete_uv - compact_uv)[mask] / np.where(scale > 0.0, scale, 1.0)).max())
+    if relative > UV_RELATIVE_LIMIT:
+        raise ValueError(f"the compact u'v' table differs by {relative:.3g}")
+    marked = compact_uv.astype(np.float32)
+    marked[~mask] = np.nan
+    projection = model._projection()
+    for name, image in {**images, "hull_edge": edge}.items():
+        q = fp.fk.layer_exposure(image, 0.0, model.c.ap1_to_xyz, projection.normals, model._room, projection.white, projection.LOCUS_INSET, marked, np.array(fp.UV_MAX), model.layer_gain)[0]
+        if not np.isfinite(q).all():
+            raise ValueError(f"{name}: a read reached a removed node of the compact table")
+    result = {"uv_relative": relative}
+    if render:
+        complete_f32 = model._uv_f32
+        codes = {}
+        for name, image in images.items():
+            model._uv_f32 = complete_f32
+            reference = np.asarray(model.render(image)[0], dtype=np.float64)
+            model._uv_f32 = marked
+            candidate = np.asarray(model.render(image)[0], dtype=np.float64)
+            codes[name] = float((np.abs(reference - candidate) * 255.0).max())
+        model._uv_f32 = complete_f32
+        result["display_largest_code"] = codes
+        if not max(codes.values()) <= DISPLAY_CODE_LIMIT:
+            raise ValueError(f"the compact table changes the display by {codes}")
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--output", type=Path, default=OUTPUT)
@@ -276,30 +392,38 @@ def main() -> int:
     write_arrays(resources / "film_stock_bundle.bin", bundle, metadata)
     write_arrays(resources / "film_print_setup.bin", setup)
     reflectance = models[0]._final_reflectance_table().astype(np.float32).reshape(fp.UV_NODES, fp.UV_NODES, -1)
-    write_arrays(resources / "film_reflectance_table.bin", {"reflectance_over_uv_light": reflectance})
+    node_mask = reachable_nodes(models[0], fp.UV_NODES)
+    compact, dense = compact_arrays(reflectance, bundle, node_mask)
+    write_arrays(resources / "film_reflectance_table.bin", compact)
     files = {"stock_bundle": "film_stock_bundle.bin", "print_setup": "film_print_setup.bin", "reflectance_table": "film_reflectance_table.bin"}
     manifest = {"schema_version": SCHEMA_VERSION, "lab_commit": lab_commit(), "resources": {key: {"file": name, "bytes": (resources / name).stat().st_size, "sha256": sha256_of(resources / name)} for key, name in files.items()}}
     (resources / "manifest.json").write_bytes((json.dumps(manifest, indent=1, sort_keys=True) + "\n").encode("utf-8"))
 
     checks = {}
+    compact_checks = {}
+    images, hull_edge = check_images(models[0].c, mp.RenderSettings())
     rng = random.Random(20261101)
     random_selections = [(rng.choice(sorted(metadata["negatives"])), rng.choice(sorted(metadata["print_materials"])), rng.choice(metadata["scene_lights"])) for _ in range(RANDOM_CHECKS)]
-    for selection in random_selections:
-        checks[" on ".join(selection)] = check_setup(bundle, setup, metadata, selection)[1]
+    for index, selection in enumerate(random_selections):
+        model, checks[" on ".join(selection)] = check_setup(bundle, setup, metadata, selection)
+        compact_checks[" on ".join(selection)] = check_compact(model, dense, node_mask, images, hull_edge, index < RENDER_RANDOM_SELECTIONS)
+        print(f"compact table on {selection}: {compact_checks[' on '.join(selection)]}", flush=True)
     expected_files = {}
     for selection in EXPECTED_SELECTIONS:
         model, largest = check_setup(bundle, setup, metadata, selection)
         checks[" on ".join(selection)] = largest
+        compact_checks[" on ".join(selection)] = check_compact(model, dense, node_mask, images, hull_edge, True)
+        print(f"compact table on {selection}: {compact_checks[' on '.join(selection)]}", flush=True)
         if not np.isfinite(model.print_table).all() or not np.isfinite(model.uv_table).all():
             raise FloatingPointError(f"{selection}: a table has values that are not finite")
         name = f"{selection[0]}__{selection[1]}__{selection[2]}.bin"
         counts = model.table_counts
-        write_arrays(expected / name, {"uv_table": np.asarray(model.uv_table, dtype=np.float64), "print_table": np.asarray(model.print_table, dtype=np.float64), "outside_curve": np.array(counts["paper_exposure_outside_curve"], dtype=np.int64), "print_not_reached": np.array(counts["print_not_reached"], dtype=np.int64)},
+        write_arrays(expected / name, {"uv_table": np.asarray(model.uv_table, dtype=np.float64), "uv_table_compact": uv_of(model, dense), "uv_reachable": node_mask.astype(np.uint8), "print_table": np.asarray(model.print_table, dtype=np.float64), "outside_curve": np.array(counts["paper_exposure_outside_curve"], dtype=np.int64), "print_not_reached": np.array(counts["print_not_reached"], dtype=np.int64)},
                      {"negative": selection[0], "print_material": selection[1], "scene_light": selection[2]})
         expected_files[name] = {"bytes": (expected / name).stat().st_size, "table_counts": counts}
         print(f"expected values of {selection}: largest setup difference {largest:.3g}", flush=True)
 
-    record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
+    record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
     RESULT.parent.mkdir(parents=True, exist_ok=True)
     RESULT.write_bytes((json.dumps(record, indent=1) + "\n").encode("utf-8"))
     print(json.dumps(manifest, indent=1))
