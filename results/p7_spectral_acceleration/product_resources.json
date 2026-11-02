@@ -2,17 +2,17 @@
  "schema_version": 5,
  "manifest": {
   "schema_version": 5,
-  "lab_commit": "e1b5bcc9e63840dae8da6aec62024ce7e03c7be8",
+  "lab_commit": "d47255a863e8441fba1ab6d18be221536b31788e",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
     "bytes": 2780288,
-    "sha256": "620ac070c6828d0f1c67e0ec30f0eef0c630111e8c7d4f73073d475db8276045"
+    "sha256": "c826a107df8aa171fcc9ba73f37f76db353c3c83c229164638f4c36b8c1c59fe"
    },
    "print_setup": {
     "file": "film_print_setup.bin",
     "bytes": 183656,
-    "sha256": "a76dc95ebb2bfd44e36f4757644117d6b0165d13fb06ef6bb87b4a8d6df84bc5"
+    "sha256": "f03fa30dc18986b3dd27f5f395e7a7c9b13b821288df01b88d5abfb112e1d0c1"
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
@@ -195,5 +195,5 @@
    }
   }
  },
- "seconds": 189.7
+ "seconds": 196.9
 }
