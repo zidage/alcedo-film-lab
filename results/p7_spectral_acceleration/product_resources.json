@@ -2,7 +2,7 @@
  "schema_version": 3,
  "manifest": {
   "schema_version": 3,
-  "lab_commit": "37443d55341cbf31b11cfce608e50fde662ca8cb-dirty",
+  "lab_commit": "3020bd257a504ecf86fc4227fb2eadde0515b580",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
@@ -155,5 +155,5 @@
    }
   }
  },
- "seconds": 136.3
+ "seconds": 122.4
 }
