@@ -2,17 +2,17 @@
  "schema_version": 3,
  "manifest": {
   "schema_version": 3,
-  "lab_commit": "3020bd257a504ecf86fc4227fb2eadde0515b580",
+  "lab_commit": "2fc31f5978796b1bec007bf33af30965c2e435aa-dirty",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
-    "bytes": 2745104,
-    "sha256": "6c3edae6cbf302bc07df4a4a82aa05ddae12b384c0d15a25a32e6be8d83d12f5"
+    "bytes": 2717672,
+    "sha256": "ef6acbd546aef05643bdb084a219c126cce3851043281f09570db982bd4c1f36"
    },
    "print_setup": {
     "file": "film_print_setup.bin",
     "bytes": 166936,
-    "sha256": "5600860118751de2bb09836f925b30816702e3d5559bfa41e251379a3bcfbd54"
+    "sha256": "9c20d0ba05b83c956016bb41b270c76ab331ece5b9278ae3d41c33ede0776837"
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
@@ -52,31 +52,31 @@
    "kodak_exr_5248 on fuji_ca_dpII on daylight": {
     "uv_relative": 0.00010530209798397086,
     "display_largest_code": {
-     "se188": 0.0017023086547851562,
-     "_DSC8148": 0.0028346478939056396,
-     "digital_ap1": 0.0022874772548675537,
-     "neutral_ramp": 0.00020518898963928223,
-     "random_colours": 0.006140470504760742
+     "se188": 0.0017631053924560547,
+     "_DSC8148": 0.002165883779525757,
+     "digital_ap1": 0.0015047192573547363,
+     "neutral_ramp": 0.00021278858184814453,
+     "random_colours": 0.0028574466705322266
     }
    },
    "kodak_5207 on fuji_3523XD on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.0014743208885192871,
-     "_DSC8148": 0.0017403066158294678,
-     "digital_ap1": 0.001523718237876892,
+     "se188": 0.0012767314910888672,
+     "_DSC8148": 0.0018846988677978516,
+     "digital_ap1": 0.0011095404624938965,
      "neutral_ramp": 0.00025078654289245605,
-     "random_colours": 0.0031842291355133057
+     "random_colours": 0.003313422203063965
     }
    },
    "fuji_c200 on fujiflex_old on led": {
     "uv_relative": 0.00010842871304970014,
     "display_largest_code": {
-     "se188": 0.0020518898963928223,
-     "_DSC8148": 0.0030854344367980957,
-     "digital_ap1": 0.00194549560546875,
+     "se188": 0.002568662166595459,
+     "_DSC8148": 0.002667456865310669,
+     "digital_ap1": 0.001793503761291504,
      "neutral_ramp": 0.0003571808338165283,
-     "random_colours": 0.0048029422760009766
+     "random_colours": 0.003138631582260132
     }
    },
    "kodak_5203 on fuji_ca_pdII on tungsten": {
@@ -97,31 +97,31 @@
    "kodak_5207 on kodak_2383 on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.001671910285949707,
-     "_DSC8148": 0.0017023086547851562,
-     "digital_ap1": 0.0014591217041015625,
+     "se188": 0.0014439225196838379,
+     "_DSC8148": 0.0015351176261901855,
+     "digital_ap1": 0.0011513382196426392,
      "neutral_ramp": 0.00021278858184814453,
-     "random_colours": 0.0028498470783233643
+     "random_colours": 0.002971440553665161
     }
    },
    "kodak_portra_400 on kodak_endura_premier on daylight": {
     "uv_relative": 0.00011185274424518433,
     "display_largest_code": {
-     "se188": 0.002021491527557373,
-     "_DSC8148": 0.00234067440032959,
-     "digital_ap1": 0.0019834935665130615,
-     "neutral_ramp": 0.0003419816493988037,
-     "random_colours": 0.006619244813919067
+     "se188": 0.002264678478240967,
+     "_DSC8148": 0.002447068691253662,
+     "digital_ap1": 0.0018277019262313843,
+     "neutral_ramp": 0.000349581241607666,
+     "random_colours": 0.004179775714874268
     }
    },
    "fuji_eterna_500 on kodak_2383 on street_mixed": {
     "uv_relative": 0.0001002333348196537,
     "display_largest_code": {
-     "se188": 0.0030854344367980957,
-     "_DSC8148": 0.0035566091537475586,
-     "digital_ap1": 0.0020518898963928223,
-     "neutral_ramp": 0.00040277838706970215,
-     "random_colours": 0.006087273359298706
+     "se188": 0.002295076847076416,
+     "_DSC8148": 0.002492666244506836,
+     "digital_ap1": 0.0012805312871932983,
+     "neutral_ramp": 0.00025838613510131836,
+     "random_colours": 0.003488212823867798
     }
    }
   }
@@ -140,7 +140,7 @@
    "bytes": 8397872,
    "table_counts": {
     "negative_not_reached": 0,
-    "print_not_reached": 160575,
+    "print_not_reached": 160573,
     "paper_exposure_outside_curve": 0,
     "nodes": 274625
    }
@@ -149,11 +149,11 @@
    "bytes": 8397872,
    "table_counts": {
     "negative_not_reached": 0,
-    "print_not_reached": 155402,
+    "print_not_reached": 148713,
     "paper_exposure_outside_curve": 0,
     "nodes": 274625
    }
   }
  },
- "seconds": 122.4
+ "seconds": 146.6
 }
