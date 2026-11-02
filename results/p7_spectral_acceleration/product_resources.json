@@ -2,7 +2,7 @@
  "schema_version": 2,
  "manifest": {
   "schema_version": 2,
-  "lab_commit": "5c3e2052b6f6e0dbf615d2c34efd507be7e04ff3",
+  "lab_commit": "476153c2f7361e98c78c4badf2c657c2c4f9f353",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
@@ -12,7 +12,7 @@
    "print_setup": {
     "file": "film_print_setup.bin",
     "bytes": 166936,
-    "sha256": "44b2dc284c18e7f346a271feaf637bdb5a5d73c4895bf84663a470b74340c177"
+    "sha256": "eb01a09739f65728ce641c9b3dda9b7dc052ce5e162abad49960a85defa9b276"
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
@@ -34,11 +34,11 @@
   "kodak_5203 on fuji_ca_pdII on tungsten": 0.0,
   "kodak_5219 on kodak_supra_endura on street_sodium": 0.0,
   "fuji_eterna_500 on fuji_ca_pdII on interior_warm": 0.0,
-  "agfa_vista_100 on kodak_5383 on reference": 1.7763568394002505e-15,
-  "kodak_5247 on kodak_5384 on daylight": 1.7763568394002505e-15,
+  "agfa_vista_100 on kodak_5383 on reference": 0.0,
+  "kodak_5247 on kodak_5384 on daylight": 0.0,
   "kodak_5207 on kodak_2383 on reference": 0.0,
   "kodak_portra_400 on kodak_endura_premier on daylight": 0.0,
-  "fuji_eterna_500 on kodak_2383 on street_mixed": 2.220446049250313e-16
+  "fuji_eterna_500 on kodak_2383 on street_mixed": 0.0
  },
  "compact_table": {
   "mantissa_bits": 12,
@@ -62,11 +62,11 @@
    "kodak_5207 on fuji_3523XD on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.0011095404624938965,
-     "_DSC8148": 0.001497119665145874,
-     "digital_ap1": 0.0014135241508483887,
-     "neutral_ramp": 0.00018998980522155762,
-     "random_colours": 0.002469867467880249
+     "se188": 0.0010867416858673096,
+     "_DSC8148": 0.001573115587234497,
+     "digital_ap1": 0.0013147294521331787,
+     "neutral_ramp": 0.00019758939743041992,
+     "random_colours": 0.0023330748081207275
     }
    },
    "fuji_c200 on fujiflex_old on led": {
@@ -97,11 +97,11 @@
    "kodak_5207 on kodak_2383 on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.001322329044342041,
-     "_DSC8148": 0.0017859041690826416,
-     "digital_ap1": 0.0011019408702850342,
+     "se188": 0.001170337200164795,
+     "_DSC8148": 0.0016415119171142578,
+     "digital_ap1": 0.0009879469871520996,
      "neutral_ramp": 0.000174790620803833,
-     "random_colours": 0.002021491527557373
+     "random_colours": 0.0020062923431396484
     }
    },
    "kodak_portra_400 on kodak_endura_premier on daylight": {
@@ -117,11 +117,11 @@
    "fuji_eterna_500 on kodak_2383 on street_mixed": {
     "uv_relative": 0.0001002333348196537,
     "display_largest_code": {
-     "se188": 0.0021582841873168945,
-     "_DSC8148": 0.0024546682834625244,
-     "digital_ap1": 0.0014439225196838379,
-     "neutral_ramp": 0.0003191828727722168,
-     "random_colours": 0.003913789987564087
+     "se188": 0.002196282148361206,
+     "_DSC8148": 0.002348273992538452,
+     "digital_ap1": 0.0014933198690414429,
+     "neutral_ramp": 0.0003115832805633545,
+     "random_colours": 0.003974586725234985
     }
    }
   }
@@ -131,7 +131,7 @@
    "bytes": 8397864,
    "table_counts": {
     "negative_not_reached": 0,
-    "print_not_reached": 138032,
+    "print_not_reached": 122714,
     "paper_exposure_outside_curve": 0,
     "nodes": 274625
    }
@@ -149,11 +149,11 @@
    "bytes": 8397872,
    "table_counts": {
     "negative_not_reached": 0,
-    "print_not_reached": 118935,
+    "print_not_reached": 113636,
     "paper_exposure_outside_curve": 0,
     "nodes": 274625
    }
   }
  },
- "seconds": 243.6
+ "seconds": 138.6
 }
