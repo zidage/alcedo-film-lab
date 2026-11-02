@@ -1,0 +1,20 @@
+{
+ "grid_finite": true,
+ "grid_low": 0.0,
+ "grid_high": 1.0,
+ "ramp_largest_fall": 0.0,
+ "black": [
+  5.859458269696916e-07,
+  7.66510254379682e-07,
+  1.1077180488427985e-06
+ ],
+ "white": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "print_materials_with_rule": [
+  "kodak_2383"
+ ],
+ "passed": true
+}

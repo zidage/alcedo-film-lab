@@ -48,7 +48,7 @@ import mvp_pipeline as mp  # noqa: E402
 fp = mp.fp
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
@@ -132,7 +132,7 @@ def paper_arrays(model: fp.FilmPreview) -> dict[str, np.ndarray]:
     weights = f.w_viewing[f.viewing_name]
     start = np.array([c.density.min() for c in model.paper_curves])
     arrays = {"base": f.paper_base, "dyes": f.paper_dyes, "printing_weights": f.w_printing, "status_a_weights": f.w_status_a, "viewing_weights": weights,
-              "xyz_scale": scalar(100.0 / weights[1].sum()), "clear_luminance": scalar(model.print_dmin_xyz()[1]), "surround_exponent": scalar(model.options.surround_exponent), "white_xyz": f.white_xyz(), "status_axis_start": start, "status_axis_range": np.array([c.density.max() for c in model.paper_curves]) - start,
+              "xyz_scale": scalar(100.0 / weights[1].sum()), "clear_luminance": scalar(model.print_dmin_xyz()[1]), "surround_exponent": scalar(model.options.surround_exponent), "cinema_look": scalar(1.0 if model.options.cinema_look else 0.0), "white_xyz": f.white_xyz(), "status_axis_start": start, "status_axis_range": np.array([c.density.max() for c in model.paper_curves]) - start,
               **uniform_curves(model.paper_curves)}
     return {name: np.asarray(value, dtype=np.int64 if value.dtype.kind == "i" else np.float64) for name, value in arrays.items()}
 

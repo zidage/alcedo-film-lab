@@ -43,6 +43,7 @@ SCENE_LIGHTS = (REFERENCE_LIGHT, *fp.PRODUCT_LIGHTS, *fp.SCENE_PRESETS)
 SPECTRAL_PRIORS = ("light_like", "measured_reflectance")
 METHODS = ("print", "apd")
 SCAN_CARRIER_PRINT = "kodak_2383"
+CINEMA_LOOK_PRINT = "kodak_2383"  # rule 'print_cinema_look' (ROADMAP U81)
 DEFAULT_LONG_EDGE = 2048
 MEDIUM_WHITE = "by_medium"
 DISPLAY_WHITES = (MEDIUM_WHITE, "reflector", "paper", "print_dmin")
@@ -173,7 +174,7 @@ def _stock_options(negative: str, physics: dict | None) -> dict:
 def print_conditions(print_material: str) -> dict:
     """Rule 'print_conditions_by_medium' (ROADMAP U78). A cine print: the LAD aim, the projection light, the clear print as white, and the dark surround. A paper: 18 % reflectance for the grey, D50, and the perfect reflector as white."""
     if CATALOG["prints"][print_material]["medium"].lower() == "cine":
-        return dict(print_profile=print_material, print_midscale_status_a=fp.CINE_GREY_STATUS_A, viewing_cct_k=fp.CINE_VIEWING_CCT_K, neutral_printing=False, printer_filter=fp.CINE_PRINTER_FILTER, display_white="print_dmin", surround_exponent=fp.CINE_SURROUND_EXPONENT, print_slope_match=fp.CINE_PRINT_SLOPE_MATCH)
+        return dict(print_profile=print_material, print_midscale_status_a=fp.CINE_GREY_STATUS_A, viewing_cct_k=fp.CINE_VIEWING_CCT_K, neutral_printing=False, printer_filter=fp.CINE_PRINTER_FILTER, display_white="print_dmin", surround_exponent=fp.CINE_SURROUND_EXPONENT, print_slope_match=fp.CINE_PRINT_SLOPE_MATCH, cinema_look=print_material == CINEMA_LOOK_PRINT)
     return dict(print_profile=print_material, print_midscale_status_a=0.75, viewing_cct_k=5000.0, neutral_printing=False, display_white="reflector")
 
 

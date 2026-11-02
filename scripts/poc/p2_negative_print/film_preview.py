@@ -135,6 +135,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 P1_DIR = SCRIPT_DIR.parent / "p1_spectral_input"
 sys.path.insert(0, str(P1_DIR))
 sys.path.insert(0, str(SCRIPT_DIR))
+import cinema_look as look  # noqa: E402
 import fast_kernels as fk  # noqa: E402
 import spectral_datasets as sd  # noqa: E402
 import spectral_reconstruction as sr  # noqa: E402
@@ -237,6 +238,7 @@ class FilmOptions:
     print_slope_match: float = 0.0  # rule 'print_slope_match': 0 is off
     entry_gamut_compress: bool = False  # rule 'entry_reference_gamut_compression'
     gamut_compress: bool = False  # not part of the print table; False: clip
+    cinema_look: bool = False  # rule 'print_cinema_look', on the final display code; not part of the print table
     gamut_threshold: tuple[float, float, float] = (0.815, 0.803, 0.880)  # ACES RGC values (cyan, magenta, yellow)
     gamut_limit: tuple[float, float, float] = (1.147, 1.264, 1.312)  # ACES RGC values
     gamut_power: float = 1.2  # ACES RGC value
@@ -928,6 +930,8 @@ class FilmPreview:
         stats["display_clipped"] = int(before)
         if o.gamut_compress:
             stats["display_clipped_after_compression"] = int(after)
+        if o.cinema_look:
+            out = look.cinema_look(out)
         return (out[0] if len(shape) == 2 else out), stats
 
     def reference_render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
@@ -949,7 +953,8 @@ class FilmPreview:
             o = self.options
             rgb = compress_gamut(rgb, o.gamut_threshold, o.gamut_limit, o.gamut_power)
             stats["display_clipped_after_compression"] = int(((rgb < 0) | (rgb > 1)).any(axis=-1).sum())
-        return srgb_encode(rgb), stats
+        code = srgb_encode(rgb)
+        return (look.cinema_look(code) if self.options.cinema_look else code), stats
 
 
 def smooth_reflectance_table(rho: np.ndarray, sigma_near: float, sigma_far: float, white_uv: np.ndarray, to_xyz: np.ndarray) -> np.ndarray:

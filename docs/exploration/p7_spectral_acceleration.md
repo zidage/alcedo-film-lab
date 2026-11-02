@@ -379,6 +379,22 @@ The user finds the saturation too high on Eterna 500, Ektar 100, and Portra 800,
 
 **Not handled.** 5207 on Endura Premier leans green: a\* reaches -5.5 on the neutral ramp, by the same mechanism as pink. Ektar 100 and Portra 800 on Endura Premier stay 5 to 6 above 5207.
 
+### 5.13 Rule `print_cinema_look` (U81)
+
+**User request.** 5207 on 2383 at midday looks thin and strange (Alcedo Studio issue 645). The user asks for the look of La La Land, by any means, with research into grading practice, and with no argument from Lab analysis.
+
+**Source observations.** [American Cinematographer](https://theasc.com/article/la-la-land-city-of-stars/): the midday exteriors used 5207 at EI 100, all footage had a pull of one stop, a Lustre DI followed the scan, a goal of the DI was blue in the blacks, and the LUT of the show had a white point near D65. [Mixing Light](https://mixinglight.com/color-grading-tutorials/what-makes-film-print-emulation-luts-special-and-how-do-you-use-them): on the 2383 LUT of Resolve, blues rotate toward cyan, skin gains richness, and shadows crush before a ramp and a roll-off. No source gives the LUT of the show.
+
+**Observation by eye.** The simulated 5207 negative through the Rec. 709 2383 LUT of Resolve, as a local comparison only, is about as thin as the print of this lab. So the printer model alone does not explain the difference. The target is a finished grade, and the set and the costumes of the film are part of it.
+
+**Candidates.** Two independent local studies (`build/tmp/look_codex/`, `build/tmp/look_claude/`) gave candidates on the same frames. The user selected candidate P6 of `look_codex` and asked not to merge candidates. The report of that study holds its other rounds.
+
+**Rule.** `cinema_look.py`, on the sRGB code of the finished print: a separation and a coupling of the channels in a density of code, a curve that prints the lower mids down, blue in the blacks and warm lit surfaces, a lower chroma, more density on blue, and a small shift of blue and green. All constants are creative choices. `print_conditions` turns the rule on for `kodak_2383`. It is outside the print table, so the three sliders and the tables do not change.
+
+**Checks.** `check_cinema_look.py`, with limits set before the run; results in [`cinema_look.json`](../../results/p7_spectral_acceleration/cinema_look.json). The rule against the array of candidate P6 on 8 frames: largest difference 3.0e-8 of code, limit 1e-5 (local script `build/tmp/look_claude/check_p6_port.py`).
+
+**What is not solved.** The study states that pale blossoms can stay dry and grey-brown, that skin can lean orange, and that shaded plants can lose detail. A global step cannot give the shot-level grade of the film. The user reviewed 5207 on 2383 only. The other negatives on 2383 take the same step with no review. No matched RAW file of a film frame exists.
+
 ## 6. Not measured
 
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.
