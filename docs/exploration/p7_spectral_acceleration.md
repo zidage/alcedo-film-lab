@@ -216,7 +216,7 @@ Checks of the shipped form, with the limits written before the first run: on 11 
 
 | Check | Limit | Before | After |
 | --- | --- | --- | --- |
-| Largest response of a layer minus the chart peak, 3 to 40 cycles/mm, 29 negatives | 0.10 | 1.13 (`kodak_5277`, red) | 0.09 (`kodak_5206`, green) |
+| Largest response of a layer minus the chart peak, 3 to 40 cycles/mm, 29 negatives | 0.10 | 1.12 (`kodak_5277`, red) | 0.09 (`kodak_5206`, green) |
 | `fuji_eterna_500`, overshoot and undershoot at a step edge of 3 stops | 1 code | 14.6, 13.0 | 0.02, 0.00 |
 | `fuji_eterna_500` on `_DSC8148`, mean chroma | 1 % | 54.39 | 54.42 |
 | `kodak_5207` on `_DSC8148`, mean difference from before | 0.2 codes | | 0.017 |
