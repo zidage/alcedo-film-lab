@@ -425,6 +425,8 @@ The user finds the saturation too high on Eterna 500, Ektar 100, and Portra 800,
 
 **Resources.** Schema 5 adds `negative/<id>/negative_grade`, and `negative_grade_grey` of the print setup: the record of an 18 % grey per negative and scene light, from the complete `FilmPreview`.
 
+**Scope of the grade (U84).** The user states that the grade must act on all tungsten stocks, and that the look is about right. `NEGATIVE_GRADE_STOCKS` holds `kodak_5219`, `kodak_5213`, `kodak_5277`, `kodak_5293`, `kodak_exr_5248`, `fuji_eterna_500`, and `fuji_eterna_500_vivid`, on `cine_look` only. Six have 3200 K in the catalog. `kodak_5293` has the name EXR 200T, and the catalog holds the default 5500 K for it. The balance light of that stock does not change here. `kodak_5247_II` and `kodak_5248` have no T in their names and hold the same default, so they stay out. [An old list](https://wikipedia.classicistranieri.com/en/articles/l/i/s/List_of_motion_picture_film_stocks.html) gives 5247 as 100T in 1974, with no clear source, and [a 1950s SMPTE paper](https://journal.smpte.org/periodicals/Journal%20of%20the%20SMPTE/68/11/4/) is the search result that gives 5248 as balanced for tungsten. Neither has the rule.
+
 ## 6. Not measured
 
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.

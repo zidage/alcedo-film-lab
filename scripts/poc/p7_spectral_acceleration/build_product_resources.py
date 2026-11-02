@@ -119,7 +119,7 @@ def negative_arrays(model: fp.FilmPreview) -> dict[str, np.ndarray]:
     erg_per_unit = c.lux_seconds_per_y / p0.LUMINOUS_EFFICACY_LM_PER_W * p0.ERG_PER_CM2_PER_J_PER_M2
     arrays = {"base": f.negative_dmin, "dyes": f.negative_dyes, "exposure_weights": f.w_negative * erg_per_unit, "criterion_log_h": f.negative_criterion_log_h,
               "density_grid_start": np.array([c_.density.min() for c_ in model.negative_curves]), "density_grid_stop": np.array([c_.density.max() for c_ in model.negative_curves]),
-              "layer_spread_um": np.array(model.options.layer_spread_um, dtype=np.float64), "negative_grade": scalar(1.0 if model.options.negative_profile == mp.NEGATIVE_GRADE_STOCK else 0.0), **uniform_curves(model.negative_curves)}
+              "layer_spread_um": np.array(model.options.layer_spread_um, dtype=np.float64), "negative_grade": scalar(1.0 if model.options.negative_profile in mp.NEGATIVE_GRADE_STOCKS else 0.0), **uniform_curves(model.negative_curves)}
     if model.inhibition is not None:
         i = model.inhibition
         arrays.update(inhibition_k=i["k"], inhibition_image_k=i["k_image"], inhibition_start=i["start"], inhibition_free=i["free"], inhibition_lengths=np.asarray(i["lengths"], dtype=np.int64), inhibition_step=scalar(i["step"]))
@@ -260,8 +260,9 @@ def collect() -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict, list]
     metadata = {"negatives": {k: {"name": mp.CATALOG["negatives"][k]["name"]} for k in negatives}, "print_materials": {k: {"name": mp.CATALOG["prints"][k]["name"], "medium": mp.CATALOG["prints"][k]["medium"]} for k in papers}, "scene_lights": lights, "scene_spectra": spectrum_names}
     # Rule 'negative_show_grade': the grey needs the kernels, so it comes from the complete FilmPreview. Other negatives hold 0.
     grade_grey = np.zeros((len(negatives), len(lights), 3))
-    for l, light in enumerate(lights):
-        grade_grey[negatives.index(mp.NEGATIVE_GRADE_STOCK), l] = fp.FilmPreview(mp.film_options(mp.RenderSettings(negative=mp.NEGATIVE_GRADE_STOCK, print_material=mp.CINE_LOOK_PRINT, scene_light=light)))._grade_grey
+    for negative in mp.NEGATIVE_GRADE_STOCKS:
+        for l, light in enumerate(lights):
+            grade_grey[negatives.index(negative), l] = fp.FilmPreview(mp.film_options(mp.RenderSettings(negative=negative, print_material=mp.CINE_LOOK_PRINT, scene_light=light)))._grade_grey
     setup = {"negative_grade_grey": grade_grey, "printer_balance_log10": balance, "layer_gain": layer_gain, "printing_gain": printing_gain, "aim_log_h": aim, "xyz_to_display": to_display, "scene_spectrum_index": spectrum_index}
     return bundle, setup, metadata, [last_model]
 

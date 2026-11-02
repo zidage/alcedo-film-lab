@@ -11,7 +11,7 @@ Rules of this step:
 - 'no_anchor_at_reference_light': the default scene has no rule grey_anchor (U58). Another scene light needs the rule, because the printer balance follows the light. A stock with a relative sensitivity chart keeps the rule at each light.
 - 'spectral_prior': 'light_like' applies rule 'light_like_spectra' of P4, and 'measured_reflectance' uses the reflectance prior of P1 with no change.
 - 'foliage_spectra': on by default for each stock; see the header of film_preview.py.
-- 'negative_show_grade': on for kodak_5219 on print material cine_look (ROADMAP U82, U83); see negative_grade.py.
+- 'negative_show_grade': on for the tungsten stocks on print material cine_look (ROADMAP U82 to U84); see negative_grade.py.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -57,7 +57,8 @@ SCENE_LIGHTS = (REFERENCE_LIGHT, *fp.PRODUCT_LIGHTS, *fp.SCENE_PRESETS)
 SPECTRAL_PRIORS = ("light_like", "measured_reflectance")
 METHODS = ("print", "apd")
 SCAN_CARRIER_PRINT = "kodak_2383"
-NEGATIVE_GRADE_STOCK = "kodak_5219"  # rule 'negative_show_grade', on print material cine_look (ROADMAP U82, U83)
+# Rule 'negative_show_grade', on print material cine_look (ROADMAP U82 to U84): the tungsten stocks. kodak_5293 is EXR 200T, and the catalog holds the default 5500 K for it.
+NEGATIVE_GRADE_STOCKS = ("kodak_5219", "kodak_5213", "kodak_5277", "kodak_5293", "kodak_exr_5248", "fuji_eterna_500", "fuji_eterna_500_vivid")
 DEFAULT_LONG_EDGE = 2048
 MEDIUM_WHITE = "by_medium"
 DISPLAY_WHITES = (MEDIUM_WHITE, "reflector", "paper", "print_dmin")
@@ -210,7 +211,7 @@ def film_options(settings: RenderSettings, print_material: str | None = None, ph
     material = print_material or settings.print_material
     options = fp.FilmOptions(**{**fp.DARKROOM, **negative_options(settings.negative, physics, image_part), **print_conditions(material), **light_conditions(settings.negative, settings.scene_light, physics),
                                 "light_spectra": settings.spectral_prior == "light_like", "foliage": settings.foliage, "entry_gamut_compress": settings.method == "print",
-                                "negative_grade": settings.negative_grade and settings.method == "print" and material == CINE_LOOK_PRINT and settings.negative == NEGATIVE_GRADE_STOCK})
+                                "negative_grade": settings.negative_grade and settings.method == "print" and material == CINE_LOOK_PRINT and settings.negative in NEGATIVE_GRADE_STOCKS})
 
     def scaled(values: tuple[float, float, float], scale: float) -> tuple[float, float, float]:
         return tuple(float(v) * scale for v in values)

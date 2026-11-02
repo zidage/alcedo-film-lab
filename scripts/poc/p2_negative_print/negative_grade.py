@@ -1,7 +1,7 @@
-"""Rule 'negative_show_grade': a fixed creative grade of the negative record of Kodak 5219, before the print table.
+"""Rule 'negative_show_grade': a fixed creative grade of the negative record of a tungsten stock, before the print table.
 
-Input: the negative record (dye amounts, rule 'dye_amount_curves') and the record of an 18 % grey under the scene light of the model. Output: the graded record, as float32. Step: P7, ROADMAP U82, U83. Only kodak_5219 on print material cine_look has this rule.
-Practice: a DI grades the scanned negative in density and then applies the print transform. This step has that place in the chain. All constants are creative choices with no measurement. They are not a measurement of 5219, and they do not stand for a chemical process.
+Input: the negative record (dye amounts, rule 'dye_amount_curves') and the record of an 18 % grey under the scene light of the model. Output: the graded record, as float32. Step: P7, ROADMAP U82 to U84. Only the tungsten stocks of NEGATIVE_GRADE_STOCKS of mvp_pipeline.py, on print material cine_look, have this rule.
+Practice: a DI grades the scanned negative in density and then applies the print transform. This step has that place in the chain. All constants are creative choices with no measurement. They are not a measurement of a stock, and they do not stand for a chemical process.
 The operation reads no statistic of a frame and has no spatial part. On a record, more density of a layer prints as more of the colour of that layer: red, green, or blue.
 """
 

@@ -1,13 +1,13 @@
 """Check of rule 'negative_show_grade' on synthetic colours.
 
-Input: none. Output: results/p7_spectral_acceleration/negative_grade.json. Step: P7, ROADMAP U82. CPU only.
+Input: none. Output: results/p7_spectral_acceleration/negative_grade.json. Step: P7, ROADMAP U82 to U84. CPU only.
 Limits, set before the run:
 - A grid of 33 ** 3 records: output finite and not negative.
 - The same grid, evaluated in one array and per pixel on a sample of 2000 records: largest difference at most 1e-6.
 - Record of an 18 % grey: each channel moves by at most 0.005, because the rule keeps the print grey.
 - A print of a neutral ramp, 5219 on cine_look, -8 to +5 stops from the grey: luma falls by at most 1e-3 between neighbours.
 - With the option off, or with the APD method, the output equals the render with no rule: largest difference 0.
-- Only kodak_5219 on cine_look has the rule, of each pair of a negative and a print material in the catalog.
+- Only the stocks of NEGATIVE_GRADE_STOCKS on cine_look have the rule, of each pair of a negative and a print material in the catalog.
 """
 
 from __future__ import annotations
@@ -53,7 +53,7 @@ def main() -> int:
               "grey_largest_move": float(np.abs(grade.negative_grade(grey, grey).astype(np.float64) - grey).max()), "print_ramp_largest_fall": float(max(0.0, -np.diff(print_ramp).min())),
               "option_off_has_no_grey": plain._grade_grey is None, "apd_largest_difference": float(np.abs(pipeline.render_array(ramp, apd) - pipeline.render_array(ramp, apd_off)).max()), "pairs_with_rule": with_rule}
     passed = (record["grid_finite"] and record["grid_low"] >= 0.0 and record["per_pixel_largest_difference"] <= 1e-6 and record["grey_largest_move"] <= 0.005 and record["print_ramp_largest_fall"] <= 1e-3
-              and record["option_off_has_no_grey"] and record["apd_largest_difference"] == 0.0 and with_rule == ["kodak_5219 on cine_look"])
+              and record["option_off_has_no_grey"] and record["apd_largest_difference"] == 0.0 and with_rule == sorted(f"{name} on {mp.CINE_LOOK_PRINT}" for name in mp.NEGATIVE_GRADE_STOCKS))
     record["passed"] = bool(passed)
     RESULT.write_bytes((json.dumps(record, indent=1) + "\n").encode("utf-8"))
     print(json.dumps(record, indent=1))
