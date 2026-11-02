@@ -1,23 +1,23 @@
 {
- "schema_version": 3,
+ "schema_version": 4,
  "manifest": {
-  "schema_version": 3,
-  "lab_commit": "2fc31f5978796b1bec007bf33af30965c2e435aa-dirty",
+  "schema_version": 4,
+  "lab_commit": "023bd1fa98df18f9c01f8bfd5174152df6b0ac6f",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
-    "bytes": 2717672,
-    "sha256": "ef6acbd546aef05643bdb084a219c126cce3851043281f09570db982bd4c1f36"
+    "bytes": 2719192,
+    "sha256": "5fa555d3953cfc28ecf84ee25dc9f015ac17a367642df1d2053348c58e4c435e"
    },
    "print_setup": {
     "file": "film_print_setup.bin",
     "bytes": 166936,
-    "sha256": "9c20d0ba05b83c956016bb41b270c76ab331ece5b9278ae3d41c33ede0776837"
+    "sha256": "fbdfddd057d4efddc039b97b7ce0dba4fe67d88c864febfb9a81d74760f80573"
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
     "bytes": 25127352,
-    "sha256": "8c14b5d3746e0f986cab1f4944353673a4be46c693fd56c16a26a34c5f1fd821"
+    "sha256": "f17ee61f7c39b1d309b9f01cec52f635fb43dc20a7d95a83f92c01290fba74fc"
    }
   }
  },
@@ -97,11 +97,11 @@
    "kodak_5207 on kodak_2383 on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.0014439225196838379,
-     "_DSC8148": 0.0015351176261901855,
-     "digital_ap1": 0.0011513382196426392,
-     "neutral_ramp": 0.00021278858184814453,
-     "random_colours": 0.002971440553665161
+     "se188": 0.0018239021301269531,
+     "_DSC8148": 0.002097487449645996,
+     "digital_ap1": 0.0013755261898040771,
+     "neutral_ramp": 0.0003191828727722168,
+     "random_colours": 0.13811498880386353
     }
    },
    "kodak_portra_400 on kodak_endura_premier on daylight": {
@@ -117,11 +117,11 @@
    "fuji_eterna_500 on kodak_2383 on street_mixed": {
     "uv_relative": 0.0001002333348196537,
     "display_largest_code": {
-     "se188": 0.002295076847076416,
-     "_DSC8148": 0.002492666244506836,
-     "digital_ap1": 0.0012805312871932983,
-     "neutral_ramp": 0.00025838613510131836,
-     "random_colours": 0.003488212823867798
+     "se188": 0.0031766295433044434,
+     "_DSC8148": 0.003039836883544922,
+     "digital_ap1": 0.001299530267715454,
+     "neutral_ramp": 0.00039517879486083984,
+     "random_colours": 0.05622178316116333
     }
    }
   }
@@ -155,5 +155,5 @@
    }
   }
  },
- "seconds": 146.6
+ "seconds": 148.4
 }
