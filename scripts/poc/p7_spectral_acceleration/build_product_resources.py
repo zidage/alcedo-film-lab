@@ -165,11 +165,10 @@ def apply_light(model: fp.FilmPreview, options: fp.FilmOptions, default_balance:
 
 
 def display_matrix(model: fp.FilmPreview) -> np.ndarray:
-    """FilmPreview._prepare_display with display_white = 'reflector'. This white does not read a table."""
-    if model.options.display_white != "reflector":
-        raise ValueError("the product chain needs display_white = 'reflector'")
-    white = model.film.white_xyz()
-    return fp.XYZ_TO_REC709 @ fp.bradford_matrix(white / white[1], fp.XYZ_D65) / white[1]
+    """FilmPreview._prepare_display. The whites of the product chain do not read a table."""
+    if model.options.display_white not in ("reflector", "projected"):
+        raise ValueError("the product chain needs display_white = 'reflector' or 'projected'")
+    return model.display_matrix(model.options.display_white)
 
 
 def aim_of(model: fp.FilmPreview) -> np.ndarray:

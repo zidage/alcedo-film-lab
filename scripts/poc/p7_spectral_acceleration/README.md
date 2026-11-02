@@ -8,6 +8,7 @@ Scripts of step P7 ([report](../../../docs/exploration/p7_spectral_acceleration.
 | `film_tables/python_bindings.cpp` | NumPy arrays | Python module `alcedo_film_tables` (nanobind) |
 | `check_film_tables.py` | profiles, reflectance tables, AP1 arrays under `build/tmp/` | `results/p7_spectral_acceleration/checks.json` |
 | `check_inhibition_image.py` | profiles, reflectance tables, `expected/image/ap1.bin` of `build_image_expected.py` | `results/p7_spectral_acceleration/inhibition_image.json` |
+| `check_neutral_axis.py` | profiles, reflectance tables, the film look LUTs of a local DaVinci Resolve | `results/p7_spectral_acceleration/neutral_axis.json` |
 | `check_fast_image_steps.py` | RAW files, or AP1 arrays | `results/p7_spectral_acceleration/image_steps.json` |
 | `sweep_inhibition_steps.py` | a RAW file, an AP1 array | `results/p7_spectral_acceleration/inhibition_steps.json` |
 | `sweep_paper_axis.py` | the same | stdout: error and time for each node count and axis power |

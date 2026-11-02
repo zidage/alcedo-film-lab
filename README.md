@@ -135,7 +135,7 @@ This is a calculation of a darkroom print:
 3. **Printer balance and grade.** The exposure is scaled about the grey: `log H' = aim + contrast · gain · (log H − aim)`. The gain gives each paper layer the same slope on a neutral. The contrast is 0.85 by default.
 4. **Flash.** A small uniform exposure, 2 % of the exposure at the grey, softens the print.
 5. **Paper curve and print dyes.** The curve gives Status A density, and a dye solve gives the spectral density of the print.
-6. **Viewing.** A viewing light goes through the print dyes to XYZ, and a small surface reflection is added. The display white is a perfect reflector, so paper white stays below display white.
+6. **Viewing.** A viewing light goes through the print dyes to XYZ, and a small surface reflection is added. On a reflection paper, the display white is a perfect reflector, so paper white stays below display white. A projected print has one white chromaticity per material, selected by eye on 5207 + 2383, at the same level.
 7. **Display.** A gamut compression, in the style of the ACES Reference Gamut Compression, acts on linear Rec. 709. Then sRGB encoding.
 
 Steps 2 to 6 have no dependence on the image position, so they compile to a table over negative density. This is why the print is fast. The table comes from the spectral calculation in stages, so a new material builds new stages, and a new value of a print control only composes them again.
@@ -193,7 +193,7 @@ Negative: overexposure, development inhibition, light spread, halation amount an
 
 - The first step of `development_inhibition` is the same algorithm as its `model/couplers.py`.
 - The cine print grey of 0.85 and the print contrast of 0.85 were selected by comparison with its output.
-- The display white was selected after a comparison through both chains.
+- The display white of a reflection paper was selected after a comparison through both chains.
 
 The chain from spectrum to negative to print is a concept that both projects share.
 

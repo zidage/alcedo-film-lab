@@ -35,7 +35,8 @@ Stages (each one stays separate):
 5. Display: print XYZ under D50 viewing, a perfect reflector under the viewing light to display white
    with Bradford adaptation to D65 (option display_white), linear Rec. 709, clip (counted), sRGB
    encoding. The paper base then keeps its own reflectance and colour, as a print next to a white
-   reference does. The option 'paper' maps the paper white to display white. Rule
+   reference does. The option 'paper' maps the paper white to display white. A projected print uses
+   rule 'projected_print_white' (ROADMAP U75; fit_display_white.py of P6). Rule
    'rgc_style_display_compression' (option gamut_compress): the method of the ACES Reference Gamut
    Compression on the linear Rec. 709 of the print. It is not the standard ACES RGC: the domain is
    the display, after the print, and the limits are measured on this chain. The rest of the values
@@ -212,7 +213,8 @@ class FilmOptions:
     print_contrast: float = 1.0
     viewing_flare: float = 0.0
     scene_flare: float = 0.0  # not part of the print table
-    display_white: str = "reflector"  # not part of the print table; 'reflector' or 'paper'
+    display_white: str = "reflector"  # not part of the print table; 'reflector', 'paper', or 'projected'
+    display_white_xy: tuple[float, float] | None = None  # rule 'projected_print_white'
     interlayer_gain: float = 0.2  # part of the print table: the printer balance under a scene light uses it
     negative_profile: str = "kodak_portra_400"
     print_profile: str = "kodak_endura_premier"
@@ -700,12 +702,25 @@ class FilmPreview:
 
     # --- stage 5 ------------------------------------------------------------------------------
 
+    def display_matrix(self, white_name: str) -> np.ndarray:
+        """XYZ to linear Rec. 709. Rule 'projected_print_white': a projected print has one white per print material, the chromaticity display_white_xy, and it goes to D65. The level stays on the perfect reflector, so the print keeps its brightness."""
+        reflector = self.film.white_xyz()
+        if white_name == "reflector":
+            return XYZ_TO_REC709 @ bradford_matrix(reflector / reflector[1], XYZ_D65) / reflector[1]
+        if white_name == "projected":
+            if self.options.display_white_xy is None:
+                raise ValueError(f"{self.options.print_profile}: display white 'projected' has no display_white_xy. Run fit_display_white.py.")
+            x, y = self.options.display_white_xy
+            return XYZ_TO_REC709 @ bradford_matrix(np.array([x / y, 1.0, (1.0 - x - y) / y]), XYZ_D65) / reflector[1]
+        if white_name == "paper":
+            return XYZ_TO_REC709 @ bradford_matrix(self.paper_white / self.paper_white[1], XYZ_D65) / self.paper_white[1]
+        raise ValueError(f"unknown display white {white_name!r}")
+
     def _prepare_display(self) -> None:
         # Paper white: the print of the densest negative (lowest paper exposure) in the table.
         top = np.array([g[-1] for g in self.density_grid])
         self.paper_white = self.print_xyz(top[None])[0]
-        white = {"reflector": self.film.white_xyz(), "paper": self.paper_white}[self.options.display_white]
-        self.xyz_to_display = XYZ_TO_REC709 @ bradford_matrix(white / white[1], XYZ_D65) / white[1]
+        self.xyz_to_display = self.display_matrix(self.options.display_white)
 
     def display_linear(self, xyz: np.ndarray) -> np.ndarray:
         return xyz @ self.xyz_to_display.T

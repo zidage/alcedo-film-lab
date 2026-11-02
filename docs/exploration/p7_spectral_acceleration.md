@@ -226,6 +226,31 @@ Peak response of the layer with the largest change, before and after, against th
 
 The rule rests on charts that spectral_film_lut digitized, not checked against the manufacturer documents. The review of the new look by the user is open.
 
+### 5.7 Neutral axis of the projected prints (U75)
+
+**Fault.** The user found 2383 yellow-green. On a neutral ramp of 5207 + 2383, the shadows were green (L* 20: a* -5.3, b* +1.5) and the highlights yellow-green (L* 85: a* -3.5, b* +9.3).
+
+**Source observations.** KODAK H-61b: the LAD patch of 2383 is a visual neutral of density 1.0 at Status A 1.09, 1.06, 1.03, and a colour shift up and down the gray scale with a neutral mid-tone is a contrast mismatch. SMPTE 196M-2003: the projection light is 5400 K, +600 K, -200 K, with typical readings x = 0.332, y = 0.347.
+
+**Trace.** Rule `neutral_printing_gain` raises the red and blue slopes, and this makes the green shadows. Display white `reflector` keeps the colour of the densest print node, and this adds about b* +6 along the ramp. The LAD aim is not a cause: equal Status A is near neutral under D65 with these dyes (a* +0.1, b* +0.3).
+
+**Rule.** The user compared three versions on four photos and selected the print with no gain and with the white of the densest print node ("no gain" in the local sheet `build/tmp/print_cast_2383/sheet.jpg`). Projected prints now have no rule `neutral_printing_gain`. New rule `projected_print_white`: each projected print material has one chromaticity that goes to D65, and the level stays on the perfect reflector. `fit_display_white.py` takes it from the densest node of the 5207 print table on that material. This is an empirical choice, not a measurement. It is not the D-min of the print (2383: x = 0.3208, y = 0.3411 against x = 0.3275, y = 0.3532), and a print curve alone does not reach this value. With one value per material, a negative keeps its difference from the other negatives, and a scene light does not move the white. Reflection papers do not change.
+
+**Checks.** The rule against the selected look on `_DSC8148`, 5207 + 2383: largest difference 0.0003 of an 8 bit code. `check_neutral_axis.py` compares the neutral axis with a Resolve LUT at the same L*, with no limit, because a LUT is an emulation with a neutral Cineon input and not a measurement. Results: [`neutral_axis.json`](../../results/p7_spectral_acceleration/neutral_axis.json). Mean and largest a*b* distance:
+
+| Selection | Resolve LUT | Before | After |
+| --- | --- | --- | --- |
+| 5207 + 2383 | 2383 D65 | 6.8, 8.9 | 2.1, 3.6 |
+| 5219 + 2383 | 2383 D65 | 7.3, 10.7 | 4.4, 8.2 |
+| 5213 + 2383 | 2383 D65 | 5.1, 8.0 | 3.3, 5.7 |
+| 5203 + 2383 | 2383 D65 | 4.8, 7.5 | 3.2, 5.2 |
+| Eterna 500 + 2383 | 2383 D65 | 5.1, 8.3 | 3.4, 4.4 |
+| Portra 400 + 2383 | 2383 D65 | 5.2, 7.9 | 4.3, 6.5 |
+| Gold 200 + 2383 | 2383 D65 | 6.1, 8.7 | 3.3, 4.5 |
+| C200 + 2383 | 2383 D65 | 5.8, 9.6 | 4.0, 4.9 |
+
+Not measured: a real print, and a review by the user of any selection other than 5207 + 2383. Other projected materials have no "before" value; the "after" values are in the results file.
+
 ## 6. Not measured
 
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.
