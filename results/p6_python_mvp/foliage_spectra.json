@@ -1,0 +1,580 @@
+{
+ "limits": {
+  "neutral": 0,
+  "outside": 1,
+  "step_increase": 2
+ },
+ "failed": [],
+ "negatives": {
+  "agfa_vista_100": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 614.0,
+   "leaf_log10_exposure_error_off": [
+    -0.133,
+    0.024,
+    0.044
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.014,
+    0.003,
+    0.043
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 14,
+   "sweep_step_off_8bit": 13,
+   "passed": true
+  },
+  "fuji_c200": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 635.0,
+   "leaf_log10_exposure_error_off": [
+    -0.129,
+    0.024,
+    0.044
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.014,
+    0.002,
+    0.038
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 12,
+   "sweep_step_off_8bit": 11,
+   "passed": true
+  },
+  "fuji_eterna_500": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 642.0,
+   "leaf_log10_exposure_error_off": [
+    -0.256,
+    0.051,
+    0.361
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.168,
+    0.027,
+    0.349
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 22,
+   "sweep_step_off_8bit": 22,
+   "passed": true
+  },
+  "fuji_eterna_500_vivid": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 642.0,
+   "leaf_log10_exposure_error_off": [
+    -0.256,
+    0.051,
+    0.361
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.168,
+    0.027,
+    0.349
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 23,
+   "sweep_step_off_8bit": 23,
+   "passed": true
+  },
+  "fuji_natura_1600": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 642.0,
+   "leaf_log10_exposure_error_off": [
+    -0.144,
+    0.022,
+    0.045
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.015,
+    0.002,
+    0.041
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 1,
+   "sweep_step_on_8bit": 14,
+   "sweep_step_off_8bit": 14,
+   "passed": true
+  },
+  "fuji_pro_160c": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 616.0,
+   "leaf_log10_exposure_error_off": [
+    -0.113,
+    0.023,
+    0.047
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.014,
+    0.002,
+    0.041
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 13,
+   "sweep_step_off_8bit": 13,
+   "passed": true
+  },
+  "fuji_pro_160s": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 623.0,
+   "leaf_log10_exposure_error_off": [
+    -0.106,
+    0.026,
+    0.048
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.013,
+    0.002,
+    0.04
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 11,
+   "sweep_step_off_8bit": 11,
+   "passed": true
+  },
+  "fuji_pro_400h": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 609.0,
+   "leaf_log10_exposure_error_off": [
+    -0.114,
+    0.011,
+    0.05
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.014,
+    0.003,
+    0.042
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 16,
+   "sweep_step_off_8bit": 16,
+   "passed": true
+  },
+  "fuji_superia_reala": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 631.0,
+   "leaf_log10_exposure_error_off": [
+    -0.127,
+    -0.02,
+    0.036
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.014,
+    0.006,
+    0.042
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 10,
+   "sweep_step_off_8bit": 10,
+   "passed": true
+  },
+  "fuji_superia_xtra_400": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 642.0,
+   "leaf_log10_exposure_error_off": [
+    -0.135,
+    0.02,
+    0.045
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.015,
+    0.003,
+    0.039
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 13,
+   "sweep_step_off_8bit": 14,
+   "passed": true
+  },
+  "kodak_5203": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 649.0,
+   "leaf_log10_exposure_error_off": [
+    -0.186,
+    0.016,
+    0.05
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.017,
+    0.003,
+    0.043
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 12,
+   "sweep_step_off_8bit": 12,
+   "passed": true
+  },
+  "kodak_5206": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 651.0,
+   "leaf_log10_exposure_error_off": [
+    -0.148,
+    0.011,
+    0.002
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.0,
+    -0.0,
+    -0.0
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 15,
+   "sweep_step_off_8bit": 15,
+   "passed": true
+  },
+  "kodak_5207": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 652.0,
+   "leaf_log10_exposure_error_off": [
+    -0.179,
+    0.012,
+    0.003
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.0,
+    -0.0,
+    -0.0
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 10,
+   "sweep_step_off_8bit": 10,
+   "passed": true
+  },
+  "kodak_5213": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 647.0,
+   "leaf_log10_exposure_error_off": [
+    -0.281,
+    0.054,
+    0.379
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.185,
+    0.034,
+    0.383
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 14,
+   "sweep_step_off_8bit": 14,
+   "passed": true
+  },
+  "kodak_5219": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 654.0,
+   "leaf_log10_exposure_error_off": [
+    -0.154,
+    0.013,
+    -0.012
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.0,
+    -0.0,
+    -0.0
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 8,
+   "sweep_step_off_8bit": 8,
+   "passed": true
+  },
+  "kodak_5247": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 652.0,
+   "leaf_log10_exposure_error_off": [
+    -0.233,
+    -0.008,
+    0.043
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.019,
+    0.005,
+    0.048
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 11,
+   "sweep_step_off_8bit": 11,
+   "passed": true
+  },
+  "kodak_5247_II": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 642.0,
+   "leaf_log10_exposure_error_off": [
+    -0.182,
+    0.031,
+    0.011
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.016,
+    0.001,
+    0.055
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 9,
+   "sweep_step_off_8bit": 10,
+   "passed": true
+  },
+  "kodak_5248": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 652.0,
+   "leaf_log10_exposure_error_off": [
+    -0.233,
+    -0.008,
+    0.043
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.019,
+    0.005,
+    0.048
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 9,
+   "sweep_step_off_8bit": 9,
+   "passed": true
+  },
+  "kodak_5250": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 653.0,
+   "leaf_log10_exposure_error_off": [
+    -0.249,
+    0.049,
+    0.032
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.02,
+    -0.0,
+    0.052
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 12,
+   "sweep_step_off_8bit": 12,
+   "passed": true
+  },
+  "kodak_5277": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 654.0,
+   "leaf_log10_exposure_error_off": [
+    -0.26,
+    0.053,
+    0.334
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.174,
+    0.038,
+    0.371
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 12,
+   "sweep_step_off_8bit": 13,
+   "passed": true
+  },
+  "kodak_5293": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 635.0,
+   "leaf_log10_exposure_error_off": [
+    -0.147,
+    0.029,
+    0.019
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.015,
+    0.002,
+    0.048
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 9,
+   "sweep_step_off_8bit": 9,
+   "passed": true
+  },
+  "kodak_aerocolor": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 654.0,
+   "leaf_log10_exposure_error_off": [
+    -0.188,
+    0.009,
+    0.03
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.018,
+    0.005,
+    0.033
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 18,
+   "sweep_step_off_8bit": 18,
+   "passed": true
+  },
+  "kodak_ektar_100": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 652.0,
+   "leaf_log10_exposure_error_off": [
+    -0.158,
+    0.007,
+    0.01
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.0,
+    -0.0,
+    -0.0
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 17,
+   "sweep_step_off_8bit": 17,
+   "passed": true
+  },
+  "kodak_exr_5248": {
+   "paper": "kodak_2383",
+   "red_peak_nm": 644.0,
+   "leaf_log10_exposure_error_off": [
+    -0.248,
+    0.068,
+    0.355
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.166,
+    0.042,
+    0.331
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 8,
+   "sweep_step_off_8bit": 9,
+   "passed": true
+  },
+  "kodak_gold_200": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 651.0,
+   "leaf_log10_exposure_error_off": [
+    -0.165,
+    0.01,
+    0.011
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.0,
+    -0.0,
+    -0.0
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 9,
+   "sweep_step_off_8bit": 10,
+   "passed": true
+  },
+  "kodak_portra_160": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 628.0,
+   "leaf_log10_exposure_error_off": [
+    -0.098,
+    0.009,
+    0.007
+   ],
+   "leaf_log10_exposure_error_on": [
+    0.0,
+    -0.0,
+    -0.0
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 12,
+   "sweep_step_off_8bit": 12,
+   "passed": true
+  },
+  "kodak_portra_400": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 651.0,
+   "leaf_log10_exposure_error_off": [
+    -0.15,
+    0.012,
+    0.001
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.0,
+    -0.0,
+    -0.0
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 11,
+   "sweep_step_off_8bit": 11,
+   "passed": true
+  },
+  "kodak_portra_800": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 659.0,
+   "leaf_log10_exposure_error_off": [
+    -0.165,
+    0.012,
+    -0.002
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.0,
+    -0.0,
+    -0.0
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 15,
+   "sweep_step_off_8bit": 15,
+   "passed": true
+  },
+  "kodak_ultramax_400": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 650.0,
+   "leaf_log10_exposure_error_off": [
+    -0.174,
+    0.016,
+    0.042
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.016,
+    0.003,
+    0.044
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 1,
+   "sweep_step_on_8bit": 12,
+   "sweep_step_off_8bit": 12,
+   "passed": true
+  },
+  "kodak_vericolor_iii": {
+   "paper": "kodak_endura_premier",
+   "red_peak_nm": 659.0,
+   "leaf_log10_exposure_error_off": [
+    -0.168,
+    0.032,
+    0.047
+   ],
+   "leaf_log10_exposure_error_on": [
+    -0.016,
+    0.001,
+    0.04
+   ],
+   "neutral_largest_8bit": 0,
+   "outside_largest_8bit": 0,
+   "sweep_step_on_8bit": 15,
+   "sweep_step_off_8bit": 15,
+   "passed": true
+  }
+ }
+}

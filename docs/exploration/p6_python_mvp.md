@@ -124,6 +124,22 @@ Local script `build/tmp/p6_spektrafilm_audit/apd_shadows.py`, 5 files with the p
 - The differences between stocks are small when each stock has its grey at code value 445. Time at 2048 pixels with a loaded model: APD 2.98 s, print 1.91 s, in the same run.
 - The APD responsivities are SMPTE copyright, and the license in their archive covers XML schemas only. The product must not include that table before a review. A table derived from it for a stock has an open question too.
 
+## 5.4 Rule `foliage_spectra` (U73)
+
+**Question.** Noritsu scans of real Portra 160 (`D:/Download/000001340001.tif`, `000001340006.tif`) show clean green foliage. The Portra 160 print of the Cuihu DNG files of 2026-05-22 shows yellow foliage. The scenes differ, and no true pair exists.
+
+**Trace (source: local probe `build/tmp/p9_noritsu/`).** The foliage is green in the product input, more yellow after the negative with a plain three-LED reading, and most yellow in the print. Both spectral priors give this result. The cause in the negative is a hypothesis with strong support: a synthetic leaf spectrum (chlorophyll bands, green peak, red edge) gives a Portra 160 red layer exposure 0.098 log10 below the table at the same XYZ. The leaf spectrum is inferred, and it is not a measurement.
+
+**Method.** See the header of `film_preview.py`. One sector of u'v' moves to a leaf shape with the XYZ of each node. The rule is in the table, so each stock applies its own sensitivities. No per-stock value exists.
+
+**Checks.** `check_foliage_spectra.py`, all 30 negatives, `results/p6_python_mvp/foliage_spectra.json`. Limits were set before the run. All 30 pass: a grey ramp does not change (0 of 8 bit code), six colours outside the sector change by at most 1, and the largest step along the chroma sweeps grows by at most 1 against the limit of 2.
+
+**Measured property.** Red layer error with the rule off, in log10: Portra 160 -0.098, Portra 400 -0.150, Portra 800 -0.165, Ektar -0.158, Gold 200 -0.165, 5207 -0.179, 5219 -0.154, C200 -0.129, Pro 400H -0.114. So Portra 160 has the smallest change of these stocks. With the rule on, the error is 0.000 on the Kodak stocks of this list and about -0.014 on the Fuji stocks. Four tungsten stocks (5213, 5277, Eterna 500, EXR 5248) keep about -0.17, because the leaf under T3200 falls mostly outside the sector.
+
+**User review.** The user chose the Portra 160 print with this rule. The sheets of 11 stocks on 4 files are local: `build/tmp/p9_noritsu/sheets/stocks_*.jpg`. The user has not reviewed them yet.
+
+**Not measured.** Real leaf spectra, other green objects in the sector, portraits with green surroundings, and sizes other than 1600 pixels. The earlier checks of P6 and P7 did not run with this rule. The resources for Alcedo Studio are not built again.
+
 ## 6. Source of the Frontier decision
 
 Local probes of 2026-10-31, in `build/tmp/p5/scripts/` (`probe_scanner_taste.py`, `probe_scanner_chain.py`, `probe_scanner_stocks.py`). Sheets: `build/tmp/p5/scanner_taste/`, `scanner_chain/`, `scanner_stocks/`.
@@ -146,3 +162,4 @@ See the [script README](../../scripts/poc/p6_mvp_gui/README.md).
 | P6-O4 | Review the look of the new stocks and the pairs that did not run. | User |
 | P6-O5 | Closed by U64: the Frontier method is dropped, so its table does not ship. New: review the SMPTE terms for the APD responsivities and the tables derived from them. | User |
 | P6-O6 | `fuji_superia_reala`, `kodak_5213`, and the other stocks of rule `relative_sensitivity_level`: check that the rule does not take away a real tungsten or stock balance. | P6 |
+| P6-O7 | Review rule `foliage_spectra` on the 11 stocks (section 5.4). If it is accepted, build the resources of Alcedo Studio again. | User |

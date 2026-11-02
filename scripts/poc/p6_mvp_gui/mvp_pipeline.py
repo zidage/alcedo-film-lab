@@ -10,6 +10,7 @@ Rules of this step:
 - 'print_conditions_by_medium': a cine print material takes the conditions of 2383 (projection at D65, neutral printing, grey aim 0.85), and a paper takes those of Endura (D50 viewing, grey aim 0.75).
 - 'no_anchor_at_reference_light': the default scene has no rule grey_anchor (U58). Another scene light needs the rule, because the printer balance follows the light. A stock with a relative sensitivity chart keeps the rule at each light.
 - 'spectral_prior': 'light_like' applies rule 'light_like_spectra' of P4, and 'measured_reflectance' uses the reflectance prior of P1 with no change.
+- 'foliage_spectra': on by default for each stock; see the header of film_preview.py.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -87,6 +88,7 @@ class RenderSettings:
     print_material: str = "kodak_2383"
     scene_light: str = REFERENCE_LIGHT
     spectral_prior: str = "light_like"
+    foliage: bool = True
     exposure_ev: float = 1.5
     contrast: float = float(fp.PRODUCT_CONTRAST)
     saturation: float = float(fp.PRODUCT_SATURATION)
@@ -176,7 +178,7 @@ def light_conditions(negative: str, scene_light: str, physics: dict | None = Non
 def film_options(settings: RenderSettings, print_material: str | None = None, physics: dict | None = None) -> fp.FilmOptions:
     material = print_material or settings.print_material
     options = fp.FilmOptions(**{**fp.DARKROOM, **negative_options(settings.negative, physics), **print_conditions(material), **light_conditions(settings.negative, settings.scene_light, physics),
-                                "light_spectra": settings.spectral_prior == "light_like"})
+                                "light_spectra": settings.spectral_prior == "light_like", "foliage": settings.foliage})
 
     def scaled(values: tuple[float, float, float], scale: float) -> tuple[float, float, float]:
         return tuple(float(v) * scale for v in values)
@@ -189,7 +191,7 @@ def film_options(settings: RenderSettings, print_material: str | None = None, ph
 
 def control_values(settings: RenderSettings, method: str) -> tuple:
     """The values of a model of this method, so that a change of a control of the other method keeps the model."""
-    values = tuple(getattr(settings, c.name) for c in CONTROLS if method in c.methods)
+    values = (settings.foliage, *(getattr(settings, c.name) for c in CONTROLS if method in c.methods))
     return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output)
 
 

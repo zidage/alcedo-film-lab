@@ -11,6 +11,7 @@ Scripts of step P6 ([report](../../../docs/exploration/p6_python_mvp.md), ROADMA
 | `p6_mvp_gui.py` | a RAW file, chosen in the window | display and export |
 | `check_p6_mvp.py` | a RAW file | `results/p6_python_mvp/checks.json` |
 | `check_p6_controls.py` | an AP1 array at 2048 pixels | `results/p6_python_mvp/controls.json` |
+| `check_foliage_spectra.py` | synthetic colours, all negatives | `results/p6_python_mvp/foliage_spectra.json` |
 | `render_p6_review.py` | AP1 arrays of the earlier steps | `build/tmp/p6/review/*.jpg` with a label on every panel (local only) |
 
 The tables and the sources of P0 to P5 must be present. A first use of a negative and print pair builds its table and model in about 1 second, in memory (P7, ROADMAP U68).

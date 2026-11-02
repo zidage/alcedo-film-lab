@@ -92,6 +92,9 @@ too much red layer exposure and turned violet (P4 report, W1). A low-colour-temp
 The blue sector follows the direction of skylight, and the warm sector the direction of a Planckian light below about 3000 K. The sectors and the family are inferred. The rule acts after rule 'smooth_reflectance_table'. The cost: a blue object or a saturated orange object loses the
 detail of its measured neighbours; the P4 report states the size. A photo gives no way to separate an object from a light, and sky and sunset are the larger areas of a landscape.
 
+Rule 'foliage_spectra' (option foliage). The reflectance prior gives a green colour a shape with no chlorophyll band near 670 nm, so a red layer that peaks near 630 nm receives too much exposure from a leaf (up to 0.10 log10 on Portra 160), and foliage turns yellow.
+In one sector of u'v' around the colour of a leaf, the table shape moves to a leaf shape times exp(c0 + c1 x + c2 x^2), with the XYZ of the node. The leaf shape, the sector, and the fade are inferred; they are no measurement. The rule acts after rule 'light_like_spectra'. Any object in the sector takes the leaf shape, because a photo cannot separate a leaf from another green object.
+
 Rule 'development_inhibition' (options inhibition_*, step P4, needs negative_record = 'dye_amount'). A developing layer releases an inhibitor that lowers development in the same layer and in the others:
     a_i = F_i(log H_i - sum_j K_ij G * a_j)
 G is a Gaussian of the length inhibition_um in the image plane. F_i is computed so that the neutral ramp returns the published curve exactly: on a neutral, F_i maps log H - sum_j K_ij a_j(log H) to a_i(log H). So the published curve holds for a neutral and a large flat area, and a colour, where the layers differ, gets less inhibition from the layers that developed less.
@@ -119,7 +122,7 @@ from pathlib import Path
 
 import alcedo_film_tables as film_tables
 import numpy as np
-from scipy.ndimage import gaussian_filter, map_coordinates
+from scipy.ndimage import distance_transform_edt, gaussian_filter, map_coordinates
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 P1_DIR = SCRIPT_DIR.parent / "p1_spectral_input"
@@ -146,6 +149,11 @@ LIGHT_SECTOR_RADIUS = {"blue": (0.006, 0.02), "warm": (0.05, 0.09)}  # u'v' dist
 LIGHT_FIT_STEPS = 12  # continuation steps from the white to the node
 LIGHT_FIT_LIMIT = 1e-5  # largest relative XYZ error of a fitted node
 LIGHT_REACH_FADE = 0.008  # u'v' sigma of the fade toward the nodes that the family cannot reach
+FOLIAGE_DEGREES = (25.0, 50.0)  # angle from the direction of the leaf colour: full weight, then a smoothstep to zero
+FOLIAGE_RADIUS = (0.015, 0.045)  # u'v' distance from the white: zero weight, then a smoothstep to full weight
+FOLIAGE_FIT_STEPS = 6  # continuation steps from the leaf colour to the node
+FOLIAGE_FIT_LIMIT = 1e-3  # largest relative XYZ error of a fitted node
+FOLIAGE_REACH_FADE = 0.02  # u'v' distance of the fade toward the nodes that the family cannot reach
 SPREAD_GAUSSIANS = ((0.2528, 0.4142), (0.7472, 1.4271))  # (weight, sigma / spread length): least-squares fit of 1 / (1 + x^2) for x up to 8
 MASK_DENSITY_START = -0.05
 MASK_DENSITY_STEP = 0.05
@@ -231,6 +239,7 @@ class FilmOptions:
     uv_smooth: tuple[float, float] = (0.0, 0.0)  # not part of the print table; sigma_near, sigma_far of rule 'smooth_reflectance_table'
     negative_record: str = "status_m"  # 'status_m' or 'dye_amount': rule 'dye_amount_curves' (P4)
     light_spectra: bool = False  # not part of the print table; rule 'light_like_spectra' (P4)
+    foliage: bool = False  # not part of the print table; rule 'foliage_spectra'
     layer_spread_um: tuple[float, float, float] = (0.0, 0.0, 0.0)  # not part of the print table; rule 'layer_spread' (P4), red, green, blue layer
     inhibition_total: tuple[float, float, float] = (0.0, 0.0, 0.0)  # rule 'development_inhibition' (P4): the total inhibition that each layer receives, log10 H per unit of dye amount
     inhibition_cross_share: float = 0.5  # share of the total that comes from the other two layers (inferred)
@@ -449,7 +458,7 @@ class FilmPreview:
 
     def _load_uv_table(self) -> np.ndarray:
         # Rule 'relight': see the header. Fast, so that a light does not need a new reconstruction.
-        key = (self.options.uv_smooth, self.options.light_spectra)
+        key = (self.options.uv_smooth, self.options.light_spectra, self.options.foliage)
         if key not in _reflectance_shapes:
             _reflectance_shapes[key] = self._final_reflectance_table()
         return self.c.layer_exposure(_reflectance_shapes[key] * self.scene_spectrum[None, :]).reshape(UV_NODES, UV_NODES, 3)
@@ -473,6 +482,13 @@ class FilmPreview:
                 rho = np.load(path).astype(np.float64)
             else:
                 rho = light_like_spectra(rho, self.c, white_uv)
+                np.save(path, rho.astype(np.float32))
+        if self.options.foliage:
+            path = CACHE_DIR / f"reflectance_over_uv_foliage_{self.options.light_spectra}_{near}_{far}.npy"
+            if path.exists():
+                rho = np.load(path).astype(np.float64)
+            else:
+                rho = foliage_spectra(rho, self.c, white_uv)
                 np.save(path, rho.astype(np.float32))
         return rho
 
@@ -946,6 +962,55 @@ def light_like_spectra(rho: np.ndarray, c: sr.Colorimetry, white_uv: np.ndarray)
     used = weight[index[reached], None] * fade[index[reached], None]
     out = rho.copy()
     out[index[reached]] = (1.0 - used) * rho[index[reached]] + used * shape[reached]
+    return out
+
+
+def foliage_spectra(rho: np.ndarray, c: sr.Colorimetry, white_uv: np.ndarray) -> np.ndarray:
+    """Rule 'foliage_spectra': see the header. rho: (nodes, wavelengths), with Y = 1 under E_ref. A linear blend of two shapes with one XYZ keeps the XYZ of each node."""
+    u, v = np.meshgrid(*FilmPreview.uv_axes(), indexing="ij")
+    to_xyz = c.w_xyz * c.e_ref
+    wl = c.wavelengths
+    leaf = 0.035 + 0.125 * np.exp(-0.5 * ((wl - 552.0) / 32.0) ** 2) + 0.45 / (1.0 + np.exp(-(wl - 712.0) / 11.0))
+    leaf_xyz = leaf @ to_xyz.T
+    leaf, leaf_xyz = leaf / leaf_xyz[1], leaf_xyz / leaf_xyz[1]
+    leaf_uv = np.array([4.0 * leaf_xyz[0], 9.0 * leaf_xyz[1]]) / (leaf_xyz[0] + 15.0 * leaf_xyz[1] + 3.0 * leaf_xyz[2])
+    direction = (leaf_uv - white_uv) / np.linalg.norm(leaf_uv - white_uv)
+    du, dv = u.ravel() - white_uv[0], v.ravel() - white_uv[1]
+    radius = np.hypot(du, dv)
+    angle = np.degrees(np.arccos(np.clip((du * direction[0] + dv * direction[1]) / np.maximum(radius, 1e-12), -1.0, 1.0)))
+
+    def smoothstep(x: np.ndarray) -> np.ndarray:
+        x = np.clip(x, 0.0, 1.0)
+        return x * x * (3.0 - 2.0 * x)
+
+    weight = (1.0 - smoothstep((angle - FOLIAGE_DEGREES[0]) / (FOLIAGE_DEGREES[1] - FOLIAGE_DEGREES[0]))) * smoothstep((radius - FOLIAGE_RADIUS[0]) / (FOLIAGE_RADIUS[1] - FOLIAGE_RADIUS[0]))
+    index = np.flatnonzero(weight > 0.0)
+    x = (wl - 560.0) / 100.0
+    basis = np.stack([np.ones_like(x), x, x * x])
+    uu, vv = u.ravel()[index], np.maximum(v.ravel()[index], 1e-3)
+    target = np.stack([9.0 * uu / (4.0 * vv), np.ones_like(uu), (12.0 - 3.0 * uu - 20.0 * vv) / (4.0 * vv)], axis=-1)
+    coefficient = np.zeros((len(index), 3))
+    for step in range(1, FOLIAGE_FIT_STEPS + 1):
+        aim = leaf_xyz[None] + (target - leaf_xyz[None]) * step / FOLIAGE_FIT_STEPS
+        for _ in range(12):
+            shape = leaf * np.exp(np.clip(coefficient @ basis, -60.0, 60.0))
+            error = aim - shape @ to_xyz.T
+            jacobian = np.einsum("ni,ai,bi->nab", shape, to_xyz, basis, optimize=True)
+            jacobian += 1e-10 * np.trace(jacobian, axis1=1, axis2=2)[:, None, None] * np.eye(3)
+            move = np.linalg.solve(jacobian, error[..., None])[..., 0]
+            limit = np.minimum(1.0, 2.0 / np.maximum(np.abs(move).max(axis=1), 1e-12))
+            coefficient += limit[:, None] * move
+    shape = leaf * np.exp(np.clip(coefficient @ basis, -60.0, 60.0))
+    error = np.abs(shape @ to_xyz.T - target).max(axis=1) / np.maximum(np.abs(target).max(axis=1), 1e-12)
+    reached = error <= FOLIAGE_FIT_LIMIT
+    print(f"rule foliage_spectra: nodes in the sector {len(index)}, not reached {int((~reached).sum())}", flush=True)
+    # The family cannot reach the nodes near and outside the spectral locus. The weight falls to zero toward them, so the table has no step there.
+    blocked = np.zeros(u.size, dtype=bool)
+    blocked[index[~reached]] = True
+    distance = distance_transform_edt(~blocked.reshape(u.shape), sampling=(u[1, 0] - u[0, 0], v[0, 1] - v[0, 0])).ravel()
+    used = (weight[index] * reached * smoothstep(distance[index] / FOLIAGE_REACH_FADE))[:, None]
+    out = rho.copy()
+    out[index] = (1.0 - used) * rho[index] + used * shape
     return out
 
 
