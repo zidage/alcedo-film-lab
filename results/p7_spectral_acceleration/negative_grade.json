@@ -1,0 +1,18 @@
+{
+ "grey_record": [
+  0.5925236344337463,
+  0.7191843390464783,
+  1.1528009176254272
+ ],
+ "grid_finite": true,
+ "grid_low": 0.0,
+ "per_pixel_largest_difference": 0.0,
+ "grey_largest_move": 0.0017147064208984375,
+ "print_ramp_largest_fall": 0.0,
+ "option_off_has_no_grey": true,
+ "apd_largest_difference": 0.0,
+ "pairs_with_rule": [
+  "kodak_5219 on cine_look"
+ ],
+ "passed": true
+}

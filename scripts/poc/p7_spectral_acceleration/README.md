@@ -36,6 +36,7 @@ $P -I scripts/poc/p7_spectral_acceleration/measure_table_threads.py
 $P -I scripts/poc/p7_spectral_acceleration/build_product_resources.py  # about 2 min
 $P -I scripts/poc/p7_spectral_acceleration/build_display_expected.py   # about 1 min; sRGB values for the kernel tests of Alcedo Studio
 $P -I scripts/poc/p7_spectral_acceleration/check_cinema_look.py        # rule print_cinema_look
+$P -I scripts/poc/p7_spectral_acceleration/check_negative_grade.py     # rule negative_show_grade
 ```
 
 To install only the library in an environment that exists:

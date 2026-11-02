@@ -11,6 +11,7 @@ Rules of this step:
 - 'no_anchor_at_reference_light': the default scene has no rule grey_anchor (U58). Another scene light needs the rule, because the printer balance follows the light. A stock with a relative sensitivity chart keeps the rule at each light.
 - 'spectral_prior': 'light_like' applies rule 'light_like_spectra' of P4, and 'measured_reflectance' uses the reflectance prior of P1 with no change.
 - 'foliage_spectra': on by default for each stock; see the header of film_preview.py.
+- 'negative_show_grade': on for kodak_5219 on print material cine_look (ROADMAP U82, U83); see negative_grade.py.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -33,6 +34,19 @@ sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p3_scan_and_scene"))
 from aces_scan import OUTPUT_TRANSFORMS, ScanPreview, fp  # noqa: E402
 
 CATALOG = json.loads((SCRIPT_DIR / "stock_catalog.json").read_text(encoding="utf-8"))
+# Print material 'cine_look' (ROADMAP U83): the data of Kodak 2383, with rules 'print_cinema_look' and 'negative_show_grade'. Print material kodak_2383 has neither of them.
+CINE_LOOK_PRINT = "cine_look"
+CINE_LOOK_BASE_PRINT = "kodak_2383"
+CATALOG["prints"][CINE_LOOK_PRINT] = {**CATALOG["prints"][CINE_LOOK_BASE_PRINT], "name": "Cine Look (2383)"}
+# List order of the viewer and of the product (ROADMAP U83): the common stocks first, then Fuji, then the old Kodak stocks. kFilmNegativeIds and kFilmPrintMaterialIds of Alcedo Studio have the same order.
+NEGATIVE_ORDER = ("kodak_5207", "kodak_5219", "kodak_5213", "kodak_5203", "kodak_5206", "kodak_portra_400", "kodak_portra_160", "kodak_portra_800", "kodak_ektar_100", "kodak_gold_200", "kodak_ultramax_400",
+                  "fuji_eterna_500", "fuji_eterna_500_vivid", "fuji_pro_400h", "fuji_pro_160c", "fuji_pro_160s", "fuji_natura_1600", "fuji_superia_xtra_400", "fuji_superia_reala", "fuji_c200",
+                  "kodak_5277", "kodak_5293", "kodak_exr_5248", "kodak_5248", "kodak_5247", "kodak_5247_II", "kodak_5250", "kodak_vericolor_iii", "kodak_aerocolor", "agfa_vista_100")
+PRINT_ORDER = (CINE_LOOK_PRINT, "kodak_2383", "kodak_endura_premier", "kodak_portra_endura", "kodak_supra_endura", "kodak_2393",
+               "fuji_3513di", "fuji_3523XD", "fuji_ca_maxima", "fuji_ca_dpII", "fuji_ca_pdII", "fuji_ca_super_c", "fujiflex_new", "fujiflex_old",
+               "kodak_duraflex_plus", "kodak_5383", "kodak_5384", "kodak_5381", "kodak_exr_5386")
+CATALOG["negatives"] = {key: CATALOG["negatives"][key] for key in NEGATIVE_ORDER}
+CATALOG["prints"] = {key: CATALOG["prints"][key] for key in PRINT_ORDER}
 PHYSICS_PATH = SCRIPT_DIR / "stock_physics.json"
 IMAGE_PART_PATH = SCRIPT_DIR / "inhibition_image.json"
 ACCEPTED_STOCKS = {"kodak_5207": "5207_2383", "kodak_5219": "5219_2383", "kodak_portra_400": "portra400_endura", "kodak_portra_160": "portra160_endura",
@@ -43,7 +57,7 @@ SCENE_LIGHTS = (REFERENCE_LIGHT, *fp.PRODUCT_LIGHTS, *fp.SCENE_PRESETS)
 SPECTRAL_PRIORS = ("light_like", "measured_reflectance")
 METHODS = ("print", "apd")
 SCAN_CARRIER_PRINT = "kodak_2383"
-CINEMA_LOOK_PRINT = "kodak_2383"  # rule 'print_cinema_look' (ROADMAP U81)
+NEGATIVE_GRADE_STOCK = "kodak_5219"  # rule 'negative_show_grade', on print material cine_look (ROADMAP U82, U83)
 DEFAULT_LONG_EDGE = 2048
 MEDIUM_WHITE = "by_medium"
 DISPLAY_WHITES = (MEDIUM_WHITE, "reflector", "paper", "print_dmin")
@@ -92,6 +106,7 @@ class RenderSettings:
     scene_light: str = REFERENCE_LIGHT
     spectral_prior: str = "light_like"
     foliage: bool = True
+    negative_grade: bool = True
     exposure_ev: float = 1.5
     contrast: float = float(fp.PRODUCT_CONTRAST)
     saturation: float = float(fp.PRODUCT_SATURATION)
@@ -174,7 +189,7 @@ def _stock_options(negative: str, physics: dict | None) -> dict:
 def print_conditions(print_material: str) -> dict:
     """Rule 'print_conditions_by_medium' (ROADMAP U78). A cine print: the LAD aim, the projection light, the clear print as white, and the dark surround. A paper: 18 % reflectance for the grey, D50, and the perfect reflector as white."""
     if CATALOG["prints"][print_material]["medium"].lower() == "cine":
-        return dict(print_profile=print_material, print_midscale_status_a=fp.CINE_GREY_STATUS_A, viewing_cct_k=fp.CINE_VIEWING_CCT_K, neutral_printing=False, printer_filter=fp.CINE_PRINTER_FILTER, display_white="print_dmin", surround_exponent=fp.CINE_SURROUND_EXPONENT, print_slope_match=fp.CINE_PRINT_SLOPE_MATCH, cinema_look=print_material == CINEMA_LOOK_PRINT)
+        return dict(print_profile=CINE_LOOK_BASE_PRINT if print_material == CINE_LOOK_PRINT else print_material, print_midscale_status_a=fp.CINE_GREY_STATUS_A, viewing_cct_k=fp.CINE_VIEWING_CCT_K, neutral_printing=False, printer_filter=fp.CINE_PRINTER_FILTER, display_white="print_dmin", surround_exponent=fp.CINE_SURROUND_EXPONENT, print_slope_match=fp.CINE_PRINT_SLOPE_MATCH, cinema_look=print_material == CINE_LOOK_PRINT)
     return dict(print_profile=print_material, print_midscale_status_a=0.75, viewing_cct_k=5000.0, neutral_printing=False, display_white="reflector")
 
 
@@ -194,7 +209,8 @@ def light_conditions(negative: str, scene_light: str, physics: dict | None = Non
 def film_options(settings: RenderSettings, print_material: str | None = None, physics: dict | None = None, image_part: bool = True) -> fp.FilmOptions:
     material = print_material or settings.print_material
     options = fp.FilmOptions(**{**fp.DARKROOM, **negative_options(settings.negative, physics, image_part), **print_conditions(material), **light_conditions(settings.negative, settings.scene_light, physics),
-                                "light_spectra": settings.spectral_prior == "light_like", "foliage": settings.foliage, "entry_gamut_compress": settings.method == "print"})
+                                "light_spectra": settings.spectral_prior == "light_like", "foliage": settings.foliage, "entry_gamut_compress": settings.method == "print",
+                                "negative_grade": settings.negative_grade and settings.method == "print" and material == CINE_LOOK_PRINT and settings.negative == NEGATIVE_GRADE_STOCK})
 
     def scaled(values: tuple[float, float, float], scale: float) -> tuple[float, float, float]:
         return tuple(float(v) * scale for v in values)
@@ -208,7 +224,7 @@ def film_options(settings: RenderSettings, print_material: str | None = None, ph
 
 def control_values(settings: RenderSettings, method: str) -> tuple:
     """The values of a model of this method, so that a change of a control of the other method keeps the model."""
-    values = (settings.foliage, *(getattr(settings, c.name) for c in CONTROLS if method in c.methods))
+    values = (settings.foliage, settings.negative_grade, *(getattr(settings, c.name) for c in CONTROLS if method in c.methods))
     return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output)
 
 

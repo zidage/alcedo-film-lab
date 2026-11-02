@@ -389,11 +389,41 @@ The user finds the saturation too high on Eterna 500, Ektar 100, and Portra 800,
 
 **Candidates.** Two independent local studies (`build/tmp/look_codex/`, `build/tmp/look_claude/`) gave candidates on the same frames. The user selected candidate P6 of `look_codex` and asked not to merge candidates. The report of that study holds its other rounds.
 
-**Rule.** `cinema_look.py`, on the sRGB code of the finished print: a separation and a coupling of the channels in a density of code, a curve that prints the lower mids down, blue in the blacks and warm lit surfaces, a lower chroma, more density on blue, and a small shift of blue and green. All constants are creative choices. `print_conditions` turns the rule on for `kodak_2383`. It is outside the print table, so the three sliders and the tables do not change.
+**Rule.** `cinema_look.py`, on the sRGB code of the finished print: a separation and a coupling of the channels in a density of code, a curve that prints the lower mids down, blue in the blacks and warm lit surfaces, a lower chroma, more density on blue, and a small shift of blue and green. All constants are creative choices. `print_conditions` turned the rule on for `kodak_2383`. Since U83 only print material `cine_look` has it. It is outside the print table, so the three sliders and the tables do not change.
 
 **Checks.** `check_cinema_look.py`, with limits set before the run; results in [`cinema_look.json`](../../results/p7_spectral_acceleration/cinema_look.json). The rule against the array of candidate P6 on 8 frames: largest difference 3.0e-8 of code, limit 1e-5 (local script `build/tmp/look_claude/check_p6_port.py`).
 
 **What is not solved.** The study states that pale blossoms can stay dry and grey-brown, that skin can lean orange, and that shaded plants can lose detail. A global step cannot give the shot-level grade of the film. The user reviewed 5207 on 2383 only. The other negatives on 2383 take the same step with no review. No matched RAW file of a film frame exists.
+
+### 5.14 Rule `negative_show_grade` (U82)
+
+**User request.** Night images on 5219 do not have the feel of 5219. The user asks for a method nearer to film industry practice, a stylized one as with rule `print_cinema_look`, and no strict hold to physical data. Three independent studies: GPT-6.1 Sol (`build/tmp/night_codex/report.md`), Gemini 3.8 Flash (`build/tmp/night_gemini/`), and the author (`build/tmp/night_claude/`).
+
+**Source observations.** [American Cinematographer, Anora](https://theasc.com/articles/anora-ignites-bride-war): the cinematographer likes how a tungsten stock renders fluorescents and practical lights, and describes an underexposed test with muddy blacks, and a coolness with a slight green tint. [Yedlin, Display Prep FAQ](https://www.yedlin.net/NerdyFilmTechStuff/DispPrepDemoFAQ/): scanned film is a source and not a final look, and a colour and density step is an operation on one pixel, so a LUT can hold it. The study of GPT-6.1 Sol states that the night scenes of Uncut Gems were shot on Alexa, so that film is evidence for a designed show look and not for a response of 5219.
+
+**Calculation.** The default scene light of 5219 is `E_ref` with no grey anchor, so the default path has no relation between a tungsten-balanced stock and the lights of a scene. On the review sheet, other scene lights change the frame only a little.
+
+**Candidates of the author, by eye.** Two lights per pixel in layer exposure gave cool shadows and warm lamps, and a blue blotch on the edge of a green sign. Underexposure of 1.25 stops with a density gain of 1.2 gave red, muddy blacks. A grade of the negative record: the user finds this candidate the most promising.
+
+**Rule.** `negative_grade.py`, on the dye amounts of the negative, after the spatial steps of the negative and before the print table, as a DI grades a scan before the print transform. All constants are creative choices. With the level as the mean difference from the record of an 18 % grey: a lower chroma overall, in the shadows, and in the highlights; a cool offset with a small olive lean in the shadows; and where green or blue leads, a lower chroma and a darker print. Red and yellow have no such loss. `film_options` turns the rule on for `kodak_5219` on print material `cine_look` (section 5.15), and `RenderSettings.negative_grade` turns it off. It is outside the print table. `print_cinema_look` does not change and runs after it.
+
+**Checks.** `check_negative_grade.py`, with limits set before the run; results in [`negative_grade.json`](../../results/p7_spectral_acceleration/negative_grade.json). The rule against the array of the local candidate on 3 frames: largest difference 0 of code, limit 1e-5 (local script `build/tmp/night_claude/r3_rule.py`). This is the version `di_grade v2` of that study.
+
+**Observation by the author on 17 frames.** Sheets: `build/tmp/night_claude/sheets/r3_rule_*.jpg`. Dark areas go toward teal and olive, blue skies are denser, and green signs are less electric. Lamps stay warm. Red signs keep their colour. On daylight frames the rule also acts: foliage in shade is darker on `landscape__DSC0726`, and grass is deeper on `daylight_0691416133`. Portrait skin shows little change. The rule has no knowledge of night.
+
+**The other studies.** These candidates are not in the rule, and the user has not reviewed them. GPT-6.1 Sol ranks first its candidate B3: a fixed cool input balance with a small display step. Gemini 3.8 Flash ranks first its candidate B3: a display step that replaces `print_cinema_look` on 5219. On the frame `daylight_0691416133`, the author sees a much more saturated blue sky with that replacement.
+
+**What is not solved.** The user has not reviewed the final rule on all files. The rule does not restore the light of a scene that a white-balanced input lost.
+
+### 5.15 Print material `cine_look` and the list order (U83)
+
+**User decision.** The look is good, but it is very different from 2383, so the product must not name it 2383. It becomes "Cine Look (2383)". The original 2383 stays, and the other materials do not change. The lists put the common stocks first and Cine Look at the top, and Fuji and the old Kodak stocks go later.
+
+**Change.** Print material `cine_look` has the data of `kodak_2383`, with rule `print_cinema_look` on any negative and rule `negative_show_grade` on `kodak_5219`. Print material `kodak_2383` has neither rule. It returns to the print conditions of U80. `NEGATIVE_ORDER` and `PRINT_ORDER` of `mvp_pipeline.py` set the order of the lists. The default negative and the default print material do not change. An identifier does not change, so a document with `kodak_2383` opens with the original 2383.
+
+**Decision of the author.** The user did not state a scope for the grade on other materials, and said that the others do not change, so the grade is only on `cine_look`.
+
+**Resources.** Schema 5 adds `negative/<id>/negative_grade`, and `negative_grade_grey` of the print setup: the record of an 18 % grey per negative and scene light, from the complete `FilmPreview`.
 
 ## 6. Not measured
 

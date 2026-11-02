@@ -20,7 +20,7 @@ def main() -> int:
     parser.add_argument("output", type=Path, nargs="?")
     parser.add_argument("--negative", default=defaults.negative, choices=sorted(mp.CATALOG["negatives"]))
     parser.add_argument("--method", default=defaults.method, choices=mp.METHODS)
-    parser.add_argument("--print-material", default=defaults.print_material, choices=sorted(mp.CATALOG["prints"]))
+    parser.add_argument("--print-material", default=defaults.print_material, choices=list(mp.CATALOG["prints"]))
     parser.add_argument("--scene-light", default=defaults.scene_light, choices=mp.SCENE_LIGHTS)
     parser.add_argument("--spectral-prior", default=defaults.spectral_prior, choices=mp.SPECTRAL_PRIORS)
     parser.add_argument("--exposure-ev", type=float, default=defaults.exposure_ev)

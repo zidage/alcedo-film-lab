@@ -75,6 +75,8 @@ Rule 'print_slope_match' (option print_slope_match, ROADMAP U80): a cine print i
 
 Rule 'entry_reference_gamut_compression' (option entry_gamut_compress, ROADMAP U80): the ACES Reference Gamut Compression on the linear AP1 at the entry of a print, as the other display methods of the product have. The final colour space of an image is not known at this point, and a graded colour can leave AP1.
 
+Rule 'negative_show_grade' (option negative_grade, ROADMAP U82): a fixed creative grade of the negative record, after the spatial steps of the negative and before the print table, as a DI grades a scan before the print transform. See negative_grade.py. It needs rule 'dye_amount_curves'. The grey of the rule is the record of an 18 % grey under the scene light, with no grade.
+
 Rule 'neutral_printing_gain' (option neutral_printing): one gain per paper layer on the paper log exposure about the
 balance exposure, so that a neutral negative ramp has the same paper log exposure slope in each layer. The published
 curves, the dye data and the lamp gave a blue slope about 20 % lower than green on 2383. That is a yellow highlight and
@@ -137,6 +139,7 @@ sys.path.insert(0, str(P1_DIR))
 sys.path.insert(0, str(SCRIPT_DIR))
 import cinema_look as look  # noqa: E402
 import fast_kernels as fk  # noqa: E402
+import negative_grade as grade  # noqa: E402
 import spectral_datasets as sd  # noqa: E402
 import spectral_reconstruction as sr  # noqa: E402
 from spectral_reconstruction import p0  # noqa: E402
@@ -169,6 +172,7 @@ MASK_DENSITY_NODES = 16  # up to 0.70 density
 MASK_PAN_NM = (400.0, 650.0)
 INHIBITION_STEPS_IMAGE = 2  # ROADMAP U70; step P4 used 4, and sweep_inhibition_steps.py of step P7 states the difference
 INHIBITION_STEPS_POINT = 16
+NEGATIVE_GRADE_GREY_STEPS = 16  # rule 'negative_show_grade'
 METER_CAP = 16.0
 # Default grade of a RAW file in Alcedo Studio with the film print on: alcedo_studio/src/include/edit/graph/pipeline_document.hpp.
 # The product resets the saturation of the Default Grade from 1.3 to 1.0 when the user turns on the film print (ROADMAP U80).
@@ -239,6 +243,7 @@ class FilmOptions:
     entry_gamut_compress: bool = False  # rule 'entry_reference_gamut_compression'
     gamut_compress: bool = False  # not part of the print table; False: clip
     cinema_look: bool = False  # rule 'print_cinema_look', on the final display code; not part of the print table
+    negative_grade: bool = False  # rule 'negative_show_grade', on the negative record; not part of the print table
     gamut_threshold: tuple[float, float, float] = (0.815, 0.803, 0.880)  # ACES RGC values (cyan, magenta, yellow)
     gamut_limit: tuple[float, float, float] = (1.147, 1.264, 1.312)  # ACES RGC values
     gamut_power: float = 1.2  # ACES RGC value
@@ -361,6 +366,8 @@ def solve_amounts(target: np.ndarray, base_density: np.ndarray, dyes: np.ndarray
 
 
 class FilmPreview:
+    _grade_grey: np.ndarray | None = None  # rule 'negative_show_grade'; a model of rule 'setup_without_tables' has none
+
     def __init__(self, options: FilmOptions | None = None) -> None:
         self.options = options or FilmOptions()
         o = self.options
@@ -384,6 +391,7 @@ class FilmPreview:
         self.density_grid, self.print_table, self.table_counts = self._build_print_table()
         self._prepare_display()
         self._prepare_kernels()
+        self._prepare_negative_grade()
         self._prepare_mask()
 
     def light(self, name: str) -> np.ndarray:
@@ -817,6 +825,19 @@ class FilmPreview:
         self._grid_start = np.array([g[0] for g in self.density_grid])
         self._grid_step = np.array([g[1] - g[0] for g in self.density_grid])
 
+    def _prepare_negative_grade(self) -> None:
+        """Rule 'negative_show_grade': the record of an 18 % grey, with no grade."""
+        self._grade_grey = None
+        if not self.options.negative_grade:
+            return
+        if self.options.negative_record != "dye_amount":
+            raise ValueError("rule negative_show_grade needs negative_record = 'dye_amount'")
+        # The grey is a stored value of the product, so it has a fixed number of steps. build_display_expected.py changes INHIBITION_STEPS_POINT.
+        global INHIBITION_STEPS_POINT
+        steps, INHIBITION_STEPS_POINT = INHIBITION_STEPS_POINT, NEGATIVE_GRADE_GREY_STEPS
+        self._grade_grey = self.negative_image(np.full((1, 1, 3), 0.18, dtype=np.float32))[0][0, 0].astype(np.float64)
+        INHIBITION_STEPS_POINT = steps
+
     def negative_image(self, image: np.ndarray) -> tuple[np.ndarray, dict]:
         """Linear AP1 (rows, columns, 3; float32) to negative Status M, through the kernels. The print and the scan start here."""
         o = self.options
@@ -843,6 +864,8 @@ class FilmPreview:
         if spatial and o.enlarger_flare:
             t = fk.density_to_transmittance(density)
             density = fk.flare_density(t, fk.gaussian_blur(t, o.enlarger_flare_size * max(image.shape[:2])), float(o.enlarger_flare))
+        if self._grade_grey is not None:
+            density = grade.negative_grade(density, self._grade_grey)
         return density, {"moved_by_rule": int(moved), "y_not_positive": int(not_positive), "negative_above_curve_end": int(above), "pixels": int(image.shape[0] * image.shape[1])}
 
     def _prepare_mask(self) -> None:
@@ -946,6 +969,8 @@ class FilmPreview:
         density, above = self.negative_density(q)
         if spatial:
             density = self._development_and_enlarger(density)
+        if self._grade_grey is not None:
+            density = grade.negative_grade(density, self._grade_grey).astype(np.float64)
         rgb = self.display_linear(self.print_xyz(density))
         stats.update(negative_above_curve_end=above, display_clipped=int(((rgb < 0) | (rgb > 1)).any(axis=-1).sum()), pixels=int(q.size / 3))
         stats["gamut_distance_p999"] = np.percentile(gamut_distance(rgb).reshape(-1, 3), 99.9, axis=0).round(3).tolist()

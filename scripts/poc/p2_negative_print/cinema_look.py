@@ -1,6 +1,6 @@
 """Rule 'print_cinema_look': a fixed creative rendering of the display code of a print.
 
-Input: sRGB code, 0 to 1, of the finished print. Output: sRGB code, 0 to 1, as float32. Step: P7, ROADMAP U81.
+Input: sRGB code, 0 to 1, of the finished print. Output: sRGB code, 0 to 1, as float32. Step: P7, ROADMAP U81, U83. Print material cine_look has this rule, and print material kodak_2383 does not.
 Source: candidate P6 of a local look study, which the user selected by eye for 5207 on 2383 as the look of La La Land at midday. All constants are creative choices with no measurement. They are not a measurement of 2383 or of the LUT of that film. The density here is a density of display code, and not an optical density of a film.
 The operation reads no statistic of a frame and has no spatial part. Function FilmKernelCinemaLook of Alcedo Studio has the same steps.
 """

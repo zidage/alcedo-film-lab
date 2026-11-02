@@ -48,11 +48,11 @@ import mvp_pipeline as mp  # noqa: E402
 fp = mp.fp
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
-EXPECTED_SELECTIONS = (("kodak_5207", "kodak_2383", "reference"), ("kodak_portra_400", "kodak_endura_premier", "daylight"), ("fuji_eterna_500", "kodak_2383", "street_mixed"))
+EXPECTED_SELECTIONS = (("kodak_5207", "kodak_2383", "reference"), ("kodak_portra_400", "kodak_endura_premier", "daylight"), ("fuji_eterna_500", "kodak_2383", "street_mixed"), ("kodak_5219", "cine_look", "reference"), ("kodak_5207", "cine_look", "reference"))
 RANDOM_CHECKS = 8
 SETUP_LIMIT = 1e-9
 MANTISSA_BITS = 12
@@ -119,7 +119,7 @@ def negative_arrays(model: fp.FilmPreview) -> dict[str, np.ndarray]:
     erg_per_unit = c.lux_seconds_per_y / p0.LUMINOUS_EFFICACY_LM_PER_W * p0.ERG_PER_CM2_PER_J_PER_M2
     arrays = {"base": f.negative_dmin, "dyes": f.negative_dyes, "exposure_weights": f.w_negative * erg_per_unit, "criterion_log_h": f.negative_criterion_log_h,
               "density_grid_start": np.array([c_.density.min() for c_ in model.negative_curves]), "density_grid_stop": np.array([c_.density.max() for c_ in model.negative_curves]),
-              "layer_spread_um": np.array(model.options.layer_spread_um, dtype=np.float64), **uniform_curves(model.negative_curves)}
+              "layer_spread_um": np.array(model.options.layer_spread_um, dtype=np.float64), "negative_grade": scalar(1.0 if model.options.negative_profile == mp.NEGATIVE_GRADE_STOCK else 0.0), **uniform_curves(model.negative_curves)}
     if model.inhibition is not None:
         i = model.inhibition
         arrays.update(inhibition_k=i["k"], inhibition_image_k=i["k_image"], inhibition_start=i["start"], inhibition_free=i["free"], inhibition_lengths=np.asarray(i["lengths"], dtype=np.int64), inhibition_step=scalar(i["step"]))
@@ -258,7 +258,11 @@ def collect() -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict, list]
     bundle.update({"common/wavelengths_nm": np.asarray(last_model.c.wavelengths, dtype=np.float64), "common/ap1_to_xyz": np.asarray(last_model.c.ap1_to_xyz, dtype=np.float64), "common/locus_normals": np.asarray(projection.normals, dtype=np.float64),
                    "common/locus_room": -(projection.offsets + projection.normals @ projection.white), "common/locus_white": np.asarray(projection.white, dtype=np.float64), "common/locus_inset": scalar(projection.LOCUS_INSET)})
     metadata = {"negatives": {k: {"name": mp.CATALOG["negatives"][k]["name"]} for k in negatives}, "print_materials": {k: {"name": mp.CATALOG["prints"][k]["name"], "medium": mp.CATALOG["prints"][k]["medium"]} for k in papers}, "scene_lights": lights, "scene_spectra": spectrum_names}
-    setup = {"printer_balance_log10": balance, "layer_gain": layer_gain, "printing_gain": printing_gain, "aim_log_h": aim, "xyz_to_display": to_display, "scene_spectrum_index": spectrum_index}
+    # Rule 'negative_show_grade': the grey needs the kernels, so it comes from the complete FilmPreview. Other negatives hold 0.
+    grade_grey = np.zeros((len(negatives), len(lights), 3))
+    for l, light in enumerate(lights):
+        grade_grey[negatives.index(mp.NEGATIVE_GRADE_STOCK), l] = fp.FilmPreview(mp.film_options(mp.RenderSettings(negative=mp.NEGATIVE_GRADE_STOCK, print_material=mp.CINE_LOOK_PRINT, scene_light=light)))._grade_grey
+    setup = {"negative_grade_grey": grade_grey, "printer_balance_log10": balance, "layer_gain": layer_gain, "printing_gain": printing_gain, "aim_log_h": aim, "xyz_to_display": to_display, "scene_spectrum_index": spectrum_index}
     return bundle, setup, metadata, [last_model]
 
 
@@ -270,6 +274,8 @@ def check_setup(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], met
     pairs = [(setup["printer_balance_log10"][n, p, l], model.film.printer_balance_log10), (setup["layer_gain"][n, l], model.layer_gain), (setup["printing_gain"][n, p], model.printing_gain), (setup["aim_log_h"][p], aim_of(model)), (setup["xyz_to_display"][p], model.xyz_to_display),
              (bundle[f"light/{metadata['scene_spectra'][setup['scene_spectrum_index'][n, l]]}/spectrum"], model.scene_spectrum), (bundle["common/locus_room"], model._room), (bundle[f"negative/{negative}/density_grid_start"], np.array([g[0] for g in model.density_grid])),
              (bundle[f"negative/{negative}/density_grid_stop"], np.array([g[-1] for g in model.density_grid])), (bundle[f"negative/{negative}/criterion_log_h"], model.film.negative_criterion_log_h)]
+    if model._grade_grey is not None:
+        pairs.append((setup["negative_grade_grey"][n, l], model._grade_grey))
     largest = max(float(np.abs(np.asarray(a, dtype=np.float64) - np.asarray(b, dtype=np.float64)).max()) for a, b in pairs)
     if largest > SETUP_LIMIT:
         raise ValueError(f"{selection}: the stored setup differs from FilmPreview by {largest:.3g}")
