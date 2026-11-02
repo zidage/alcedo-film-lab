@@ -103,8 +103,19 @@ def cie_daylight_relative_spd(nominal_cct_k: float, wavelengths: np.ndarray) -> 
     return np.interp(wavelengths, comp[:, 0], spd5, left=0.0, right=0.0)
 
 
+def status_aim_log_h(curves, status_a: float | tuple[float, float, float]) -> np.ndarray:
+    """The paper log exposure of each layer at the aim of the printer balance: one Status A density, or one per layer."""
+    return np.array([c.log_h_at(a) for c, a in zip(curves, np.broadcast_to(status_a, 3))])
+
+
 def load_profile(name: str) -> dict:
     return json.loads((PROFILE_DIR / f"{name}.json").read_text(encoding="utf-8"))
+
+
+def printer_filter_transmittance(name: str, wavelengths: np.ndarray) -> np.ndarray:
+    """Transmittance of a filter of the printer light. Rule 'printer_filter_limits': each end of the density curve holds its value."""
+    curve = load_profile("printer_filters")["filters"][name]
+    return 10.0 ** -np.interp(wavelengths, curve["x"], curve["y"])
 
 
 def curve_on_grid(curve: dict, wavelengths: np.ndarray, outside: str) -> np.ndarray:
@@ -385,11 +396,12 @@ class ModelOptions:
 
     camera_daylight_cct_k: float = 5500.0  # 'Exposure: Daylight' on E-4050; the CCT is not stated
     printer_lamp: str = "A"  # E-4070 does not state the exposure light ('A', 'D50', 'D55', 'D65')
+    printer_filter: str | None = None  # filter of the printer light: None, or a density curve of profiles/printer_filters.json
     viewing_daylight_cct_k: float = 5000.0  # D50, the ICC viewing condition (5000 or 6500)
     negative_density_outside: str = "hold"  # D-min spectrum outside 400-700 nm
     paper_dye_outside: str = "hold"  # paper dye spectra outside 400-700 nm
     paper_base_density: float = 0.05  # spectrally flat paper base; not published
-    print_midscale_status_a: float = 0.75  # printer balance: midscale neutral prints to this Status A density
+    print_midscale_status_a: float | tuple[float, float, float] = 0.75  # printer balance: midscale neutral prints to this Status A density; one value, or one per layer
     midscale_log_h: float = -1.44  # 'Log H Ref' of the characteristic chart, used as the midscale neutral exposure
     fixed_cyan_peak_nm: float | None = None
     printer_balance_log10: tuple[float, float, float] | None = None  # fixed balance; None computes it
@@ -418,6 +430,7 @@ class ReferenceModel:
                 "A": np.interp(grid, illum_a[:, 0], illum_a[:, 1], left=0.0, right=0.0),
                 "D65": np.interp(grid, illum_d65[:, 0], illum_d65[:, 1], left=0.0, right=0.0),
                 "D50": cie_daylight_relative_spd(5000.0, grid),
+                "D54": cie_daylight_relative_spd(5400.0, grid),
                 "D55": cie_daylight_relative_spd(5500.0, grid),
             }
 
@@ -430,10 +443,10 @@ class ReferenceModel:
         cmf = np.stack([np.interp(fwl, cmf_table[:, 0], cmf_table[:, k], left=0.0, right=0.0) for k in (1, 2, 3)])
         fine_lights = illuminants_on(fwl)
         self.w_luminance = self.grid.weights(cmf[1])
-        self.w_viewing = {name: self.grid.weights(fine_lights[name] * cmf) for name in ("D50", "D65")}
-        self.viewing_name = {5000.0: "D50", 6500.0: "D65"}.get(o.viewing_daylight_cct_k)
+        self.w_viewing = {name: self.grid.weights(fine_lights[name] * cmf) for name in ("D50", "D54", "D65")}
+        self.viewing_name = {5000.0: "D50", 5400.0: "D54", 6500.0: "D65"}.get(o.viewing_daylight_cct_k)
         if self.viewing_name is None:
-            raise ValueError("viewing CCT must be 5000 K (D50) or 6500 K (D65)")
+            raise ValueError("viewing CCT must be 5000 K (D50), 5400 K (D54), or 6500 K (D65)")
 
         status = read_status_tables()
         swl = status["wavelengths"]
@@ -453,7 +466,10 @@ class ReferenceModel:
         self.w_negative = self.grid.weights(np.stack(neg_values), np.stack(neg_support))
         psens = endura["charts"]["spectral_sensitivity"]["curves"]
         pap_values, pap_support = zip(*(self._sensitivity(psens[k], fwl) for k in layers))
-        self.w_printing = self.grid.weights(fine_lights[o.printer_lamp] * np.stack(pap_values), np.stack(pap_support))
+        printer_light = fine_lights[o.printer_lamp]
+        if o.printer_filter is not None:
+            printer_light = printer_light * printer_filter_transmittance(o.printer_filter, fwl)
+        self.w_printing = self.grid.weights(printer_light * np.stack(pap_values), np.stack(pap_support))
 
         dye_chart = portra["charts"]["spectral_dye_density"]["curves"]
         self.negative_dmin = curve_on_grid(dye_chart["minimum_density"], wl, o.negative_density_outside)
@@ -568,8 +584,7 @@ class ReferenceModel:
         mid_status_m = self.negative_status_m_from_layer_exposure(self.negative_layer_exposure(exposure))[0]
         mid_density = self.negative_spectral_density(self.negative_dye_amounts(mid_status_m))
         q = self.paper_layer_exposure_unbalanced(mid_density)
-        target = np.array([c.log_h_at(self.options.print_midscale_status_a) for c in self.paper_curves.values()])
-        return target - np.log10(q)
+        return status_aim_log_h(self.paper_curves.values(), self.options.print_midscale_status_a) - np.log10(q)
 
     def paper_log_exposure(self, negative_density: np.ndarray) -> np.ndarray:
         return np.log10(self.paper_layer_exposure_unbalanced(negative_density)) + self.printer_balance_log10

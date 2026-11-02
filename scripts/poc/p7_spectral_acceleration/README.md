@@ -9,6 +9,7 @@ Scripts of step P7 ([report](../../../docs/exploration/p7_spectral_acceleration.
 | `check_film_tables.py` | profiles, reflectance tables, AP1 arrays under `build/tmp/` | `results/p7_spectral_acceleration/checks.json` |
 | `check_inhibition_image.py` | profiles, reflectance tables, `expected/image/ap1.bin` of `build_image_expected.py` | `results/p7_spectral_acceleration/inhibition_image.json` |
 | `check_neutral_axis.py` | profiles, reflectance tables, the film look LUTs of a local DaVinci Resolve | `results/p7_spectral_acceleration/neutral_axis.json` |
+| `check_separation_curves.py` | profiles, reflectance tables, a local clone of spectral_film_lut | `results/p7_spectral_acceleration/separation_curves.json`, a figure |
 | `check_fast_image_steps.py` | RAW files, or AP1 arrays | `results/p7_spectral_acceleration/image_steps.json` |
 | `sweep_inhibition_steps.py` | a RAW file, an AP1 array | `results/p7_spectral_acceleration/inhibition_steps.json` |
 | `sweep_paper_axis.py` | the same | stdout: error and time for each node count and axis power |

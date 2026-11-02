@@ -67,7 +67,7 @@ def main() -> int:
         axis, reference = model_axis(model), lut_axis(lut)
         ab = on_l_star(axis)
         distance = np.hypot(*(ab - on_l_star(reference)).T)
-        record[f"{negative} on {material}"] = {"lut": lut, "printing_gain": model.printing_gain.tolist(), "display_white": options.display_white, "display_white_xy": list(options.display_white_xy), "mean": float(distance.mean()), "largest": float(distance.max()), "top_l_star": float(axis[:, 0].max()),
+        record[f"{negative} on {material}"] = {"lut": lut, "printing_gain": model.printing_gain.tolist(), "display_white": options.display_white, "mean": float(distance.mean()), "largest": float(distance.max()), "top_l_star": float(axis[:, 0].max()),
                                                "a_b_at_l_star": {str(int(L)): ab[int(L - L_STAR[0])].round(2).tolist() for L in (10, 20, 30, 45, 60, 75, 85)}}
         print(negative, material, {k: round(v, 3) for k, v in record[f"{negative} on {material}"].items() if k in ("mean", "largest", "top_l_star")}, flush=True)
     RESULT.write_bytes((json.dumps(record, indent=1) + "\n").encode("utf-8"))

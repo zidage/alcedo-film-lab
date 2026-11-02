@@ -1,23 +1,23 @@
 {
- "schema_version": 2,
+ "schema_version": 3,
  "manifest": {
-  "schema_version": 2,
-  "lab_commit": "476153c2f7361e98c78c4badf2c657c2c4f9f353",
+  "schema_version": 3,
+  "lab_commit": "37443d55341cbf31b11cfce608e50fde662ca8cb-dirty",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
-    "bytes": 2741888,
-    "sha256": "5931deca965e699cf7773cb914203b7c58f90d484f369bfcb1579954af0b7db9"
+    "bytes": 2745104,
+    "sha256": "6c3edae6cbf302bc07df4a4a82aa05ddae12b384c0d15a25a32e6be8d83d12f5"
    },
    "print_setup": {
     "file": "film_print_setup.bin",
     "bytes": 166936,
-    "sha256": "eb01a09739f65728ce641c9b3dda9b7dc052ce5e162abad49960a85defa9b276"
+    "sha256": "5600860118751de2bb09836f925b30816702e3d5559bfa41e251379a3bcfbd54"
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
     "bytes": 25127352,
-    "sha256": "164b1b94e0f755ac2f4249fd71a2e5269d372a2b574300925c0deb8539cc258f"
+    "sha256": "8c14b5d3746e0f986cab1f4944353673a4be46c693fd56c16a26a34c5f1fd821"
    }
   }
  },
@@ -52,31 +52,31 @@
    "kodak_exr_5248 on fuji_ca_dpII on daylight": {
     "uv_relative": 0.00010530209798397086,
     "display_largest_code": {
-     "se188": 0.001398324966430664,
-     "_DSC8148": 0.0023254752159118652,
-     "digital_ap1": 0.0017403066158294678,
-     "neutral_ramp": 0.0001823902130126953,
-     "random_colours": 0.004787743091583252
+     "se188": 0.0017023086547851562,
+     "_DSC8148": 0.0028346478939056396,
+     "digital_ap1": 0.0022874772548675537,
+     "neutral_ramp": 0.00020518898963928223,
+     "random_colours": 0.006140470504760742
     }
    },
    "kodak_5207 on fuji_3523XD on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.0010867416858673096,
-     "_DSC8148": 0.001573115587234497,
-     "digital_ap1": 0.0013147294521331787,
-     "neutral_ramp": 0.00019758939743041992,
-     "random_colours": 0.0023330748081207275
+     "se188": 0.0014743208885192871,
+     "_DSC8148": 0.0017403066158294678,
+     "digital_ap1": 0.001523718237876892,
+     "neutral_ramp": 0.00025078654289245605,
+     "random_colours": 0.0031842291355133057
     }
    },
    "fuji_c200 on fujiflex_old on led": {
     "uv_relative": 0.00010842871304970014,
     "display_largest_code": {
-     "se188": 0.0016491115093231201,
-     "_DSC8148": 0.002523064613342285,
-     "digital_ap1": 0.0016339123249053955,
-     "neutral_ramp": 0.0003115832805633545,
-     "random_colours": 0.00398978590965271
+     "se188": 0.0020518898963928223,
+     "_DSC8148": 0.0030854344367980957,
+     "digital_ap1": 0.00194549560546875,
+     "neutral_ramp": 0.0003571808338165283,
+     "random_colours": 0.0048029422760009766
     }
    },
    "kodak_5203 on fuji_ca_pdII on tungsten": {
@@ -97,31 +97,31 @@
    "kodak_5207 on kodak_2383 on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.001170337200164795,
-     "_DSC8148": 0.0016415119171142578,
-     "digital_ap1": 0.0009879469871520996,
-     "neutral_ramp": 0.000174790620803833,
-     "random_colours": 0.0020062923431396484
+     "se188": 0.001671910285949707,
+     "_DSC8148": 0.0017023086547851562,
+     "digital_ap1": 0.0014591217041015625,
+     "neutral_ramp": 0.00021278858184814453,
+     "random_colours": 0.0028498470783233643
     }
    },
    "kodak_portra_400 on kodak_endura_premier on daylight": {
     "uv_relative": 0.00011185274424518433,
     "display_largest_code": {
-     "se188": 0.001671910285949707,
-     "_DSC8148": 0.0019606947898864746,
-     "digital_ap1": 0.0017099082469940186,
-     "neutral_ramp": 0.0002887845039367676,
-     "random_colours": 0.0054261088371276855
+     "se188": 0.002021491527557373,
+     "_DSC8148": 0.00234067440032959,
+     "digital_ap1": 0.0019834935665130615,
+     "neutral_ramp": 0.0003419816493988037,
+     "random_colours": 0.006619244813919067
     }
    },
    "fuji_eterna_500 on kodak_2383 on street_mixed": {
     "uv_relative": 0.0001002333348196537,
     "display_largest_code": {
-     "se188": 0.002196282148361206,
-     "_DSC8148": 0.002348273992538452,
-     "digital_ap1": 0.0014933198690414429,
-     "neutral_ramp": 0.0003115832805633545,
-     "random_colours": 0.003974586725234985
+     "se188": 0.0030854344367980957,
+     "_DSC8148": 0.0035566091537475586,
+     "digital_ap1": 0.0020518898963928223,
+     "neutral_ramp": 0.00040277838706970215,
+     "random_colours": 0.006087273359298706
     }
    }
   }
@@ -131,7 +131,7 @@
    "bytes": 8397864,
    "table_counts": {
     "negative_not_reached": 0,
-    "print_not_reached": 122714,
+    "print_not_reached": 165634,
     "paper_exposure_outside_curve": 0,
     "nodes": 274625
    }
@@ -140,7 +140,7 @@
    "bytes": 8397872,
    "table_counts": {
     "negative_not_reached": 0,
-    "print_not_reached": 149214,
+    "print_not_reached": 160575,
     "paper_exposure_outside_curve": 0,
     "nodes": 274625
    }
@@ -149,11 +149,11 @@
    "bytes": 8397872,
    "table_counts": {
     "negative_not_reached": 0,
-    "print_not_reached": 113636,
+    "print_not_reached": 155402,
     "paper_exposure_outside_curve": 0,
     "nodes": 274625
    }
   }
  },
- "seconds": 138.6
+ "seconds": 136.3
 }

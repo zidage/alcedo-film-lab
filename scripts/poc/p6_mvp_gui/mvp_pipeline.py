@@ -35,7 +35,6 @@ from aces_scan import OUTPUT_TRANSFORMS, ScanPreview, fp  # noqa: E402
 CATALOG = json.loads((SCRIPT_DIR / "stock_catalog.json").read_text(encoding="utf-8"))
 PHYSICS_PATH = SCRIPT_DIR / "stock_physics.json"
 IMAGE_PART_PATH = SCRIPT_DIR / "inhibition_image.json"
-DISPLAY_WHITE_PATH = SCRIPT_DIR / "display_white.json"
 ACCEPTED_STOCKS = {"kodak_5207": "5207_2383", "kodak_5219": "5219_2383", "kodak_portra_400": "portra400_endura", "kodak_portra_160": "portra160_endura",
                    "kodak_portra_800": "portra800_endura", "kodak_ektar_100": "ektar100_endura", "kodak_gold_200": "gold200_endura", "fuji_c200": "c200_endura"}
 STOCK_PRINT_FIELDS = ("print_profile", "print_midscale_status_a", "viewing_cct_k", "neutral_printing", "grey_anchor", "balance_light", "scene_light")
@@ -46,7 +45,7 @@ METHODS = ("print", "apd")
 SCAN_CARRIER_PRINT = "kodak_2383"
 DEFAULT_LONG_EDGE = 2048
 MEDIUM_WHITE = "by_medium"
-DISPLAY_WHITES = (MEDIUM_WHITE, "reflector", "paper", "projected")
+DISPLAY_WHITES = (MEDIUM_WHITE, "reflector", "paper", "print_dmin")
 PRINT = ("print",)
 SCAN = ("apd",)
 BOTH = METHODS
@@ -74,7 +73,7 @@ CONTROLS = (
     Control("halation_scale", "Halation", "Negative", 0.0, 8.0, 0.5, 2, BOTH, "Scale of the halation strength. 0: off."),
     Control("halation_um", "Halation length (um)", "Negative", 20.0, 500.0, 20.0, 0, BOTH, "Length of the halation on a frame of 36 mm."),
     Control("scene_flare", "Lens flare", "Negative", 0.0, 0.02, 0.001, 4, BOTH, "Veiling glare of the taking lens, a neutral addition before the film."),
-    Control("print_grey_shift", "Print grey density shift", "Print", -0.3, 0.4, 0.05, 2, PRINT, "Added to the Status A density of mid grey: 0.85 on a cine print, 0.75 on a paper. A higher value gives a darker print."),
+    Control("print_grey_shift", "Print grey density shift", "Print", -0.3, 0.4, 0.05, 2, PRINT, "Added to the Status A density of mid grey: the LAD patch on a cine print, 0.75 on a paper. A higher value gives a darker print."),
     Control("print_contrast", "Print contrast", "Print", 0.5, 1.3, 0.05, 2, PRINT, "Scale of the paper log exposure about the grey. 1: the published curve."),
     Control("print_flash", "Paper flash", "Print", 0.0, 0.2, 0.01, 3, PRINT, "Uniform exposure of the paper, as a share of the balance exposure. It softens the print highlights."),
     Control("enlarger_flare", "Enlarger flare", "Print", 0.0, 0.1, 0.005, 3, PRINT, "Stray light of the enlarger lens, as a share of the light. It lifts the print shadows."),
@@ -142,13 +141,6 @@ def load_physics() -> dict:
     return json.loads(PHYSICS_PATH.read_text(encoding="utf-8")) if PHYSICS_PATH.exists() else {}
 
 
-def load_display_white_xy(print_material: str) -> tuple[float, float] | None:
-    """None before fit_display_white.py has run. A render with this white then stops with an error."""
-    if not DISPLAY_WHITE_PATH.exists():
-        return None
-    return tuple(json.loads(DISPLAY_WHITE_PATH.read_text(encoding="utf-8"))[print_material]["xy"])
-
-
 def load_image_part() -> dict:
     return json.loads(IMAGE_PART_PATH.read_text(encoding="utf-8")) if IMAGE_PART_PATH.exists() else {}
 
@@ -178,9 +170,9 @@ def _stock_options(negative: str, physics: dict | None) -> dict:
 
 
 def print_conditions(print_material: str) -> dict:
-    """Rule 'print_conditions_by_medium'. A projected print has rule 'projected_print_white' and no rule 'neutral_printing_gain' (ROADMAP U75)."""
+    """Rule 'print_conditions_by_medium' (ROADMAP U78). A cine print: the LAD aim, the projection light, the clear print as white, and the dark surround. A paper: 18 % reflectance for the grey, D50, and the perfect reflector as white."""
     if CATALOG["prints"][print_material]["medium"].lower() == "cine":
-        return dict(print_profile=print_material, print_midscale_status_a=fp.CINE_GREY_STATUS_A, viewing_cct_k=6500.0, neutral_printing=False, display_white="projected", display_white_xy=load_display_white_xy(print_material))
+        return dict(print_profile=print_material, print_midscale_status_a=fp.CINE_GREY_STATUS_A, viewing_cct_k=fp.CINE_VIEWING_CCT_K, neutral_printing=False, printer_filter=fp.CINE_PRINTER_FILTER, display_white="print_dmin", surround_exponent=fp.CINE_SURROUND_EXPONENT)
     return dict(print_profile=print_material, print_midscale_status_a=0.75, viewing_cct_k=5000.0, neutral_printing=False, display_white="reflector")
 
 
@@ -207,7 +199,7 @@ def film_options(settings: RenderSettings, print_material: str | None = None, ph
 
     return replace(options, overexposure_stops=settings.overexposure_stops, inhibition_total=scaled(options.inhibition_total, settings.inhibition_scale),
                    inhibition_image=None if options.inhibition_image is None else scaled(options.inhibition_image, settings.inhibition_scale), layer_spread_um=scaled(options.layer_spread_um, settings.layer_spread_scale),
-                   halation=scaled(options.halation, settings.halation_scale), halation_um=settings.halation_um, scene_flare=settings.scene_flare, print_midscale_status_a=options.print_midscale_status_a + settings.print_grey_shift,
+                   halation=scaled(options.halation, settings.halation_scale), halation_um=settings.halation_um, scene_flare=settings.scene_flare, print_midscale_status_a=tuple(np.broadcast_to(options.print_midscale_status_a, 3) + settings.print_grey_shift),
                    print_contrast=settings.print_contrast, print_flash=settings.print_flash, enlarger_flare=settings.enlarger_flare, viewing_flare=settings.viewing_flare, print_timing=settings.print_timing,
                    display_white=options.display_white if settings.display_white == MEDIUM_WHITE else settings.display_white, gamut_compress=settings.gamut_compress)
 

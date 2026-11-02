@@ -35,8 +35,8 @@ Stages (each one stays separate):
 5. Display: print XYZ under D50 viewing, a perfect reflector under the viewing light to display white
    with Bradford adaptation to D65 (option display_white), linear Rec. 709, clip (counted), sRGB
    encoding. The paper base then keeps its own reflectance and colour, as a print next to a white
-   reference does. The option 'paper' maps the paper white to display white. A projected print uses
-   rule 'projected_print_white' (ROADMAP U75; fit_display_white.py of P6). Rule
+   reference does. The option 'paper' maps the paper white to display white. A cine print uses
+   rule 'clear_print_white' (ROADMAP U78). Rule
    'rgc_style_display_compression' (option gamut_compress): the method of the ACES Reference Gamut
    Compression on the linear Rec. 709 of the print. It is not the standard ACES RGC: the domain is
    the display, after the print, and the limits are measured on this chain. The rest of the values
@@ -68,6 +68,8 @@ that an 18 % grey under the balance light of the stock (balance_light) lands on 
 at the stated exposure 12.5 / ISO lux seconds. The digitized sensitivities of these stocks do not fix the
 absolute level of each layer: without the rule the grey was up to 0.6 stops off, different per layer. The
 gains belong to the stock and do not follow the scene.
+
+Rule 'printer_uv_filter' (option printer_filter, ROADMAP U77): the printer light of a cine print passes a Wratten 2B filter, as the data sheets of 2383 and 2393 state. See CINE_PRINTER_FILTER. Reflection papers have no such rule, and their exposure below 400 nm is about 3 %.
 
 Rule 'neutral_printing_gain' (option neutral_printing): one gain per paper layer on the paper log exposure about the
 balance exposure, so that a neutral negative ramp has the same paper log exposure slope in each layer. The published
@@ -208,13 +210,14 @@ class FilmOptions:
 
     negative_dye_basis: str = "band_split"  # spectral_film_lut method (U11)
     density_outside: str = "gaussian_tail"  # spectral_film_lut method (U11)
-    print_midscale_status_a: float = 0.75  # P0: the 18 % grey prints to this Status A density
+    print_midscale_status_a: float | tuple[float, float, float] = 0.75  # P0: the 18 % grey prints to this Status A density; one value, or one per layer
     printer_lamp: str = "A"
+    printer_filter: str | None = None  # a filter of the printer light, profiles/printer_filters.json
     print_contrast: float = 1.0
     viewing_flare: float = 0.0
     scene_flare: float = 0.0  # not part of the print table
-    display_white: str = "reflector"  # not part of the print table; 'reflector', 'paper', or 'projected'
-    display_white_xy: tuple[float, float] | None = None  # rule 'projected_print_white'
+    display_white: str = "reflector"  # not part of the print table; 'reflector', 'paper', or 'print_dmin'
+    surround_exponent: float = 1.0  # rule 'dark_surround_on_display'; 1: no change
     interlayer_gain: float = 0.2  # part of the print table: the printer balance under a scene light uses it
     negative_profile: str = "kodak_portra_400"
     print_profile: str = "kodak_endura_premier"
@@ -255,14 +258,21 @@ class FilmOptions:
 
 
 # Review options after the darkroom comparison (ROADMAP U19), for RAW input through product_input().
-# The input is product_input(): the default grade of the product comes before the film. So the chain has no interlayer
-# gain, and print_contrast takes back about the mid-grey slope of the grade (0.92 / 2^0.15 = 0.83). The value 0.85 comes from a sweep with the chroma of spektrafilm output as the target (U18; P2 report, section 8.5), so it is not independent.
-DARKROOM = dict(uv_smooth=(0.006, 0.025), interlayer_gain=0.0, print_flash=0.02, print_contrast=0.85, viewing_flare=0.003, scatter_um=10.0,
+# The input is product_input(): the default grade of the product comes before the film. The print has its published curve (U78): no flash, no scale of the paper exposure, and no surface reflection, because none of them has a measured value.
+DARKROOM = dict(uv_smooth=(0.006, 0.025), interlayer_gain=0.0, print_flash=0.0, print_contrast=1.0, viewing_flare=0.0, scatter_um=10.0,
                 halation=(0.03, 0.008, 0.0), adjacency_gain=0.25, enlarger_flare=0.01, gamut_compress=True)
 
-# Printer lights of the cine prints. The LAD aim of 2383 (Status A about 1.06) is for a dark cinema. This value
-# follows the comparison with spektrafilm on a display (U18); it is a review control.
-CINE_GREY_STATUS_A = 0.85
+# Printer lights of the cine prints: the LAD patch of KODAK H-61b, a visual neutral of density 1.0 (U78). A 18 % grey on the negative is the LAD patch of the print.
+CINE_GREY_STATUS_A = (1.09, 1.06, 1.03)
+
+# Rule 'projection_light': SMPTE 196M-2003 states 5400 K, with typical readings x = 0.332, y = 0.347. CIE D54 has x = 0.3334, y = 0.3481, and the spectrum of a xenon lamp is near daylight (inferred).
+CINE_VIEWING_CCT_K = 5400.0
+
+# Rule 'dark_surround_on_display': a cine print is made for a dark surround, and the display has a dim surround. CIECAM02 states c = 0.525 for dark and c = 0.59 for dim, and lightness goes with A^(c z), so the same lightness needs the exponent 0.525 / 0.59 on luminance.
+CINE_SURROUND_EXPONENT = 0.525 / 0.59
+
+# Rule 'printer_uv_filter'. The data sheets of 2383 and 2393 state that the overall filtration of the printer includes a UV-absorbing filter, such as a WRATTEN 2B. The blue layer of a cine print stays sensitive down to the end of its chart, and the yellow dye of a negative falls below 450 nm, so with no filter this part of the exposure does not follow the image.
+CINE_PRINTER_FILTER = "wratten_2b"
 
 # Scene lights that the user selects (ROADMAP U21). Default: daylight. One representative CIE spectrum per type;
 # real lamps of a type differ, and this table does not claim to match a lamp.
@@ -341,7 +351,7 @@ class FilmPreview:
         o = self.options
         model_options = p0.ModelOptions(camera_daylight_cct_k=sr.E_REF_NOMINAL_CCT_K, negative_dye_basis=o.negative_dye_basis,
                                         negative_density_outside=o.density_outside, paper_dye_outside=o.density_outside,
-                                        print_midscale_status_a=o.print_midscale_status_a, printer_lamp=o.printer_lamp,
+                                        print_midscale_status_a=o.print_midscale_status_a, printer_lamp=o.printer_lamp, printer_filter=o.printer_filter,
                                         negative_profile=o.negative_profile, print_profile=o.print_profile,
                                         midscale_log_h=o.midscale_log_h, viewing_daylight_cct_k=o.viewing_cct_k)
         self.c = sr.Colorimetry(model_options)
@@ -389,8 +399,7 @@ class FilmPreview:
 
         def balance(status_m: np.ndarray) -> np.ndarray:
             unbalanced = f.paper_layer_exposure_unbalanced(f.negative_spectral_density(f.negative_dye_amounts(status_m)))
-            target = np.array([c.log_h_at(f.options.print_midscale_status_a) for c in f.paper_curves.values()])
-            return target - np.log10(unbalanced)
+            return p0.status_aim_log_h(f.paper_curves.values(), f.options.print_midscale_status_a) - np.log10(unbalanced)
 
         reference = balance(np.array([c.density_at(f.options.midscale_log_h) for c in f.negative_curves.values()]))
         grey = gain * self.c.layer_exposure(0.18 * self.scene_spectrum)
@@ -603,7 +612,7 @@ class FilmPreview:
         a, r_negative = solve_amounts(target, film.negative_dmin, film.negative_dyes, film.w_status_m)
         negative = film.negative_spectral_density(a)
         log_h = film.paper_log_exposure(negative)
-        aim = np.array([c.log_h_at(self.options.print_midscale_status_a) for c in self.paper_curves])
+        aim = p0.status_aim_log_h(self.paper_curves, self.options.print_midscale_status_a)
         log_h = aim + self.options.print_contrast * self.printing_gain * (log_h - aim)
         if self.options.print_flash:
             log_h = np.log10(10.0 ** log_h + self.options.print_flash * 10.0 ** aim)
@@ -613,7 +622,7 @@ class FilmPreview:
             clipped += int(((log_h[:, k] < curve.log_h[0]) | (log_h[:, k] > curve.log_h[-1])).sum())
             status_a[:, k] = np.interp(log_h[:, k], curve.log_h, curve.density)
         b, r_print = solve_amounts(status_a, film.paper_base, film.paper_dyes, film.w_status_a)
-        xyz = film.viewed_xyz(film.print_spectral_density(b)) + self.options.viewing_flare * film.white_xyz()
+        xyz = self._dark_surround(film.viewed_xyz(film.print_spectral_density(b)) + self.options.viewing_flare * film.white_xyz())
         return xyz, {
             "negative_not_reached": int((r_negative > 1e-4).sum()), "print_not_reached": int((r_print > 1e-4).sum()),
             "paper_exposure_outside_curve": clipped}
@@ -626,7 +635,7 @@ class FilmPreview:
         base = f.status_density(f.negative_dmin, f.w_status_m)
         length = max(len(c.density) for c in self.paper_curves)
         curves = np.stack([np.pad(c.density, (0, length - len(c.density)), mode="edge") for c in self.paper_curves])
-        aim = np.array([c.log_h_at(o.print_midscale_status_a) for c in self.paper_curves])
+        aim = p0.status_aim_log_h(self.paper_curves, o.print_midscale_status_a)
         xyz, not_negative, not_print, outside = fk.print_nodes(
             self.record_to_status_m(density).astype(np.float64), base - f.negative_curve_dmin, SOLVE_ITERATIONS,
             f.negative_dmin[m], f.negative_dyes[:, m], f.w_status_m[:, m],
@@ -634,7 +643,7 @@ class FilmPreview:
             np.array([c.log_h[0] for c in self.paper_curves]), curves, np.array([len(c.density) for c in self.paper_curves]), float(self.paper_curves[0].log_h[1] - self.paper_curves[0].log_h[0]),
             f.paper_base[st], f.paper_dyes[:, st], f.w_status_a[:, st],
             f.paper_base[vi], f.paper_dyes[:, vi], w_view[:, vi], o.viewing_flare * f.white_xyz(), 100.0 / w_view[1].sum())
-        return xyz, {"negative_not_reached": int(not_negative), "print_not_reached": int(not_print), "paper_exposure_outside_curve": int(outside)}
+        return self._dark_surround(xyz), {"negative_not_reached": int(not_negative), "print_not_reached": int(not_print), "paper_exposure_outside_curve": int(outside)}
 
     def table_amounts(self, record: np.ndarray) -> tuple[np.ndarray, int]:
         """The dye amounts of table nodes of the negative record (N, 3), with the count that the dye solve did not reach. With rule 'dye_amount_curves' the record is the amounts."""
@@ -681,12 +690,30 @@ class FilmPreview:
         length = max(len(c.density) for c in self.paper_curves)
         curves = np.stack([np.pad(c.density, (0, length - len(c.density)), mode="edge") for c in self.paper_curves])
         lengths = np.array([len(c.density) for c in self.paper_curves], dtype=np.int64)
-        aim = np.array([c.log_h_at(o.print_midscale_status_a) for c in self.paper_curves])
+        aim = p0.status_aim_log_h(self.paper_curves, o.print_midscale_status_a)
         table, outside, print_not_reached = film_tables.compose_print_table(paper_log, np.asarray(balance, dtype=np.float64), aim, float(o.print_contrast) * self.printing_gain, float(o.print_flash), o.viewing_flare * f.white_xyz(),
                                                                             curves, lengths, np.array([c.log_h[0] for c in self.paper_curves]), float(self.paper_curves[0].log_h[1] - self.paper_curves[0].log_h[0]), start, axis_range, PAPER_AXIS_POWER, paper_table, not_reached)
         if not np.isfinite(table).all():
             raise FloatingPointError(f"the print table of {o.negative_profile} on {o.print_profile} has values that are not finite")
+        if o.surround_exponent != 1.0:
+            table = np.cbrt(self._dark_surround(table.reshape(-1, 3) ** 3))
         return table.reshape(DENSITY_NODES, DENSITY_NODES, DENSITY_NODES, 3), {"negative_not_reached": int(negative_not_reached), "print_not_reached": int(print_not_reached), "paper_exposure_outside_curve": int(outside), "nodes": DENSITY_NODES ** 3}
+
+    def print_dmin_xyz(self) -> np.ndarray:
+        """XYZ of the clear print: the lowest Status A density of each paper curve, under the viewing light."""
+        f = self.film
+        dmin = np.array([[c.density.min() for c in self.paper_curves]])
+        amounts, _ = solve_amounts(dmin, f.paper_base, f.paper_dyes, f.w_status_a)
+        return f.viewed_xyz(f.print_spectral_density(amounts[0]))
+
+    def _dark_surround(self, xyz: np.ndarray) -> np.ndarray:
+        """Rule 'dark_surround_on_display': luminance relative to the clear print takes the exponent, and the chromaticity stays."""
+        exponent = self.options.surround_exponent
+        if exponent == 1.0:
+            return xyz
+        y_white = self.print_dmin_xyz()[1]
+        relative = np.maximum(xyz[..., 1:2] / y_white, 1e-12)
+        return xyz * relative ** (exponent - 1.0)
 
     def _build_print_table(self) -> tuple[list[np.ndarray], np.ndarray, dict]:
         grid = [np.linspace(c.density.min(), c.density.max(), DENSITY_NODES) for c in self.negative_curves]
@@ -703,15 +730,13 @@ class FilmPreview:
     # --- stage 5 ------------------------------------------------------------------------------
 
     def display_matrix(self, white_name: str) -> np.ndarray:
-        """XYZ to linear Rec. 709. Rule 'projected_print_white': a projected print has one white per print material, the chromaticity display_white_xy, and it goes to D65. The level stays on the perfect reflector, so the print keeps its brightness."""
+        """XYZ to linear Rec. 709. Rule 'clear_print_white' (white 'print_dmin'): in a dark cinema the clear print is the brightest light, so it goes to display white."""
         reflector = self.film.white_xyz()
         if white_name == "reflector":
             return XYZ_TO_REC709 @ bradford_matrix(reflector / reflector[1], XYZ_D65) / reflector[1]
-        if white_name == "projected":
-            if self.options.display_white_xy is None:
-                raise ValueError(f"{self.options.print_profile}: display white 'projected' has no display_white_xy. Run fit_display_white.py.")
-            x, y = self.options.display_white_xy
-            return XYZ_TO_REC709 @ bradford_matrix(np.array([x / y, 1.0, (1.0 - x - y) / y]), XYZ_D65) / reflector[1]
+        if white_name == "print_dmin":
+            clear = self.print_dmin_xyz()
+            return XYZ_TO_REC709 @ bradford_matrix(clear / clear[1], XYZ_D65) / clear[1]
         if white_name == "paper":
             return XYZ_TO_REC709 @ bradford_matrix(self.paper_white / self.paper_white[1], XYZ_D65) / self.paper_white[1]
         raise ValueError(f"unknown display white {white_name!r}")

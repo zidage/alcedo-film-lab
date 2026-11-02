@@ -48,7 +48,7 @@ import mvp_pipeline as mp  # noqa: E402
 fp = mp.fp
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
@@ -132,7 +132,7 @@ def paper_arrays(model: fp.FilmPreview) -> dict[str, np.ndarray]:
     weights = f.w_viewing[f.viewing_name]
     start = np.array([c.density.min() for c in model.paper_curves])
     arrays = {"base": f.paper_base, "dyes": f.paper_dyes, "printing_weights": f.w_printing, "status_a_weights": f.w_status_a, "viewing_weights": weights,
-              "xyz_scale": scalar(100.0 / weights[1].sum()), "white_xyz": f.white_xyz(), "status_axis_start": start, "status_axis_range": np.array([c.density.max() for c in model.paper_curves]) - start,
+              "xyz_scale": scalar(100.0 / weights[1].sum()), "clear_luminance": scalar(model.print_dmin_xyz()[1]), "surround_exponent": scalar(model.options.surround_exponent), "white_xyz": f.white_xyz(), "status_axis_start": start, "status_axis_range": np.array([c.density.max() for c in model.paper_curves]) - start,
               **uniform_curves(model.paper_curves)}
     return {name: np.asarray(value, dtype=np.int64 if value.dtype.kind == "i" else np.float64) for name, value in arrays.items()}
 
@@ -142,7 +142,7 @@ def setup_model(options: fp.FilmOptions) -> fp.FilmPreview:
     model = fp.FilmPreview.__new__(fp.FilmPreview)
     model.options = options
     model_options = p0.ModelOptions(camera_daylight_cct_k=sr.E_REF_NOMINAL_CCT_K, negative_dye_basis=options.negative_dye_basis, negative_density_outside=options.density_outside, paper_dye_outside=options.density_outside,
-                                    print_midscale_status_a=options.print_midscale_status_a, printer_lamp=options.printer_lamp, negative_profile=options.negative_profile, print_profile=options.print_profile,
+                                    print_midscale_status_a=options.print_midscale_status_a, printer_lamp=options.printer_lamp, printer_filter=options.printer_filter, negative_profile=options.negative_profile, print_profile=options.print_profile,
                                     midscale_log_h=options.midscale_log_h, viewing_daylight_cct_k=options.viewing_cct_k)
     model.c = sr.Colorimetry(model_options)
     model.film = model.c.film
@@ -166,13 +166,13 @@ def apply_light(model: fp.FilmPreview, options: fp.FilmOptions, default_balance:
 
 def display_matrix(model: fp.FilmPreview) -> np.ndarray:
     """FilmPreview._prepare_display. The whites of the product chain do not read a table."""
-    if model.options.display_white not in ("reflector", "projected"):
-        raise ValueError("the product chain needs display_white = 'reflector' or 'projected'")
+    if model.options.display_white not in ("reflector", "print_dmin"):
+        raise ValueError("the product chain needs display_white = 'reflector' or 'print_dmin'")
     return model.display_matrix(model.options.display_white)
 
 
 def aim_of(model: fp.FilmPreview) -> np.ndarray:
-    return np.array([c.log_h_at(model.options.print_midscale_status_a) for c in model.paper_curves])
+    return p0.status_aim_log_h(model.paper_curves, model.options.print_midscale_status_a)
 
 
 def require_same(name: str, stored: dict[str, np.ndarray], values: dict[str, np.ndarray]) -> None:

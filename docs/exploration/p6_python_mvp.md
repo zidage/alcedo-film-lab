@@ -103,6 +103,8 @@ These items are not independent:
 
 The sizes are sizes of an effect on 5207 and 2383 and on Portra 400 and Endura. They are not scores, and the user did not review them. The first three items act on the print only. So the Frontier method has only the link of the inhibition; its tone and colour come from NegPy and the Frontier table.
 
+U78 removes the first three items of this table; see the [P7 report](p7_spectral_acceleration.md), section 5.9.
+
 ## 5.3 The APD method (U64)
 
 The user dropped the Frontier method and asked for APD as its requirements state. The chain is `ScanPreview` of `aces_scan.py` (P3): equation 1 of ST 2065-2 at its 2 nm nodes, equation 2 of ST 2065-3 with no rounding (float pipeline) and with the clip to 0 to 1023, one offset per channel in ADX10 that sets a neutral at code value 445, the ADX10 to ACES transform of aces-dev v1.3.1, and an ACES output transform (default ACES 2.0, Rec. 709, 100 nit; ACES 1.3 is an option). The P3 checks of the encoding and the transform are the checks of this code; this code did not change. The standards do not define another display rendering.

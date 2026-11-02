@@ -12,6 +12,8 @@ stated conditions, the quantity and unit of each axis, and the provenance of the
 | `kodak_gold_200.json` | KODAK GOLD 200 | E-7022 Revised 06-23 | digitized points (PDF vector paths), except the sensitivity, from spectral_film_lut (MIT) at `bcbcfc68`. No modulation transfer chart |
 | `fuji_c200.json` | FUJICOLOR C200 | AF3-0249E (17.05-BX), raster charts | spectral_film_lut (MIT) at `bcbcfc68`, not digitized by this lab. Relative sensitivity; one modulation transfer curve, copied to the three layers |
 
+`printer_filters.json` holds the density curve of the Wratten 2B filter of the printer light, from spectral_film_lut (MIT) at `bcbcfc68`, written by `scripts/poc/p2_negative_print/import_printer_filters.py`.
+
 `import_dyes_and_mtf.py` (step P4) adds the isolated dye curves of 5207 and 5219 and the chart `modulation_transfer` of 5207, 5219, and Portra 400, from spectral_film_lut (MIT) at `bcbcfc68`. These were not checked against Kodak documents. Run it again after `import_cine_profiles.py` or `digitize_kodak_charts.py`.
 
 `import_sfl_profiles.py` (step P6) writes all other colour negative and print materials of spectral_film_lut (MIT) at `bcbcfc68`, and it does not change an existing file. Each of these files has the field `inferred_rules`. [`stock_catalog.json`](../scripts/poc/p6_mvp_gui/stock_catalog.json) lists them, and `kodak_dye_transfer_negative` and `technicolor_v` as not usable, because they have no spectral sensitivity. `fit_stock_physics.py` applies rule `relative_sensitivity_level` to the stocks whose chart has no absolute level. These values were not checked against the manufacturer documents.

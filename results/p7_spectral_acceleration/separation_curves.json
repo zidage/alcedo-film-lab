@@ -1,0 +1,1207 @@
+{
+ "negatives": {
+  "kodak_5207": {
+   "k": [
+    [
+     0.0724,
+     0.0362,
+     0.0362
+    ],
+    [
+     0.01975,
+     0.0395,
+     0.01975
+    ],
+    [
+     0.051,
+     0.051,
+     0.102
+    ]
+   ],
+   "cases": {
+    "one_layer": {
+     "smallest_difference": -0.3962403686299627,
+     "largest_in_overlap": 0.09887406648398978,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.31378393717631314,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.31378380893544633,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": null
+    },
+    "wratten_99": {
+     "smallest_difference": -0.17884976107415018,
+     "largest_in_overlap": 0.09767611218595906,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.17554135460075404,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.17554547611011717,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.654338098417532,
+      0.0,
+      -2.004411458186541
+     ]
+    },
+    "wratten_58": {
+     "smallest_difference": -0.17711219478954043,
+     "largest_in_overlap": 0.09814102678907544,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.17502852813141878,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.17503177335235698,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.8665892375590105,
+      0.0,
+      -1.5887620265546936
+     ]
+    },
+    "red_wratten_29": {
+     "smallest_difference": -0.13078224630400248,
+     "largest_in_overlap": 0.03931495882910241,
+     "onset_above_base": null,
+     "top_above_base": 1.6655025117704456,
+     "difference_at_top": -0.13078224630400248,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.13078248849496044,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    },
+    "blue_wratten_47": {
+     "smallest_difference": -0.10366768956995553,
+     "largest_in_overlap": 0.03833042290523592,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.08616784282144785,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.08616724451593427,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    }
+   }
+  },
+  "kodak_5219": {
+   "k": [
+    [
+     0.0918,
+     0.0459,
+     0.0459
+    ],
+    [
+     0.061575,
+     0.12315,
+     0.061575
+    ],
+    [
+     0.070825,
+     0.070825,
+     0.14165
+    ]
+   ],
+   "cases": {
+    "one_layer": {
+     "smallest_difference": -0.5036883172085003,
+     "largest_in_overlap": 0.10938992514935175,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.35737713779217817,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.35736524103258827,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": null
+    },
+    "wratten_99": {
+     "smallest_difference": -0.19517706264772494,
+     "largest_in_overlap": 0.10609832825344245,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.19153975951570423,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.19155670381727585,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.3604834259750738,
+      0.0,
+      -1.9816610622346507
+     ]
+    },
+    "wratten_58": {
+     "smallest_difference": -0.15671477487721752,
+     "largest_in_overlap": 0.10236752927961001,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.15407056822446386,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.1540734619612678,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.4166427333461455,
+      0.0,
+      -1.2463275439507477
+     ]
+    },
+    "red_wratten_29": {
+     "smallest_difference": -0.10007880531366786,
+     "largest_in_overlap": 0.018517224912513286,
+     "onset_above_base": null,
+     "top_above_base": 1.681350503841794,
+     "difference_at_top": -0.10007880531366786,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.1000846797627104,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    },
+    "blue_wratten_47": {
+     "smallest_difference": -0.06746252535945763,
+     "largest_in_overlap": 0.004288843322283187,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.02845603393013496,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.02844909076976254,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    }
+   }
+  },
+  "kodak_5213": {
+   "k": [
+    [
+     0.2146,
+     0.1073,
+     0.1073
+    ],
+    [
+     0.07555,
+     0.1511,
+     0.07555
+    ],
+    [
+     0.0811,
+     0.0811,
+     0.1622
+    ]
+   ],
+   "cases": {
+    "one_layer": {
+     "smallest_difference": -0.3891937407605752,
+     "largest_in_overlap": 0.0635964112339038,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.25445659558127964,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.25443042343366207,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": null
+    },
+    "wratten_99": {
+     "smallest_difference": -0.16129032453959935,
+     "largest_in_overlap": 0.06306164974635209,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.1396180306013317,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.13974235163874438,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.6613140306878338,
+      0.0,
+      -2.0168818447606043
+     ]
+    },
+    "wratten_58": {
+     "smallest_difference": -0.16710086133977065,
+     "largest_in_overlap": 0.06328377631683724,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.14808571254982894,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.14822930727899575,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.8341781738248026,
+      0.0,
+      -1.5930385985265776
+     ]
+    },
+    "red_wratten_29": {
+     "smallest_difference": -0.08510117662791039,
+     "largest_in_overlap": 0.03228918802424996,
+     "onset_above_base": 0.5428831134398229,
+     "top_above_base": 1.640007523659738,
+     "difference_at_top": -0.08510117662791039,
+     "slope_gain": -0.1051043691054716,
+     "difference_at_top_two_steps": -0.08511292717692465,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": true,
+      "top": false,
+      "slope": false
+     }
+    },
+    "blue_wratten_47": {
+     "smallest_difference": -0.14679463437915707,
+     "largest_in_overlap": 0.04126285915577066,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.1152149345385105,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.11536440522894953,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    }
+   }
+  },
+  "kodak_5203": {
+   "k": [
+    [
+     0.34365,
+     0.171825,
+     0.171825
+    ],
+    [
+     0.0781,
+     0.1562,
+     0.0781
+    ],
+    [
+     0.2394,
+     0.2394,
+     0.4788
+    ]
+   ],
+   "cases": {
+    "one_layer": {
+     "smallest_difference": -0.42332413583170725,
+     "largest_in_overlap": 0.06954296854609243,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.26310752724432085,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.2630734074583878,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": null
+    },
+    "wratten_99": {
+     "smallest_difference": -0.17990730293804447,
+     "largest_in_overlap": 0.06954296854609243,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.16647512430307332,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.17324662734952812,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.778732993914744,
+      0.0,
+      -2.032352919253297
+     ]
+    },
+    "wratten_58": {
+     "smallest_difference": -0.18203172588922234,
+     "largest_in_overlap": 0.06952526038906637,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.1694886332709591,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.1750443875113774,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.9445007112488135,
+      0.0,
+      -1.7510900642152307
+     ]
+    },
+    "red_wratten_29": {
+     "smallest_difference": -0.13922816600038557,
+     "largest_in_overlap": 0.0463113627601226,
+     "onset_above_base": 0.30822630627809783,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.13754362394016484,
+     "slope_gain": -0.12053233298004262,
+     "difference_at_top_two_steps": -0.13844969108296334,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    },
+    "blue_wratten_47": {
+     "smallest_difference": -0.12473520187400577,
+     "largest_in_overlap": 0.08878660167110142,
+     "onset_above_base": 0.22503376570214095,
+     "top_above_base": 1.7,
+     "difference_at_top": 0.01771299110556157,
+     "slope_gain": -0.008914696661720511,
+     "difference_at_top_two_steps": 0.017363210501282644,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    }
+   }
+  },
+  "fuji_eterna_500": {
+   "k": [
+    [
+     0.2537,
+     0.12685,
+     0.12685
+    ],
+    [
+     0.1491,
+     0.2982,
+     0.1491
+    ],
+    [
+     0.13655,
+     0.13655,
+     0.2731
+    ]
+   ],
+   "cases": {
+    "one_layer": {
+     "smallest_difference": -0.15181729497455398,
+     "largest_in_overlap": 0.1541283051424256,
+     "onset_above_base": 0.1715039093442675,
+     "top_above_base": 1.627876652613706,
+     "difference_at_top": -0.15181729497455398,
+     "slope_gain": -0.12575022158556304,
+     "difference_at_top_two_steps": -0.15177637195231952,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": null
+    },
+    "wratten_99": {
+     "smallest_difference": -0.10553010586873679,
+     "largest_in_overlap": 0.1541283051424256,
+     "onset_above_base": 0.1715039093442675,
+     "top_above_base": 1.627876652613706,
+     "difference_at_top": -0.10553010586873679,
+     "slope_gain": -0.09396770620979034,
+     "difference_at_top_two_steps": -0.1097518502487671,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.7965866920594422,
+      0.0,
+      -2.03570949072937
+     ]
+    },
+    "wratten_58": {
+     "smallest_difference": -0.07369332977557219,
+     "largest_in_overlap": 0.1528441617180618,
+     "onset_above_base": 0.1715039093442675,
+     "top_above_base": 1.627876652613706,
+     "difference_at_top": -0.07369332977557219,
+     "slope_gain": -0.07210738491478064,
+     "difference_at_top_two_steps": -0.07740301198225552,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.8667067155622832,
+      0.0,
+      -1.3866084882286718
+     ]
+    },
+    "red_wratten_29": {
+     "smallest_difference": -0.10763072998980094,
+     "largest_in_overlap": 0.12136783460589728,
+     "onset_above_base": 0.16406071574424969,
+     "top_above_base": 1.3250064607896768,
+     "difference_at_top": -0.10763072998980094,
+     "slope_gain": -0.11862380590487998,
+     "difference_at_top_two_steps": -0.10771841617009636,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    },
+    "blue_wratten_47": {
+     "smallest_difference": -0.09856315567611862,
+     "largest_in_overlap": 0.12170261051341935,
+     "onset_above_base": 0.21372292139198867,
+     "top_above_base": 1.6235537897816665,
+     "difference_at_top": -0.09856315567611862,
+     "slope_gain": -0.09224315189235233,
+     "difference_at_top_two_steps": -0.1031467901110723,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    }
+   }
+  },
+  "kodak_portra_400": {
+   "k": [
+    [
+     0.1055,
+     0.05275,
+     0.05275
+    ],
+    [
+     0.0839,
+     0.1678,
+     0.0839
+    ],
+    [
+     0.04755,
+     0.04755,
+     0.0951
+    ]
+   ],
+   "cases": {
+    "one_layer": {
+     "smallest_difference": -0.30730264084618053,
+     "largest_in_overlap": 0.018868371019973518,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.2088759711533026,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.20887612196535343,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": null
+    },
+    "wratten_99": {
+     "smallest_difference": -0.1421617801362487,
+     "largest_in_overlap": 0.0188002060393766,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.06163292399102627,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.061631872720704806,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.2375096202517646,
+      0.0,
+      -1.9521663003888745
+     ]
+    },
+    "wratten_58": {
+     "smallest_difference": -0.12278080914750156,
+     "largest_in_overlap": 0.01856573752325863,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.042442427984902054,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.042398990054373975,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.2795158081613054,
+      0.0,
+      -1.4872627951877107
+     ]
+    },
+    "red_wratten_29": {
+     "smallest_difference": -0.05034108270556148,
+     "largest_in_overlap": 0.02624955199783452,
+     "onset_above_base": 0.6800600750145034,
+     "top_above_base": 1.7,
+     "difference_at_top": 0.030221043015125293,
+     "slope_gain": -0.0002444989374763562,
+     "difference_at_top_two_steps": 0.030217771090527812,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": true,
+      "top": false,
+      "slope": false
+     }
+    },
+    "blue_wratten_47": {
+     "smallest_difference": -0.03274680515244777,
+     "largest_in_overlap": 0.0012763444932444301,
+     "onset_above_base": 1.6501716046811707,
+     "top_above_base": 1.7,
+     "difference_at_top": 0.031447138549653975,
+     "slope_gain": null,
+     "difference_at_top_two_steps": 0.03151810895556029,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    }
+   }
+  },
+  "kodak_gold_200": {
+   "k": null,
+   "cases": {
+    "one_layer": {
+     "smallest_difference": -0.24298876237557288,
+     "largest_in_overlap": 0.0651013905349993,
+     "onset_above_base": null,
+     "top_above_base": 1.6395900000000008,
+     "difference_at_top": -0.24298876237557288,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.24298876237557288,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": null
+    },
+    "wratten_99": {
+     "smallest_difference": -0.12369039612265587,
+     "largest_in_overlap": 0.06352666867599721,
+     "onset_above_base": null,
+     "top_above_base": 1.6395900000000008,
+     "difference_at_top": -0.09628857000787461,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.09628857000787461,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.195578082625802,
+      0.0,
+      -1.996325628358227
+     ]
+    },
+    "wratten_58": {
+     "smallest_difference": -0.1110799778595597,
+     "largest_in_overlap": 0.06387851394084598,
+     "onset_above_base": null,
+     "top_above_base": 1.6395900000000008,
+     "difference_at_top": -0.08691395615409903,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.08691395615409903,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.2432865626360885,
+      0.0,
+      -1.6301396286581322
+     ]
+    },
+    "red_wratten_29": {
+     "smallest_difference": -0.03940155044498894,
+     "largest_in_overlap": 0.014819582414808075,
+     "onset_above_base": null,
+     "top_above_base": 1.573850000000001,
+     "difference_at_top": -0.03879622720311415,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.03879622720311415,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    },
+    "blue_wratten_47": {
+     "smallest_difference": -0.0617540072636098,
+     "largest_in_overlap": 0.05129488082548184,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.04353471543633347,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.04353471543633347,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    }
+   }
+  },
+  "kodak_ektar_100": {
+   "k": [
+    [
+     0.24955,
+     0.124775,
+     0.124775
+    ],
+    [
+     0.089725,
+     0.17945,
+     0.089725
+    ],
+    [
+     0.034475,
+     0.034475,
+     0.06895
+    ]
+   ],
+   "cases": {
+    "one_layer": {
+     "smallest_difference": -0.31969903759742424,
+     "largest_in_overlap": 0.025012551835428276,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.25498136380755776,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.25498136193318377,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": null
+    },
+    "wratten_99": {
+     "smallest_difference": -0.15495852950615108,
+     "largest_in_overlap": 0.025040089169729995,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.10519206920933488,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.10524232811644874,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.5150444921803456,
+      0.0,
+      -1.9561548258897703
+     ]
+    },
+    "wratten_58": {
+     "smallest_difference": -0.15238555934866982,
+     "largest_in_overlap": 0.025012551835428276,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.10299902123067373,
+     "slope_gain": null,
+     "difference_at_top_two_steps": -0.10314886362621012,
+     "limits": {
+      "sign": false,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     },
+     "relative_log_h": [
+      -1.70978867260893,
+      0.0,
+      -1.740860761813655
+     ]
+    },
+    "red_wratten_29": {
+     "smallest_difference": -0.04380095962621611,
+     "largest_in_overlap": 0.10684316801121252,
+     "onset_above_base": 0.2016640140899377,
+     "top_above_base": 1.7,
+     "difference_at_top": -0.028647208665875334,
+     "slope_gain": -0.03990166913455273,
+     "difference_at_top_two_steps": -0.028654663755699028,
+     "limits": {
+      "sign": false,
+      "overlap": false,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    },
+    "blue_wratten_47": {
+     "smallest_difference": -0.020039433376163096,
+     "largest_in_overlap": 0.006598499637217259,
+     "onset_above_base": null,
+     "top_above_base": 1.7,
+     "difference_at_top": 0.005907198216162257,
+     "slope_gain": null,
+     "difference_at_top_two_steps": 0.005945606263745518,
+     "limits": {
+      "sign": true,
+      "overlap": true,
+      "onset": false,
+      "top": false,
+      "slope": false
+     }
+    }
+   }
+  }
+ },
+ "sweep": {
+  "k_scale 0.0 share 0.0": {
+   "smallest_difference": -0.1899952372371938,
+   "largest_in_overlap": 0.10762758058938715,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1856780002928211,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1856780002928211,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.0 share 0.25": {
+   "smallest_difference": -0.1899952372371938,
+   "largest_in_overlap": 0.10762758058938715,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1856780002928211,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1856780002928211,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.0 share 0.5": {
+   "smallest_difference": -0.1899952372371938,
+   "largest_in_overlap": 0.10762758058938715,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1856780002928211,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1856780002928211,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.0 share 0.75": {
+   "smallest_difference": -0.1899952372371938,
+   "largest_in_overlap": 0.10762758058938715,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1856780002928211,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1856780002928211,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.0 share 1.0": {
+   "smallest_difference": -0.1899952372371938,
+   "largest_in_overlap": 0.10762758058938715,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1856780002928211,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1856780002928211,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.5 share 0.0": {
+   "smallest_difference": -0.18998646431154875,
+   "largest_in_overlap": 0.10762771171304708,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.18567630392229972,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1856763037445992,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.5 share 0.25": {
+   "smallest_difference": -0.18731383746620334,
+   "largest_in_overlap": 0.10517965482611391,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.18322255152119826,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.18322268050718105,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.5 share 0.5": {
+   "smallest_difference": -0.18456234308235797,
+   "largest_in_overlap": 0.10270589982055212,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1807151963443685,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1807154165456959,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.5 share 0.75": {
+   "smallest_difference": -0.1817442618054701,
+   "largest_in_overlap": 0.10020402220798097,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1781548708645646,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.17815511997456568,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 0.5 share 1.0": {
+   "smallest_difference": -0.17884903702126853,
+   "largest_in_overlap": 0.09767493573230279,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.17554385576680698,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.17554416865551392,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.0 share 0.0": {
+   "smallest_difference": -0.1899822308955954,
+   "largest_in_overlap": 0.1076278172228089,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.18567565280446896,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.18567565051135393,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.0 share 0.25": {
+   "smallest_difference": -0.18455878592524244,
+   "largest_in_overlap": 0.1027050322556482,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.18071403021601462,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.18071646961260868,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.0 share 0.5": {
+   "smallest_difference": -0.17884976107415018,
+   "largest_in_overlap": 0.09767611218595906,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.17554135460075404,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.17554547611011717,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.0 share 0.75": {
+   "smallest_difference": -0.17297405909483743,
+   "largest_in_overlap": 0.09254219915399897,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1706767802137934,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1706807791518985,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.0 share 1.0": {
+   "smallest_difference": -0.16868935515712913,
+   "largest_in_overlap": 0.0872969508184771,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.16635529015958905,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1663599884572351,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.5 share 0.0": {
+   "smallest_difference": -0.18998229313577153,
+   "largest_in_overlap": 0.10762789605681622,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.18567632738989115,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.1856763208169765,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.5 share 0.25": {
+   "smallest_difference": -0.18174556272734033,
+   "largest_in_overlap": 0.1002027433715642,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.17815667393985368,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.17817133977893906,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.5 share 0.5": {
+   "smallest_difference": -0.17297435760139912,
+   "largest_in_overlap": 0.09254227234060908,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.1706674759438922,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.17068932324441288,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.5 share 0.75": {
+   "smallest_difference": -0.16646975614026704,
+   "largest_in_overlap": 0.08463085279155047,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.16411919205258219,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.16414336802298823,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  },
+  "k_scale 1.5 share 1.0": {
+   "smallest_difference": -0.16417107818085874,
+   "largest_in_overlap": 0.07640795579547888,
+   "onset_above_base": null,
+   "top_above_base": 1.7,
+   "difference_at_top": -0.15708743349422427,
+   "slope_gain": null,
+   "difference_at_top_two_steps": -0.15711620355766343,
+   "limits": {
+    "sign": false,
+    "overlap": false,
+    "onset": false,
+    "top": false,
+    "slope": false
+   }
+  }
+ },
+ "failures_wratten_99": 38
+}

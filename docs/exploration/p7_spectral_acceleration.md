@@ -251,6 +251,101 @@ The rule rests on charts that spectral_film_lut digitized, not checked against t
 
 Not measured: a real print, and a review by the user of any selection other than 5207 + 2383. Other projected materials have no "before" value; the "after" values are in the results file.
 
+### 5.8 UV filter of the printer (U77)
+
+**Fault.** The user finds 2383 strange on daylight photos (Alcedo Studio issue 645). After 5.7, a neutral ramp of 5207 + 2383 still had blue shadows and yellow-green highlights.
+
+**Source observation.** The data sheet of 2383: "Overall filtration should include a UV-absorbing filter, such as a KODAK WRATTEN Filter No. 2B." The sheet of 2393 has the same statement. Kennel and others, SMPTE Journal, October 1982, page 926, define the exposure density of a negative onto a print film with "printer illuminant + UV filter (2B)". The printer model had lamp A with no filter (P0 option `printer_lamp`).
+
+**Trace (local scripts `build/tmp/issue_645/`).** The chart of the blue layer of 2383 goes down to 361 nm, and at 380 nm its sensitivity is about 18 % of its peak. The yellow dye of 5207 at 380 nm is 0.24 of its peak. So part of the exposure does not follow the image. Share of the blue layer exposure below 400 nm through a 5207 grey, and the blue slope against green, printing slope times paper slope:
+
+| Print material | Share, no filter | Share, 2B | B/G, no filter | B/G, 2B |
+| --- | --- | --- | --- | --- |
+| `kodak_2383` | 0.247 | 0.008 | 0.756 | 0.878 |
+| `kodak_2393` | 0.232 | 0.007 | 0.789 | 0.917 |
+| `kodak_5383` | 0.681 | 0.103 | 0.599 | 0.781 |
+| `kodak_5381` | 0.681 | 0.103 | 0.724 | 0.942 |
+| `kodak_5384` | 0.316 | 0.016 | 0.824 | 0.874 |
+| `fuji_3513di` | 0.233 | 0.005 | 0.729 | 0.780 |
+| `kodak_endura_premier` | 0.033 | 0.005 | 0.913 | 0.924 |
+
+This is the low blue slope of P2 report section 8.4, which that report could not explain. Rule `neutral_printing_gain` corrected its effect, and U75 removed that rule. Other printer lights do not change the result much: additive bands of 420 to 490 nm, 510 to 580 nm, and 600 to 720 nm give 0.836 against the 0.847 of lamp A with a sharp cut at 420 nm.
+
+**Rule `printer_uv_filter`.** The printer light of a cine print passes the Wratten 2B density curve, from the digitization of spectral_film_lut (`import_printer_filters.py`). Reflection papers do not change. `fit_display_white.py` runs again: the white of 2383 moves from x = 0.3275, y = 0.3532 to x = 0.3226, y = 0.3456, near its D-min (x = 0.3208, y = 0.3411).
+
+**Checks.** Neutral ramp, range of a* and b* for L* 15 to 88: 5207 + 2383, a* 6.3 to 4.3, b* 13.7 to 5.5; 5219 + 2383, a* 8.3 to 3.1, b* 22.2 to 6.4; 5207 + 3513DI, a* 8.4 to 6.6, b* 15.8 to 12.1; 5207 + 5383, a* 13.1 to 12.2, b* 22.6 to 9.5. `check_neutral_axis.py`, 5207 + 2383, against the Resolve LUT: mean 2.1 to 2.0, largest 3.6 to 4.8. The fix has no aim to match this LUT. The other selections are in the results file.
+
+**Limits.** The numbers of this section are for the rule alone, with the conditions of 5.7. Section 5.9 changes those conditions. No real print was measured. The blue slope of 2383 stays about 12 % below green. The density of a negative dye below 400 nm is a Gaussian tail. `kodak_5381` and `kodak_5383` have about 10 % of the exposure below 400 nm, and on 5383 the range of a* stays large. The user has not reviewed the new look on the RAW files of the issue.
+
+### 5.9 Print conditions from their sources (U78)
+
+**User request.** Remove the values that came from a comparison with spektrafilm, and build the print from its process. Section 5.2 of the P6 report and section 8.5 of the P2 report list these values.
+
+| Item | Before | Now | Source |
+| --- | --- | --- | --- |
+| `CINE_GREY_STATUS_A` | 0.85, by comparison with spektrafilm | 1.09, 1.06, 1.03 | LAD patch, KODAK H-61b |
+| `print_contrast` | 0.85, by a sweep | 1 | The published curve |
+| `print_flash` | 0.02, by eye | 0 | No measured value |
+| `viewing_flare` | 0.003, by eye | 0 | No measured value |
+| Cine viewing light | D65 | D54, rule `projection_light` | SMPTE 196M-2003. D54 as a xenon lamp is an inference |
+| Cine display white | `projected_print_white`, fitted | `print_dmin`, rule `clear_print_white`: the lowest Status A density of each paper curve, under the viewing light, goes to display white | In a dark cinema the clear print is the brightest light. This is an inference, with one test below |
+| Surround of a cine print | None | Rule `dark_surround_on_display`: luminance relative to the clear print takes the exponent 0.525 / 0.59 | CIECAM02 surround values c, dark and dim |
+
+Papers keep D50, the perfect reflector, and Status A 0.75, which is 18 % reflectance. `fit_display_white.py` and `display_white.json` are removed.
+
+**Results, 5207 + 2383.** A grey of 0.18 has L* 44.9 (46.2 before). Range for L* 15 to 88: a* 4.9, b* 7.2 (6.3, 13.7 before). Black L* 1.0, top L* 99.0 (3.7, 92.9 before). Script: `build/tmp/issue_645/d7_first_principles.py`, local. `check_neutral_axis.py`, against the Resolve LUT, mean 2.2, largest 4.9; this has no limit, and the LUT took no part in any value. The same LUT has L* 40.1 at Cineon 445.
+
+**Tests that the values give.** The LAD patch on this chain has L* 44.5, a* +0.7, b* -6.0. H-61b states a visual neutral, so the digitized dyes or the choice of the clear print as white has an error of this size. The test does not separate them.
+
+**Not independent, and stays.** Rule `development_inhibition` is an empirical model that agrees with DIR couplers in quality only: an inhibitor from the image, and a spread. It keeps the algorithm of spektrafilm. Its form (a shift of log exposure that is linear in dye amount), its K from a fit to modulation transfer charts, its share between layers, and its point part have no source in process data. KODAK H-24 modules 1, 7, 8, 9, and 10 do not mention inhibitors or interimage effects, and their chemical charts are trend charts for 5213, 5254, and 5242. The Enlarger flare default, the Halation strength, rule `grey_anchor`, and the band split also have no source, and a stock chart gives no value for them.
+
+**Not measured.** A real print, and the review by the user. Chroma rises with the published curve, and the grade of the product stays in front of the film.
+
+### 5.10 Separation curves against rule `development_inhibition`
+
+**Question.** Does the rule give the form of a real colour negative? Reference: Sehlin and others, SMPTE Journal, July 1985, Figure 14 (5294) and its text. There, the green separation curve overlaps the neutral curve up to about 0.8 density above base, and at 1.71 above base it is about 0.27 higher. The paper calls this over-corrected, and it states that 5247 and 5294 are generally over-corrected. This is another stock, so the limits test the form. They are in the header of `check_separation_curves.py`, and were set before the first run.
+
+**Result: the rule fails.** 38 of the 40 limits fail on 8 negatives with Wratten 99. The two that pass are the overlap of Portra 400 and of Ektar 100. Results: [`separation_curves.json`](../../results/p7_spectral_acceleration/separation_curves.json). Separation minus neutral at 1.7 above base, or at the top of the curve:
+
+| Negative | Difference |
+| --- | --- |
+| `kodak_5207` | -0.176 |
+| `kodak_5219` | -0.192 |
+| `kodak_5213` | -0.140 |
+| `kodak_5203` | -0.166 |
+| `fuji_eterna_500` | -0.106 (about +0.24 near 1.2, then a fall at the end of the curve) |
+| `kodak_portra_400` | -0.062 |
+| `kodak_gold_200` | -0.096 |
+| `kodak_ektar_100` | -0.105 |
+
+**Split on 5207, at 1.3 above base (local script `build/tmp/issue_645/sep/decompose.py`).** With K = 0 the dye amounts are equal, as they must be, and the difference is -0.188. This part is the side absorption of the dyes in Status M. The model K adds +0.014. So the inhibition of 5207 is too small to show in this measure. To bring the difference above zero, K needs about 6 times its value with all of it between layers; then the blue amount falls to 0.009 on the separation, the difference is present from low density, and at 1.7 above base it is still -0.049. So this form did not reach the shape of the reference in the sweep. The overlap and then a late rise did not appear at any value.
+
+**Eterna 500.** Its K is much larger than that of 5207: the green row is 0.596 against 0.079. Section 5.6 states that its fit stops at a bound with a length under 7 um. So the size of K follows the fit, and a large difference between these stocks has no support from process data. At 2 times K with all of it between layers, F_i does not exist.
+
+**Limits of this result.** The reference is 5294, read by eye. No chart for 5207 or for the other tested stocks was found, so a stock may differ. The side absorption depends on the reading of the digitized dye curves as net of the mask (P4 report, section 9.3). The check cannot separate that error from a too small K: in the real film the two can cancel at low density. Nothing in the model changes from this check.
+
+### 5.11 Other ways to the colour of a 2383 print (U79)
+
+**Status:** local probes in `build/tmp/issue_645/` (2026-11-02). No rule of the model changes. Photographs and sheets are local only.
+
+**K fitted to a form: rejected by the user.** A rule with K between layers, a gain from the exposure of the receiving layer, and an extension of F_i was fitted to Figure 14 of Sehlin and others. It had 17 of 40 limits failing, against 38 of 40 here. The user does not accept a forced fit, so it was removed and was not committed.
+
+**K from the matrix `CDD_TO_CID` of ADX: rejected by the user.** ACES developers state that Kodak and Fuji supplied this matrix as an average for all films. Under the form of this lab, K_ij = (M S)_ij / gamma_i for i and j different, with no search. M is the matrix, S is d APD / d amount, and gamma is the neutral slope. On `kodak_5207` this K is 0.07 to 0.51, against 0.02 to 0.05 now.
+
+| Check | K now | K from the matrix |
+| --- | --- | --- |
+| Overlap of separation and neutral up to 0.6 above base, 7 stocks | Fails on most | Passes on all, and it was not a target |
+| Other limits of section 5.10 | Fail | Fail: -0.1 at 1.7 above base |
+| Real 5207 pair `f15`, RMS of R - G and B - G, density | 0.041, 0.035 | 0.074, 0.069 |
+| 34 real frames (real variance off the axis 0.034), 17 digital files; no paired scene | 0.034 | 0.079 |
+| Grey of the reference light on 5207 + 2383, b\* at L\* 45 | -2.5 | -12.9 |
+
+The real scan has hypotheses: gamma 2, and X5 channels as APD. The user reviewed the sheets and finds the look not acceptable.
+
+**Printing bands: no change is necessary.** With rule `printer_uv_filter`, the bands of the model and the responsivities of ST 2065-2 are near: the 5 % and 95 % points of red and blue differ by at most 3 nm. Green differs at its short end: 491 nm against 510 nm at the 5 % point. Two probes, each with its own printer balance: the bands of APD, and the green band cut below 500 nm. On 9 test colours a\* and b\* change by at most 2, and on the neutral ramp by at most 0.9. The author sees no change on 8 real frames and 4 digital files. No public data for the bands of a real additive printer was found.
+
+**A direct scan path in the form of NegPy: of interest, not built.** The probe is written again from NegPy at `3928f81` (GPL-3.0), so it is not the output of NegPy. Log T per channel, a stretch of each channel between its 1 % and 99 % points, the print curve of NegPy, and no cast removal (U36). By the view of the author, colour is cleaner and cooler on real and simulated negatives, and the warm cast of the print goes away. The bounds of each frame remove the key of a dusk frame, and a statistic of the frame has a cost in the product. The user prefers bounds that are calculated from the known data of the stock. No such rule exists yet. This path would reverse a part of U64.
+
 ## 6. Not measured
 
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.

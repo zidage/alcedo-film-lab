@@ -69,7 +69,7 @@ class MainWindow(QMainWindow):
         self.long_edge.setValue(mp.DEFAULT_LONG_EDGE)
         self.long_edge.setKeyboardTracking(False)
         self.long_edge.valueChanged.connect(self.schedule)
-        self.display_white = self._combo({mp.MEDIUM_WHITE: {"name": "By print medium"}, "reflector": {"name": "Perfect reflector"}, "paper": {"name": "Paper"}, "projected": {"name": "Projected print"}}, defaults.display_white)
+        self.display_white = self._combo({mp.MEDIUM_WHITE: {"name": "By print medium"}, "reflector": {"name": "Perfect reflector"}, "paper": {"name": "Paper"}, "print_dmin": {"name": "Clear print"}}, defaults.display_white)
         self.gamut = QCheckBox("Display gamut compression")
         self.gamut.setChecked(defaults.gamut_compress)
         self.gamut.toggled.connect(self.schedule)

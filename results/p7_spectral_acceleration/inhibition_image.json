@@ -496,24 +496,24 @@
  },
  "edge_fuji_eterna_500": {
   "before": [
-   14.57174688577652,
-   12.992373034358025
+   15.119282305240631,
+   11.484454348683357
   ],
   "after": [
-   0.01694709062576294,
-   0.002747252583503723
+   0.01883178949356079,
+   0.0025268644094467163
   ]
  },
  "photo": {
   "fuji_eterna_500": {
-   "mean_difference_codes": 1.7866322994232178,
-   "chroma_before": 54.38722610473633,
-   "chroma_after": 54.420875549316406
+   "mean_difference_codes": 1.8036952018737793,
+   "chroma_before": 51.170101165771484,
+   "chroma_after": 51.198516845703125
   },
   "kodak_5207": {
-   "mean_difference_codes": 0.017226608470082283,
-   "chroma_before": 45.468875885009766,
-   "chroma_after": 45.477725982666016
+   "mean_difference_codes": 0.018412435427308083,
+   "chroma_before": 44.32944869995117,
+   "chroma_after": 44.337249755859375
   },
   "kodak_portra_400": {
    "mean_difference_codes": 0.032815929502248764,
