@@ -427,6 +427,18 @@ The user finds the saturation too high on Eterna 500, Ektar 100, and Portra 800,
 
 **Scope of the grade (U84).** The user states that the grade must act on all tungsten stocks, and that the look is about right. `NEGATIVE_GRADE_STOCKS` holds `kodak_5219`, `kodak_5213`, `kodak_5277`, `kodak_5293`, `kodak_exr_5248`, `fuji_eterna_500`, and `fuji_eterna_500_vivid`, on `cine_look` only. Six have 3200 K in the catalog. `kodak_5293` has the name EXR 200T, and the catalog holds the default 5500 K for it. The balance light of that stock does not change here. `kodak_5247_II` and `kodak_5248` have no T in their names and hold the same default, so they stay out. [An old list](https://wikipedia.classicistranieri.com/en/articles/l/i/s/List_of_motion_picture_film_stocks.html) gives 5247 as 100T in 1974, with no clear source, and [a 1950s SMPTE paper](https://journal.smpte.org/periodicals/Journal%20of%20the%20SMPTE/68/11/4/) is the search result that gives 5248 as balanced for tungsten. Neither has the rule.
 
+### 5.16 Noise of rule `negative_show_grade` (U85)
+
+**User report.** The grade adds much noise on the ISO 3200 file `8499264884.nef` (Nikon Z 8). This file has HE* compression, and no local LibRaw reads it, so it did not enter the calculation.
+
+**Trace.** A flat dusk blue with relative noise 6 % per channel, in 8 bit codes, luma standard deviation: 2383 2.27; the grade alone 3.59; `print_cinema_look` alone 2.94. The term `COOL_DENSITY_LOSS` reads the lead of green or blue at the pixel, so noise of the blue channel moves the density of all channels, and most of it reaches the luma through green. The local script is `build/tmp/night_claude/n2_gain.py`.
+
+**Candidates, by eye and by the same measure.** Density loss only on the channel that leads: less noise, but the sky turns teal, so it changes the look. A lower density loss: the image is lighter, and noise stays. A lead from a blurred record: the look stays. Luma standard deviation at 2048 pixels on the dusk blue: 1.95 at 35 um, 1.90 at 70 um, with 2.46 for 2383 and 3.58 with no blur. Sheet: `build/tmp/night_claude/sheets/n3_fix.jpg`.
+
+**Rule.** The lead comes from the record before the enlarger flare, with a Gaussian of length `inhibition_um` (35 um), by rule `inhibitor_on_half_size`. So the rule has a spatial part and one more blur on the stocks that have it. The other steps of the rule stay per pixel.
+
+**Not measured.** The rule on the reported file itself, in the lab. The cost in Release.
+
 ## 6. Not measured
 
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.

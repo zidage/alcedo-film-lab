@@ -11,6 +11,8 @@
  "print_ramp_largest_fall": 0.0,
  "option_off_has_no_grey": true,
  "apd_largest_difference": 0.0,
+ "noise_luma_codes_rule": 1.9522139985260745,
+ "noise_luma_codes_plain_2383": 2.456905352587828,
  "pairs_with_rule": [
   "fuji_eterna_500 on cine_look",
   "fuji_eterna_500_vivid on cine_look",

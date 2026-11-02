@@ -75,7 +75,7 @@ Rule 'print_slope_match' (option print_slope_match, ROADMAP U80): a cine print i
 
 Rule 'entry_reference_gamut_compression' (option entry_gamut_compress, ROADMAP U80): the ACES Reference Gamut Compression on the linear AP1 at the entry of a print, as the other display methods of the product have. The final colour space of an image is not known at this point, and a graded colour can leave AP1.
 
-Rule 'negative_show_grade' (option negative_grade, ROADMAP U82): a fixed creative grade of the negative record, after the spatial steps of the negative and before the print table, as a DI grades a scan before the print transform. See negative_grade.py. It needs rule 'dye_amount_curves'. The grey of the rule is the record of an 18 % grey under the scene light, with no grade.
+Rule 'negative_show_grade' (option negative_grade, ROADMAP U82): a fixed creative grade of the negative record, after the spatial steps of the negative and before the print table, as a DI grades a scan before the print transform. See negative_grade.py. It needs rule 'dye_amount_curves'. The grey of the rule is the record of an 18 % grey under the scene light, with no grade. The blurred record of the rule (ROADMAP U85) is the record before the enlarger flare, with a Gaussian of the length inhibition_um, by rule 'inhibitor_on_half_size'.
 
 Rule 'neutral_printing_gain' (option neutral_printing): one gain per paper layer on the paper log exposure about the
 balance exposure, so that a neutral negative ramp has the same paper log exposure slope in each layer. The published
@@ -861,11 +861,14 @@ class FilmPreview:
             density = self._inhibited_image(q, density, pixel if spatial else 0.0)
         if spatial and o.adjacency_gain:
             density = fk.add_adjacency(density, fk.gaussian_blur(density, o.adjacency_um / pixel), float(o.adjacency_gain))
+        soft_record = None
+        if self._grade_grey is not None and spatial:
+            soft_record = fk.gaussian_blur_half_size(density, o.inhibition_um / pixel)
         if spatial and o.enlarger_flare:
             t = fk.density_to_transmittance(density)
             density = fk.flare_density(t, fk.gaussian_blur(t, o.enlarger_flare_size * max(image.shape[:2])), float(o.enlarger_flare))
         if self._grade_grey is not None:
-            density = grade.negative_grade(density, self._grade_grey)
+            density = grade.negative_grade(density, self._grade_grey, soft_record)
         return density, {"moved_by_rule": int(moved), "y_not_positive": int(not_positive), "negative_above_curve_end": int(above), "pixels": int(image.shape[0] * image.shape[1])}
 
     def _prepare_mask(self) -> None:
@@ -963,6 +966,8 @@ class FilmPreview:
             raise ValueError("reference_render has no form of rule contrast_mask")
         # Rule 'no_image_plane_steps_on_ramps': a test ramp (fewer than 16 rows) has no image plane.
         spatial = ap1.ndim == 3 and min(ap1.shape[:2]) >= 16
+        if spatial and self._grade_grey is not None:
+            raise ValueError("reference_render has no form of the blurred record of rule negative_show_grade")
         q, stats = self.layer_exposure(ap1 + self.options.scene_flare)
         if spatial:
             q = self._exposure_spread(q)
