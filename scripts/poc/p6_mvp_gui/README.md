@@ -6,6 +6,7 @@ Scripts of step P6 ([report](../../../docs/exploration/p6_python_mvp.md), ROADMA
 | --- | --- | --- |
 | `import_sfl_profiles.py` | a local clone of spectral_film_lut at `bcbcfc68` | new files in `profiles/`, `stock_catalog.json` |
 | `fit_stock_physics.py` | the profiles | `stock_physics.json`; rule `relative_sensitivity_level` in the profiles that need it |
+| `fit_inhibition_image.py` | the profiles, `stock_physics.json` | `inhibition_image.json`: the spread and the image part of rule `inhibition_image_part` |
 | `mvp_pipeline.py` | library | used by the scripts below |
 | `p6_mvp_cli.py` | a RAW file and options | image and a parameter file |
 | `p6_mvp_gui.py` | a RAW file, chosen in the window | display and export |

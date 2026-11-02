@@ -242,6 +242,7 @@ class FilmOptions:
     foliage: bool = False  # not part of the print table; rule 'foliage_spectra'
     layer_spread_um: tuple[float, float, float] = (0.0, 0.0, 0.0)  # not part of the print table; rule 'layer_spread' (P4), red, green, blue layer
     inhibition_total: tuple[float, float, float] = (0.0, 0.0, 0.0)  # rule 'development_inhibition' (P4): the total inhibition that each layer receives, log10 H per unit of dye amount
+    inhibition_image: tuple[float, float, float] | None = None  # not part of the print table; rule 'inhibition_image_part': the part of the total with the blur of the image plane. None: all of it
     inhibition_cross_share: float = 0.5  # share of the total that comes from the other two layers (inferred)
     inhibition_um: float = 35.0  # not part of the print table; Gaussian length of the inhibitor in the image plane
     overexposure_stops: float = 0.0  # rule 'overexposed_negative' (P5)
@@ -536,6 +537,11 @@ class FilmPreview:
         share = np.full((3, 3), o.inhibition_cross_share / 2.0)
         np.fill_diagonal(share, 1.0 - o.inhibition_cross_share)
         k = np.array(o.inhibition_total)[:, None] * share
+        # Rule 'inhibition_image_part': this part has the blur of the image plane, and the rest of K has none. With no value, all of K has the blur.
+        image = np.array(o.inhibition_total if o.inhibition_image is None else o.inhibition_image)
+        if (image > np.array(o.inhibition_total) + 1e-12).any():
+            raise ValueError("rule inhibition_image_part: the image part is larger than the total")
+        k_image = image[:, None] * share
         log_h = self.negative_curves[0].log_h
         amounts = np.stack([c.density for c in self.negative_curves], axis=1)
         reduced = log_h[:, None] - amounts @ k.T
@@ -546,7 +552,7 @@ class FilmPreview:
         starts = reduced[0]
         grid = starts[:, None] + step * np.arange(length)[None, :]
         free = np.stack([np.interp(grid[i], reduced[:, i], amounts[:, i]) for i in range(3)])
-        self.inhibition = {"k": k, "start": starts, "free": free, "lengths": np.array([int(np.searchsorted(grid[i], reduced[-1, i])) + 1 for i in range(3)]), "step": step}
+        self.inhibition = {"k": k, "k_image": k_image, "k_point": k - k_image, "start": starts, "free": free, "lengths": np.array([int(np.searchsorted(grid[i], reduced[-1, i])) + 1 for i in range(3)]), "step": step}
 
     def _inhibited_amounts(self, log_h: np.ndarray, amounts: np.ndarray) -> np.ndarray:
         """Array form of the fixed point, with no image plane: log H and first amounts (N, 3)."""
@@ -826,11 +832,21 @@ class FilmPreview:
         return sum(weight * fk.gaussian_blur_per_layer(q, tuple(ratio * lengths / pixel)) for weight, ratio in SPREAD_GAUSSIANS)
 
     def _inhibited_image(self, q: np.ndarray, amounts: np.ndarray, pixel: float) -> np.ndarray:
-        """Rule 'development_inhibition' on an image. pixel = 0: no image plane."""
+        """Rule 'development_inhibition' on an image, with rule 'inhibition_image_part'. pixel = 0: no image plane.
+
+        Part K_image of K acts through a blur of the amounts. The rest acts at the pixel: one point step gives the amounts a1 = F(log H - K a), and each later step reads the exposure H 10^(-K_point a1).
+        So the point part needs no image of the amounts between the steps. A flat area with no image part gets F(log H - K a1), as two point steps do."""
         i = self.inhibition
-        for _ in range(INHIBITION_STEPS_IMAGE if pixel else INHIBITION_STEPS_POINT):
-            inhibitor = fk.gaussian_blur_half_size(amounts, self.options.inhibition_um / pixel) if pixel else amounts
-            amounts = fk.inhibited_step(q, inhibitor, self.film.negative_criterion_log_h, i["k"], i["start"], i["free"], i["lengths"], i["step"])
+        step = lambda exposure, inhibitor, k: fk.inhibited_step(exposure, inhibitor, self.film.negative_criterion_log_h, k, i["start"], i["free"], i["lengths"], i["step"])
+        if not pixel or not i["k_image"].any():
+            for _ in range(INHIBITION_STEPS_IMAGE if pixel else INHIBITION_STEPS_POINT):
+                amounts = step(q, amounts, i["k"])
+            return amounts
+        if i["k_point"].any():
+            point = step(q, amounts, i["k"])
+            q = q * (10.0 ** -(point.astype(np.float64) @ i["k_point"].T)).astype(np.float32)
+        for _ in range(INHIBITION_STEPS_IMAGE):
+            amounts = step(q, fk.gaussian_blur_half_size(amounts, self.options.inhibition_um / pixel), i["k_image"])
         return amounts
 
     def render(self, ap1: np.ndarray, detailed: bool = False) -> tuple[np.ndarray, dict]:

@@ -1,0 +1,524 @@
+{
+ "agfa_vista_100": {
+  "layer_spread_um": [
+   3.47,
+   3.47,
+   3.47
+  ],
+  "inhibition_image": [
+   0.0693,
+   0.0829,
+   0.0945
+  ],
+  "boost": [
+   1.0993,
+   1.0993,
+   1.0993
+  ],
+  "largest_rms_residual": 0.0224
+ },
+ "fuji_c200": {
+  "layer_spread_um": [
+   3.25,
+   3.25,
+   3.25
+  ],
+  "inhibition_image": [
+   0.2754,
+   0.2362,
+   0.2145
+  ],
+  "boost": [
+   1.1749,
+   1.1749,
+   1.1749
+  ],
+  "largest_rms_residual": 0.035
+ },
+ "fuji_eterna_500": {
+  "layer_spread_um": [
+   6.32,
+   6.32,
+   6.32
+  ],
+  "inhibition_image": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "boost": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "largest_rms_residual": 0.0336
+ },
+ "fuji_eterna_500_vivid": {
+  "layer_spread_um": [
+   5.77,
+   5.77,
+   5.77
+  ],
+  "inhibition_image": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "boost": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "largest_rms_residual": 0.023
+ },
+ "fuji_natura_1600": {
+  "layer_spread_um": [
+   3.13,
+   3.13,
+   3.13
+  ],
+  "inhibition_image": [
+   0.031,
+   0.0296,
+   0.0357
+  ],
+  "boost": [
+   1.0265,
+   1.0265,
+   1.0265
+  ],
+  "largest_rms_residual": 0.0325
+ },
+ "fuji_pro_160c": {
+  "layer_spread_um": [
+   2.63,
+   2.63,
+   2.63
+  ],
+  "inhibition_image": [
+   0.2002,
+   0.1848,
+   0.243
+  ],
+  "boost": [
+   1.1421,
+   1.1421,
+   1.1421
+  ],
+  "largest_rms_residual": 0.037
+ },
+ "fuji_pro_160s": {
+  "layer_spread_um": [
+   2.68,
+   2.68,
+   2.68
+  ],
+  "inhibition_image": [
+   0.2228,
+   0.211,
+   0.2786
+  ],
+  "boost": [
+   1.1474,
+   1.1474,
+   1.1474
+  ],
+  "largest_rms_residual": 0.0336
+ },
+ "fuji_pro_400h": {
+  "layer_spread_um": [
+   4.07,
+   4.07,
+   4.07
+  ],
+  "inhibition_image": [
+   0.1332,
+   0.1544,
+   0.1782
+  ],
+  "boost": [
+   1.1247,
+   1.1247,
+   1.1247
+  ],
+  "largest_rms_residual": 0.0292
+ },
+ "fuji_superia_reala": {
+  "layer_spread_um": [
+   3.5,
+   3.5,
+   3.5
+  ],
+  "inhibition_image": [
+   0.2086,
+   0.2456,
+   0.2655
+  ],
+  "boost": [
+   1.224,
+   1.224,
+   1.224
+  ],
+  "largest_rms_residual": 0.027
+ },
+ "fuji_superia_xtra_400": {
+  "layer_spread_um": [
+   3.26,
+   3.26,
+   3.26
+  ],
+  "inhibition_image": [
+   0.2908,
+   0.2357,
+   0.2099
+  ],
+  "boost": [
+   1.1779,
+   1.1779,
+   1.1779
+  ],
+  "largest_rms_residual": 0.0372
+ },
+ "kodak_5203": {
+  "layer_spread_um": [
+   5.3,
+   4.19,
+   4.19
+  ],
+  "inhibition_image": [
+   0.2458,
+   0.1876,
+   0.0
+  ],
+  "boost": [
+   1.1845,
+   1.1222,
+   1.0
+  ],
+  "largest_rms_residual": 0.0347
+ },
+ "kodak_5206": {
+  "layer_spread_um": [
+   6.25,
+   4.21,
+   4.29
+  ],
+  "inhibition_image": [
+   0.108,
+   0.0795,
+   0.0116
+  ],
+  "boost": [
+   1.1849,
+   1.1715,
+   1.0179
+  ],
+  "largest_rms_residual": 0.0207
+ },
+ "kodak_5207": {
+  "layer_spread_um": [
+   4.95,
+   3.03,
+   2.78
+  ],
+  "inhibition_image": [
+   0.1422,
+   0.079,
+   0.1759
+  ],
+  "boost": [
+   1.0769,
+   1.048,
+   1.1049
+  ],
+  "largest_rms_residual": 0.0275
+ },
+ "kodak_5213": {
+  "layer_spread_um": [
+   4.64,
+   3.23,
+   3.23
+  ],
+  "inhibition_image": [
+   0.2179,
+   0.2624,
+   0.2817
+  ],
+  "boost": [
+   1.1491,
+   1.1726,
+   1.1726
+  ],
+  "largest_rms_residual": 0.0225
+ },
+ "kodak_5219": {
+  "layer_spread_um": [
+   5.07,
+   3.33,
+   3.11
+  ],
+  "inhibition_image": [
+   0.1836,
+   0.208,
+   0.2535
+  ],
+  "boost": [
+   1.1215,
+   1.1223,
+   1.1721
+  ],
+  "largest_rms_residual": 0.021
+ },
+ "kodak_5247": {
+  "layer_spread_um": [
+   3.94,
+   3.94,
+   3.94
+  ],
+  "inhibition_image": [
+   0.1778,
+   0.1677,
+   0.2218
+  ],
+  "boost": [
+   1.0881,
+   1.0881,
+   1.0881
+  ],
+  "largest_rms_residual": 0.0151
+ },
+ "kodak_5247_II": {
+  "layer_spread_um": [
+   3.94,
+   3.94,
+   3.94
+  ],
+  "inhibition_image": [
+   0.1446,
+   0.1445,
+   0.1213
+  ],
+  "boost": [
+   1.0881,
+   1.0881,
+   1.0881
+  ],
+  "largest_rms_residual": 0.0151
+ },
+ "kodak_5248": {
+  "layer_spread_um": [
+   3.94,
+   3.94,
+   3.94
+  ],
+  "inhibition_image": [
+   0.148,
+   0.2497,
+   0.3887
+  ],
+  "boost": [
+   1.0881,
+   1.0881,
+   1.0881
+  ],
+  "largest_rms_residual": 0.0151
+ },
+ "kodak_5250": {
+  "layer_spread_um": [
+   3.94,
+   3.94,
+   3.94
+  ],
+  "inhibition_image": [
+   0.1623,
+   0.2432,
+   0.3842
+  ],
+  "boost": [
+   1.0881,
+   1.0881,
+   1.0881
+  ],
+  "largest_rms_residual": 0.0151
+ },
+ "kodak_5277": {
+  "layer_spread_um": [
+   3.57,
+   2.99,
+   2.87
+  ],
+  "inhibition_image": [
+   0.0,
+   0.6147,
+   0.581
+  ],
+  "boost": [
+   1.0,
+   1.4254,
+   1.4946
+  ],
+  "largest_rms_residual": 0.0333
+ },
+ "kodak_5293": {
+  "layer_spread_um": [
+   4.19,
+   4.19,
+   4.19
+  ],
+  "inhibition_image": [
+   0.1486,
+   0.1525,
+   0.1208
+  ],
+  "boost": [
+   1.092,
+   1.092,
+   1.092
+  ],
+  "largest_rms_residual": 0.014
+ },
+ "kodak_aerocolor": {
+  "layer_spread_um": [
+   4.58,
+   2.85,
+   3.04
+  ],
+  "inhibition_image": [
+   0.248,
+   0.307,
+   0.0797
+  ],
+  "boost": [
+   1.3438,
+   1.3354,
+   1.0732
+  ],
+  "largest_rms_residual": 0.0285
+ },
+ "kodak_ektar_100": {
+  "layer_spread_um": [
+   5.95,
+   3.9,
+   3.15
+  ],
+  "inhibition_image": [
+   0.3577,
+   0.3589,
+   0.1379
+  ],
+  "boost": [
+   1.4033,
+   1.3164,
+   1.0912
+  ],
+  "largest_rms_residual": 0.0405
+ },
+ "kodak_exr_5248": {
+  "layer_spread_um": [
+   4.34,
+   2.41,
+   1.65
+  ],
+  "inhibition_image": [
+   0.108,
+   0.1992,
+   0.2912
+  ],
+  "boost": [
+   1.0648,
+   1.1164,
+   1.2288
+  ],
+  "largest_rms_residual": 0.0342
+ },
+ "kodak_portra_160": {
+  "layer_spread_um": [
+   5.15,
+   2.95,
+   3.03
+  ],
+  "inhibition_image": [
+   0.1742,
+   0.255,
+   0.083
+  ],
+  "boost": [
+   1.173,
+   1.2321,
+   1.0569
+  ],
+  "largest_rms_residual": 0.0318
+ },
+ "kodak_portra_400": {
+  "layer_spread_um": [
+   4.61,
+   3.19,
+   2.66
+  ],
+  "inhibition_image": [
+   0.211,
+   0.3259,
+   0.1902
+  ],
+  "boost": [
+   1.1885,
+   1.2576,
+   1.1449
+  ],
+  "largest_rms_residual": 0.0288
+ },
+ "kodak_portra_800": {
+  "layer_spread_um": [
+   5.29,
+   3.68,
+   2.51
+  ],
+  "inhibition_image": [
+   0.1301,
+   0.3485,
+   0.1194
+  ],
+  "boost": [
+   1.1251,
+   1.3306,
+   1.1108
+  ],
+  "largest_rms_residual": 0.0173
+ },
+ "kodak_ultramax_400": {
+  "layer_spread_um": [
+   5.07,
+   2.88,
+   2.99
+  ],
+  "inhibition_image": [
+   0.1728,
+   0.2728,
+   0.0605
+  ],
+  "boost": [
+   1.1629,
+   1.2224,
+   1.0492
+  ],
+  "largest_rms_residual": 0.03
+ },
+ "kodak_vericolor_iii": {
+  "layer_spread_um": [
+   3.72,
+   3.72,
+   3.72
+  ],
+  "inhibition_image": [
+   0.2098,
+   0.2129,
+   0.2087
+  ],
+  "boost": [
+   1.1874,
+   1.1874,
+   1.1874
+  ],
+  "largest_rms_residual": 0.0342
+ }
+}

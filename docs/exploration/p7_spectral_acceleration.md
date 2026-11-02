@@ -204,6 +204,28 @@ Two other forms do not work on this table. Wavelength knots of 2, 5, or 10 nm wi
 
 Checks of the shipped form, with the limits written before the first run: on 11 selections the largest relative u'v' difference is 1.2e-4 (limit 2e-4). The removed nodes hold NaN, and the layer exposure stays finite on 3 photos, a ramp, 512^2 random colours, and the edge of the hull. On 6 selections the final sRGB differs by at most 0.0054 of an 8 bit code (limit 0.5). A new stock with a weight outside the wavelength band needs a new file; the product stops with an error that names the stock.
 
+### 5.6 Rule `inhibition_image_part` (U74)
+
+**Fault.** `fit_mtf.py`, `fit_mtf_stocks.py`, and `fit_stock_physics.py` fit the spread `s`, the inhibitor length `sigma_d`, and the boost `B`, and discard `sigma_d`. The render uses `inhibition_um` = 35 um. With a chart that has no rise above 1, these three values have no single solution, and the fit stops at `B` = 2 with `sigma_d` under 7 um. At 35 um the same `B` gives an edge effect that the chart does not have.
+
+**Rule.** `fit_inhibition_image.py` fits `s` and `B` with `sigma_d` fixed at 35 um. The K of the old fit stays as the total, and `F_i` stays on this total, so a flat area keeps its colour. The image part is `K_image = min((B - 1) (1 - K gamma) / gamma, K)`, because `F_i` has the slope `gamma / (1 - K gamma)`. `B` at its upper bound is an error.
+
+**Form for the GPU.** The point part must add no image and no blur. One point step gives `a1 = F(log H - K a)` in the pass of the first amounts, and the later steps read the exposure `H 10^(-K_point a1)`. So there is no image of the amounts between the steps. A negative with no image part runs no blur, and takes `F(log H - K a1)`, as two point steps do. `check_fast_image_steps.py` and `sweep_inhibition_steps.py` of 5.3 replace this method and measure the form of U70.
+
+**Checks (`check_inhibition_image.py`). Limits set before the first run.** Results: [`inhibition_image.json`](../../results/p7_spectral_acceleration/inhibition_image.json). The first run had one failure, `kodak_5206` at 1.11 against a chart of 0.96: the formula then was `(B - 1) / (B gamma)`, with no term for the steeper `F_i` of the total. The table has the run after this correction.
+
+| Check | Limit | Before | After |
+| --- | --- | --- | --- |
+| Largest response of a layer minus the chart peak, 3 to 40 cycles/mm, 29 negatives | 0.10 | 1.13 (`kodak_5277`, red) | 0.09 (`kodak_5206`, green) |
+| `fuji_eterna_500`, overshoot and undershoot at a step edge of 3 stops | 1 code | 14.6, 13.0 | 0.02, 0.00 |
+| `fuji_eterna_500` on `_DSC8148`, mean chroma | 1 % | 54.39 | 54.42 |
+| `kodak_5207` on `_DSC8148`, mean difference from before | 0.2 codes | | 0.017 |
+| `kodak_portra_400` on `_DSC8148`, mean difference from before | 0.2 codes | | 0.033 |
+
+Peak response of the layer with the largest change, before and after, against the chart: Eterna 500 green 1.64, 0.99 (1.00); Vivid green 1.70, 0.99 (1.00); `kodak_5203` blue 1.68, 1.00 (0.99); `kodak_5277` red 2.13, 0.97 (1.00); `kodak_5206` green 1.35, 1.05 (0.96). The mean difference of Eterna 500 from before on `_DSC8148` is 1.79 codes, mostly at edges and in fine detail; this difference is the purpose of the rule.
+
+The rule rests on charts that spectral_film_lut digitized, not checked against the manufacturer documents. The review of the new look by the user is open.
+
 ## 6. Not measured
 
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.

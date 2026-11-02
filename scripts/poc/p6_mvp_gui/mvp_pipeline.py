@@ -34,6 +34,7 @@ from aces_scan import OUTPUT_TRANSFORMS, ScanPreview, fp  # noqa: E402
 
 CATALOG = json.loads((SCRIPT_DIR / "stock_catalog.json").read_text(encoding="utf-8"))
 PHYSICS_PATH = SCRIPT_DIR / "stock_physics.json"
+IMAGE_PART_PATH = SCRIPT_DIR / "inhibition_image.json"
 ACCEPTED_STOCKS = {"kodak_5207": "5207_2383", "kodak_5219": "5219_2383", "kodak_portra_400": "portra400_endura", "kodak_portra_160": "portra160_endura",
                    "kodak_portra_800": "portra800_endura", "kodak_ektar_100": "ektar100_endura", "kodak_gold_200": "gold200_endura", "fuji_c200": "c200_endura"}
 STOCK_PRINT_FIELDS = ("print_profile", "print_midscale_status_a", "viewing_cct_k", "neutral_printing", "grey_anchor", "balance_light", "scene_light")
@@ -139,8 +140,20 @@ def load_physics() -> dict:
     return json.loads(PHYSICS_PATH.read_text(encoding="utf-8")) if PHYSICS_PATH.exists() else {}
 
 
-def negative_options(negative: str, physics: dict | None = None) -> dict:
-    """Rule 'stock_options_from_catalog', with no print condition."""
+def load_image_part() -> dict:
+    return json.loads(IMAGE_PART_PATH.read_text(encoding="utf-8")) if IMAGE_PART_PATH.exists() else {}
+
+
+def negative_options(negative: str, physics: dict | None = None, image_part: bool = True) -> dict:
+    """Rule 'stock_options_from_catalog', with no print condition. image_part: the spread and the image part of the inhibition of rule 'inhibition_image_part'."""
+    options = _stock_options(negative, physics)
+    fitted = load_image_part().get(negative) if image_part and any(options.get("inhibition_total", ())) else None
+    if fitted:
+        options.update(layer_spread_um=tuple(fitted["layer_spread_um"]), inhibition_image=tuple(fitted["inhibition_image"]))
+    return options
+
+
+def _stock_options(negative: str, physics: dict | None) -> dict:
     if negative in ACCEPTED_STOCKS:
         key = ACCEPTED_STOCKS[negative]
         accepted = fp.P4_PHYSICAL[key] if key in fp.P4_PHYSICAL else fp.P5_PHYSICAL[key]
@@ -175,15 +188,16 @@ def light_conditions(negative: str, scene_light: str, physics: dict | None = Non
     return dict(grey_anchor=True, balance_light=balance, scene_light=light)
 
 
-def film_options(settings: RenderSettings, print_material: str | None = None, physics: dict | None = None) -> fp.FilmOptions:
+def film_options(settings: RenderSettings, print_material: str | None = None, physics: dict | None = None, image_part: bool = True) -> fp.FilmOptions:
     material = print_material or settings.print_material
-    options = fp.FilmOptions(**{**fp.DARKROOM, **negative_options(settings.negative, physics), **print_conditions(material), **light_conditions(settings.negative, settings.scene_light, physics),
+    options = fp.FilmOptions(**{**fp.DARKROOM, **negative_options(settings.negative, physics, image_part), **print_conditions(material), **light_conditions(settings.negative, settings.scene_light, physics),
                                 "light_spectra": settings.spectral_prior == "light_like", "foliage": settings.foliage})
 
     def scaled(values: tuple[float, float, float], scale: float) -> tuple[float, float, float]:
         return tuple(float(v) * scale for v in values)
 
-    return replace(options, overexposure_stops=settings.overexposure_stops, inhibition_total=scaled(options.inhibition_total, settings.inhibition_scale), layer_spread_um=scaled(options.layer_spread_um, settings.layer_spread_scale),
+    return replace(options, overexposure_stops=settings.overexposure_stops, inhibition_total=scaled(options.inhibition_total, settings.inhibition_scale),
+                   inhibition_image=None if options.inhibition_image is None else scaled(options.inhibition_image, settings.inhibition_scale), layer_spread_um=scaled(options.layer_spread_um, settings.layer_spread_scale),
                    halation=scaled(options.halation, settings.halation_scale), halation_um=settings.halation_um, scene_flare=settings.scene_flare, print_midscale_status_a=options.print_midscale_status_a + settings.print_grey_shift,
                    print_contrast=settings.print_contrast, print_flash=settings.print_flash, enlarger_flare=settings.enlarger_flare, viewing_flare=settings.viewing_flare, print_timing=settings.print_timing,
                    display_white=settings.display_white, gamut_compress=settings.gamut_compress)

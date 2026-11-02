@@ -48,7 +48,7 @@ import mvp_pipeline as mp  # noqa: E402
 fp = mp.fp
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
@@ -122,7 +122,7 @@ def negative_arrays(model: fp.FilmPreview) -> dict[str, np.ndarray]:
               "layer_spread_um": np.array(model.options.layer_spread_um, dtype=np.float64), **uniform_curves(model.negative_curves)}
     if model.inhibition is not None:
         i = model.inhibition
-        arrays.update(inhibition_k=i["k"], inhibition_start=i["start"], inhibition_free=i["free"], inhibition_lengths=np.asarray(i["lengths"], dtype=np.int64), inhibition_step=scalar(i["step"]))
+        arrays.update(inhibition_k=i["k"], inhibition_image_k=i["k_image"], inhibition_start=i["start"], inhibition_free=i["free"], inhibition_lengths=np.asarray(i["lengths"], dtype=np.int64), inhibition_step=scalar(i["step"]))
     return {name: np.asarray(value, dtype=np.int64 if value.dtype.kind == "i" else np.float64) for name, value in arrays.items()}
 
 
