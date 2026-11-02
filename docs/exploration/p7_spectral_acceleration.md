@@ -182,7 +182,7 @@ Rule `grey_off_the_curve` of `fit_stock_physics.py`, with the limit set before i
 | --- | --- | --- |
 | `film_stock_bundle.bin` | 30 negatives, 18 print materials, the scene spectra, and the common values | 2.7 MB |
 | `film_print_setup.bin` | Printer balance of each of the 5940 selections, layer gain, printing gain, aim, display matrix | 167 KB |
-| `film_reflectance_table.bin` | Compact form of `reflectance_over_uv_light` (rule `compact_reflectance_table`) | 25.1 MB |
+| `film_reflectance_table.bin` | Compact form of the final reflectance table, with rule `foliage_spectra` of the P6 report (rule `compact_reflectance_table`) | 25.1 MB |
 
 The product has fixed hidden controls, so these scalar values are constants. Rule `setup_without_tables` calculates them with the methods of `FilmPreview` with no table build, so all selections take about 2 minutes. The script builds the complete `FilmPreview` for 11 selections and compares: the largest difference is 1.8e-15, against a limit of 1e-9. A value that the bundle holds once must be identical in each selection that uses it, or the script stops.
 

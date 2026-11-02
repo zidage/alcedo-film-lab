@@ -138,7 +138,9 @@ Local script `build/tmp/p6_spektrafilm_audit/apd_shadows.py`, 5 files with the p
 
 **User review.** The user chose the Portra 160 print with this rule. The sheets of 11 stocks on 4 files are local: `build/tmp/p9_noritsu/sheets/stocks_*.jpg`. The user has not reviewed them yet.
 
-**Not measured.** Real leaf spectra, other green objects in the sector, portraits with green surroundings, and sizes other than 1600 pixels. The earlier checks of P6 and P7 did not run with this rule. The resources for Alcedo Studio are not built again.
+**Not measured.** Real leaf spectra, other green objects in the sector, portraits with green surroundings, and sizes other than 1600 pixels. The earlier checks of P6 did not run with this rule.
+
+**Resources of Alcedo Studio.** `build_product_resources.py` ran with the rule at lab commit `f7084c0`, and all its checks pass with their limits; see the [P7 report](p7_spectral_acceleration.md), section 5.5. `check_foliage_spectra.py` ran again at the commit of that record, and its result file has the same bytes.
 
 ## 6. Source of the Frontier decision
 
@@ -162,4 +164,4 @@ See the [script README](../../scripts/poc/p6_mvp_gui/README.md).
 | P6-O4 | Review the look of the new stocks and the pairs that did not run. | User |
 | P6-O5 | Closed by U64: the Frontier method is dropped, so its table does not ship. New: review the SMPTE terms for the APD responsivities and the tables derived from them. | User |
 | P6-O6 | `fuji_superia_reala`, `kodak_5213`, and the other stocks of rule `relative_sensitivity_level`: check that the rule does not take away a real tungsten or stock balance. | P6 |
-| P6-O7 | Review rule `foliage_spectra` on the 11 stocks (section 5.4). If it is accepted, build the resources of Alcedo Studio again. | User |
+| P6-O7 | Review rule `foliage_spectra` on the 11 stocks (section 5.4). The resources of Alcedo Studio already have the rule. | User |
