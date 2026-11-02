@@ -9,7 +9,7 @@ Each resource is one array file: 8 bytes 'ALCDFILM', a little-endian uint64 head
 | manifest.json | Schema version, lab commit, and the file name, size, and SHA-256 of each resource |
 | film_stock_bundle.bin | Per negative, per paper, each scene spectrum, and the values that are the same for all stocks. The header holds the catalog names. |
 | film_print_setup.bin | The scalar values of each film, print material, and scene light: printer balance, layer gain, printing gain, aim, display matrix |
-| film_reflectance_table.bin | The compact form of reflectance_over_uv_light, by rule 'compact_reflectance_table' |
+| film_reflectance_table.bin | The compact form of the final reflectance table, with rule 'foliage_spectra', by rule 'compact_reflectance_table' |
 
 Rule 'compact_reflectance_table' (user decision of 2026-11-01): the file holds only the wavelengths where a weight of a negative is not zero, only the u'v' nodes that a read can reach after rule 'spectral_locus_projection', and values rounded to 12 mantissa bits. Each byte of a float32 is in its own plane, so that the compression of the installer finds the repeated high bytes. A node that a read can reach: it is inside the hull, or it is 1 node from such a node, or it is a corner of a cell that the edge of the hull crosses.
 
@@ -195,7 +195,7 @@ def constants() -> tuple[dict[str, np.ndarray], fp.FilmOptions]:
     return arrays, options
 
 
-FIXED_FIELDS = ("print_contrast", "print_flash", "viewing_flare", "enlarger_flare_size", "frame_mm", "halation", "halation_um", "inhibition_um", "gamut_threshold", "gamut_limit", "gamut_power", "uv_smooth", "light_spectra",
+FIXED_FIELDS = ("print_contrast", "print_flash", "viewing_flare", "enlarger_flare_size", "frame_mm", "halation", "halation_um", "inhibition_um", "gamut_threshold", "gamut_limit", "gamut_power", "uv_smooth", "light_spectra", "foliage",
                 "interlayer_gain", "overexposure_stops", "print_timing", "mask_gamma", "adjacency_gain", "scatter_um", "scene_flare", "printer_lamp", "density_outside")
 
 

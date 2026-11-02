@@ -7,12 +7,11 @@ Machine rule: CPU only, one process, no GPU job. The arrays take about 290 MB pe
 | ap1.bin | ap1, (rows, columns, 3) | The AP1 array after the product grade, as check_fast_image_steps.py makes it. |
 | <selection>.bin | srgb, (rows, columns, 3) | Its sRGB through the image-plane rules of the lab, with all sliders at their defaults. |
 
-The selections are the expected selections of build_product_resources.py. The product resources have no rule 'foliage_spectra', so this script sets that option to False when the option exists.
+The selections are the expected selections of build_product_resources.py, with rule 'foliage_spectra', as in the product resources.
 """
 
 from __future__ import annotations
 
-import dataclasses
 import sys
 from pathlib import Path
 
@@ -29,10 +28,7 @@ LONG_EDGE = 6000
 
 
 def options_of(negative: str, paper: str, light: str) -> fp.FilmOptions:
-    options = mp.film_options(mp.RenderSettings(negative=negative, print_material=paper, scene_light=light))
-    if any(field.name == "foliage" for field in dataclasses.fields(options)):
-        options = dataclasses.replace(options, foliage=False)
-    return options
+    return mp.film_options(mp.RenderSettings(negative=negative, print_material=paper, scene_light=light))
 
 
 def main() -> int:
