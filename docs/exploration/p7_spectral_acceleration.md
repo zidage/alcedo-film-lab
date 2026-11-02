@@ -346,6 +346,39 @@ The real scan has hypotheses: gamma 2, and X5 channels as APD. The user reviewed
 
 **A direct scan path in the form of NegPy: of interest, not built.** The probe is written again from NegPy at `3928f81` (GPL-3.0), so it is not the output of NegPy. Log T per channel, a stretch of each channel between its 1 % and 99 % points, the print curve of NegPy, and no cast removal (U36). By the view of the author, colour is cleaner and cooler on real and simulated negatives, and the warm cast of the print goes away. The bounds of each frame remove the key of a dusk frame, and a statistic of the frame has a cost in the product. The user prefers bounds that are calculated from the known data of the stock. No such rule exists yet. This path would reverse a part of U64.
 
+### 5.12 Saturation of the default look (U80)
+
+The user finds the saturation too high on Eterna 500, Ektar 100, and Portra 800, and finds pink highlights on Ektar 100. All values in this section are from 12 files in `sample_images/raw` of the product, through the lab pipeline with its default settings. C\* is CIELAB of the final sRGB, at p95 of all pixels. The user reviews the look; the review is pending.
+
+| Print | Stock | C\* p95 before | C\* p95 after |
+| --- | --- | --- | --- |
+| 2383 | 5207 | 47.1 | 39.1 |
+| 2383 | Portra 800 | 53.2 | 42.5 |
+| 2383 | Ektar 100 | 53.7 | 43.5 |
+| 2383 | Eterna 500 | 64.6 | 39.5 |
+| Endura Premier | 5207 | 47.5 | 39.9 |
+| Endura Premier | Portra 800 | 53.5 | 45.3 |
+| Endura Premier | Ektar 100 | 53.8 | 46.2 |
+| Endura Premier | Eterna 500 | 65.8 | 42.7 |
+
+**Saturation 1.0 on the film print.** This replaces the 1.3 of U24 for this chain. The default of a product document stays 1.3, for the other methods. When the user turns on the film print, the product writes 1.0 to the saturation of the Default Grade, in the same undo step. A value that the user selected stays.
+
+**K has only the part that the chart supports (rule `inhibition_total_from_image_part`).** K total came from the fits of P4. On Eterna 500 its 0.5 to 0.6 is the value of a fit at its bound, and the chart supports an image part of 0 at 35 um. Only the terms between layers change colour. On the photo of `check_inhibition_image.py` the mean of (largest - smallest channel) of Eterna 500 falls from 48.46 to 34.46. This is the intended result, so the 1 % limit of U74 on this value is removed and the value stays in the record. The edge of Eterna 500 stays at 0.019 and 0.003 codes. The charts stay within their limit.
+
+**The share of K between layers is not the cause.** A 1D diffusion model (the layer order of Kennel 1982, figure 1, and the gelatin of US4830954) gives a share across layers of 0.44 to 0.55 at a length of 35 um and a thickness of 40 um. So 0.5 is a plausible value, and a different value in this range moves colour by a small amount. The length and the thickness are not measured; over the sweep the share is 0.01 to 0.66.
+
+**Pink highlights: half of the match of the printing slopes (rule `print_slope_match`).** Pink comes from the ratio of the printing slopes of a pair: red and blue against green. On 2383, 5207 has 0.887 and 0.922, and a consumer negative about 1.1. A change to the film data would harm the pairs on Endura Premier, where the effect almost does not occur. So `printing_gain` of each pair with a cine print moves to the slopes of 5207 at strength 0.5, `CINE_PRINT_SLOPE_MATCH`. The strength is a choice, not a measurement. No rule of the process gives it. The gain of a paper is 1.
+
+| Stock on 2383 | Gain R, G, B | a\*, b\* at L\* 75 | a\*, b\* at L\* 85 |
+| --- | --- | --- | --- |
+| Portra 800 | 0.888, 1, 0.915 | +3.2, -0.6 | +0.7, -0.2 |
+| Ektar 100 | 0.909, 1, 0.911 | +2.2, -0.7 | +1.0, -0.3 |
+| Eterna 500 | 0.924, 1, 0.959 | +2.2, +0.6 | -0.9, -0.5 |
+
+**Entry gamut compression (rule `entry_reference_gamut_compression`).** A grade can move a colour out of AP1, and the final colour space is not known at this point. So the entry has the same ACES Reference Gamut Compression as `DrtKernel`. On the 12 files the share of graded pixels with a negative AP1 value rounds to 0.0, and C\* p95 changes by at most 0.1. So this rule protects extreme colours. It does not control saturation.
+
+**Not handled.** 5207 on Endura Premier leans green: a\* reaches -5.5 on the neutral ramp, by the same mechanism as pink. Ektar 100 and Portra 800 on Endura Premier stay 5 to 6 above 5207.
+
 ## 6. Not measured
 
 - Continuity at the boundaries of table cells, which ROADMAP section 8 requires for this step.

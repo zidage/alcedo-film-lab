@@ -150,7 +150,8 @@ def negative_options(negative: str, physics: dict | None = None, image_part: boo
     options = _stock_options(negative, physics)
     fitted = load_image_part().get(negative) if image_part and any(options.get("inhibition_total", ())) else None
     if fitted:
-        options.update(layer_spread_um=tuple(fitted["layer_spread_um"]), inhibition_image=tuple(fitted["inhibition_image"]))
+        # Rule 'inhibition_total_from_image_part' (ROADMAP U80): K has only the part that the chart of the stock supports at the length of the inhibitor.
+        options.update(layer_spread_um=tuple(fitted["layer_spread_um"]), inhibition_image=tuple(fitted["inhibition_image"]), inhibition_total=tuple(fitted["inhibition_image"]))
     return options
 
 
@@ -172,7 +173,7 @@ def _stock_options(negative: str, physics: dict | None) -> dict:
 def print_conditions(print_material: str) -> dict:
     """Rule 'print_conditions_by_medium' (ROADMAP U78). A cine print: the LAD aim, the projection light, the clear print as white, and the dark surround. A paper: 18 % reflectance for the grey, D50, and the perfect reflector as white."""
     if CATALOG["prints"][print_material]["medium"].lower() == "cine":
-        return dict(print_profile=print_material, print_midscale_status_a=fp.CINE_GREY_STATUS_A, viewing_cct_k=fp.CINE_VIEWING_CCT_K, neutral_printing=False, printer_filter=fp.CINE_PRINTER_FILTER, display_white="print_dmin", surround_exponent=fp.CINE_SURROUND_EXPONENT)
+        return dict(print_profile=print_material, print_midscale_status_a=fp.CINE_GREY_STATUS_A, viewing_cct_k=fp.CINE_VIEWING_CCT_K, neutral_printing=False, printer_filter=fp.CINE_PRINTER_FILTER, display_white="print_dmin", surround_exponent=fp.CINE_SURROUND_EXPONENT, print_slope_match=fp.CINE_PRINT_SLOPE_MATCH)
     return dict(print_profile=print_material, print_midscale_status_a=0.75, viewing_cct_k=5000.0, neutral_printing=False, display_white="reflector")
 
 
@@ -192,7 +193,7 @@ def light_conditions(negative: str, scene_light: str, physics: dict | None = Non
 def film_options(settings: RenderSettings, print_material: str | None = None, physics: dict | None = None, image_part: bool = True) -> fp.FilmOptions:
     material = print_material or settings.print_material
     options = fp.FilmOptions(**{**fp.DARKROOM, **negative_options(settings.negative, physics, image_part), **print_conditions(material), **light_conditions(settings.negative, settings.scene_light, physics),
-                                "light_spectra": settings.spectral_prior == "light_like", "foliage": settings.foliage})
+                                "light_spectra": settings.spectral_prior == "light_like", "foliage": settings.foliage, "entry_gamut_compress": settings.method == "print"})
 
     def scaled(values: tuple[float, float, float], scale: float) -> tuple[float, float, float]:
         return tuple(float(v) * scale for v in values)

@@ -71,6 +71,10 @@ gains belong to the stock and do not follow the scene.
 
 Rule 'printer_uv_filter' (option printer_filter, ROADMAP U77): the printer light of a cine print passes a Wratten 2B filter, as the data sheets of 2383 and 2393 state. See CINE_PRINTER_FILTER. Reflection papers have no such rule, and their exposure below 400 nm is about 3 %.
 
+Rule 'print_slope_match' (option print_slope_match, ROADMAP U80): a cine print is made for a negative with the printing slopes of kodak_5207. A C-41 negative has higher slopes of red and blue against green, so its neutral goes pink above the grey on a cine print. One gain per paper layer on the paper log exposure about the aim moves the ratios of the slopes toward those of kodak_5207, by this strength. Green and the grey stay. This step does not exist in a real printer: it is a product choice, and the strength 0.5 was selected by eye, so a little of the pink stays.
+
+Rule 'entry_reference_gamut_compression' (option entry_gamut_compress, ROADMAP U80): the ACES Reference Gamut Compression on the linear AP1 at the entry of a print, as the other display methods of the product have. The final colour space of an image is not known at this point, and a graded colour can leave AP1.
+
 Rule 'neutral_printing_gain' (option neutral_printing): one gain per paper layer on the paper log exposure about the
 balance exposure, so that a neutral negative ramp has the same paper log exposure slope in each layer. The published
 curves, the dye data and the lamp gave a blue slope about 20 % lower than green on 2383. That is a yellow highlight and
@@ -165,10 +169,11 @@ MASK_PAN_NM = (400.0, 650.0)
 INHIBITION_STEPS_IMAGE = 2  # ROADMAP U70; step P4 used 4, and sweep_inhibition_steps.py of step P7 states the difference
 INHIBITION_STEPS_POINT = 16
 METER_CAP = 16.0
-# Product default of a RAW file in Alcedo Studio: alcedo_studio/src/include/edit/graph/pipeline_document.hpp.
+# Default grade of a RAW file in Alcedo Studio with the film print on: alcedo_studio/src/include/edit/graph/pipeline_document.hpp.
+# The product resets the saturation of the Default Grade from 1.3 to 1.0 when the user turns on the film print (ROADMAP U80).
 # A raster file has a neutral grade. The review uses rule 'center_weighted_exposure' in place of the +1.5 EV.
 PRODUCT_CONTRAST = 15.0
-PRODUCT_SATURATION = 1.3
+PRODUCT_SATURATION = 1.0
 
 BRADFORD = np.array([[0.8951, 0.2664, -0.1614], [-0.7502, 1.7135, 0.0367], [0.0389, -0.0685, 1.0296]])
 XYZ_D65 = np.array([0.95047, 1.0, 1.08883])
@@ -229,6 +234,8 @@ class FilmOptions:
     print_timing: float = 1.0
     print_flash: float = 0.0
     neutral_printing: bool = False
+    print_slope_match: float = 0.0  # rule 'print_slope_match': 0 is off
+    entry_gamut_compress: bool = False  # rule 'entry_reference_gamut_compression'
     gamut_compress: bool = False  # not part of the print table; False: clip
     gamut_threshold: tuple[float, float, float] = (0.815, 0.803, 0.880)  # ACES RGC values (cyan, magenta, yellow)
     gamut_limit: tuple[float, float, float] = (1.147, 1.264, 1.312)  # ACES RGC values
@@ -273,6 +280,12 @@ CINE_SURROUND_EXPONENT = 0.525 / 0.59
 
 # Rule 'printer_uv_filter'. The data sheets of 2383 and 2393 state that the overall filtration of the printer includes a UV-absorbing filter, such as a WRATTEN 2B. The blue layer of a cine print stays sensitive down to the end of its chart, and the yellow dye of a negative falls below 450 nm, so with no filter this part of the exposure does not follow the image.
 CINE_PRINTER_FILTER = "wratten_2b"
+
+# Rule 'print_slope_match'.
+CINE_PRINT_SLOPE_MATCH = 0.5
+SLOPE_MATCH_NEGATIVE = "kodak_5207"
+SLOPE_MATCH_LOG_H = 2.0 * np.log10(2.0)  # from the grey to +2 stops
+_REFERENCE_SLOPES: dict[tuple, np.ndarray] = {}
 
 # Scene lights that the user selects (ROADMAP U21). Default: daylight. One representative CIE spectrum per type;
 # real lamps of a type differ, and this table does not claim to match a lamp.
@@ -424,6 +437,11 @@ class FilmPreview:
         self.layer_gain = self.layer_gain * factor
 
     def _printing_gain(self) -> np.ndarray:
+        # Rule 'print_slope_match': see the header.
+        if self.options.print_slope_match:
+            own = neutral_paper_slopes(self.film, self.status_curves)
+            reference = reference_paper_slopes(self.options)
+            return ((reference / reference[1]) / (own / own[1])) ** self.options.print_slope_match
         # Rule 'neutral_printing_gain': see the header. Range: 1.0 log H on each side of the grey.
         if not self.options.neutral_printing:
             return np.ones(3)
@@ -800,6 +818,8 @@ class FilmPreview:
     def negative_image(self, image: np.ndarray) -> tuple[np.ndarray, dict]:
         """Linear AP1 (rows, columns, 3; float32) to negative Status M, through the kernels. The print and the scan start here."""
         o = self.options
+        if o.entry_gamut_compress:
+            image = reference_gamut_compress(image)
         # Rule 'no_image_plane_steps_on_ramps': a test ramp (fewer than 16 rows) has no image plane.
         spatial = min(image.shape[:2]) >= 16
         projection = self._projection()
@@ -1074,6 +1094,46 @@ def gamut_distance(rgb: np.ndarray) -> np.ndarray:
     """Distance of each channel from the largest channel, as a share of that channel (1 = on the boundary)."""
     achromatic = rgb.max(axis=-1, keepdims=True)
     return np.where(achromatic > 0, (achromatic - rgb) / np.maximum(np.abs(achromatic), 1e-9), 0.0)
+
+
+def neutral_paper_slopes(film, status_curves: list) -> np.ndarray:
+    """Rule 'print_slope_match': the slope of the log paper exposure of each layer on a neutral, from the grey to +2 stops."""
+    log_h = film.options.midscale_log_h + np.linspace(0.0, SLOPE_MATCH_LOG_H, 9)
+    status_m = np.stack([np.interp(log_h, c.log_h, c.density) for c in status_curves], axis=1)
+    base = film.status_density(film.negative_dmin, film.w_status_m)
+    amounts, _ = solve_amounts(status_m - film.negative_curve_dmin + base, film.negative_dmin, film.negative_dyes, film.w_status_m)
+    paper = np.log10(film.paper_layer_exposure_unbalanced(film.negative_spectral_density(amounts)))
+    return np.array([np.polyfit(log_h, paper[:, k], 1)[0] for k in range(3)])
+
+
+def reference_paper_slopes(o: FilmOptions) -> np.ndarray:
+    """Rule 'print_slope_match': the slopes of the negative that a cine print is made for, on this print and printer light."""
+    key = (o.print_profile, o.printer_lamp, o.printer_filter, o.density_outside)
+    if key not in _REFERENCE_SLOPES:
+        stock = STOCKS["5207_2383"]
+        model_options = p0.ModelOptions(camera_daylight_cct_k=sr.E_REF_NOMINAL_CCT_K, negative_dye_basis=P4_PHYSICAL["5207_2383"]["negative_dye_basis"], negative_density_outside=o.density_outside, paper_dye_outside=o.density_outside,
+                                        print_midscale_status_a=o.print_midscale_status_a, printer_lamp=o.printer_lamp, printer_filter=o.printer_filter, negative_profile=SLOPE_MATCH_NEGATIVE, print_profile=o.print_profile,
+                                        midscale_log_h=stock["midscale_log_h"], viewing_daylight_cct_k=o.viewing_cct_k)
+        film = sr.Colorimetry(model_options).film
+        _REFERENCE_SLOPES[key] = neutral_paper_slopes(film, list(film.negative_curves.values()))
+    return _REFERENCE_SLOPES[key]
+
+
+def reference_gamut_compress(ap1: np.ndarray) -> np.ndarray:
+    """Rule 'entry_reference_gamut_compression': aces_reference_gamut_compression.h of Alcedo Studio, on float32. A pixel with no magnitude stays."""
+    rgb = np.asarray(ap1, dtype=np.float32)
+    achromatic = rgb.max(axis=-1, keepdims=True)
+    magnitude = np.abs(achromatic)
+    safe = np.where(magnitude <= 1e-6, np.float32(1.0), magnitude)
+    distance = (achromatic - rgb) / safe
+    limit = np.array((1.147, 1.264, 1.312), dtype=np.float32)
+    threshold = np.array((0.815, 0.803, 0.880), dtype=np.float32)
+    power = np.float32(1.2)
+    span = limit - threshold
+    scale = span / (((1.0 - threshold) / span) ** -power - 1.0) ** (1.0 / power)
+    normal = np.maximum(distance - threshold, 0.0) / scale
+    compressed = np.where(distance < threshold, distance, threshold + scale * normal / (1.0 + normal ** power) ** (1.0 / power))
+    return np.ascontiguousarray(np.where(magnitude <= 1e-6, rgb, achromatic - compressed * magnitude), dtype=np.float32)
 
 
 def compress_gamut(rgb: np.ndarray, threshold: tuple, limit: tuple, power: float) -> np.ndarray:

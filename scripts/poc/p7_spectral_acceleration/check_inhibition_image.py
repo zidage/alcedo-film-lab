@@ -6,7 +6,7 @@ Input: stock_catalog.json, inhibition_image.json, the tables of the model, and b
 | Check | Comparison rule | Limit |
 | Negative response | Largest value in each layer of the response to a neutral sine of 0.25 stop at 6000 pixels, normalized at 1 cycle/mm, from 3 to 40 cycles/mm, minus the largest value of the chart | 0.10 |
 | Edge of Eterna 500 | Green code, step edge of 3 stops about the grey at 6000 pixels: overshoot and undershoot against the plateaus | 1 code |
-| Colour of Eterna 500 | Mean of (largest - smallest channel) on the photo, against before | 1 % |
+| Colour of Eterna 500 | Mean of (largest - smallest channel) on the photo, against before | Recorded, no limit: rule 'inhibition_total_from_image_part' (U80) removes the K that the chart does not support, so the fall is the intended result. The limit of 1 % applied under U74. |
 | Stocks that the fit of P4 describes | kodak_5207 and kodak_portra_400 on the photo, mean channel difference against before | 0.2 codes |
 The negatives whose response before the rule was over the limit are listed, as the record of the fault.
 """
@@ -30,7 +30,7 @@ AP1 = mp.REPO_ROOT / "build" / "tmp" / "p7" / "product_resources" / "expected" /
 WIDTH, HEIGHT = 6000, 32
 GREY, AMPLITUDE_STOPS, MARGIN = 0.18, 0.25, 600
 FREQUENCIES = (3, 5, 7, 10, 15, 20, 30, 40)
-PEAK_LIMIT, EDGE_LIMIT_CODES, CHROMA_LIMIT, MEAN_LIMIT_CODES = 0.10, 1.0, 0.01, 0.2
+PEAK_LIMIT, EDGE_LIMIT_CODES, MEAN_LIMIT_CODES = 0.10, 1.0, 0.2
 
 
 def neutral_image(stops: np.ndarray) -> np.ndarray:
@@ -99,8 +99,6 @@ def main() -> int:
         chroma_old, chroma_new = float((old.max(axis=-1) - old.min(axis=-1)).mean() * 255.0), float((new.max(axis=-1) - new.min(axis=-1)).mean() * 255.0)
         photo[negative] = dict(mean_difference_codes=float(np.abs(new - old).mean() * 255.0), chroma_before=chroma_old, chroma_after=chroma_new)
         print(negative, photo[negative], flush=True)
-    if abs(photo["fuji_eterna_500"]["chroma_after"] / photo["fuji_eterna_500"]["chroma_before"] - 1.0) > CHROMA_LIMIT:
-        failures.append(f"chroma of fuji_eterna_500: {photo['fuji_eterna_500']}")
     for negative in ("kodak_5207", "kodak_portra_400"):
         if photo[negative]["mean_difference_codes"] > MEAN_LIMIT_CODES:
             failures.append(f"difference on {negative}: {photo[negative]}")
