@@ -7,8 +7,8 @@ Each resource is one array file: 8 bytes 'ALCDFILM', a little-endian uint64 head
 
 | File | Content |
 | manifest.json | Schema version, lab commit, and the file name, size, and SHA-256 of each resource |
-| film_stock_bundle.bin | Per negative, per paper, each scene spectrum, and the values that are the same for all stocks. The header holds the catalog names. |
-| film_print_setup.bin | The scalar values of each film, print material, and scene light: printer balance, layer gain, printing gain, aim, display matrix |
+| film_stock_bundle.bin | Per negative, per paper, per reversal film, each scene spectrum, and the values that are the same for all stocks. The header holds the catalog names. |
+| film_print_setup.bin | The scalar values of each film, print material, and scene light: printer balance, layer gain, printing gain, aim, display matrix; and of each reversal film and scene light: layer gain, display matrix |
 | film_reflectance_table.bin | The compact form of the final reflectance table, with rule 'foliage_spectra', by rule 'compact_reflectance_table' |
 
 Rule 'compact_reflectance_table' (user decision of 2026-11-01): the file holds only the wavelengths where a weight of a negative is not zero, only the u'v' nodes that a read can reach after rule 'spectral_locus_projection', and values rounded to 12 mantissa bits. Each byte of a float32 is in its own plane, so that the compression of the installer finds the repeated high bytes. A node that a read can reach: it is inside the hull, or it is 1 node from such a node, or it is a corner of a cell that the edge of the hull crosses.
@@ -22,6 +22,12 @@ The hidden controls of the product have their default values (Film Print DRT Pla
 | Compact table, u'v' | The table from the compact form against the complete table, on the nodes that it keeps, each of the selections of the Setup check: largest relative difference | 2e-4 |
 | Compact table, nodes | The removed nodes hold NaN. Layer exposure of photos, a ramp, random colours, and the hull edge, for the same selections, is finite | finite |
 | Compact table, display | Final sRGB against the complete table, on the images of the check above except the hull edge, 3 expected and 3 random selections, 8 bit code, per pixel the largest channel difference | largest at most 0.5 |
+
+Reversal films (step P9, ROADMAP U86, Alcedo Studio issue 654). The method 'light_table' of the viewer (scripts/poc/p9_reversal_light_table/reversal_film.py) has no print, so a reversal film has no paper, no printer balance, and no printing gain.
+Group 'reversal/<film>/' of the bundle holds the values of the film in the form of group 'negative/', with the record of rule 'removed_dye_record' (the curves rise with exposure) and 'dye_max': the dye amount of a pixel is dye_max - record.
+Group 'light_table/' holds the values of rule 'light_table_view' that are the same for all films: the D50 viewing weights, the XYZ scale, the exponent of the dark surround, and the luminance weights of linear Rec. 709 of that rule.
+The setup holds per film and scene light the layer gain (rule 'daylight_reversal_balance'), and per film the display matrix of rule 'clear_film_white'. The product builds the light table (65^3 over the record, cube root of XYZ) from these values.
+The compact reflectance table keeps the wavelengths of the reversal films too. The checks above run on 3 expected and 4 random reversal selections with ReversalPreview in place of FilmPreview, with the same limits; check 'Compact table, display' runs on the 3 expected and 2 random ones.
 """
 
 from __future__ import annotations
@@ -46,14 +52,17 @@ sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p6_mvp_gui"))
 import mvp_pipeline as mp  # noqa: E402
 
 fp = mp.fp
+rf = mp.rf
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6  # 6: the reversal films (step P9)
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
 EXPECTED_SELECTIONS = (("kodak_5207", "kodak_2383", "reference"), ("kodak_portra_400", "kodak_endura_premier", "daylight"), ("fuji_eterna_500", "kodak_2383", "street_mixed"), ("kodak_5219", "cine_look", "reference"), ("kodak_5207", "cine_look", "reference"))
 RANDOM_CHECKS = 8
+REVERSAL_EXPECTED_SELECTIONS = (("fuji_velvia_50", "reference"), ("kodak_ektachrome_e100", "daylight"), ("fuji_provia_100f", "street_mixed"))
+REVERSAL_RANDOM_CHECKS = 4
 SETUP_LIMIT = 1e-9
 MANTISSA_BITS = 12
 UV_RELATIVE_LIMIT = 2e-4
@@ -135,6 +144,70 @@ def paper_arrays(model: fp.FilmPreview) -> dict[str, np.ndarray]:
               "xyz_scale": scalar(100.0 / weights[1].sum()), "clear_luminance": scalar(model.print_dmin_xyz()[1]), "surround_exponent": scalar(model.options.surround_exponent), "cinema_look": scalar(1.0 if model.options.cinema_look else 0.0), "white_xyz": f.white_xyz(), "status_axis_start": start, "status_axis_range": np.array([c.density.max() for c in model.paper_curves]) - start,
               **uniform_curves(model.paper_curves)}
     return {name: np.asarray(value, dtype=np.int64 if value.dtype.kind == "i" else np.float64) for name, value in arrays.items()}
+
+
+def reversal_arrays(model: rf.ReversalPreview) -> dict[str, np.ndarray]:
+    """The values that depend on the reversal film only, in the form of negative_arrays, and dye_max of rule 'removed_dye_record'."""
+    f, c = model.film, model.c
+    erg_per_unit = c.lux_seconds_per_y / p0.LUMINOUS_EFFICACY_LM_PER_W * p0.ERG_PER_CM2_PER_J_PER_M2
+    arrays = {"base": f.negative_dmin, "dyes": f.negative_dyes, "exposure_weights": f.w_negative * erg_per_unit, "criterion_log_h": f.negative_criterion_log_h, "dye_max": model.dye_max,
+              "density_grid_start": np.array([g[0] for g in model.density_grid]), "density_grid_stop": np.array([g[-1] for g in model.density_grid]),
+              "clear_luminance": scalar(model.print_dmin_xyz()[1]), "layer_spread_um": np.array(model.options.layer_spread_um, dtype=np.float64), **uniform_curves(model.negative_curves)}
+    if model.inhibition is not None:
+        i = model.inhibition
+        arrays.update(inhibition_k=i["k"], inhibition_image_k=i["k_image"], inhibition_start=i["start"], inhibition_free=i["free"], inhibition_lengths=np.asarray(i["lengths"], dtype=np.int64), inhibition_step=scalar(i["step"]))
+    return {name: np.asarray(value, dtype=np.int64 if value.dtype.kind == "i" else np.float64) for name, value in arrays.items()}
+
+
+def light_table_arrays(model: rf.ReversalPreview) -> dict[str, np.ndarray]:
+    """The values of rule 'light_table_view' that are the same for all reversal films."""
+    f = model.film
+    weights = f.w_viewing[f.viewing_name]
+    return {"light_table/viewing_weights": np.asarray(weights, dtype=np.float64), "light_table/xyz_scale": scalar(100.0 / weights[1].sum()), "light_table/surround_exponent": scalar(model.options.surround_exponent),
+            "light_table/display_luminance": np.asarray(rf.LUMINANCE, dtype=np.float64), "light_table/viewing_cct_k": scalar(model.options.viewing_cct_k)}
+
+
+def reversal_options(film: str, light: str) -> fp.FilmOptions:
+    settings = mp.RenderSettings(method="light_table", reversal=film, scene_light=light)
+    settings.validate()
+    return mp.light_table_options(settings)
+
+
+def collect_reversals(bundle: dict[str, np.ndarray], reference_options: fp.FilmOptions, lights: list[str], spectrum_names: list[str]) -> tuple[dict[str, np.ndarray], dict]:
+    """The values of the reversal films. Adds the groups 'reversal/' and 'light_table/', and new scene spectra, to the bundle. Returns the setup arrays and the metadata."""
+    films = sorted(mp.CATALOG["reversals"])
+    layer_gain = np.zeros((len(films), len(lights), 3))
+    to_display = np.zeros((len(films), 3, 3))
+    spectrum_index = np.zeros((len(films), len(lights)), dtype=np.int32)
+    for r, film in enumerate(films):
+        options = reversal_options(film, lights[0])
+        for field in FIXED_FIELDS:
+            if getattr(options, field) != getattr(reference_options, field):
+                raise ValueError(f"reversal film {film}: {field} is not one value for all stocks")
+        model = rf.ReversalPreview(options)
+        bundle.update({f"reversal/{film}/{name}": value for name, value in reversal_arrays(model).items()})
+        shared = light_table_arrays(model)
+        if "light_table/viewing_weights" in bundle:
+            require_same(film, {k: bundle[k] for k in shared}, shared)
+        bundle.update(shared)
+        to_display[r] = model.xyz_to_display
+        for l, light in enumerate(lights):
+            light_options = reversal_options(film, light)
+            # The steps of ReversalPreview.__init__ that depend on the scene light, as apply_light does for a negative.
+            model.options = replace(light_options, enlarger_flare=0.0)
+            model.scene_spectrum = model.light(light_options.scene_light)
+            model.layer_gain = model._camera_filter()
+            layer_gain[r, l] = model.layer_gain
+            name = light_options.scene_light
+            if name not in spectrum_names:
+                spectrum_names.append(name)
+                bundle[f"light/{name}/spectrum"] = np.asarray(model.scene_spectrum, dtype=np.float64)
+            elif not np.array_equal(bundle[f"light/{name}/spectrum"], model.scene_spectrum):
+                raise ValueError(f"{name}: the scene spectrum depends on the stock")
+            spectrum_index[r, l] = spectrum_names.index(name)
+        print(f"reversal {film}: {r + 1} of {len(films)}", flush=True)
+    metadata = {"reversal_films": {k: {"name": mp.CATALOG["reversals"][k]["name"]} for k in films}, "reversal_list_order": list(mp.REVERSAL_ORDER)}
+    return {"reversal_layer_gain": layer_gain, "reversal_xyz_to_display": to_display, "reversal_scene_spectrum_index": spectrum_index}, metadata
 
 
 def setup_model(options: fp.FilmOptions) -> fp.FilmPreview:
@@ -264,6 +337,10 @@ def collect() -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict, list]
         for l, light in enumerate(lights):
             grade_grey[negatives.index(negative), l] = fp.FilmPreview(mp.film_options(mp.RenderSettings(negative=negative, print_material=mp.CINE_LOOK_PRINT, scene_light=light)))._grade_grey
     setup = {"negative_grade_grey": grade_grey, "printer_balance_log10": balance, "layer_gain": layer_gain, "printing_gain": printing_gain, "aim_log_h": aim, "xyz_to_display": to_display, "scene_spectrum_index": spectrum_index}
+    # The reversal films add their spectra to spectrum_names, the list of metadata['scene_spectra'].
+    reversal_setup, reversal_metadata = collect_reversals(bundle, reference_options, lights, spectrum_names)
+    setup.update(reversal_setup)
+    metadata.update(reversal_metadata)
     return bundle, setup, metadata, [last_model]
 
 
@@ -280,6 +357,23 @@ def check_setup(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], met
     largest = max(float(np.abs(np.asarray(a, dtype=np.float64) - np.asarray(b, dtype=np.float64)).max()) for a, b in pairs)
     if largest > SETUP_LIMIT:
         raise ValueError(f"{selection}: the stored setup differs from FilmPreview by {largest:.3g}")
+    return model, largest
+
+
+def check_reversal_setup(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], metadata: dict, selection: tuple[str, str]) -> tuple[rf.ReversalPreview, float]:
+    """Check 'Setup' on a reversal film: the complete ReversalPreview against the stored values of one selection."""
+    film, light = selection
+    model = rf.ReversalPreview(reversal_options(film, light))
+    r, l = sorted(metadata["reversal_films"]).index(film), metadata["scene_lights"].index(light)
+    stored = {name.split("/", 2)[2]: value for name, value in bundle.items() if name.startswith(f"reversal/{film}/")}
+    values = reversal_arrays(model)
+    if set(stored) != set(values):
+        raise ValueError(f"{selection}: the stored arrays differ from ReversalPreview: {sorted(set(stored) ^ set(values))}")
+    pairs = [(setup["reversal_layer_gain"][r, l], model.layer_gain), (setup["reversal_xyz_to_display"][r], model.xyz_to_display), (bundle[f"light/{metadata['scene_spectra'][setup['reversal_scene_spectrum_index'][r, l]]}/spectrum"], model.scene_spectrum),
+             (bundle["common/locus_room"], model._room), *((stored[k], v) for k, v in values.items())]
+    largest = max(float(np.abs(np.asarray(a, dtype=np.float64) - np.asarray(b, dtype=np.float64)).max()) for a, b in pairs)
+    if largest > SETUP_LIMIT:
+        raise ValueError(f"{selection}: the stored setup differs from ReversalPreview by {largest:.3g}")
     return model, largest
 
 
@@ -428,8 +522,23 @@ def main() -> int:
                      {"negative": selection[0], "print_material": selection[1], "scene_light": selection[2]})
         expected_files[name] = {"bytes": (expected / name).stat().st_size, "table_counts": counts}
         print(f"expected values of {selection}: largest setup difference {largest:.3g}", flush=True)
+    reversal_random = [(rng.choice(sorted(metadata["reversal_films"])), rng.choice(metadata["scene_lights"])) for _ in range(REVERSAL_RANDOM_CHECKS)]
+    for index, selection in enumerate((*reversal_random, *REVERSAL_EXPECTED_SELECTIONS)):
+        key = "reversal " + " under ".join(selection)
+        model, checks[key] = check_reversal_setup(bundle, setup, metadata, selection)
+        compact_checks[key] = check_compact(model, dense, node_mask, images, hull_edge, index < 2 or selection in REVERSAL_EXPECTED_SELECTIONS)
+        print(f"compact table on reversal {selection}: {compact_checks[key]}", flush=True)
+        if selection not in REVERSAL_EXPECTED_SELECTIONS or index < len(reversal_random):
+            continue
+        if not np.isfinite(model.print_table).all() or not np.isfinite(model.uv_table).all():
+            raise FloatingPointError(f"{selection}: a table has values that are not finite")
+        name = f"reversal__{selection[0]}__{selection[1]}.bin"
+        write_arrays(expected / name, {"uv_table": np.asarray(model.uv_table, dtype=np.float64), "uv_table_compact": uv_of(model, dense), "uv_reachable": node_mask.astype(np.uint8), "light_table": np.asarray(model.print_table, dtype=np.float64)},
+                     {"reversal": selection[0], "scene_light": selection[1]})
+        expected_files[name] = {"bytes": (expected / name).stat().st_size}
+        print(f"expected values of reversal {selection}: largest setup difference {checks[key]:.3g}", flush=True)
 
-    record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
+    record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "reversal_films": len(metadata["reversal_films"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
     RESULT.parent.mkdir(parents=True, exist_ok=True)
     RESULT.write_bytes((json.dumps(record, indent=1) + "\n").encode("utf-8"))
     print(json.dumps(manifest, indent=1))

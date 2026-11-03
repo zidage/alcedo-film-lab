@@ -8,6 +8,7 @@ Machine rule: CPU only, one process, no GPU job. The arrays take about 290 MB pe
 | <selection>.bin | srgb, (rows, columns, 3) | Its sRGB through the image-plane rules of the lab, with all sliders at their defaults. |
 
 The selections are the expected selections of build_product_resources.py, with rule 'foliage_spectra', as in the product resources.
+Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', through ReversalPreview (method 'light_table'), with all sliders at their defaults. The files are reversal__<film>__reference.bin.
 """
 
 from __future__ import annotations
@@ -47,6 +48,12 @@ def main() -> int:
             raise FloatingPointError(f"{negative} on {paper} under {light}: the output is not finite")
         bpr.write_arrays(OUTPUT / f"{negative}__{paper}__{light}.bin", {"srgb": srgb}, {"negative": negative, "print_material": paper, "scene_light": light, "lab_commit": commit})
         print(f"{negative} on {paper} under {light}: {srgb.shape}", flush=True)
+    for film in mp.REVERSAL_ORDER:
+        srgb = np.asarray(bpr.rf.ReversalPreview(bpr.reversal_options(film, "reference")).render(graded)[0], dtype=np.float32)
+        if not np.isfinite(srgb).all():
+            raise FloatingPointError(f"reversal {film}: the output is not finite")
+        bpr.write_arrays(OUTPUT / f"reversal__{film}__reference.bin", {"srgb": srgb}, {"reversal": film, "scene_light": "reference", "lab_commit": commit})
+        print(f"reversal {film}: {srgb.shape}", flush=True)
     return 0
 
 

@@ -11,6 +11,8 @@ Each file has four float32 arrays of shape (N, 3):
 
 This script sets INHIBITION_STEPS_POINT to INHIBITION_STEPS_IMAGE, because the kernels of the product run rule 'inhibition_two_steps'. Under the balance light of a stock, the first amounts of a neutral are the fixed point of the inhibition, so this has no effect on its ramp. Under another light the layers differ on a neutral AP1 value, so it has an effect, as on the chart.
 The selections are the expected selections of build_product_resources.py, and one negative with no inhibition (kodak_gold_200).
+Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', and the reversal expected selections of build_product_resources.py, through ReversalPreview (method 'light_table').
+The files are reversal__<film>__<light>.bin. Astia 100F has no spread and no inhibition, and E100 has no inhibition.
 """
 
 from __future__ import annotations
@@ -27,6 +29,7 @@ mp = bpr.mp
 fp = bpr.fp
 OUTPUT = bpr.OUTPUT / "expected" / "display"
 SELECTIONS = (*bpr.EXPECTED_SELECTIONS, ("kodak_gold_200", "kodak_2383", "reference"))
+REVERSAL_SELECTIONS = tuple(dict.fromkeys((*((film, "reference") for film in mp.REVERSAL_ORDER), *bpr.REVERSAL_EXPECTED_SELECTIONS)))
 CHART_SEED = 20261101
 CHART_RANDOM_COLOURS = 3916
 
@@ -62,6 +65,14 @@ def main() -> int:
         bpr.write_arrays(OUTPUT / f"{negative}__{paper}__{light}.bin", {"ramp_ap1": ramp, "ramp_srgb": ramp_srgb, "chart_ap1": patches, "chart_srgb": chart_srgb},
                          {"negative": negative, "print_material": paper, "scene_light": light, "lab_commit": bpr.lab_commit()})
         print(f"{negative} on {paper} under {light}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
+    for film, light in REVERSAL_SELECTIONS:
+        model = bpr.rf.ReversalPreview(bpr.reversal_options(film, light))
+        ramp_srgb, chart_srgb = srgb_of(model, ramp), srgb_of(model, patches)
+        if not np.isfinite(ramp_srgb).all() or not np.isfinite(chart_srgb).all():
+            raise FloatingPointError(f"reversal {film} under {light}: the output is not finite")
+        bpr.write_arrays(OUTPUT / f"reversal__{film}__{light}.bin", {"ramp_ap1": ramp, "ramp_srgb": ramp_srgb, "chart_ap1": patches, "chart_srgb": chart_srgb},
+                         {"reversal": film, "scene_light": light, "lab_commit": bpr.lab_commit()})
+        print(f"reversal {film} under {light}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
     return 0
 
 
