@@ -1,4 +1,4 @@
-"""The shared pipeline of the Python MVP: RAW file to display image, by the print method or the APD scan method.
+"""The shared pipeline of the Python MVP: RAW file to display image, by the print method, the APD scan method, or a reversal film on a light table.
 
 Input: a RAW file that LibRaw reads, a negative and a print material of stock_catalog.json, a scene light, a spectral prior, and the product grade.
 Output: sRGB display code (float32) with its parameters. No value of a frame is kept between renders. The print and APD tables are built in memory and are not stored (ROADMAP U68); the reflectance tables stay in build/tmp/p2/tables/.
@@ -12,6 +12,8 @@ Rules of this step:
 - 'spectral_prior': 'light_like' applies rule 'light_like_spectra' of P4, and 'measured_reflectance' uses the reflectance prior of P1 with no change.
 - 'foliage_spectra': on by default for each stock; see the header of film_preview.py.
 - 'negative_show_grade': on for the tungsten stocks on print material cine_look (ROADMAP U82 to U84); see negative_grade.py.
+- 'light_table' (step P9, ROADMAP U86): the method of the reversal films of reversal_catalog.json, with no print. The film is the field 'reversal'; see scripts/poc/p9_reversal_light_table/reversal_film.py.
+  The controls of the negative act on the slide, 'Enlarger flare' is the flare of the loupe, and the print controls do not act.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -32,6 +34,9 @@ REPO_ROOT = SCRIPT_DIR.parents[2]
 sys.path.insert(0, str(SCRIPT_DIR))
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p3_scan_and_scene"))
 from aces_scan import OUTPUT_TRANSFORMS, ScanPreview, fp  # noqa: E402
+
+sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p9_reversal_light_table"))
+import reversal_film as rf  # noqa: E402
 
 CATALOG = json.loads((SCRIPT_DIR / "stock_catalog.json").read_text(encoding="utf-8"))
 # Print material 'cine_look' (ROADMAP U83): the data of Kodak 2383, with rules 'print_cinema_look' and 'negative_show_grade'. Print material kodak_2383 has neither of them.
@@ -55,7 +60,9 @@ STOCK_PRINT_FIELDS = ("print_profile", "print_midscale_status_a", "viewing_cct_k
 REFERENCE_LIGHT = "reference"
 SCENE_LIGHTS = (REFERENCE_LIGHT, *fp.PRODUCT_LIGHTS, *fp.SCENE_PRESETS)
 SPECTRAL_PRIORS = ("light_like", "measured_reflectance")
-METHODS = ("print", "apd")
+METHODS = ("print", "apd", "light_table")
+REVERSAL_ORDER = ("fuji_velvia_50", "fuji_velvia_100", "fuji_provia_100f", "fuji_astia_100f", "kodak_ektachrome_e100")
+CATALOG["reversals"] = {key: rf.CATALOG["films"][key] for key in REVERSAL_ORDER}
 SCAN_CARRIER_PRINT = "kodak_2383"
 # Rule 'negative_show_grade', on print material cine_look (ROADMAP U82 to U84): the tungsten stocks. kodak_5293 is EXR 200T, and the catalog holds the default 5500 K for it.
 NEGATIVE_GRADE_STOCKS = ("kodak_5219", "kodak_5213", "kodak_5277", "kodak_5293", "kodak_exr_5248", "fuji_eterna_500", "fuji_eterna_500_vivid")
@@ -64,6 +71,7 @@ MEDIUM_WHITE = "by_medium"
 DISPLAY_WHITES = (MEDIUM_WHITE, "reflector", "paper", "print_dmin")
 PRINT = ("print",)
 SCAN = ("apd",)
+LIGHT_TABLE = ("light_table",)
 BOTH = METHODS
 
 
@@ -83,7 +91,7 @@ class Control:
 
 
 CONTROLS = (
-    Control("overexposure_stops", "Overexposure (stops)", "Negative", -2.0, 4.0, 0.25, 2, BOTH, "Rule overexposed_negative: the negative takes more light, and the printer lights take it back. It moves the shadows off the toe."),
+    Control("overexposure_stops", "Overexposure (stops)", "Negative", -2.0, 4.0, 0.25, 2, (*PRINT, *SCAN), "Rule overexposed_negative: the negative takes more light, and the printer lights take it back. It moves the shadows off the toe."),
     Control("inhibition_scale", "Development inhibition", "Negative", 0.0, 1.5, 0.1, 2, BOTH, "Scale of the inhibition from the modulation transfer curves. 0: off. A stock with no curve has no inhibition."),
     Control("layer_spread_scale", "Light spread", "Negative", 0.0, 3.0, 0.25, 2, BOTH, "Scale of the spread length of each layer. 0: off. A stock with no curve has no spread."),
     Control("halation_scale", "Halation", "Negative", 0.0, 8.0, 0.5, 2, BOTH, "Scale of the halation strength. 0: off."),
@@ -92,9 +100,9 @@ CONTROLS = (
     Control("print_grey_shift", "Print grey density shift", "Print", -0.3, 0.4, 0.05, 2, PRINT, "Added to the Status A density of mid grey: the LAD patch on a cine print, 0.75 on a paper. A higher value gives a darker print."),
     Control("print_contrast", "Print contrast", "Print", 0.5, 1.3, 0.05, 2, PRINT, "Scale of the paper log exposure about the grey. 1: the published curve."),
     Control("print_flash", "Paper flash", "Print", 0.0, 0.2, 0.01, 3, PRINT, "Uniform exposure of the paper, as a share of the balance exposure. It softens the print highlights."),
-    Control("enlarger_flare", "Enlarger flare", "Print", 0.0, 0.1, 0.005, 3, PRINT, "Stray light of the enlarger lens, as a share of the light. It lifts the print shadows."),
+    Control("enlarger_flare", "Enlarger flare", "Print", 0.0, 0.1, 0.005, 3, (*PRINT, *LIGHT_TABLE), "Stray light of the enlarger lens, as a share of the light. It lifts the print shadows. On the light table: the flare of the loupe, in linear light; it lifts the shadows of the slide."),
     Control("viewing_flare", "Surface reflection", "Print", 0.0, 0.03, 0.001, 4, PRINT, "Reflection of the print surface. It lifts the black."),
-    Control("print_timing", "Timing", "Negative", 0.0, 1.0, 0.1, 2, BOTH, "Share of the mid grey cast of the scene light that the printer lights or the scanner offset remove. It acts when the scene light is not 'reference', and on a stock with a relative sensitivity chart."),
+    Control("print_timing", "Timing", "Negative", 0.0, 1.0, 0.1, 2, (*PRINT, *SCAN), "Share of the mid grey cast of the scene light that the printer lights or the scanner offset remove. It acts when the scene light is not 'reference', and on a stock with a relative sensitivity chart."),
     Control("apd_exposure_stops", "Scanner light (stops)", "Scan", -3.0, 3.0, 0.25, 2, SCAN, "One neutral offset of the ADX10 code values. 0: the mid grey at code value 445, as the ADX to ACES transform assumes. +0.53 on ACES 2.0 and +0.37 on ACES 1.3 show the grey of the print (P3 report)."),
 )
 
@@ -103,6 +111,7 @@ CONTROLS = (
 class RenderSettings:
     negative: str = "kodak_5207"
     method: str = "print"
+    reversal: str = "kodak_ektachrome_e100"
     print_material: str = "kodak_endura_premier"
     scene_light: str = REFERENCE_LIGHT
     spectral_prior: str = "light_like"
@@ -130,6 +139,8 @@ class RenderSettings:
     apd_output: str = "aces20"
 
     def validate(self) -> None:
+        if self.reversal not in CATALOG["reversals"]:
+            raise ValueError(f"unknown reversal film {self.reversal!r}")
         if self.negative not in CATALOG["negatives"]:
             raise ValueError(f"unknown negative {self.negative!r}")
         failure = load_physics().get(self.negative, {}).get("error")
@@ -226,7 +237,21 @@ def film_options(settings: RenderSettings, print_material: str | None = None, ph
 def control_values(settings: RenderSettings, method: str) -> tuple:
     """The values of a model of this method, so that a change of a control of the other method keeps the model."""
     values = (settings.foliage, settings.negative_grade, *(getattr(settings, c.name) for c in CONTROLS if method in c.methods))
+    if method == "light_table":
+        return (*values, settings.gamut_compress)
     return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output)
+
+
+def light_table_options(settings: RenderSettings) -> fp.FilmOptions:
+    """Method 'light_table' (step P9): the options of the reversal film with the values of the controls of this method."""
+    options = rf.reversal_options(settings.reversal, settings.scene_light, foliage=settings.foliage, light_spectra=settings.spectral_prior == "light_like")
+
+    def scaled(values: tuple[float, float, float], scale: float) -> tuple[float, float, float]:
+        return tuple(float(v) * scale for v in values)
+
+    return replace(options, inhibition_total=scaled(options.inhibition_total, settings.inhibition_scale), inhibition_image=None if options.inhibition_image is None else scaled(options.inhibition_image, settings.inhibition_scale),
+                   layer_spread_um=scaled(options.layer_spread_um, settings.layer_spread_scale), halation=scaled(options.halation, settings.halation_scale), halation_um=settings.halation_um,
+                   scene_flare=settings.scene_flare, enlarger_flare=settings.enlarger_flare, gamut_compress=settings.gamut_compress)
 
 
 def decode_raw(path: Path, colorimetry, long_edge: int = DEFAULT_LONG_EDGE) -> tuple[np.ndarray, dict]:
@@ -268,7 +293,12 @@ class Pipeline:
         negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "apd" not in c.methods})
         return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim, exposure_stops=settings.apd_exposure_stops))
 
+    def light_table_model(self, settings: RenderSettings) -> rf.ReversalPreview:
+        return self._model(("light_table", settings.reversal, settings.scene_light, settings.spectral_prior, control_values(settings, "light_table")), lambda: rf.ReversalPreview(light_table_options(settings)))
+
     def colorimetry(self, settings: RenderSettings):
+        if settings.method == "light_table":
+            return self.light_table_model(settings).c
         return self.print_model(settings).c if settings.method == "print" else self.scan_model(settings).negative.c
 
     def render_array(self, ap1: np.ndarray, settings: RenderSettings) -> np.ndarray:
@@ -277,6 +307,8 @@ class Pipeline:
         graded = np.ascontiguousarray(fp.fk.product_grade(np.ascontiguousarray(ap1, dtype=np.float32), float(settings.exposure_ev), float(settings.contrast), float(settings.saturation)), dtype=np.float32)
         if settings.method == "print":
             image = np.asarray(self.print_model(settings).render(graded)[0], dtype=np.float32)
+        elif settings.method == "light_table":
+            image = np.asarray(self.light_table_model(settings).render(graded)[0], dtype=np.float32)
         else:
             image = np.asarray(self.scan_model(settings).render(graded)[0], dtype=np.float32)
         if not np.isfinite(image).all():

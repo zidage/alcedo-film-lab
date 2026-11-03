@@ -16,3 +16,4 @@ manufacturer charts, which must not be published.
 | [`p7_spectral_acceleration/`](p7_spectral_acceleration/) | P7: spectral acceleration (ROADMAP section 8) | [P7 report](../docs/exploration/p7_spectral_acceleration.md) |
 | [`p4_physical_film_response/`](p4_physical_film_response/) | P4: physical colour and film response (ROADMAP section 8) | [P4 report](../docs/exploration/p4_physical_film_response.md) |
 | [`p5_film_and_print_combinations/`](p5_film_and_print_combinations/) | P5: other film and print combinations (ROADMAP section 8) | [P5 report](../docs/exploration/p5_film_and_print_combinations.md) |
+| [`p9_reversal_light_table/`](p9_reversal_light_table/) | P9: reversal film on a light table (ROADMAP U86) | [P9 report](../docs/exploration/p9_reversal_light_table.md) |

@@ -1,7 +1,7 @@
-"""Command line of the Python MVP: one RAW file to one TIFF or JPEG, by the print method or the APD scan method.
+"""Command line of the Python MVP: one RAW file to one TIFF or JPEG, by the print method, the APD scan method, or a reversal film on a light table (step P9).
 
 Input: a RAW file; the options below. Output: the image and a parameter file <output>.json. Step: P6, ROADMAP U61.
-Usage: p6_mvp_cli.py INPUT OUTPUT [--negative NAME] [--method print|apd] [--print-material NAME] [--scene-light NAME] [--spectral-prior NAME] [--list], and one option per entry of mvp_pipeline.CONTROLS, for example --print-contrast 1.0.
+Usage: p6_mvp_cli.py INPUT OUTPUT [--negative NAME] [--method print|apd|light_table] [--reversal NAME] [--print-material NAME] [--scene-light NAME] [--spectral-prior NAME] [--list], and one option per entry of mvp_pipeline.CONTROLS, for example --print-contrast 1.0.
 """
 
 from __future__ import annotations
@@ -20,6 +20,7 @@ def main() -> int:
     parser.add_argument("output", type=Path, nargs="?")
     parser.add_argument("--negative", default=defaults.negative, choices=sorted(mp.CATALOG["negatives"]))
     parser.add_argument("--method", default=defaults.method, choices=mp.METHODS)
+    parser.add_argument("--reversal", default=defaults.reversal, choices=list(mp.CATALOG["reversals"]), help="Method light_table: the reversal film.")
     parser.add_argument("--print-material", default=defaults.print_material, choices=list(mp.CATALOG["prints"]))
     parser.add_argument("--scene-light", default=defaults.scene_light, choices=mp.SCENE_LIGHTS)
     parser.add_argument("--spectral-prior", default=defaults.spectral_prior, choices=mp.SPECTRAL_PRIORS)
@@ -36,7 +37,7 @@ def main() -> int:
     parser.add_argument("--list", action="store_true", help="List the materials and stop.")
     args = parser.parse_args()
     if args.list:
-        for group in ("negatives", "prints"):
+        for group in ("negatives", "prints", "reversals"):
             print(group)
             for stem, entry in mp.CATALOG[group].items():
                 print(f"  {stem:30s} {entry['name']}")
@@ -46,7 +47,7 @@ def main() -> int:
         return 0
     if args.input is None or args.output is None:
         parser.error("INPUT and OUTPUT are necessary")
-    settings = mp.RenderSettings(negative=args.negative, method=args.method, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior,
+    settings = mp.RenderSettings(negative=args.negative, method=args.method, reversal=args.reversal, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior,
                                  exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim,
                                  **{control.name: getattr(args, control.name) for control in mp.CONTROLS})
     image, record = mp.Pipeline().render_file(args.input, settings, args.long_edge)

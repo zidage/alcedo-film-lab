@@ -1,0 +1,80 @@
+{
+ "films": {
+  "fuji_velvia_50": {
+   "name": "Fujichrome Velvia 50",
+   "manufacturer": "Fujifilm",
+   "iso": 50,
+   "exposure_kelvin": 5500,
+   "source": "sfl",
+   "document": "FUJIFILM Data Guide AF3-0221E2 (charts by spectral_film_lut)",
+   "relative_sensitivity": true,
+   "mtf_curves": 1,
+   "inferred_rules": [
+    "running_minimum_curve, largest rise 0.0137",
+    "neutral_from_dyes",
+    "zero_minimum_density",
+    "relative_sensitivity"
+   ]
+  },
+  "fuji_velvia_100": {
+   "name": "Fujichrome Velvia 100",
+   "manufacturer": "Fujifilm",
+   "iso": 100,
+   "exposure_kelvin": 5500,
+   "source": "lab",
+   "document": "FUJIFILM Product Information Bulletin AF3-202E",
+   "relative_sensitivity": true,
+   "mtf_curves": 1,
+   "inferred_rules": [
+    "running_minimum_curve, largest rise 0.0029",
+    "neutral_from_dyes",
+    "zero_minimum_density",
+    "relative_sensitivity"
+   ]
+  },
+  "fuji_provia_100f": {
+   "name": "Fujichrome Provia 100F",
+   "manufacturer": "Fujifilm",
+   "iso": 100,
+   "exposure_kelvin": 5500,
+   "source": "sfl",
+   "document": "FUJIFILM Product Information Bulletin, PROVIA 100F (charts by spectral_film_lut)",
+   "relative_sensitivity": true,
+   "mtf_curves": 1,
+   "inferred_rules": [
+    "running_minimum_curve, largest rise 0.0026",
+    "neutral_from_dyes",
+    "zero_minimum_density",
+    "relative_sensitivity"
+   ]
+  },
+  "fuji_astia_100f": {
+   "name": "Fujichrome Astia 100F",
+   "manufacturer": "Fujifilm",
+   "iso": 100,
+   "exposure_kelvin": 5500,
+   "source": "fotufilm",
+   "document": "FUJIFILM AF3-149E (charts by Fotufilm)",
+   "relative_sensitivity": true,
+   "mtf_curves": 0,
+   "inferred_rules": [
+    "neutral_from_dyes",
+    "zero_minimum_density",
+    "relative_sensitivity"
+   ]
+  },
+  "kodak_ektachrome_e100": {
+   "name": "Kodak Ektachrome E100",
+   "manufacturer": "Kodak",
+   "iso": 100,
+   "exposure_kelvin": 5500,
+   "source": "lab",
+   "document": "KODAK Alaris Publication No. E-4000, Revised 8-18",
+   "relative_sensitivity": false,
+   "mtf_curves": 3,
+   "inferred_rules": [
+    "zero_minimum_density"
+   ]
+  }
+ }
+}

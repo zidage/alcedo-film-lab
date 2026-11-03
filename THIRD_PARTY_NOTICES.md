@@ -18,7 +18,9 @@ code and data that the repository contains or reuses, with their notices.
   `scripts/poc/p5_film_and_print_combinations/digitize_stock_charts.py`: all digitized data of
   Fujicolor C200, and the spectral sensitivity of KODAK GOLD 200.
   Through `scripts/poc/p6_mvp_gui/import_sfl_profiles.py`: all other colour negative and print
-  materials of that project in `profiles/`.
+  materials of that project in `profiles/`. Through
+  `scripts/poc/p9_reversal_light_table/import_reversal_profiles.py`: the digitized data of Fujichrome
+  Velvia 50 and Provia 100F (`profiles/fuji_velvia_50.json`, `profiles/fuji_provia_100f.json`).
 - Use without reuse: `compare_spectral_film_lut.py` reads its digitized data and Status tables as
   comparison data only. These files are not in this repository.
 
@@ -88,6 +90,23 @@ The name A.M.P.A.S. and the names of contributors are not used to endorse this p
 
 nanobind (Wenzel Jakob), BSD-3-Clause, <https://github.com/wjakob/nanobind>. P7: the Python module `alcedo_film_tables` compiles against it. pip downloads it at build time. It is not in this repository, and the product library `film_tables` does not use it.
 
+## Fotufilm film profiles
+
+- Source: <https://github.com/DhaliwalX/fotufilm-engine>, commit
+  `6b45c802567ce0dc7b9a68578f2a25ee504a6bf6`. The film profiles are licensed under
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); attribution: Fotufilm
+  (<https://fotufilm.com>), profiles by MUAStudio Inc. The engine code is Apache-2.0, and no code of it is in this repository.
+- Adapted in `profiles/fuji_astia_100f.json` from `Sources/FotufilmCore/Stocks/astia100f.json`, by
+  `scripts/poc/p9_reversal_light_table/import_reversal_profiles.py`. Changes: the exposure axis to
+  log10 lux seconds (rule `fotufilm_exposure_axis`), the removal of the 12 extrapolated points at each
+  end, resampling, and log10 of the sensitivity. **That file is licensed under CC BY-SA 4.0**, as the
+  ShareAlike term requires; it is not under GPL-3.0.
+- Use without reuse: the same script reads the Fotufilm profiles of Velvia 50, Provia 100F, and
+  Ektachrome E100 as comparison data only (`results/p9_reversal_light_table/source_checks.json`).
+- Reference only (ROADMAP U12): the light box view of a transparency in Fotufilm
+  `SpectralModel.swift` (`NegativeViewing.lightBox`). The light table of step P9 is written for this
+  lab and reuses no code or value from it.
+
 ## Data read at run time (not in this repository)
 
 | Data | License | Use |
@@ -95,6 +114,7 @@ nanobind (Wenzel Jakob), BSD-3-Clause, <https://github.com/wjakob/nanobind>. P7:
 | CIE colour-matching functions and illuminants | CC BY-SA 4.0 | downloaded by `fetch_sources.py` |
 | python-colormath `density_standards.py` (ANSI Status A and M tables) | BSD-3-Clause | downloaded by `fetch_sources.py`, read as data |
 | Kodak data sheets E-4050 and E-4070 | not distributed (ROADMAP U10) | downloaded by `fetch_sources.py`; the digitized values in `profiles/` are made by this lab |
+| KODAK E-4000 (Ektachrome E100) and FUJIFILM bulletins of Velvia 100, Velvia 50, and Provia 100F | not distributed | P9: downloaded by `scripts/poc/p9_reversal_light_table/fetch_sources.py`; the digitized values of E100 and Velvia 100 in `profiles/` are made by this lab |
 | rawtoaces-data (Academy Software Foundation), commit `e9b8503c`: 190 training spectra, 21 camera sensitivities | Apache-2.0 | P1: downloaded by `scripts/poc/p1_spectral_input/fetch_sources.py`, read as data |
 | Gutierrez, Silva, Fanchini, Morimoto, Barrionuevo, Sandoval-Salinas, *Spectral dataset of natural objects' reflectance from the Southern cone of South America*, doi:10.6084/m9.figshare.25705380 (v4) | CC BY 4.0 | P1: test and prior training data, read at run time; no derived table is committed |
 | Lu et al., *The International Skin Spectra Archive (ISSA)*, doi:10.6084/m9.figshare.28228571 (v4) | CC BY 4.0 | P1: test and prior training data, read at run time; no derived table is committed |

@@ -1,0 +1,516 @@
+{
+ "limits": {
+  "characteristic": 0.03,
+  "spectral_dye_density": 0.03,
+  "spectral_sensitivity": 0.05,
+  "modulation_transfer": 0.05
+ },
+ "axis_limit_pt": 0.6,
+ "fotufilm_commit": "6b45c802567ce0dc7b9a68578f2a25ee504a6bf6",
+ "films": {
+  "fuji_velvia_50": {
+   "against_fotufilm": {
+    "characteristic": {
+     "curves": {
+      "red": {
+       "rms": 0.0524,
+       "largest": 0.1838,
+       "domain": [
+        -2.82,
+        1.11
+       ]
+      },
+      "green": {
+       "rms": 0.0231,
+       "largest": 0.0813,
+       "domain": [
+        -2.81,
+        1.11
+       ]
+      },
+      "blue": {
+       "rms": 0.0246,
+       "largest": 0.0652,
+       "domain": [
+        -2.82,
+        1.11
+       ]
+      }
+     },
+     "largest_rms": 0.0524,
+     "limit": 0.03,
+     "within_limit": false
+    },
+    "spectral_dye_density": {
+     "curves": {
+      "cyan_dye": {
+       "rms": 0.0234,
+       "largest": 0.1143,
+       "domain": [
+        383.0,
+        719.0
+       ]
+      },
+      "magenta_dye": {
+       "rms": 0.0219,
+       "largest": 0.0934,
+       "domain": [
+        382.0,
+        719.0
+       ]
+      },
+      "yellow_dye": {
+       "rms": 0.0084,
+       "largest": 0.0232,
+       "domain": [
+        382.0,
+        598.0
+       ]
+      }
+     },
+     "largest_rms": 0.0234,
+     "limit": 0.03,
+     "within_limit": true
+    },
+    "spectral_sensitivity": {
+     "curves": {
+      "cyan_forming_layer": {
+       "rms": 0.0091,
+       "largest": 0.0416,
+       "domain": [
+        580.0,
+        691.0
+       ]
+      },
+      "magenta_forming_layer": {
+       "rms": 0.0088,
+       "largest": 0.0471,
+       "domain": [
+        487.0,
+        591.0
+       ]
+      },
+      "yellow_forming_layer": {
+       "rms": 0.0074,
+       "largest": 0.0305,
+       "domain": [
+        388.0,
+        493.0
+       ]
+      }
+     },
+     "largest_rms": 0.0091,
+     "limit": 0.05,
+     "within_limit": true
+    }
+   }
+  },
+  "fuji_velvia_100": {
+   "digitization": {
+    "characteristic": {
+     "label_rule": "Legend of the chart: R solid, G dash-dot, B dashed.",
+     "axis_residual_pt": [
+      0.362,
+      0.35
+     ],
+     "axis_within_limit": true,
+     "curves": 3
+    },
+    "spectral_sensitivity": {
+     "label_rule": "Order by the wavelength of the curve maximum.",
+     "axis_residual_pt": [
+      0.224,
+      0.0
+     ],
+     "axis_within_limit": true,
+     "curves": 3
+    },
+    "spectral_dye_density": {
+     "label_rule": "Dyes ordered by the wavelength of the curve maximum; a fourth curve with the highest mean is the neutral of the chart.",
+     "axis_residual_pt": [
+      0.23,
+      0.003
+     ],
+     "axis_within_limit": true,
+     "curves": 3
+    },
+    "modulation_transfer": {
+     "label_rule": "One curve for all layers.",
+     "axis_residual_pt": [
+      0.611,
+      0.565
+     ],
+     "axis_within_limit": false,
+     "curves": 1
+    }
+   }
+  },
+  "fuji_provia_100f": {
+   "against_fotufilm": {
+    "characteristic": {
+     "curves": {
+      "red": {
+       "rms": 0.007,
+       "largest": 0.0128,
+       "domain": [
+        -3.38,
+        0.82
+       ]
+      },
+      "green": {
+       "rms": 0.0067,
+       "largest": 0.0156,
+       "domain": [
+        -3.38,
+        0.82
+       ]
+      },
+      "blue": {
+       "rms": 0.0073,
+       "largest": 0.0158,
+       "domain": [
+        -3.38,
+        0.82
+       ]
+      }
+     },
+     "largest_rms": 0.0073,
+     "limit": 0.03,
+     "within_limit": true
+    },
+    "spectral_dye_density": {
+     "curves": {
+      "cyan_dye": {
+       "rms": 0.0044,
+       "largest": 0.0133,
+       "domain": [
+        390.0,
+        718.0
+       ]
+      },
+      "magenta_dye": {
+       "rms": 0.0125,
+       "largest": 0.0367,
+       "domain": [
+        389.0,
+        717.0
+       ]
+      },
+      "yellow_dye": {
+       "rms": 0.0103,
+       "largest": 0.0262,
+       "domain": [
+        390.0,
+        719.0
+       ]
+      }
+     },
+     "largest_rms": 0.0125,
+     "limit": 0.03,
+     "within_limit": true
+    },
+    "spectral_sensitivity": {
+     "curves": {
+      "cyan_forming_layer": {
+       "rms": 0.0174,
+       "largest": 0.1026,
+       "domain": [
+        572.0,
+        671.0
+       ]
+      },
+      "magenta_forming_layer": {
+       "rms": 0.0173,
+       "largest": 0.136,
+       "domain": [
+        476.0,
+        597.0
+       ]
+      },
+      "yellow_forming_layer": {
+       "rms": 0.0143,
+       "largest": 0.0858,
+       "domain": [
+        389.0,
+        501.0
+       ]
+      }
+     },
+     "largest_rms": 0.0174,
+     "limit": 0.05,
+     "within_limit": true
+    }
+   }
+  },
+  "fuji_astia_100f": {},
+  "kodak_ektachrome_e100": {
+   "digitization": {
+    "characteristic": {
+     "label_rule": "Labels B, G, R from top to bottom at the toe of the chart: order by the largest density, highest first.",
+     "axis_residual_pt": [
+      0.004,
+      0.0
+     ],
+     "axis_within_limit": true,
+     "curves": 3
+    },
+    "spectral_sensitivity": {
+     "label_rule": "Order by the wavelength of the curve maximum.",
+     "axis_residual_pt": [
+      0.0,
+      0.018
+     ],
+     "axis_within_limit": true,
+     "curves": 3
+    },
+    "spectral_dye_density": {
+     "label_rule": "Dyes ordered by the wavelength of the curve maximum; a fourth curve with the highest mean is the neutral of the chart.",
+     "axis_residual_pt": [
+      0.0,
+      0.02
+     ],
+     "axis_within_limit": true,
+     "curves": 4
+    },
+    "modulation_transfer": {
+     "label_rule": "Each curve takes the letter R, G, or B in the order of the height of its right end.",
+     "axis_residual_pt": [
+      0.03,
+      0.029
+     ],
+     "axis_within_limit": true,
+     "curves": 3
+    }
+   },
+   "against_spectral_film_lut": {
+    "characteristic": {
+     "curves": {
+      "red": {
+       "rms": 0.0092,
+       "largest": 0.0218,
+       "domain": [
+        -2.77,
+        -0.01
+       ]
+      },
+      "green": {
+       "rms": 0.0217,
+       "largest": 0.0508,
+       "domain": [
+        -2.76,
+        0.01
+       ]
+      },
+      "blue": {
+       "rms": 0.009,
+       "largest": 0.0277,
+       "domain": [
+        -2.77,
+        -0.03
+       ]
+      }
+     },
+     "largest_rms": 0.0217,
+     "limit": 0.03,
+     "within_limit": true
+    },
+    "spectral_dye_density": {
+     "curves": {
+      "yellow_dye": {
+       "rms": 0.0105,
+       "largest": 0.0212,
+       "domain": [
+        402.0,
+        680.0
+       ]
+      },
+      "magenta_dye": {
+       "rms": 0.0088,
+       "largest": 0.0166,
+       "domain": [
+        404.0,
+        683.0
+       ]
+      },
+      "cyan_dye": {
+       "rms": 0.0056,
+       "largest": 0.0095,
+       "domain": [
+        404.0,
+        698.0
+       ]
+      },
+      "midscale_neutral": {
+       "rms": 0.0091,
+       "largest": 0.0179,
+       "domain": [
+        406.0,
+        697.0
+       ]
+      }
+     },
+     "largest_rms": 0.0105,
+     "limit": 0.03,
+     "within_limit": true
+    },
+    "spectral_sensitivity": {
+     "curves": {
+      "magenta_forming_layer": {
+       "rms": 0.077,
+       "largest": 0.2187,
+       "domain": [
+        476.0,
+        604.0
+       ]
+      },
+      "yellow_forming_layer": {
+       "rms": 0.036,
+       "largest": 0.0761,
+       "domain": [
+        397.0,
+        519.0
+       ]
+      },
+      "cyan_forming_layer": {
+       "rms": 0.0561,
+       "largest": 0.1286,
+       "domain": [
+        562.0,
+        684.0
+       ]
+      }
+     },
+     "largest_rms": 0.077,
+     "limit": 0.05,
+     "within_limit": false
+    },
+    "modulation_transfer": {
+     "curves": {
+      "blue": {
+       "rms": 0.0148,
+       "largest": 0.0315,
+       "domain": [
+        3.0,
+        73.0
+       ]
+      },
+      "green": {
+       "rms": 0.0261,
+       "largest": 0.0479,
+       "domain": [
+        3.0,
+        74.0
+       ]
+      },
+      "red": {
+       "rms": 0.0177,
+       "largest": 0.0368,
+       "domain": [
+        3.0,
+        78.0
+       ]
+      }
+     },
+     "largest_rms": 0.0261,
+     "limit": 0.05,
+     "within_limit": true
+    }
+   },
+   "against_fotufilm": {
+    "characteristic": {
+     "curves": {
+      "red": {
+       "rms": 0.0021,
+       "largest": 0.0068,
+       "domain": [
+        -2.83,
+        0.01
+       ]
+      },
+      "green": {
+       "rms": 0.002,
+       "largest": 0.0069,
+       "domain": [
+        -2.83,
+        0.01
+       ]
+      },
+      "blue": {
+       "rms": 0.0015,
+       "largest": 0.0041,
+       "domain": [
+        -2.83,
+        0.01
+       ]
+      }
+     },
+     "largest_rms": 0.0021,
+     "limit": 0.03,
+     "within_limit": true
+    },
+    "spectral_dye_density": {
+     "curves": {
+      "yellow_dye": {
+       "rms": 0.001,
+       "largest": 0.0098,
+       "domain": [
+        401.0,
+        680.0
+       ]
+      },
+      "magenta_dye": {
+       "rms": 0.0007,
+       "largest": 0.0029,
+       "domain": [
+        401.0,
+        700.0
+       ]
+      },
+      "cyan_dye": {
+       "rms": 0.0003,
+       "largest": 0.0021,
+       "domain": [
+        401.0,
+        700.0
+       ]
+      }
+     },
+     "largest_rms": 0.001,
+     "limit": 0.03,
+     "within_limit": true
+    },
+    "spectral_sensitivity": {
+     "curves": {
+      "magenta_forming_layer": {
+       "rms": 0.0061,
+       "largest": 0.0247,
+       "domain": [
+        476.0,
+        605.0
+       ]
+      },
+      "yellow_forming_layer": {
+       "rms": 0.0115,
+       "largest": 0.0972,
+       "domain": [
+        396.0,
+        520.0
+       ]
+      },
+      "cyan_forming_layer": {
+       "rms": 0.0211,
+       "largest": 0.1831,
+       "domain": [
+        556.0,
+        685.0
+       ]
+      }
+     },
+     "largest_rms": 0.0211,
+     "limit": 0.05,
+     "within_limit": true
+    }
+   }
+  }
+ }
+}

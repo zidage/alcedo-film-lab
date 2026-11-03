@@ -17,6 +17,8 @@ Scripts of step P6 ([report](../../../docs/exploration/p6_python_mvp.md), ROADMA
 
 The tables and the sources of P0 to P5 must be present. A first use of a negative and print pair builds its table and model in about 1 second, in memory (P7, ROADMAP U68).
 
+Step P9 adds the method `light_table`: a reversal film on a light table, with no print (`--method light_table --reversal NAME`; see [the P9 scripts](../p9_reversal_light_table/README.md)).
+
 The window and the command line have the controls of `mvp_pipeline.CONTROLS` (ROADMAP U62). `p6_mvp_cli.py --help` lists them with their ranges. A new value of a control that is part of the print table (print contrast, paper flash, surface reflection, print grey density shift, print timing, overexposure, development inhibition) composes one more table in about 0.02 seconds, and the model takes about 0.3 seconds. These tables are not stored. If `build/tmp/p2/tables/` is empty, the next run builds the reflectance tables again from the sources of P1 in `build/tmp/p1/sources/`, and this reads the ISSA workbook through `openpyxl`.
 
 ## Commands

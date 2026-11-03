@@ -1,0 +1,231 @@
+{
+ "fuji_velvia_50": {
+  "grey_stops_at_d55_with_chart_level": [
+   -1.583,
+   -1.23,
+   -1.088
+  ],
+  "relative_sensitivity": true,
+  "dye_curve_info": {
+   "largest_solve_residual": 0.0015834842991791199,
+   "largest_rise_removed": 0.0008784833348491894,
+   "dye_amount_range": [
+    [
+     5.85512794098958e-16,
+     0.0,
+     0.0
+    ],
+    [
+     3.3341002240576714,
+     2.918239640938121,
+     2.9409895907962067
+    ]
+   ]
+  },
+  "grey_status_a": [
+   0.935,
+   0.876,
+   0.871
+  ],
+  "layer_spread_um": [
+   4.52,
+   4.52,
+   4.52
+  ],
+  "inhibition_total_free_fit": [
+   0.1762,
+   0.2451,
+   0.2376
+  ],
+  "inhibition_image": [
+   0.1762,
+   0.2451,
+   0.2376
+  ],
+  "boost": [
+   1.378,
+   1.378,
+   1.378
+  ],
+  "largest_rms_residual": 0.0136
+ },
+ "fuji_velvia_100": {
+  "grey_stops_at_d55_with_chart_level": [
+   -0.951,
+   -0.606,
+   -0.616
+  ],
+  "relative_sensitivity": true,
+  "dye_curve_info": {
+   "largest_solve_residual": 0.00046330698241985106,
+   "largest_rise_removed": 0.0017726010470857645,
+   "dye_amount_range": [
+    [
+     3.4370122486232018e-16,
+     0.0,
+     0.0
+    ],
+    [
+     3.7689032251836148,
+     4.07908018918793,
+     3.4688426366716176
+    ]
+   ]
+  },
+  "grey_status_a": [
+   0.816,
+   0.818,
+   0.797
+  ],
+  "layer_spread_um": [
+   3.4,
+   3.4,
+   3.4
+  ],
+  "inhibition_total_free_fit": [
+   0.024,
+   0.0257,
+   0.026
+  ],
+  "inhibition_image": [
+   0.0173,
+   0.0185,
+   0.0188
+  ],
+  "boost": [
+   1.0315,
+   1.0315,
+   1.0315
+  ],
+  "largest_rms_residual": 0.0508
+ },
+ "fuji_provia_100f": {
+  "grey_stops_at_d55_with_chart_level": [
+   -1.373,
+   -0.905,
+   -0.441
+  ],
+  "relative_sensitivity": true,
+  "dye_curve_info": {
+   "largest_solve_residual": 0.00046398244585708394,
+   "largest_rise_removed": 0.005166378091757018,
+   "dye_amount_range": [
+    [
+     0.0,
+     0.0,
+     1.0531302599129418e-17
+    ],
+    [
+     3.194549753614794,
+     2.8464696411522197,
+     2.2891216238927394
+    ]
+   ]
+  },
+  "grey_status_a": [
+   0.845,
+   0.844,
+   0.843
+  ],
+  "layer_spread_um": [
+   4.98,
+   4.98,
+   4.98
+  ],
+  "inhibition_total_free_fit": [
+   0.151,
+   0.1805,
+   0.2151
+  ],
+  "inhibition_image": [
+   0.151,
+   0.1805,
+   0.2151
+  ],
+  "boost": [
+   1.3198,
+   1.3198,
+   1.3198
+  ],
+  "largest_rms_residual": 0.0355
+ },
+ "fuji_astia_100f": {
+  "grey_stops_at_d55_with_chart_level": [
+   -1.027,
+   -1.025,
+   -0.859
+  ],
+  "relative_sensitivity": true,
+  "dye_curve_info": {
+   "largest_solve_residual": 4.440892098500626e-16,
+   "largest_rise_removed": 0.00012652554383718595,
+   "dye_amount_range": [
+    [
+     4.1903352994962283e-17,
+     1.0546528674757454e-16,
+     4.552085472037326e-17
+    ],
+    [
+     3.654522205221149,
+     3.609485113211396,
+     3.3391595841847836
+    ]
+   ]
+  },
+  "grey_status_a": [
+   0.849,
+   0.849,
+   0.852
+  ]
+ },
+ "kodak_ektachrome_e100": {
+  "grey_stops_at_d55_with_chart_level": [
+   0.278,
+   0.482,
+   0.853
+  ],
+  "relative_sensitivity": false,
+  "dye_curve_info": {
+   "largest_solve_residual": 4.440892098500626e-16,
+   "largest_rise_removed": 0.0021891918957814838,
+   "dye_amount_range": [
+    [
+     0.0,
+     1.1149033035161962e-16,
+     5.1856579366476e-17
+    ],
+    [
+     3.1551107744640725,
+     3.451207179012072,
+     3.31708352827605
+    ]
+   ]
+  },
+  "grey_status_a": [
+   0.859,
+   0.88,
+   0.819
+  ],
+  "layer_spread_um": [
+   5.87,
+   4.17,
+   3.38
+  ],
+  "inhibition_total_free_fit": [
+   0.3666,
+   0.2116,
+   0.378
+  ],
+  "inhibition_image": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "boost": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "largest_rms_residual": 0.0272
+ }
+}

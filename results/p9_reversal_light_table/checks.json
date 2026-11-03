@@ -1,0 +1,366 @@
+{
+ "limits": {
+  "neutral_ramp_density": 0.01,
+  "clear_film_white": 1e-06,
+  "table_code_largest": 1.0,
+  "table_code_p999": 0.25
+ },
+ "films": {
+  "fuji_velvia_50": {
+   "neutral_ramp": {
+    "largest_density_difference": 0.00158,
+    "limit": 0.01,
+    "within_limit": true
+   },
+   "clear_film_white": {
+    "linear_rgb": [
+     1.00000006,
+     0.99999996,
+     1.0
+    ],
+    "within_limit": true
+   },
+   "light_table_interpolation": {
+    "largest_code": 0.4917,
+    "p999_code": 0.1612,
+    "limits": [
+     1.0,
+     0.25
+    ],
+    "within_limit": true
+   },
+   "extreme_input": {
+    "finite": true,
+    "inside_0_1": true,
+    "within_limit": true
+   },
+   "grey": {
+    "srgb_code": [
+     0.46639999747276306,
+     0.5241000056266785,
+     0.5354999899864197
+    ],
+    "status_a": [
+     0.935,
+     0.876,
+     0.871
+    ],
+    "clear_film_xyz": [
+     96.333,
+     99.958,
+     82.512
+    ],
+    "dye_curve_info": {
+     "largest_solve_residual": 0.0015834842991791199,
+     "largest_rise_removed": 0.0008784833348491894,
+     "dye_amount_range": [
+      [
+       5.85512794098958e-16,
+       0.0,
+       0.0
+      ],
+      [
+       3.3341002240576714,
+       2.918239640938121,
+       2.9409895907962067
+      ]
+     ]
+    }
+   },
+   "photo": {
+    "pixels": [
+     633,
+     953
+    ],
+    "model_s": 2.91,
+    "render_s": 0.31,
+    "finite": true
+   }
+  },
+  "fuji_velvia_100": {
+   "neutral_ramp": {
+    "largest_density_difference": 0.00129,
+    "limit": 0.01,
+    "within_limit": true
+   },
+   "clear_film_white": {
+    "linear_rgb": [
+     1.00000006,
+     0.99999996,
+     1.0
+    ],
+    "within_limit": true
+   },
+   "light_table_interpolation": {
+    "largest_code": 0.796,
+    "p999_code": 0.248,
+    "limits": [
+     1.0,
+     0.25
+    ],
+    "within_limit": true
+   },
+   "extreme_input": {
+    "finite": true,
+    "inside_0_1": true,
+    "within_limit": true
+   },
+   "grey": {
+    "srgb_code": [
+     0.5171999931335449,
+     0.541700005531311,
+     0.5767999887466431
+    ],
+    "status_a": [
+     0.816,
+     0.818,
+     0.797
+    ],
+    "clear_film_xyz": [
+     96.424,
+     100.0,
+     82.512
+    ],
+    "dye_curve_info": {
+     "largest_solve_residual": 0.00046330698241985106,
+     "largest_rise_removed": 0.0017726010470857645,
+     "dye_amount_range": [
+      [
+       3.4370122486232018e-16,
+       0.0,
+       0.0
+      ],
+      [
+       3.7689032251836148,
+       4.07908018918793,
+       3.4688426366716176
+      ]
+     ]
+    }
+   },
+   "photo": {
+    "pixels": [
+     633,
+     953
+    ],
+    "model_s": 2.91,
+    "render_s": 0.29,
+    "finite": true
+   }
+  },
+  "fuji_provia_100f": {
+   "neutral_ramp": {
+    "largest_density_difference": 0.00454,
+    "limit": 0.01,
+    "within_limit": true
+   },
+   "clear_film_white": {
+    "linear_rgb": [
+     1.00000006,
+     0.99999996,
+     1.0
+    ],
+    "within_limit": true
+   },
+   "light_table_interpolation": {
+    "largest_code": 0.2477,
+    "p999_code": 0.1296,
+    "limits": [
+     1.0,
+     0.25
+    ],
+    "within_limit": true
+   },
+   "extreme_input": {
+    "finite": true,
+    "inside_0_1": true,
+    "within_limit": true
+   },
+   "grey": {
+    "srgb_code": [
+     0.48750001192092896,
+     0.5069000124931335,
+     0.5209000110626221
+    ],
+    "status_a": [
+     0.845,
+     0.844,
+     0.843
+    ],
+    "clear_film_xyz": [
+     96.424,
+     100.0,
+     82.512
+    ],
+    "dye_curve_info": {
+     "largest_solve_residual": 0.00046398244585708394,
+     "largest_rise_removed": 0.005166378091757018,
+     "dye_amount_range": [
+      [
+       0.0,
+       0.0,
+       1.0531302599129418e-17
+      ],
+      [
+       3.194549753614794,
+       2.8464696411522197,
+       2.2891216238927394
+      ]
+     ]
+    }
+   },
+   "photo": {
+    "pixels": [
+     633,
+     953
+    ],
+    "model_s": 2.9,
+    "render_s": 0.27,
+    "finite": true
+   }
+  },
+  "fuji_astia_100f": {
+   "neutral_ramp": {
+    "largest_density_difference": 9e-05,
+    "limit": 0.01,
+    "within_limit": true
+   },
+   "clear_film_white": {
+    "linear_rgb": [
+     1.00000006,
+     0.99999996,
+     1.0
+    ],
+    "within_limit": true
+   },
+   "light_table_interpolation": {
+    "largest_code": 0.5824,
+    "p999_code": 0.2297,
+    "limits": [
+     1.0,
+     0.25
+    ],
+    "within_limit": true
+   },
+   "extreme_input": {
+    "finite": true,
+    "inside_0_1": true,
+    "within_limit": true
+   },
+   "grey": {
+    "srgb_code": [
+     0.48510000109672546,
+     0.5153999924659729,
+     0.5370000004768372
+    ],
+    "status_a": [
+     0.849,
+     0.849,
+     0.852
+    ],
+    "clear_film_xyz": [
+     96.424,
+     100.0,
+     82.512
+    ],
+    "dye_curve_info": {
+     "largest_solve_residual": 4.440892098500626e-16,
+     "largest_rise_removed": 0.00012652554383718595,
+     "dye_amount_range": [
+      [
+       4.1903352994962283e-17,
+       1.0546528674757454e-16,
+       4.552085472037326e-17
+      ],
+      [
+       3.654522205221149,
+       3.609485113211396,
+       3.3391595841847836
+      ]
+     ]
+    }
+   },
+   "photo": {
+    "pixels": [
+     633,
+     953
+    ],
+    "model_s": 3.21,
+    "render_s": 0.23,
+    "finite": true
+   }
+  },
+  "kodak_ektachrome_e100": {
+   "neutral_ramp": {
+    "largest_density_difference": 0.0017,
+    "limit": 0.01,
+    "within_limit": true
+   },
+   "clear_film_white": {
+    "linear_rgb": [
+     1.00000006,
+     0.99999996,
+     1.0
+    ],
+    "within_limit": true
+   },
+   "light_table_interpolation": {
+    "largest_code": 0.4209,
+    "p999_code": 0.1885,
+    "limits": [
+     1.0,
+     0.25
+    ],
+    "within_limit": true
+   },
+   "extreme_input": {
+    "finite": true,
+    "inside_0_1": true,
+    "within_limit": true
+   },
+   "grey": {
+    "srgb_code": [
+     0.49709999561309814,
+     0.5178999900817871,
+     0.5659000277519226
+    ],
+    "status_a": [
+     0.859,
+     0.88,
+     0.819
+    ],
+    "clear_film_xyz": [
+     96.423,
+     100.0,
+     82.512
+    ],
+    "dye_curve_info": {
+     "largest_solve_residual": 4.440892098500626e-16,
+     "largest_rise_removed": 0.0021891918957814838,
+     "dye_amount_range": [
+      [
+       0.0,
+       1.1149033035161962e-16,
+       5.1856579366476e-17
+      ],
+      [
+       3.1551107744640725,
+       3.451207179012072,
+       3.31708352827605
+      ]
+     ]
+    }
+   },
+   "photo": {
+    "pixels": [
+     633,
+     953
+    ],
+    "model_s": 2.91,
+    "render_s": 0.28,
+    "finite": true
+   }
+  }
+ },
+ "all_within_limits": true
+}

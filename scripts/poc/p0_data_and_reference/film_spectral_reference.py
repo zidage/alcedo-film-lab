@@ -250,6 +250,14 @@ class CharacteristicCurve:
         return float(np.interp(density, rising_d, rising_h))
 
 
+def falling_log_h_at(curve: CharacteristicCurve, density: float) -> float:
+    """Exposure where a falling curve (a reversal film, step P9) reaches the density, on its running minimum. A density outside the curve range is an error."""
+    falling = np.minimum.accumulate(curve.density)
+    if not falling[-1] <= density <= falling[0]:
+        raise ValueError(f"density {density} outside the curve range {falling[-1]:.3f} to {falling[0]:.3f}")
+    return float(np.interp(-density, -falling, curve.log_h))
+
+
 def characteristic_curves(profile: dict, channels: list[str]) -> dict[str, CharacteristicCurve]:
     chart = profile["charts"]["characteristic"]
     return {c: CharacteristicCurve(np.array(chart["curves"][c]["x"]), np.array(chart["curves"][c]["y"]))
@@ -503,6 +511,16 @@ class ReferenceModel:
 
         self.negative_curves = characteristic_curves(portra, ["red", "green", "blue"])
         self.paper_curves = characteristic_curves(endura, ["red", "green", "blue"])
+        self.film_type = portra.get("film_type", "negative")
+        if self.film_type == "reversal":
+            # Step P9. A reversal film has no print: its curves fall with exposure, and the printer balance does not exist. Rule 'reversal_criterion': Q_i = 1 is the exposure
+            # where the falling curve of layer i reaches the criterion density of the sensitivity chart (the chart states it; see the profile). D-min is the lowest density of the curve.
+            criterion = portra["charts"]["spectral_sensitivity"]["criterion"]
+            self.negative_curve_dmin = np.array([float(c.density.min()) for c in self.negative_curves.values()])
+            self.negative_criterion_log_h = np.array([falling_log_h_at(c, float(criterion["density"]) + (d if criterion["above_dmin"] else 0.0))
+                                                      for c, d in zip(self.negative_curves.values(), self.negative_curve_dmin)])
+            self.printer_balance_log10 = np.zeros(3)
+            return
         self.negative_criterion_log_h = np.array([c.log_h_at(c.d_min + NEGATIVE_CRITERION_ABOVE_DMIN)
                                                   for c in self.negative_curves.values()])
         self.negative_curve_dmin = np.array([c.d_min for c in self.negative_curves.values()])

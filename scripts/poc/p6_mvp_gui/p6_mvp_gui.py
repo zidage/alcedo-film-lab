@@ -56,7 +56,8 @@ class MainWindow(QMainWindow):
         self.after_render = None
         defaults = mp.RenderSettings()
         self.negative = self._combo(mp.CATALOG["negatives"], defaults.negative)
-        self.method = self._combo({"print": {"name": "Print"}, "apd": {"name": "APD scan (ADX, ACES output)"}}, defaults.method)
+        self.method = self._combo({"print": {"name": "Print"}, "apd": {"name": "APD scan (ADX, ACES output)"}, "light_table": {"name": "Reversal film on a light table"}}, defaults.method)
+        self.reversal = self._combo(mp.CATALOG["reversals"], defaults.reversal)
         self.print_material = self._combo(mp.CATALOG["prints"], defaults.print_material)
         self.light = self._combo({k: {"name": k} for k in mp.SCENE_LIGHTS}, defaults.scene_light)
         self.prior = self._combo({"light_like": {"name": "Light-like spectra"}, "measured_reflectance": {"name": "Measured reflectance"}}, defaults.spectral_prior)
@@ -89,7 +90,7 @@ class MainWindow(QMainWindow):
         groups["Scan"].addRow("ACES output", self.apd_output)
         groups["Scan"].addRow("", self.lad_aim)
         form = QFormLayout()
-        for label, widget in (("Negative", self.negative), ("Method", self.method), ("Print material", self.print_material), ("Scene light", self.light), ("Spectral prior", self.prior),
+        for label, widget in (("Negative", self.negative), ("Method", self.method), ("Reversal film", self.reversal), ("Print material", self.print_material), ("Scene light", self.light), ("Spectral prior", self.prior),
                               ("Exposure (EV)", self.exposure), ("Contrast", self.contrast), ("Saturation", self.saturation), ("Long edge (pixels)", self.long_edge)):
             form.addRow(label, widget)
         open_button = QPushButton("Open RAW...")
@@ -159,7 +160,7 @@ class MainWindow(QMainWindow):
         return spin
 
     def settings(self) -> mp.RenderSettings:
-        return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
+        return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), reversal=self.reversal.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
                                  spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
                                  display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), **{name: spin.value() for name, spin in self.controls.items()})
 
@@ -180,8 +181,12 @@ class MainWindow(QMainWindow):
         self.schedule()
 
     def _update_visibility(self) -> None:
-        scan = self.method.currentData() == "apd"
-        self.print_material.setEnabled(not scan)
+        method = self.method.currentData()
+        scan, light_table = method == "apd", method == "light_table"
+        self.negative.setEnabled(not light_table)
+        self.reversal.setEnabled(light_table)
+        self.print_material.setEnabled(method == "print")
+        # The print group holds 'Enlarger flare', which is the loupe flare of the light table; its other controls do not act there.
         self.groups["Print"].setEnabled(not scan)
         self.groups["Scan"].setEnabled(scan)
 
