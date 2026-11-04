@@ -56,7 +56,8 @@ class MainWindow(QMainWindow):
         self.after_render = None
         defaults = mp.RenderSettings()
         self.negative = self._combo(mp.CATALOG["negatives"], defaults.negative)
-        self.method = self._combo({"print": {"name": "Print"}, "apd": {"name": "APD scan (ADX, ACES output)"}, "light_table": {"name": "Reversal film on a light table"}}, defaults.method)
+        self.method = self._combo({"print": {"name": "Print"}, "apd": {"name": "APD scan (ADX, ACES output)"}, "light_table": {"name": "Reversal film on a light table"},
+                                   "chart_scan": {"name": "Scan, chart calibrated (log curve)"}}, defaults.method)
         self.reversal = self._combo(mp.CATALOG["reversals"], defaults.reversal)
         self.print_material = self._combo(mp.CATALOG["prints"], defaults.print_material)
         self.light = self._combo({k: {"name": k} for k in mp.SCENE_LIGHTS}, defaults.scene_light)
@@ -182,13 +183,14 @@ class MainWindow(QMainWindow):
 
     def _update_visibility(self) -> None:
         method = self.method.currentData()
-        scan, light_table = method == "apd", method == "light_table"
+        scan, light_table, chart_scan = method == "apd", method == "light_table", method == "chart_scan"
         self.negative.setEnabled(not light_table)
         self.reversal.setEnabled(light_table)
         self.print_material.setEnabled(method == "print")
         # The print group holds 'Enlarger flare', which is the loupe flare of the light table; its other controls do not act there.
-        self.groups["Print"].setEnabled(not scan)
+        self.groups["Print"].setEnabled(not scan and not chart_scan)
         self.groups["Scan"].setEnabled(scan)
+        self.groups["Chart scan"].setEnabled(chart_scan)
 
     @Slot()
     def schedule(self) -> None:

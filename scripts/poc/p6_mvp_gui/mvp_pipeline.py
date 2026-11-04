@@ -14,6 +14,10 @@ Rules of this step:
 - 'negative_show_grade': on for the tungsten stocks on print material cine_look (ROADMAP U82 to U84); see negative_grade.py.
 - 'light_table' (step P9, ROADMAP U86): the method of the reversal films of reversal_catalog.json, with no print. The film is the field 'reversal'; see scripts/poc/p9_reversal_light_table/reversal_film.py.
   The controls of the negative act on the slide, 'Enlarger flare' is the flare of the loupe, and the print controls do not act.
+- 'chart_scan' (step P10, ROADMAP U88): the negative of the stock read with Status M densitometry, inverted from a chart and a grey scale photographed
+  on the same stock (scripts/poc/p10_chart_scan/chart_scan.py, SELECTED_FORM): the straight line of the grey scale per channel, the sensitivity
+  matrix of the stock, the scan timing of option print_timing, the display compression on Rec. 709, and a log curve per channel. No ACES
+  output transform and no statistic of a frame. The print controls do not act.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -60,7 +64,7 @@ STOCK_PRINT_FIELDS = ("print_profile", "print_midscale_status_a", "viewing_cct_k
 REFERENCE_LIGHT = "reference"
 SCENE_LIGHTS = (REFERENCE_LIGHT, *fp.PRODUCT_LIGHTS, *fp.SCENE_PRESETS)
 SPECTRAL_PRIORS = ("light_like", "measured_reflectance")
-METHODS = ("print", "apd", "light_table")
+METHODS = ("print", "apd", "light_table", "chart_scan")
 REVERSAL_ORDER = ("fuji_velvia_50", "fuji_velvia_100", "fuji_provia_100f", "fuji_astia_100f", "kodak_ektachrome_e100")
 CATALOG["reversals"] = {key: rf.CATALOG["films"][key] for key in REVERSAL_ORDER}
 SCAN_CARRIER_PRINT = "kodak_2383"
@@ -72,6 +76,7 @@ DISPLAY_WHITES = (MEDIUM_WHITE, "reflector", "paper", "print_dmin")
 PRINT = ("print",)
 SCAN = ("apd",)
 LIGHT_TABLE = ("light_table",)
+CHART_SCAN = ("chart_scan",)
 BOTH = METHODS
 
 
@@ -91,7 +96,7 @@ class Control:
 
 
 CONTROLS = (
-    Control("overexposure_stops", "Overexposure (stops)", "Negative", -2.0, 4.0, 0.25, 2, (*PRINT, *SCAN), "Rule overexposed_negative: the negative takes more light, and the printer lights take it back. It moves the shadows off the toe."),
+    Control("overexposure_stops", "Overexposure (stops)", "Negative", -2.0, 4.0, 0.25, 2, (*PRINT, *SCAN, *CHART_SCAN), "Rule overexposed_negative: the negative takes more light, and the printer lights take it back. It moves the shadows off the toe."),
     Control("inhibition_scale", "Development inhibition", "Negative", 0.0, 1.5, 0.1, 2, BOTH, "Scale of the inhibition from the modulation transfer curves. 0: off. A stock with no curve has no inhibition."),
     Control("layer_spread_scale", "Light spread", "Negative", 0.0, 3.0, 0.25, 2, BOTH, "Scale of the spread length of each layer. 0: off. A stock with no curve has no spread."),
     Control("halation_scale", "Halation", "Negative", 0.0, 8.0, 0.5, 2, BOTH, "Scale of the halation strength. 0: off."),
@@ -102,8 +107,9 @@ CONTROLS = (
     Control("print_flash", "Paper flash", "Print", 0.0, 0.2, 0.01, 3, PRINT, "Uniform exposure of the paper, as a share of the balance exposure. It softens the print highlights."),
     Control("enlarger_flare", "Enlarger flare", "Print", 0.0, 0.1, 0.005, 3, (*PRINT, *LIGHT_TABLE), "Stray light of the enlarger lens, as a share of the light. It lifts the print shadows. On the light table: the flare of the loupe, in linear light; it lifts the shadows of the slide."),
     Control("viewing_flare", "Surface reflection", "Print", 0.0, 0.03, 0.001, 4, PRINT, "Reflection of the print surface. It lifts the black."),
-    Control("print_timing", "Timing", "Negative", 0.0, 1.0, 0.1, 2, (*PRINT, *SCAN), "Share of the mid grey cast of the scene light that the printer lights or the scanner offset remove. It acts when the scene light is not 'reference', and on a stock with a relative sensitivity chart."),
+    Control("print_timing", "Timing", "Negative", 0.0, 1.0, 0.1, 2, (*PRINT, *SCAN, *CHART_SCAN), "Share of the mid grey cast of the scene light that the printer lights, the scanner offset, or the grey of the chart scan remove. It acts when the scene light is not 'reference', and on a stock with a relative sensitivity chart."),
     Control("apd_exposure_stops", "Scanner light (stops)", "Scan", -3.0, 3.0, 0.25, 2, SCAN, "One neutral offset of the ADX10 code values. 0: the mid grey at code value 445, as the ADX to ACES transform assumes. +0.53 on ACES 2.0 and +0.37 on ACES 1.3 show the grey of the print (P3 report)."),
+    Control("chart_scan_exposure_stops", "Scan exposure (stops)", "Chart scan", -3.0, 3.0, 0.25, 2, CHART_SCAN, "Rule scan_exposure: one neutral scale of the scene values before the log curve, as a scanner light. 0: the grey of the chart shows as a digital grey."),
 )
 
 
@@ -135,6 +141,7 @@ class RenderSettings:
     display_white: str = MEDIUM_WHITE
     gamut_compress: bool = bool(fp.DARKROOM["gamut_compress"])
     apd_exposure_stops: float = 0.0
+    chart_scan_exposure_stops: float = 0.0
     apd_lad_aim: bool = True
     apd_output: str = "aces20"
 
@@ -239,6 +246,8 @@ def control_values(settings: RenderSettings, method: str) -> tuple:
     values = (settings.foliage, settings.negative_grade, *(getattr(settings, c.name) for c in CONTROLS if method in c.methods))
     if method == "light_table":
         return (*values, settings.gamut_compress)
+    if method == "chart_scan":
+        return values
     return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output)
 
 
@@ -293,12 +302,23 @@ class Pipeline:
         negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "apd" not in c.methods})
         return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim, exposure_stops=settings.apd_exposure_stops))
 
+    def chart_scan_model(self, settings: RenderSettings):
+        sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
+        import chart_scan as cs  # step P10; imported here so that the other methods do not read the chart
+
+        negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "chart_scan" not in c.methods})
+        return self._model(("chart_scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "chart_scan")),
+                           lambda: cs.ChartScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), cs.cached_chart(), **cs.SELECTED_FORM,
+                                                       scan_timing=settings.print_timing, exposure_stops=settings.chart_scan_exposure_stops))
+
     def light_table_model(self, settings: RenderSettings) -> rf.ReversalPreview:
         return self._model(("light_table", settings.reversal, settings.scene_light, settings.spectral_prior, control_values(settings, "light_table")), lambda: rf.ReversalPreview(light_table_options(settings)))
 
     def colorimetry(self, settings: RenderSettings):
         if settings.method == "light_table":
             return self.light_table_model(settings).c
+        if settings.method == "chart_scan":
+            return self.chart_scan_model(settings).negative.c
         return self.print_model(settings).c if settings.method == "print" else self.scan_model(settings).negative.c
 
     def render_array(self, ap1: np.ndarray, settings: RenderSettings) -> np.ndarray:
@@ -309,6 +329,8 @@ class Pipeline:
             image = np.asarray(self.print_model(settings).render(graded)[0], dtype=np.float32)
         elif settings.method == "light_table":
             image = np.asarray(self.light_table_model(settings).render(graded)[0], dtype=np.float32)
+        elif settings.method == "chart_scan":
+            image = np.asarray(self.chart_scan_model(settings).render(graded)[0], dtype=np.float32)
         else:
             image = np.asarray(self.scan_model(settings).render(graded)[0], dtype=np.float32)
         if not np.isfinite(image).all():

@@ -1,0 +1,274 @@
+{
+ "kodak_portra_400": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  }
+ },
+ "kodak_5207": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  }
+ },
+ "kodak_ektar_100": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  }
+ },
+ "kodak_5219": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0
+   }
+  }
+ }
+}

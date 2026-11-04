@@ -1,0 +1,322 @@
+{
+ "kodak_portra_400": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "straight line, clip": 0.1823,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "straight line, clip": 0.0224,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "straight line, clip": 0.1009,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "straight line, clip": 0.0689,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "straight line, clip": 0.0564,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "straight line, clip": 0.0004,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  }
+ },
+ "kodak_5207": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "straight line, clip": 0.1778,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "straight line, clip": 0.0159,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "straight line, clip": 0.024,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "straight line, clip": 0.0636,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "straight line, clip": 0.042,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "straight line, clip": 0.0,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  }
+ },
+ "kodak_ektar_100": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "straight line, clip": 0.0052,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "straight line, clip": 0.0205,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "straight line, clip": 0.2497,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "straight line, clip": 0.0755,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "straight line, clip": 0.0514,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "straight line, clip": 0.0003,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  }
+ },
+ "kodak_5219": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "straight line, clip": 0.1792,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "straight line, clip": 0.0147,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "straight line, clip": 0.0244,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "straight line, clip": 0.0612,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "straight line, clip": 0.0461,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "straight line, clip": 0.0,
+    "straight line, channel curve": 0.0,
+    "straight line, log curve": 0.0
+   },
+   "record_outside_curve": {
+    "straight line, clip": 0,
+    "straight line, channel curve": 0,
+    "straight line, log curve": 0
+   }
+  }
+ }
+}

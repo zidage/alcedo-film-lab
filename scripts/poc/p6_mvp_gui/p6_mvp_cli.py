@@ -1,7 +1,7 @@
-"""Command line of the Python MVP: one RAW file to one TIFF or JPEG, by the print method, the APD scan method, or a reversal film on a light table (step P9).
+"""Command line of the Python MVP: one RAW file to one TIFF or JPEG, by the print method, the APD scan method, a reversal film on a light table (step P9), or the chart-calibrated scan (step P10).
 
 Input: a RAW file; the options below. Output: the image and a parameter file <output>.json. Step: P6, ROADMAP U61.
-Usage: p6_mvp_cli.py INPUT OUTPUT [--negative NAME] [--method print|apd|light_table] [--reversal NAME] [--print-material NAME] [--scene-light NAME] [--spectral-prior NAME] [--list], and one option per entry of mvp_pipeline.CONTROLS, for example --print-contrast 1.0.
+Usage: p6_mvp_cli.py INPUT OUTPUT [--negative NAME] [--method print|apd|light_table|chart_scan] [--reversal NAME] [--print-material NAME] [--scene-light NAME] [--spectral-prior NAME] [--list], and one option per entry of mvp_pipeline.CONTROLS, for example --print-contrast 1.0.
 """
 
 from __future__ import annotations

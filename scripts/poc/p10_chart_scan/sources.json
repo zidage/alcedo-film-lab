@@ -1,0 +1,15 @@
+{
+  "description": "Source files of step P10. fetch_sources.py downloads each file to build/tmp/p10/sources/ and stops with an error when a SHA-256 hash differs.",
+  "retrieved": "2026-11-03",
+  "sources": [
+    {
+      "file": "ColorChecker_RGB_and_spectra.zip",
+      "url": "https://www.babelcolor.com/index_htm_files/ColorChecker_RGB_and_spectra.zip",
+      "sha256": "6ec58d7b72b5d0a7372928a552982cf9b613d459de3d0f1214a188ef31d1211f",
+      "title": "BabelColor, ColorChecker RGB and spectra: the BabelColor Avg of 30 ColorChecker charts (pre-2009 and later), spectral reflectance 380-730 nm in 10 nm steps, sheet 'spectral_data' of ColorChecker_RGB_and_spectra.xls",
+      "edition": "file as served on 2026-11-03; the workbook states 30 charts",
+      "license": "Published for free download by BabelColor (Danny Pascale); the file states no redistribution terms. Do not commit the file or the spectra.",
+      "use": "Spectral reflectance of the 24 patches: the chart of rule 'chart_calibrated_scan'."
+    }
+  ]
+}

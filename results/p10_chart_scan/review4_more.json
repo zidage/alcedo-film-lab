@@ -1,0 +1,478 @@
+{
+ "kodak_portra_400": {
+  "portrait/1099463.RW2": {
+   "clipped_share": {
+    "digital": 0.0604,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "landscape/_DSC9729.ARW": {
+   "clipped_share": {
+    "digital": 0.0002,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "artificial_lights/3754960364.dng": {
+   "clipped_share": {
+    "digital": 0.0952,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "night/4928099113.nef": {
+   "clipped_share": {
+    "digital": 0.0405,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "daylight/5897833591.dng": {
+   "clipped_share": {
+    "digital": 0.0188,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "film_emulation/4516784837.dng": {
+   "clipped_share": {
+    "digital": 0.0438,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "airplane/_DSC1704.NEF": {
+   "clipped_share": {
+    "digital": 0.0012,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "signature_edits/credit @ryanbreitkreutz P1073454.RW2": {
+   "clipped_share": {
+    "digital": 0.001,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "item/_DSC0915.ARW": {
+   "clipped_share": {
+    "digital": 0.0122,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  }
+ },
+ "kodak_5207": {
+  "portrait/1099463.RW2": {
+   "clipped_share": {
+    "digital": 0.0604,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "landscape/_DSC9729.ARW": {
+   "clipped_share": {
+    "digital": 0.0002,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "artificial_lights/3754960364.dng": {
+   "clipped_share": {
+    "digital": 0.0952,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "night/4928099113.nef": {
+   "clipped_share": {
+    "digital": 0.0405,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "daylight/5897833591.dng": {
+   "clipped_share": {
+    "digital": 0.0188,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "film_emulation/4516784837.dng": {
+   "clipped_share": {
+    "digital": 0.0438,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "airplane/_DSC1704.NEF": {
+   "clipped_share": {
+    "digital": 0.0012,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "signature_edits/credit @ryanbreitkreutz P1073454.RW2": {
+   "clipped_share": {
+    "digital": 0.001,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "item/_DSC0915.ARW": {
+   "clipped_share": {
+    "digital": 0.0122,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  }
+ },
+ "kodak_ektar_100": {
+  "portrait/1099463.RW2": {
+   "clipped_share": {
+    "digital": 0.0604,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "landscape/_DSC9729.ARW": {
+   "clipped_share": {
+    "digital": 0.0002,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "artificial_lights/3754960364.dng": {
+   "clipped_share": {
+    "digital": 0.0952,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "night/4928099113.nef": {
+   "clipped_share": {
+    "digital": 0.0405,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "daylight/5897833591.dng": {
+   "clipped_share": {
+    "digital": 0.0188,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "film_emulation/4516784837.dng": {
+   "clipped_share": {
+    "digital": 0.0438,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "airplane/_DSC1704.NEF": {
+   "clipped_share": {
+    "digital": 0.0012,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "signature_edits/credit @ryanbreitkreutz P1073454.RW2": {
+   "clipped_share": {
+    "digital": 0.001,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "item/_DSC0915.ARW": {
+   "clipped_share": {
+    "digital": 0.0122,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  }
+ },
+ "kodak_5219": {
+  "portrait/1099463.RW2": {
+   "clipped_share": {
+    "digital": 0.0604,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "landscape/_DSC9729.ARW": {
+   "clipped_share": {
+    "digital": 0.0002,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "artificial_lights/3754960364.dng": {
+   "clipped_share": {
+    "digital": 0.0952,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "night/4928099113.nef": {
+   "clipped_share": {
+    "digital": 0.0405,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "daylight/5897833591.dng": {
+   "clipped_share": {
+    "digital": 0.0188,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "film_emulation/4516784837.dng": {
+   "clipped_share": {
+    "digital": 0.0438,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "airplane/_DSC1704.NEF": {
+   "clipped_share": {
+    "digital": 0.0012,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "signature_edits/credit @ryanbreitkreutz P1073454.RW2": {
+   "clipped_share": {
+    "digital": 0.001,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  },
+  "item/_DSC0915.ARW": {
+   "clipped_share": {
+    "digital": 0.0122,
+    "log curve (round 3)": 0.0,
+    "log curve + sensitivity matrix + scan timing": 0.0,
+    "same + display compression": 0.0
+   },
+   "record_outside_curve": {
+    "log curve (round 3)": 0,
+    "log curve + sensitivity matrix + scan timing": 0,
+    "same + display compression": 0
+   }
+  }
+ }
+}

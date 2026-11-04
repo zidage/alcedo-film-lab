@@ -1,0 +1,482 @@
+{
+ "kodak_portra_400": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "curves only": 0.1801,
+    "straight line only": 0.1823,
+    "straight line + matrix": 0.179
+   },
+   "record_outside_curve": {
+    "curves only": 226,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "curves only": 0.0223,
+    "straight line only": 0.0224,
+    "straight line + matrix": 0.0221
+   },
+   "record_outside_curve": {
+    "curves only": 0,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "curves only": 0.1043,
+    "straight line only": 0.1009,
+    "straight line + matrix": 0.0148
+   },
+   "record_outside_curve": {
+    "curves only": 0,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "curves only": 0.0673,
+    "straight line only": 0.0689,
+    "straight line + matrix": 0.0501
+   },
+   "record_outside_curve": {
+    "curves only": 64051,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "curves only": 0.0602,
+    "straight line only": 0.0564,
+    "straight line + matrix": 0.0534
+   },
+   "record_outside_curve": {
+    "curves only": 26128,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "curves only": 0.0009,
+    "straight line only": 0.0004,
+    "straight line + matrix": 0.0
+   },
+   "record_outside_curve": {
+    "curves only": 3144,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  }
+ },
+ "kodak_5207": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "curves only": 0.1784,
+    "straight line only": 0.1778,
+    "straight line + matrix": 0.1766
+   },
+   "record_outside_curve": {
+    "curves only": 13,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "curves only": 0.0153,
+    "straight line only": 0.0159,
+    "straight line + matrix": 0.0208
+   },
+   "record_outside_curve": {
+    "curves only": 0,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "curves only": 0.0241,
+    "straight line only": 0.024,
+    "straight line + matrix": 0.014
+   },
+   "record_outside_curve": {
+    "curves only": 0,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "curves only": 0.0638,
+    "straight line only": 0.0636,
+    "straight line + matrix": 0.0523
+   },
+   "record_outside_curve": {
+    "curves only": 6919,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "curves only": 0.0466,
+    "straight line only": 0.042,
+    "straight line + matrix": 0.0436
+   },
+   "record_outside_curve": {
+    "curves only": 13727,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "curves only": 0.0005,
+    "straight line only": 0.0,
+    "straight line + matrix": 0.0
+   },
+   "record_outside_curve": {
+    "curves only": 89,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  }
+ },
+ "kodak_ektar_100": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "curves only": 0.1855,
+    "straight line only": 0.0052,
+    "straight line + matrix": 0.0013
+   },
+   "record_outside_curve": {
+    "curves only": 1321,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "curves only": 0.0223,
+    "straight line only": 0.0205,
+    "straight line + matrix": 0.0191
+   },
+   "record_outside_curve": {
+    "curves only": 27,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "curves only": 0.2273,
+    "straight line only": 0.2497,
+    "straight line + matrix": 0.0119
+   },
+   "record_outside_curve": {
+    "curves only": 5,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "curves only": 0.0839,
+    "straight line only": 0.0755,
+    "straight line + matrix": 0.0457
+   },
+   "record_outside_curve": {
+    "curves only": 111881,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "curves only": 0.0583,
+    "straight line only": 0.0514,
+    "straight line + matrix": 0.0466
+   },
+   "record_outside_curve": {
+    "curves only": 26326,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "curves only": 0.0023,
+    "straight line only": 0.0003,
+    "straight line + matrix": 0.0
+   },
+   "record_outside_curve": {
+    "curves only": 36932,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  }
+ },
+ "kodak_portra_160": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "curves only": 0.1791,
+    "straight line only": 0.1766,
+    "straight line + matrix": 0.1722
+   },
+   "record_outside_curve": {
+    "curves only": 8536,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "curves only": 0.0174,
+    "straight line only": 0.0182,
+    "straight line + matrix": 0.025
+   },
+   "record_outside_curve": {
+    "curves only": 5965,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "curves only": 0.0252,
+    "straight line only": 0.0285,
+    "straight line + matrix": 0.0145
+   },
+   "record_outside_curve": {
+    "curves only": 138,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "curves only": 0.0537,
+    "straight line only": 0.0558,
+    "straight line + matrix": 0.0497
+   },
+   "record_outside_curve": {
+    "curves only": 187079,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "curves only": 0.0503,
+    "straight line only": 0.0651,
+    "straight line + matrix": 0.0671
+   },
+   "record_outside_curve": {
+    "curves only": 39943,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "curves only": 0.0003,
+    "straight line only": 0.0,
+    "straight line + matrix": 0.0
+   },
+   "record_outside_curve": {
+    "curves only": 130830,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  }
+ },
+ "fuji_superia_xtra_400": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "curves only": 0.1788,
+    "straight line only": 0.1731,
+    "straight line + matrix": 0.0037
+   },
+   "record_outside_curve": {
+    "curves only": 287,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "curves only": 0.0195,
+    "straight line only": 0.0206,
+    "straight line + matrix": 0.0274
+   },
+   "record_outside_curve": {
+    "curves only": 0,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "curves only": 0.0274,
+    "straight line only": 0.0264,
+    "straight line + matrix": 0.0144
+   },
+   "record_outside_curve": {
+    "curves only": 0,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "curves only": 0.0632,
+    "straight line only": 0.0594,
+    "straight line + matrix": 0.0469
+   },
+   "record_outside_curve": {
+    "curves only": 37103,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "curves only": 0.0377,
+    "straight line only": 0.029,
+    "straight line + matrix": 0.0292
+   },
+   "record_outside_curve": {
+    "curves only": 27951,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "curves only": 0.0004,
+    "straight line only": 0.0001,
+    "straight line + matrix": 0.0
+   },
+   "record_outside_curve": {
+    "curves only": 4092,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  }
+ },
+ "kodak_5219": {
+  "portrait/P1031513.RW2": {
+   "clipped_share": {
+    "digital": 0.1714,
+    "curves only": 0.1788,
+    "straight line only": 0.1792,
+    "straight line + matrix": 0.1763
+   },
+   "record_outside_curve": {
+    "curves only": 138,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "plant/_DSC0180.ARW": {
+   "clipped_share": {
+    "digital": 0.016,
+    "curves only": 0.015,
+    "straight line only": 0.0147,
+    "straight line + matrix": 0.0166
+   },
+   "record_outside_curve": {
+    "curves only": 0,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "daylight/0691416133.dng": {
+   "clipped_share": {
+    "digital": 0.0127,
+    "curves only": 0.0244,
+    "straight line only": 0.0244,
+    "straight line + matrix": 0.0141
+   },
+   "record_outside_curve": {
+    "curves only": 0,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "cat/_DSC1103.NEF": {
+   "clipped_share": {
+    "digital": 0.0586,
+    "curves only": 0.0638,
+    "straight line only": 0.0612,
+    "straight line + matrix": 0.0511
+   },
+   "record_outside_curve": {
+    "curves only": 9124,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "film_emulation/212A8758.CR3": {
+   "clipped_share": {
+    "digital": 0.0361,
+    "curves only": 0.0589,
+    "straight line only": 0.0461,
+    "straight line + matrix": 0.0455
+   },
+   "record_outside_curve": {
+    "curves only": 11165,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  },
+  "street/_DSC0155.NEF": {
+   "clipped_share": {
+    "digital": 0.0001,
+    "curves only": 0.0004,
+    "straight line only": 0.0,
+    "straight line + matrix": 0.0
+   },
+   "record_outside_curve": {
+    "curves only": 414,
+    "straight line only": 0,
+    "straight line + matrix": 0
+   }
+  }
+ }
+}
