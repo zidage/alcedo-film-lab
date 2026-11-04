@@ -38,7 +38,7 @@ user turns the LAD aim on, applies the Academy ADX10 to ACES transform, and show
 - 'common/adx10_*': the constants of the ADX10 to ACES transform (aces-dev v1.3.1, A.M.P.A.S. license): scale, cdd_to_cid, exp_to_aces (row
   vectors), lut_cid, lut_log_e, ref_pt.
 - Metadata 'lab_scan': the id, the name, and the print material of the printing weights.
-Scene light 'as_shot' (U92): the scene lights hold a grid of colour temperature, CCT_GRID_MIRED (10 mired from 500 to 70, and 15000 K), named
+Scene light 'as_shot' (U92): the scene lights hold a grid of colour temperature, CCT_GRID_MIRED (5 mired from 500 to 70, and 15000 K), named
 'CCT<kelvin>', each from film_preview.cct_light (Planckian to 4000 K, CIE daylight from 5000 K, a blend linear in mired between). Metadata
 'cct_grid' holds the mired, the kelvin, and the names. The product blends the two nodes around the colour temperature of the RAW decode, linear in
 mired: the spectra (each with Y = 1) and the setup values of the light. A colour temperature outside the grid takes the nearest end.
@@ -101,8 +101,9 @@ SCAN_EXPECTED_SELECTIONS = (("kodak_5207", "reference"), ("kodak_portra_400", "r
 SCAN_BLEND_SELECTIONS = (("kodak_5219", 5650.0), ("kodak_5207", 3100.0))
 SCAN_RANDOM_CHECKS = 4
 SCAN_POINT_LIMIT = 1e-9
-CCT_GRID_MIRED = (*(float(m) for m in range(500, 69, -10)), 1e6 / 15000.0)
-CCT_BLEND_CHECKS = (495.0, 335.0, 245.0, 205.0, 195.0, 105.0)  # mired, mid-points of grid segments (U92 probe: largest 0.11 code)
+# 5 mired from 500 to 70, and 15000 K. A step of 10 mired gave up to 0.0115 stops between the blend and the exact light (5128 K, Portra 400, LAD aim on).
+CCT_GRID_MIRED = (*(float(m) for m in range(500, 69, -5)), 1e6 / 15000.0)
+CCT_BLEND_CHECKS = (497.5, 337.5, 252.5, 247.5, 222.5, 202.5, 197.5, 102.5, 72.5)  # mired, mid-points of grid segments
 CCT_BLEND_LIMIT = 0.5  # print, 8 bit sRGB code
 # Scan: ACES2065-1 in stops for values above 2^-10, the form of the scan tests of issue 661. Through ACES 2.0 the same blend shows up to 0.75 code
 # at bright saturated blue (ACES B about 4), where the gamut compression of the display is steep: 0.0015 stops there (U92 probe). Recorded, not limited.
