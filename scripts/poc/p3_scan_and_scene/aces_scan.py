@@ -25,6 +25,15 @@ Stages:
    'aces20'. Option reading (U92): 'apd' (ST 2065-2) or 'print2383', the printing density of the print material of the options (Kodak 2383
    in the viewer: the printer lamp times the published spectral sensitivity of the paper), which stands for APD and can ship. Option
    drt_grey (U92, with 'agx' and 'opendrt'): 'aces20' moves the exposure as above; 'native' gives ACES 0.18 to the transform as 0.18.
+Option encoding (U93): 'adx10' (code values 0-1023, the clip near +7 stops above the grey) or 'adx16' (ST 2065-3 ADX16: 8000 code values per
+density, D-min at 1520, the LAD aim at 7120, clip 0-65535, so no clip in the range of a negative). The transform to ACES is the same on cdd =
+(code - D-min code) / code values per density, as ACEScsc.Academy.ADX16_to_ACES of aces-dev.
+Rule 'adx_slope_match' (option slope_match, U93): the scale 1.00, 0.92, 0.95 of equation 2 suits a motion picture negative, whose channels
+then rise by about the same code values per stop. A negative for colour paper read in printing density has a steeper red and blue (Portra 400:
+95, 79, 89 ADX10 per stop at the grey under daylight), so the scan turns red above the grey and cyan below. The rule gives the red and the blue
+the slope of green at the grey: s_c = 0.92 * slope_G / slope_c, where slope is the printing density per stop of the 18 % grey of the scene light
+(central difference at 2^-1 and 2^+1 of 0.18). The pivot is that grey (density D_g): code = code(D_g with the scale of equation 2) +
+s * (D - D_g) * code values per density. So the grey keeps the code of equation 2 (the LAD aim off keeps its cast), and only the slope changes.
 """
 
 from __future__ import annotations
@@ -47,6 +56,8 @@ ADX10_PER_DENSITY = 500.0
 ADX10_DMIN = 95.0
 ADX10_LAD = 445.0
 ADX10_PER_STOP = float(np.log10(2.0)) * 0.55 * ADX10_PER_DENSITY  # the transform has a slope of 100 / 55
+# U93: (code values per density, code of D-min, LAD aim, largest code)
+ENCODINGS = {"adx10": (ADX10_PER_DENSITY, ADX10_DMIN, ADX10_LAD, 1023.0), "adx16": (8000.0, 1520.0, 7120.0, 65535.0)}
 OUTPUT_TRANSFORMS = {"aces13": "ACES-OUTPUT - ACES2065-1_to_CIE-XYZ-D65 - SDR-VIDEO_1.0",
                      "aces20": "ACES-OUTPUT - ACES2065-1_to_CIE-XYZ-D65 - SDR-100nit-REC709_2.0"}
 DISPLAY_TRANSFORM = "DISPLAY - CIE-XYZ-D65_to_sRGB"
@@ -80,8 +91,12 @@ def adx10_from_apd(apd: np.ndarray, apd_dmin: np.ndarray) -> np.ndarray:
 
 def adx10_to_aces(adx10: np.ndarray) -> np.ndarray:
     """Port of the ADX10 to ACES transform; the input is in code values (0-1023)."""
-    cdd = (np.asarray(adx10, dtype=np.float64) - ADX10_DMIN) / ADX10_PER_DENSITY
-    cid = cdd @ CDD_TO_CID
+    return cdd_to_aces((np.asarray(adx10, dtype=np.float64) - ADX10_DMIN) / ADX10_PER_DENSITY)
+
+
+def cdd_to_aces(cdd: np.ndarray) -> np.ndarray:
+    """The ADX10 and ADX16 to ACES transforms after the step to cdd (aces-dev v1.3.1)."""
+    cid = np.asarray(cdd, dtype=np.float64) @ CDD_TO_CID
     log_e = np.where(cid <= 0.6, np.interp(cid, LUT_CID, LUT_LOG_E), (100.0 / 55.0) * cid - REF_PT)
     return (10.0 ** log_e) @ EXP_TO_ACES
 
@@ -111,7 +126,14 @@ class ScanPreview:
     and the enlarger flare is off, because the scan has no enlarger."""
 
     def __init__(self, options: fp.FilmOptions, output: str = "aces20", timing: float | None = None, lad_aim: bool = True, exposure_stops: float = 0.0,
-                 scanner: tuple[str, np.ndarray, np.ndarray] | None = None, reading: str = "apd", drt_grey: str = "aces20") -> None:
+                 scanner: tuple[str, np.ndarray, np.ndarray] | None = None, reading: str = "apd", drt_grey: str = "aces20", encoding: str = "adx10",
+                 slope_match: bool = False) -> None:
+        if encoding not in ENCODINGS:
+            raise ValueError(f"unknown encoding {encoding!r}")
+        self.encoding = encoding
+        self.per_density, self.code_dmin, self.code_lad, self.code_max = ENCODINGS[encoding]
+        self.scale = ADX10_SCALE.copy()
+        self.pivot = None
         if drt_grey not in DRT_GREYS:
             raise ValueError(f"unknown DRT grey {drt_grey!r}")
         self.drt_grey = drt_grey
@@ -136,6 +158,8 @@ class ScanPreview:
         self.apd_weights = responsivities
         self.apd_dmin = self.apd(film.negative_dmin[None])[0]
         self.table = self._build_table()
+        if slope_match:
+            self.scale, self.pivot = self.slope_match(self.negative.options.scene_light)
         self.offset = self._adx_offset()
         if output in DRT_OUTPUTS:
             self.output_cpu = None
@@ -176,23 +200,40 @@ class ScanPreview:
         q = n.layer_gain * n.c.layer_exposure(scene_value * n.light(light))
         return self.table_apd(n.negative_density(q[None])[0])[0]
 
+    def slope_match(self, light: str) -> tuple[np.ndarray, np.ndarray]:
+        """Rule 'adx_slope_match': the channel scale and the pivot (printing density of the 18 % grey) under a light."""
+        slope = (self.grey_apd(light, 0.36) - self.grey_apd(light, 0.09)) / 2.0
+        return ADX10_SCALE[1] * slope[1] / slope, self.grey_apd(light)
+
+    def code(self, apd: np.ndarray) -> np.ndarray:
+        """Code values of the encoding without the offset: equation 2 of ST 2065-3, or rule 'adx_slope_match'."""
+        if self.pivot is None:
+            return ADX10_SCALE * (apd - self.apd_dmin) * self.per_density + self.code_dmin
+        return ADX10_SCALE * (self.pivot - self.apd_dmin) * self.per_density + self.code_dmin + self.scale * (apd - self.pivot) * self.per_density
+
     def grey_adx(self, light: str) -> np.ndarray:
-        """ADX10 without the offset, of an 18 % grey under a light."""
-        return adx10_from_apd(self.grey_apd(light), self.apd_dmin)
+        """Code values without the offset, of an 18 % grey under a light."""
+        return self.code(self.grey_apd(light))
 
     def _adx_offset(self) -> np.ndarray:
+        per_stop = ADX10_PER_STOP * self.per_density / ADX10_PER_DENSITY
         if not self.lad_aim:
-            return np.full(3, self.exposure_stops * ADX10_PER_STOP)
+            return np.full(3, self.exposure_stops * per_stop)
         o = self.negative.options
-        balance = ADX10_LAD - self.grey_adx(o.balance_light)
-        return balance + self.timing * (ADX10_LAD - self.grey_adx(o.scene_light) - balance) + self.exposure_stops * ADX10_PER_STOP
+        balance = self.code_lad - self.grey_adx(o.balance_light)
+        return balance + self.timing * (self.code_lad - self.grey_adx(o.scene_light) - balance) + self.exposure_stops * per_stop
 
     def adx10(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
+        """Code values of the encoding (ADX10 or ADX16, option encoding) with the offset, clipped."""
         image = np.ascontiguousarray(ap1, dtype=np.float32)
         status_m, stats = self.negative.negative_image(image[None] if image.ndim == 2 else image)
-        code = adx10_from_apd(self.table_apd(status_m), self.apd_dmin) + self.offset
-        stats = {**stats, "adx10_below_0": int((code < 0).any(axis=-1).sum()), "adx10_above_1023": int((code > 1023).any(axis=-1).sum())}
-        return np.clip(code, 0.0, 1023.0), stats
+        code = self.code(self.table_apd(status_m)) + self.offset
+        stats = {**stats, "code_below_0": int((code < 0).any(axis=-1).sum()), "code_above_max": int((code > self.code_max).any(axis=-1).sum())}
+        return np.clip(code, 0.0, self.code_max), stats
+
+    def to_aces(self, code: np.ndarray) -> np.ndarray:
+        """The ADX10 or ADX16 to ACES2065-1 transform."""
+        return cdd_to_aces((np.asarray(code, dtype=np.float64) - self.code_dmin) / self.per_density)
 
     def render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
         """Linear AP1 to sRGB through the scan and the ACES output transform."""
@@ -201,13 +242,13 @@ class ScanPreview:
             sys.path.insert(0, str(SCRIPT_DIR.parent / "p10_chart_scan"))
             import display_transforms as dt  # step P10, U92
 
-            ap1_scene = adx10_to_aces(code) @ AP0_TO_AP1.T
+            ap1_scene = self.to_aces(code) @ AP0_TO_AP1.T
             if self.drt_grey == "native":
                 display = dt.render_native(self.output_name, ap1_scene, fp.srgb_encode)
             else:
                 display = dt.render_at(self.output_name, ap1_scene, self.grey_code, fp.srgb_encode)
         else:
-            display = apply_processor(self.output_cpu, adx10_to_aces(code))
+            display = apply_processor(self.output_cpu, self.to_aces(code))
         if not np.isfinite(display).all():
             raise RuntimeError("the output transform returned values that are not finite")
         stats["display_outside_0_1"] = int(((display < 0) | (display > 1)).any(axis=-1).sum())

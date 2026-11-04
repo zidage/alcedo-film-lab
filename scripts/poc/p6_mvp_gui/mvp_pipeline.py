@@ -48,7 +48,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parents[2]
 sys.path.insert(0, str(SCRIPT_DIR))
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p3_scan_and_scene"))
-from aces_scan import DRT_GREYS, DRT_OUTPUTS, OUTPUT_TRANSFORMS, READINGS, ScanPreview, fp  # noqa: E402
+from aces_scan import DRT_GREYS, DRT_OUTPUTS, ENCODINGS, OUTPUT_TRANSFORMS, READINGS, ScanPreview, fp  # noqa: E402
 
 SCAN_OUTPUTS = (*OUTPUT_TRANSFORMS, *DRT_OUTPUTS)  # U92
 
@@ -172,6 +172,8 @@ class RenderSettings:
     apd_output: str = "aces20"
     apd_reading: str = "apd"
     apd_drt_grey: str = "aces20"
+    apd_encoding: str = "adx16"  # U93
+    apd_slope_match: bool = True  # U93, rule 'adx_slope_match' of aces_scan.py
 
     def validate(self) -> None:
         if self.reversal not in CATALOG["reversals"]:
@@ -208,6 +210,8 @@ class RenderSettings:
             raise ValueError(f"unknown DRT grey {self.apd_drt_grey!r}")
         if self.apd_reading not in READINGS:
             raise ValueError(f"unknown scanner reading {self.apd_reading!r}")
+        if self.apd_encoding not in ENCODINGS:
+            raise ValueError(f"unknown scan encoding {self.apd_encoding!r}")
         for control in CONTROLS:
             value = getattr(self, control.name)
             if not control.low <= value <= control.high:
@@ -324,7 +328,7 @@ def control_values(settings: RenderSettings, method: str) -> tuple:
         return (*values, settings.gamut_compress)
     if method == "chart_scan":
         return (*values, settings.chart_scan_slope, settings.chart_scan_reading, settings.chart_scan_matrix, settings.chart_scan_display)
-    return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output, settings.apd_reading, settings.apd_drt_grey)
+    return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output, settings.apd_reading, settings.apd_drt_grey, settings.apd_encoding, settings.apd_slope_match)
 
 
 def light_table_options(settings: RenderSettings) -> fp.FilmOptions:
@@ -376,7 +380,7 @@ class Pipeline:
 
     def scan_model(self, settings: RenderSettings) -> ScanPreview:
         negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "apd" not in c.methods})
-        return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim, exposure_stops=settings.apd_exposure_stops, reading=settings.apd_reading, drt_grey=settings.apd_drt_grey))
+        return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim, exposure_stops=settings.apd_exposure_stops, reading=settings.apd_reading, drt_grey=settings.apd_drt_grey, encoding=settings.apd_encoding, slope_match=settings.apd_slope_match))
 
     def chart_scan_model(self, settings: RenderSettings):
         sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))

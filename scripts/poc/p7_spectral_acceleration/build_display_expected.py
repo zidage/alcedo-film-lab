@@ -13,7 +13,7 @@ This script sets INHIBITION_STEPS_POINT to INHIBITION_STEPS_IMAGE, because the k
 The selections are the expected selections of build_product_resources.py, and one negative with no inhibition (kodak_gold_200).
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', and the reversal expected selections of build_product_resources.py, through ReversalPreview (method 'light_table').
 The files are reversal__<film>__<light>.bin. Astia 100F has no spread and no inhibition, and E100 has no inhibition.
-Lab Scan (step P10, ROADMAP U92, Alcedo Studio issue 661): the ADX scan (build_product_resources.scan_model: ScanPreview, reading 'print2383', timing 1) as
+Lab Scan (step P10, ROADMAP U92, Alcedo Studio issue 661): the ADX16 scan with rule 'adx_slope_match' (build_product_resources.scan_model: ScanPreview, reading 'print2383', timing 1; U93) as
 ACES2065-1 before the display transform, in arrays ramp_aces and chart_aces in place of the sRGB arrays. The negatives of SCAN_EXPECTED_SELECTIONS, each under
 SCAN_DISPLAY_LIGHTS of build_product_resources.py (reference, daylight, and two colour temperatures between grid nodes in the blend form of the product), with
 the LAD aim off and on. The files are scan__<negative>__<light>__lad_<off|on>.bin, a blend light named cct<kelvin>. A scan model (its LAD offset) is built with the

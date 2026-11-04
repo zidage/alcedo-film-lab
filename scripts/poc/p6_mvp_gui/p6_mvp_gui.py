@@ -96,7 +96,7 @@ class MainWindow(QMainWindow):
         self.apd_output = self._combo({"aces20": {"name": "ACES 2.0 (Rec. 709, 100 nit)"}, "aces13": {"name": "ACES 1.3 (SDR video)"},
                                        "agx": {"name": "AgX (grey of ACES 2.0)"}, "opendrt": {"name": "OpenDRT 1.0.0 (grey of ACES 2.0)"}}, defaults.apd_output)
         self.apd_reading = self._combo({"apd": {"name": "APD (ST 2065-2)"}, "print2383": {"name": "Kodak 2383 printing density"}}, defaults.apd_reading)
-        self.lad_aim = QCheckBox("Mid grey at ADX10 445 (LAD aim)")
+        self.lad_aim = QCheckBox("Mid grey at the LAD aim (ADX10 445, ADX16 7120)")
         self.lad_aim.setChecked(defaults.apd_lad_aim)
         self.lad_aim.toggled.connect(self.schedule)
         groups["Scan"].addRow("Output", self.apd_output)
@@ -104,6 +104,12 @@ class MainWindow(QMainWindow):
         self.apd_drt_grey = self._combo({"aces20": {"name": "At the grey of ACES 2.0"}, "native": {"name": "Native (ACES 0.18 as is)"}}, defaults.apd_drt_grey)
         groups["Scan"].addRow("AgX / OpenDRT grey", self.apd_drt_grey)
         groups["Scan"].addRow("", self.lad_aim)
+        self.apd_encoding = self._combo({"adx16": {"name": "ADX16 (no clip)"}, "adx10": {"name": "ADX10 (clip at 1023)"}}, defaults.apd_encoding)
+        groups["Scan"].addRow("Encoding", self.apd_encoding)
+        self.slope_match = QCheckBox("Match the channel slopes at the grey (U93)")
+        self.slope_match.setChecked(defaults.apd_slope_match)
+        self.slope_match.toggled.connect(self.schedule)
+        groups["Scan"].addRow("", self.slope_match)
         self.chart_scan_slope = self._combo({"fixed": {"name": "Fixed, the same for all stocks"}, "stock": {"name": "Grey scale of the stock (U88)"}}, defaults.chart_scan_slope)
         groups["Chart scan"].addRow("Slope (Status M)", self.chart_scan_slope)
         self.chart_scan_reading = self._combo({"dye": {"name": "Dye amounts, Status M contrast (U90)"}, "status_m": {"name": "Status M (U88, U89)"}}, defaults.chart_scan_reading)
@@ -186,13 +192,13 @@ class MainWindow(QMainWindow):
     def settings(self) -> mp.RenderSettings:
         return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), reversal=self.reversal.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
                                  spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
-                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
+                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), apd_encoding=self.apd_encoding.currentData(), apd_slope_match=self.slope_match.isChecked(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
                                  chart_scan_matrix=self.chart_scan_matrix.currentData(), chart_scan_display=self.chart_scan_display.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
 
     @Slot()
     def reset_controls(self) -> None:
         defaults = mp.RenderSettings()
-        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display]
+        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.apd_encoding, self.slope_match, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display]
         for widget in widgets:
             widget.blockSignals(True)
         for name, spin in self.controls.items():
@@ -203,6 +209,8 @@ class MainWindow(QMainWindow):
         self.lad_aim.setChecked(defaults.apd_lad_aim)
         self.apd_reading.setCurrentIndex(self.apd_reading.findData(defaults.apd_reading))
         self.apd_drt_grey.setCurrentIndex(self.apd_drt_grey.findData(defaults.apd_drt_grey))
+        self.apd_encoding.setCurrentIndex(self.apd_encoding.findData(defaults.apd_encoding))
+        self.slope_match.setChecked(defaults.apd_slope_match)
         self.chart_scan_slope.setCurrentIndex(self.chart_scan_slope.findData(defaults.chart_scan_slope))
         self.chart_scan_reading.setCurrentIndex(self.chart_scan_reading.findData(defaults.chart_scan_reading))
         self.chart_scan_matrix.setCurrentIndex(self.chart_scan_matrix.findData(defaults.chart_scan_matrix))
