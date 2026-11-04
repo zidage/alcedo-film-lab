@@ -286,3 +286,17 @@ is 0.085 code (kodak_5247).
 
 The user reviewed the form in the Python viewer and accepts it. Method `chart_scan` uses it by default; setting `chart_scan_slope = 'stock'` keeps
 U88. The resources of schema 7 hold it (section 13).
+
+## 13. Resources with the fixed slope (U89)
+
+For [Alcedo Studio issue 661](https://github.com/zidage/AlcedoStudio/issues/661). The scripts of section 11 at lab commit `10c159b`, run with a
+clean tree; record: [`product_resources.json`](../../results/p7_spectral_acceleration/product_resources.json).
+
+- Schema version 7, the same layout as section 11. Only `film_print_setup.bin` changes (SHA-256 `97302a27...`): `scan_slope` holds
+  `FIXED_STATUS_M_SLOPE` for every negative and scene light. `scan_grey` and `scan_rec709_matrix` do not change, because the grey and the matrix do
+  not read the slope. `film_stock_bundle.bin` and `film_reflectance_table.bin` are the same bytes as in section 11.
+- No product build read the resources of section 11: Lab Scan was not in a product branch at that time.
+- Checks, with the limits of section 11: the stored values of the 8 scan selections against `ChartScanPreview`, 0; the formula of issue 661
+  against `ChartScanPreview.render`, largest 4.7e-13 of a code. The other checks of step P7 pass with no change.
+- Expected values under `build/tmp/p7/product_resources/expected/` (not committed), the same four selections as section 11: `scan__*.bin`,
+  `display/scan__*.bin`, and `image/scan__*.bin` (`build_image_expected.py _DSC8148.ARW --scan-only`; the AP1 equals `ap1.bin`).
