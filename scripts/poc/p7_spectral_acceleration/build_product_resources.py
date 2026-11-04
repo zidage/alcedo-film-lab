@@ -28,6 +28,23 @@ Group 'reversal/<film>/' of the bundle holds the values of the film in the form 
 Group 'light_table/' holds the values of rule 'light_table_view' that are the same for all films: the D50 viewing weights, the XYZ scale, the exponent of the dark surround, and the luminance weights of linear Rec. 709 of that rule.
 The setup holds per film and scene light the layer gain (rule 'daylight_reversal_balance'), and per film the display matrix of rule 'clear_film_white'. The product builds the light table (65^3 over the record, cube root of XYZ) from these values.
 The compact reflectance table keeps the wavelengths of the reversal films too. The checks above run on 3 expected and 4 random reversal selections with ReversalPreview in place of FilmPreview, with the same limits; check 'Compact table, display' runs on the 3 expected and 2 random ones.
+
+Lab Scan (step P10, ROADMAP U87 and U88, Alcedo Studio issue 661). Method 'chart_scan' of the viewer (scripts/poc/p10_chart_scan/chart_scan.py, SELECTED_FORM)
+has no print: print material 'lab_scan' of the product selects the scan form of FP6 for any negative. Values:
+- The setup holds per negative and scene light 'scan_slope' (3, Status M density per stop of the grey scale, rule 'chart_straight_line'), 'scan_grey'
+  (3, Status M density of the grey with the scan timing of print_timing), and 'scan_rec709_matrix' (3, 3: from e to linear Rec. 709, rule
+  'film_sensitivity_matrix' with AP1 to Rec. 709 folded in). The calibration light is the balance light of the stock, which depends on the scene light
+  (rule 'no_anchor_at_reference_light'), so all three are per scene light.
+- 'common/scan_status_m_weights' (3, wavelengths): the Status M weights of the model on the grid of the bundle (ANSI tables of python-colormath,
+  BSD-3-Clause). The product builds the table T(record) = log10(sum w) - log10(sum w 10^-(base + dyes a)) on the record nodes of the print table.
+- 'common/scan_log_curve' (2): s0 and w of rule 'scan_log_curve'.
+- Metadata 'lab_scan': the id and the name of the print material.
+Checks, on 3 expected and 4 random scan selections:
+
+| Check | Comparison rule | Limit |
+| Scan setup | The stored values of a selection against a new ChartScanPreview of the viewer: largest absolute difference | 1e-9 |
+| Scan layer gain | The layer gain of the scan model against 'layer_gain' of the setup | 1e-9 |
+| Scan point form | sRGB of the formula of issue 661 from the stored values (Status M table of the model, straight line, matrix, RGC-style compression, log curve) against ChartScanPreview.render, on a neutral ramp of -5 to +5 stops and 4096 of the random colours of check 'Compact table': largest code difference | 1e-6 of a code |
 """
 
 from __future__ import annotations
@@ -51,11 +68,14 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p6_mvp_gui"))
 import mvp_pipeline as mp  # noqa: E402
 
+sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
+import chart_scan as cs  # noqa: E402
+
 fp = mp.fp
 rf = mp.rf
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 6  # 6: the reversal films (step P9)
+SCHEMA_VERSION = 7  # 6: the reversal films (step P9); 7: Lab Scan (step P10)
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
@@ -69,6 +89,10 @@ UV_RELATIVE_LIMIT = 2e-4
 DISPLAY_CODE_LIMIT = 0.5
 RENDER_PHOTOS = {"se188": "p3/input/se188", "_DSC8148": "baseline/night/_DSC8148_ap1", "digital_ap1": "p5/real_5207/pair/digital_ap1"}
 RENDER_RANDOM_SELECTIONS = 3
+LAB_SCAN = {"id": "lab_scan", "name": "Lab Scan"}
+SCAN_EXPECTED_SELECTIONS = (("kodak_5207", "reference"), ("kodak_portra_400", "reference"), ("kodak_ektar_100", "reference"), ("kodak_5219", "daylight"))
+SCAN_RANDOM_CHECKS = 4
+SCAN_POINT_LIMIT = 1e-6
 
 
 def write_arrays(path: Path, arrays: dict[str, np.ndarray], metadata: dict | None = None) -> None:
@@ -210,6 +234,70 @@ def collect_reversals(bundle: dict[str, np.ndarray], reference_options: fp.FilmO
     return {"reversal_layer_gain": layer_gain, "reversal_xyz_to_display": to_display, "reversal_scene_spectrum_index": spectrum_index}, metadata
 
 
+def scan_model(negative: str, light: str) -> "cs.ChartScanPreview":
+    """Method 'chart_scan' of the viewer with all controls at their defaults, as the product runs it."""
+    settings = mp.RenderSettings(negative=negative, method="chart_scan", scene_light=light)
+    settings.validate()
+    model = mp.Pipeline().chart_scan_model(settings)
+    if model.scanner_kind != "status_m":
+        raise ValueError(f"{negative}: the scan of the product needs the Status M reading, not {model.scanner_kind}")
+    return model
+
+
+def collect_scan(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], negatives: list[str], lights: list[str]) -> tuple[dict[str, np.ndarray], dict]:
+    """The values of Lab Scan. Adds the common Status M weights and log curve to the bundle. Returns the setup arrays and the metadata."""
+    slope = np.zeros((len(negatives), len(lights), 3))
+    grey = np.zeros((len(negatives), len(lights), 3))
+    matrix = np.zeros((len(negatives), len(lights), 3, 3))
+    started = time.perf_counter()
+    for n, negative in enumerate(negatives):
+        for l, light in enumerate(lights):
+            model = scan_model(negative, light)
+            values = model.product_values()
+            slope[n, l], grey[n, l], matrix[n, l] = values["slope"], values["grey"], values["rec709_matrix"]
+            gain_difference = float(np.abs(np.asarray(model.negative.layer_gain, dtype=np.float64) - setup["layer_gain"][n, l]).max())
+            if gain_difference > SETUP_LIMIT:
+                raise ValueError(f"{negative}, {light}: the layer gain of the scan differs from the setup by {gain_difference:.3g}")
+            shared = {"common/scan_status_m_weights": np.asarray(model.apd_weights, dtype=np.float64), "common/scan_log_curve": values["log_curve"]}
+            if not np.array_equal(model.negative.c.wavelengths, bundle["common/wavelengths_nm"]):
+                raise ValueError("the Status M weights are not on the grid of the bundle")
+            if "common/scan_status_m_weights" in bundle:
+                require_same("scan", {k: bundle[k] for k in shared}, shared)
+            bundle.update(shared)
+        print(f"scan {negative}: {n + 1} of {len(negatives)}, {time.perf_counter() - started:.0f} s", flush=True)
+    return {"scan_slope": slope, "scan_grey": grey, "scan_rec709_matrix": matrix}, {"lab_scan": dict(LAB_SCAN)}
+
+
+def scan_point_form(model: "cs.ChartScanPreview", bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], n: int, l: int, ap1: np.ndarray) -> np.ndarray:
+    """Check 'Scan point form': the scan form of FP6 as issue 661 states it, from the stored values. The record and the Status M table come from the model."""
+    record, _ = model.negative.negative_image(np.ascontiguousarray(ap1[None], dtype=np.float32))
+    density = model.table_apd(record)[0]
+    e = 0.18 * 2.0 ** ((density - setup["scan_grey"][n, l]) / setup["scan_slope"][n, l])
+    rgb = e @ setup["scan_rec709_matrix"][n, l].T
+    rgb = fp.compress_gamut(rgb, tuple(bundle["common/gamut_threshold"]), tuple(bundle["common/gamut_limit"]), float(bundle["common/gamut_power"]))
+    s0, w = bundle["common/scan_log_curve"]
+    return 1.0 / (1.0 + np.exp(-(np.log2(np.maximum(rgb, 1e-12) / 0.18) - s0) / w))
+
+
+def check_scan(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], metadata: dict, selection: tuple[str, str], images: dict[str, np.ndarray]) -> tuple["cs.ChartScanPreview", dict]:
+    """Checks 'Scan setup', 'Scan layer gain', and 'Scan point form' on one selection."""
+    negative, light = selection
+    model = scan_model(negative, light)
+    n, l = sorted(metadata["negatives"]).index(negative), metadata["scene_lights"].index(light)
+    values = model.product_values()
+    setup_largest = max(float(np.abs(stored - values[name]).max()) for stored, name in ((setup["scan_slope"][n, l], "slope"), (setup["scan_grey"][n, l], "grey"), (setup["scan_rec709_matrix"][n, l], "rec709_matrix")))
+    setup_largest = max(setup_largest, float(np.abs(bundle["common/scan_log_curve"] - values["log_curve"]).max()), float(np.abs(setup["layer_gain"][n, l] - model.negative.layer_gain).max()))
+    if setup_largest > SETUP_LIMIT:
+        raise ValueError(f"scan {selection}: the stored values differ from ChartScanPreview by {setup_largest:.3g}")
+    point = {}
+    for name, ap1 in images.items():
+        reference = np.asarray(model.render(np.ascontiguousarray(ap1[None], dtype=np.float32))[0][0], dtype=np.float64)
+        point[name] = float(np.abs(scan_point_form(model, bundle, setup, n, l, ap1) - reference).max() * 255.0)
+    if max(point.values()) > SCAN_POINT_LIMIT:
+        raise ValueError(f"scan {selection}: the formula of issue 661 differs from ChartScanPreview by {point} codes")
+    return model, {"setup": setup_largest, "point_form_largest_code": point}
+
+
 def setup_model(options: fp.FilmOptions) -> fp.FilmPreview:
     """Rule 'setup_without_tables': the part of FilmPreview.__init__ in front of the tables, on the first light of a pair."""
     model = fp.FilmPreview.__new__(fp.FilmPreview)
@@ -341,6 +429,9 @@ def collect() -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict, list]
     reversal_setup, reversal_metadata = collect_reversals(bundle, reference_options, lights, spectrum_names)
     setup.update(reversal_setup)
     metadata.update(reversal_metadata)
+    scan_setup, scan_metadata = collect_scan(bundle, setup, negatives, lights)
+    setup.update(scan_setup)
+    metadata.update(scan_metadata)
     return bundle, setup, metadata, [last_model]
 
 
@@ -537,8 +628,24 @@ def main() -> int:
                      {"reversal": selection[0], "scene_light": selection[1]})
         expected_files[name] = {"bytes": (expected / name).stat().st_size}
         print(f"expected values of reversal {selection}: largest setup difference {checks[key]:.3g}", flush=True)
+    scan_images = {"neutral_ramp": np.outer(0.18 * 2.0 ** np.linspace(-5.0, 5.0, 241), np.ones(3)).astype(np.float32), "random_colours": images["random_colours"][:8].reshape(-1, 3)}
+    scan_random = [(rng.choice(sorted(metadata["negatives"])), rng.choice(metadata["scene_lights"])) for _ in range(SCAN_RANDOM_CHECKS)]
+    scan_checks = {}
+    for selection in (*scan_random, *SCAN_EXPECTED_SELECTIONS):
+        model, scan_checks[" under ".join(selection)] = check_scan(bundle, setup, metadata, selection, scan_images)
+        print(f"scan {selection}: {scan_checks[' under '.join(selection)]}", flush=True)
+        if selection not in SCAN_EXPECTED_SELECTIONS:
+            continue
+        if not np.isfinite(model.table).all():
+            raise FloatingPointError(f"scan {selection}: the Status M table has values that are not finite")
+        n, l = sorted(metadata["negatives"]).index(selection[0]), metadata["scene_lights"].index(selection[1])
+        name = f"scan__{selection[0]}__{selection[1]}.bin"
+        write_arrays(expected / name, {"status_m_table": np.asarray(model.table, dtype=np.float64), "density_grid_start": np.array([g[0] for g in model.negative.density_grid]), "density_grid_stop": np.array([g[-1] for g in model.negative.density_grid]),
+                                       "scan_slope": setup["scan_slope"][n, l], "scan_grey": setup["scan_grey"][n, l], "scan_rec709_matrix": setup["scan_rec709_matrix"][n, l]},
+                     {"negative": selection[0], "print_material": LAB_SCAN["id"], "scene_light": selection[1]})
+        expected_files[name] = {"bytes": (expected / name).stat().st_size}
 
-    record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "reversal_films": len(metadata["reversal_films"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
+    record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "reversal_films": len(metadata["reversal_films"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "scan_point_limit_code": SCAN_POINT_LIMIT, "scan": scan_checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
     RESULT.parent.mkdir(parents=True, exist_ok=True)
     RESULT.write_bytes((json.dumps(record, indent=1) + "\n").encode("utf-8"))
     print(json.dumps(manifest, indent=1))

@@ -13,6 +13,9 @@ This script sets INHIBITION_STEPS_POINT to INHIBITION_STEPS_IMAGE, because the k
 The selections are the expected selections of build_product_resources.py, and one negative with no inhibition (kodak_gold_200).
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', and the reversal expected selections of build_product_resources.py, through ReversalPreview (method 'light_table').
 The files are reversal__<film>__<light>.bin. Astia 100F has no spread and no inhibition, and E100 has no inhibition.
+Lab Scan (step P10, Alcedo Studio issue 661): the scan expected selections of build_product_resources.py, through method 'chart_scan' of the viewer with all
+controls at their defaults (ChartScanPreview, SELECTED_FORM). The files are scan__<negative>__<light>.bin. The calibration of a scan model (grey scale, matrix) is built
+with the default point steps, as the stored values of the resources; only its render uses the steps of the product.
 """
 
 from __future__ import annotations
@@ -32,6 +35,7 @@ SELECTIONS = (*bpr.EXPECTED_SELECTIONS, ("kodak_gold_200", "kodak_2383", "refere
 REVERSAL_SELECTIONS = tuple(dict.fromkeys((*((film, "reference") for film in mp.REVERSAL_ORDER), *bpr.REVERSAL_EXPECTED_SELECTIONS)))
 CHART_SEED = 20261101
 CHART_RANDOM_COLOURS = 3916
+POINT_STEPS = fp.INHIBITION_STEPS_POINT  # the default, before main() sets the steps of the product
 
 
 def neutral_ramp() -> np.ndarray:
@@ -73,6 +77,17 @@ def main() -> int:
         bpr.write_arrays(OUTPUT / f"reversal__{film}__{light}.bin", {"ramp_ap1": ramp, "ramp_srgb": ramp_srgb, "chart_ap1": patches, "chart_srgb": chart_srgb},
                          {"reversal": film, "scene_light": light, "lab_commit": bpr.lab_commit()})
         print(f"reversal {film} under {light}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
+    for negative, light in bpr.SCAN_EXPECTED_SELECTIONS:
+        # The calibration of the scan is a stored value of the resources, made with the fixed point of the inhibition (the default steps); the render uses the steps of the product.
+        fp.INHIBITION_STEPS_POINT = POINT_STEPS
+        model = bpr.scan_model(negative, light)
+        fp.INHIBITION_STEPS_POINT = fp.INHIBITION_STEPS_IMAGE
+        ramp_srgb, chart_srgb = srgb_of(model, ramp), srgb_of(model, patches)
+        if not np.isfinite(ramp_srgb).all() or not np.isfinite(chart_srgb).all():
+            raise FloatingPointError(f"scan {negative} under {light}: the output is not finite")
+        bpr.write_arrays(OUTPUT / f"scan__{negative}__{light}.bin", {"ramp_ap1": ramp, "ramp_srgb": ramp_srgb, "chart_ap1": patches, "chart_srgb": chart_srgb},
+                         {"negative": negative, "print_material": bpr.LAB_SCAN["id"], "scene_light": light, "lab_commit": bpr.lab_commit()})
+        print(f"scan {negative} under {light}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
     return 0
 
 

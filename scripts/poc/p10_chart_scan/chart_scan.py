@@ -340,5 +340,14 @@ class ChartScanPreview(acs.ScanPreview):
         stats["display_clipped"] = clipped
         return out, stats
 
+    def product_values(self) -> dict[str, np.ndarray]:
+        """The values of a selection that Alcedo Studio needs for the scan form of FP6 (issue 661), for SELECTED_FORM with exposure 0:
+        the slope and the grey of rule 'chart_straight_line' (Status M density per stop, Status M density), the matrix from e to linear Rec. 709
+        (rule 'film_sensitivity_matrix' with AP1 to Rec. 709 folded in), and s0, w of rule 'scan_log_curve'."""
+        if self.inversion != "straight" or self.output != "log_curve" or not self.sensitivity_matrix or not self.display_compress or self.exposure_scale != 1.0:
+            raise ValueError("product_values needs SELECTED_FORM with exposure 0")
+        return {"slope": np.asarray(self.straight_slope, dtype=np.float64), "grey": np.asarray(self.straight_grey, dtype=np.float64),
+                "rec709_matrix": np.asarray(self.ap1_to_rec709 @ self.matrix, dtype=np.float64), "log_curve": np.array([self.log_s0, self.log_w], dtype=np.float64)}
+
     def lab_of_ap1(self, ap1: np.ndarray) -> np.ndarray:
         return lab(ap1 @ self.negative.c.ap1_to_xyz.T, self.ap1_white)
