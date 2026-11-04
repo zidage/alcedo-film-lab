@@ -110,10 +110,13 @@ class MainWindow(QMainWindow):
         self.slope_match.setChecked(defaults.apd_slope_match)
         self.slope_match.toggled.connect(self.schedule)
         groups["Scan"].addRow("", self.slope_match)
-        self.apd_colour = self._combo({"print_hue_scene_chroma": {"name": "B: print hue, scene chroma"}, "print_hue_scan_chroma": {"name": "A: print hue, scan chroma"},
-                                       "scene_hue_scan_chroma": {"name": "C: scene hue, scan chroma"}, "print_hue_print_chroma": {"name": "Print hue and chroma"},
-                                       "academy": {"name": "Academy transform only"}}, defaults.apd_colour)
-        groups["Scan"].addRow("Scan colour", self.apd_colour)
+        self.apd_numbers = self._combo({"stock": {"name": "Derived per stock (U96)"}, "academy": {"name": "Academy numbers"}}, defaults.apd_numbers)
+        groups["Scan"].addRow("ADX to ACES numbers", self.apd_numbers)
+        self.apd_untimed = self._combo({"stock_balance": {"name": "Balance of the stock (U96)"}, "film_base": {"name": "Film base, offset 0 (U92)"}}, defaults.apd_untimed)
+        groups["Scan"].addRow("LAD aim off", self.apd_untimed)
+        self.apd_colour = self._combo({"academy": {"name": "None"}, "print_hue_scene_chroma": {"name": "U95 B: print hue, scene chroma"}, "print_hue_scan_chroma": {"name": "U95 A: print hue, scan chroma"},
+                                       "scene_hue_scan_chroma": {"name": "U95 C: scene hue, scan chroma"}, "print_hue_print_chroma": {"name": "U95: print hue and chroma"}}, defaults.apd_colour)
+        groups["Scan"].addRow("Colour table", self.apd_colour)
         self.chart_scan_slope = self._combo({"fixed": {"name": "Fixed, the same for all stocks"}, "stock": {"name": "Grey scale of the stock (U88)"}}, defaults.chart_scan_slope)
         groups["Chart scan"].addRow("Slope (Status M)", self.chart_scan_slope)
         self.chart_scan_reading = self._combo({"dye": {"name": "Dye amounts, Status M contrast (U90)"}, "status_m": {"name": "Status M (U88, U89)"}}, defaults.chart_scan_reading)
@@ -196,13 +199,13 @@ class MainWindow(QMainWindow):
     def settings(self) -> mp.RenderSettings:
         return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), reversal=self.reversal.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
                                  spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
-                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), apd_encoding=self.apd_encoding.currentData(), apd_slope_match=self.slope_match.isChecked(), apd_colour=self.apd_colour.currentData(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
+                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), apd_encoding=self.apd_encoding.currentData(), apd_slope_match=self.slope_match.isChecked(), apd_colour=self.apd_colour.currentData(), apd_numbers=self.apd_numbers.currentData(), apd_untimed=self.apd_untimed.currentData(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
                                  chart_scan_matrix=self.chart_scan_matrix.currentData(), chart_scan_display=self.chart_scan_display.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
 
     @Slot()
     def reset_controls(self) -> None:
         defaults = mp.RenderSettings()
-        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.apd_encoding, self.slope_match, self.apd_colour, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display]
+        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.apd_encoding, self.slope_match, self.apd_colour, self.apd_numbers, self.apd_untimed, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display]
         for widget in widgets:
             widget.blockSignals(True)
         for name, spin in self.controls.items():
@@ -216,6 +219,8 @@ class MainWindow(QMainWindow):
         self.apd_encoding.setCurrentIndex(self.apd_encoding.findData(defaults.apd_encoding))
         self.slope_match.setChecked(defaults.apd_slope_match)
         self.apd_colour.setCurrentIndex(self.apd_colour.findData(defaults.apd_colour))
+        self.apd_numbers.setCurrentIndex(self.apd_numbers.findData(defaults.apd_numbers))
+        self.apd_untimed.setCurrentIndex(self.apd_untimed.findData(defaults.apd_untimed))
         self.chart_scan_slope.setCurrentIndex(self.chart_scan_slope.findData(defaults.chart_scan_slope))
         self.chart_scan_reading.setCurrentIndex(self.chart_scan_reading.findData(defaults.chart_scan_reading))
         self.chart_scan_matrix.setCurrentIndex(self.chart_scan_matrix.findData(defaults.chart_scan_matrix))

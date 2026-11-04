@@ -36,6 +36,8 @@ the slope of green at the grey: s_c = 0.92 * slope_G / slope_c, where slope is t
 s * (D - D_g) * code values per density. So the grey keeps the code of equation 2 (the LAD aim off keeps its cast), and only the slope changes.
 Option colour (U95): 'academy' (the transform alone) or a target of rule 'scan_print_colour' (p10_chart_scan/scan_colour.py), a correction of hue
 and chroma at fixed luminance after the transform; option colour_print gives the options of the print of that rule.
+Option numbers (U96): the two matrices of the ADX to ACES transform, (CDD_TO_CID, EXP_TO_ACES); None keeps the Academy numbers. Rule
+'adx_stock_numbers' (p10_chart_scan/scan_unbuild.py) derives them per stock. The curve of the transform does not change.
 """
 
 from __future__ import annotations
@@ -96,11 +98,15 @@ def adx10_to_aces(adx10: np.ndarray) -> np.ndarray:
     return cdd_to_aces((np.asarray(adx10, dtype=np.float64) - ADX10_DMIN) / ADX10_PER_DENSITY)
 
 
-def cdd_to_aces(cdd: np.ndarray) -> np.ndarray:
-    """The ADX10 and ADX16 to ACES transforms after the step to cdd (aces-dev v1.3.1)."""
-    cid = np.asarray(cdd, dtype=np.float64) @ CDD_TO_CID
-    log_e = np.where(cid <= 0.6, np.interp(cid, LUT_CID, LUT_LOG_E), (100.0 / 55.0) * cid - REF_PT)
-    return (10.0 ** log_e) @ EXP_TO_ACES
+def cdd_to_exposure(cdd: np.ndarray, cdd_to_cid: np.ndarray = CDD_TO_CID) -> np.ndarray:
+    """The ADX10 and ADX16 to ACES transforms after the step to cdd, up to the exposure (aces-dev v1.3.1)."""
+    cid = np.asarray(cdd, dtype=np.float64) @ cdd_to_cid
+    return 10.0 ** np.where(cid <= 0.6, np.interp(cid, LUT_CID, LUT_LOG_E), (100.0 / 55.0) * cid - REF_PT)
+
+
+def cdd_to_aces(cdd: np.ndarray, cdd_to_cid: np.ndarray = CDD_TO_CID, exp_to_aces: np.ndarray = EXP_TO_ACES) -> np.ndarray:
+    """The ADX10 and ADX16 to ACES transforms after the step to cdd (aces-dev v1.3.1), with the Academy numbers or others (option numbers)."""
+    return cdd_to_exposure(cdd, cdd_to_cid) @ exp_to_aces
 
 
 def builtin_processor(*styles: str):
@@ -129,13 +135,14 @@ class ScanPreview:
 
     def __init__(self, options: fp.FilmOptions, output: str = "aces20", timing: float | None = None, lad_aim: bool = True, exposure_stops: float = 0.0,
                  scanner: tuple[str, np.ndarray, np.ndarray] | None = None, reading: str = "apd", drt_grey: str = "aces20", encoding: str = "adx10",
-                 slope_match: bool = False, colour: str = "academy", colour_print: fp.FilmOptions | None = None) -> None:
+                 slope_match: bool = False, colour: str = "academy", colour_print: fp.FilmOptions | None = None, numbers: tuple[np.ndarray, np.ndarray] | None = None) -> None:
         if encoding not in ENCODINGS:
             raise ValueError(f"unknown encoding {encoding!r}")
         self.encoding = encoding
         self.per_density, self.code_dmin, self.code_lad, self.code_max = ENCODINGS[encoding]
         self.scale = ADX10_SCALE.copy()
         self.pivot = None
+        self.cdd_to_cid, self.exp_to_aces = (CDD_TO_CID, EXP_TO_ACES) if numbers is None else numbers
         if drt_grey not in DRT_GREYS:
             raise ValueError(f"unknown DRT grey {drt_grey!r}")
         self.drt_grey = drt_grey
@@ -241,9 +248,13 @@ class ScanPreview:
         stats = {**stats, "code_below_0": int((code < 0).any(axis=-1).sum()), "code_above_max": int((code > self.code_max).any(axis=-1).sum())}
         return np.clip(code, 0.0, self.code_max), stats
 
+    def exposure_of(self, code: np.ndarray, cdd_to_cid: np.ndarray | None = None) -> np.ndarray:
+        """The exposure of the transform (before EXP_TO_ACES)."""
+        return cdd_to_exposure((np.asarray(code, dtype=np.float64) - self.code_dmin) / self.per_density, self.cdd_to_cid if cdd_to_cid is None else cdd_to_cid)
+
     def to_aces(self, code: np.ndarray) -> np.ndarray:
-        """The ADX10 or ADX16 to ACES2065-1 transform."""
-        return cdd_to_aces((np.asarray(code, dtype=np.float64) - self.code_dmin) / self.per_density)
+        """The ADX10 or ADX16 to ACES2065-1 transform, with the numbers of option numbers."""
+        return self.exposure_of(code) @ self.exp_to_aces
 
     def scene_aces(self, code: np.ndarray) -> np.ndarray:
         """ACES2065-1 of the scan: the transform, then rule 'scan_print_colour' when option colour selects it."""
