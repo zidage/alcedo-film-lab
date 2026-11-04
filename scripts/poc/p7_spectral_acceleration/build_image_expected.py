@@ -9,8 +9,10 @@ Machine rule: CPU only, one process, no GPU job. The arrays take about 290 MB pe
 
 The selections are the expected selections of build_product_resources.py, with rule 'foliage_spectra', as in the product resources.
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', through ReversalPreview (method 'light_table'), with all sliders at their defaults. The files are reversal__<film>__reference.bin.
-Lab Scan (step P10, Alcedo Studio issue 661): the scan expected selections of build_product_resources.py through method 'chart_scan' of the viewer with all controls at
-their defaults. The files are scan__<negative>__<light>.bin.
+Lab Scan (step P10, ROADMAP U92, Alcedo Studio issue 661): the ADX scan as ACES2065-1 before the display transform (array 'aces' in place of 'srgb'), on
+SCAN_IMAGE_SELECTIONS: the scan expected selections of build_product_resources.py with the LAD aim off, and kodak_5219 at 5650 K (a blend of grid nodes) with the
+LAD aim on. Each file is about 290 MB, so the other cases of the display expected values are not repeated at full size. The files are
+scan__<negative>__<light>__lad_<off|on>.bin, a blend light named cct<kelvin>.
 """
 
 from __future__ import annotations
@@ -28,6 +30,7 @@ fp = bpr.fp
 fk = fp.fk
 OUTPUT = bpr.OUTPUT / "expected" / "image"
 LONG_EDGE = 6000
+SCAN_IMAGE_SELECTIONS = (*((negative, light, False) for negative, light in bpr.SCAN_EXPECTED_SELECTIONS), ("kodak_5219", 5650.0, True))
 
 
 def read_ap1(path: Path) -> np.ndarray:
@@ -75,12 +78,13 @@ def main() -> int:
             raise FloatingPointError(f"reversal {film}: the output is not finite")
         bpr.write_arrays(OUTPUT / f"reversal__{film}__reference.bin", {"srgb": srgb}, {"reversal": film, "scene_light": "reference", "lab_commit": commit})
         print(f"reversal {film}: {srgb.shape}", flush=True)
-    for negative, light in bpr.SCAN_EXPECTED_SELECTIONS:
-        srgb = np.asarray(bpr.scan_model(negative, light).render(graded)[0], dtype=np.float32)
-        if not np.isfinite(srgb).all():
+    for negative, light, lad in SCAN_IMAGE_SELECTIONS:
+        aces = np.asarray(bpr.scan_aces(bpr.scan_expected_model(negative, light, lad), graded), dtype=np.float32)
+        if not np.isfinite(aces).all():
             raise FloatingPointError(f"scan {negative} under {light}: the output is not finite")
-        bpr.write_arrays(OUTPUT / f"scan__{negative}__{light}.bin", {"srgb": srgb}, {"negative": negative, "print_material": bpr.LAB_SCAN["id"], "scene_light": light, "lab_commit": commit})
-        print(f"scan {negative} under {light}: {srgb.shape}", flush=True)
+        label = bpr.scan_light_label(light)
+        bpr.write_arrays(OUTPUT / f"scan__{negative}__{label}__lad_{'on' if lad else 'off'}.bin", {"aces": aces}, {"negative": negative, "print_material": bpr.LAB_SCAN["id"], "scene_light": label, "lad_aim": lad, "lab_commit": commit})
+        print(f"scan {negative} under {label}, LAD aim {'on' if lad else 'off'}: {aces.shape}", flush=True)
     return 0
 
 

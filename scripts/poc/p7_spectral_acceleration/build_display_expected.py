@@ -13,9 +13,11 @@ This script sets INHIBITION_STEPS_POINT to INHIBITION_STEPS_IMAGE, because the k
 The selections are the expected selections of build_product_resources.py, and one negative with no inhibition (kodak_gold_200).
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', and the reversal expected selections of build_product_resources.py, through ReversalPreview (method 'light_table').
 The files are reversal__<film>__<light>.bin. Astia 100F has no spread and no inhibition, and E100 has no inhibition.
-Lab Scan (step P10, Alcedo Studio issue 661): the scan expected selections of build_product_resources.py, through method 'chart_scan' of the viewer with all
-controls at their defaults (ChartScanPreview, SELECTED_FORM). The files are scan__<negative>__<light>.bin. The calibration of a scan model (grey scale, matrix) is built
-with the default point steps, as the stored values of the resources; only its render uses the steps of the product.
+Lab Scan (step P10, ROADMAP U92, Alcedo Studio issue 661): the ADX scan (build_product_resources.scan_model: ScanPreview, reading 'print2383', timing 1) as
+ACES2065-1 before the display transform, in arrays ramp_aces and chart_aces in place of the sRGB arrays. The negatives of SCAN_EXPECTED_SELECTIONS, each under
+SCAN_DISPLAY_LIGHTS of build_product_resources.py (reference, daylight, and two colour temperatures between grid nodes in the blend form of the product), with
+the LAD aim off and on. The files are scan__<negative>__<light>__lad_<off|on>.bin, a blend light named cct<kelvin>. A scan model (its LAD offset) is built with the
+default point steps, as the stored values of the resources; only its render uses the steps of the product.
 """
 
 from __future__ import annotations
@@ -77,17 +79,23 @@ def main() -> int:
         bpr.write_arrays(OUTPUT / f"reversal__{film}__{light}.bin", {"ramp_ap1": ramp, "ramp_srgb": ramp_srgb, "chart_ap1": patches, "chart_srgb": chart_srgb},
                          {"reversal": film, "scene_light": light, "lab_commit": bpr.lab_commit()})
         print(f"reversal {film} under {light}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
-    for negative, light in bpr.SCAN_EXPECTED_SELECTIONS:
-        # The calibration of the scan is a stored value of the resources, made with the fixed point of the inhibition (the default steps); the render uses the steps of the product.
-        fp.INHIBITION_STEPS_POINT = POINT_STEPS
-        model = bpr.scan_model(negative, light)
-        fp.INHIBITION_STEPS_POINT = fp.INHIBITION_STEPS_IMAGE
-        ramp_srgb, chart_srgb = srgb_of(model, ramp), srgb_of(model, patches)
-        if not np.isfinite(ramp_srgb).all() or not np.isfinite(chart_srgb).all():
-            raise FloatingPointError(f"scan {negative} under {light}: the output is not finite")
-        bpr.write_arrays(OUTPUT / f"scan__{negative}__{light}.bin", {"ramp_ap1": ramp, "ramp_srgb": ramp_srgb, "chart_ap1": patches, "chart_srgb": chart_srgb},
-                         {"negative": negative, "print_material": bpr.LAB_SCAN["id"], "scene_light": light, "lab_commit": bpr.lab_commit()})
-        print(f"scan {negative} under {light}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
+    for negative in dict.fromkeys(negative for negative, _ in bpr.SCAN_EXPECTED_SELECTIONS):
+        for light in bpr.SCAN_DISPLAY_LIGHTS:
+            for lad in (False, True):
+                # The LAD offset is a stored value of the resources, made with the default steps; the render uses the steps of the product.
+                fp.INHIBITION_STEPS_POINT = POINT_STEPS
+                model = bpr.scan_expected_model(negative, light, lad)
+                fp.INHIBITION_STEPS_POINT = fp.INHIBITION_STEPS_IMAGE
+                ramp_aces, chart_aces = (np.asarray(bpr.scan_aces(model, values[None])[0], dtype=np.float32) for values in (ramp, patches))
+                if not np.isfinite(ramp_aces).all() or not np.isfinite(chart_aces).all():
+                    raise FloatingPointError(f"scan {negative} under {light}: the output is not finite")
+                label = bpr.scan_light_label(light)
+                metadata = {"negative": negative, "print_material": bpr.LAB_SCAN["id"], "scene_light": label, "lad_aim": lad, "lab_commit": bpr.lab_commit()}
+                if not isinstance(light, str):
+                    a, b, w = bpr.grid_blend(light)
+                    metadata.update({"kelvin": light, "node_a": a, "node_b": b, "share_of_b": w})
+                bpr.write_arrays(OUTPUT / f"scan__{negative}__{label}__lad_{'on' if lad else 'off'}.bin", {"ramp_ap1": ramp, "ramp_aces": ramp_aces, "chart_ap1": patches, "chart_aces": chart_aces}, metadata)
+                print(f"scan {negative} under {label}, LAD aim {'on' if lad else 'off'}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
     return 0
 
 

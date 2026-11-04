@@ -26,7 +26,8 @@ Rules of this step:
   Round 8 (U91): setting chart_scan_display, 'log_curve' (default) or a display rendering transform of a public OCIO config ('aces20', 'agx',
   'opendrt') or the Cineon conversion ('cineon'), on the linear AP1 of the scan (p10_chart_scan/display_transforms.py).
 - Scene light 'as_shot' (U90, P4 rule 'light_from_raw_white'): the camera white balance and the camera matrix of the RAW file give the XYZ
-  of the neutral and a correlated colour temperature (McCamy); at 4000 K and above the light is a CIE daylight, below a Planckian light. The
+  of the neutral and a correlated colour temperature (McCamy), clipped to 2000-15000 K; the light is film_preview.cct_light (U92: Planckian to
+  4000 K, CIE daylight from 5000 K, a blend linear in mired between). The
   renderer replaces 'as_shot' with the name of that light (as_shot_light). A RAW file with no camera matrix stops with an error.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
@@ -254,8 +255,8 @@ def print_conditions(print_material: str) -> dict:
 
 
 def is_light_name(name: str) -> bool:
-    """A light of rule 'light_from_raw_white': 'D' and hundreds of kelvin (CIE daylight), or 'T' and kelvin (Planckian)."""
-    return len(name) > 2 and name[0] in "DT" and name[1:].isdigit()
+    """A light of rule 'light_from_raw_white': 'D' and hundreds of kelvin (CIE daylight), 'T' and kelvin (Planckian), or 'CCT' and kelvin (either, by the rule; U92)."""
+    return (len(name) > 2 and name[0] in "DT" and name[1:].isdigit()) or (name.startswith("CCT") and name[3:].isdigit())
 
 
 def as_shot_light(path: Path) -> tuple[str, float]:
@@ -271,8 +272,8 @@ def as_shot_light(path: Path) -> tuple[str, float]:
     x, y = xyz[0] / xyz.sum(), xyz[1] / xyz.sum()
     n = (x - 0.3320) / (y - 0.1858)
     cct = float(-449.0 * n ** 3 + 3525.0 * n ** 2 - 6823.3 * n + 5520.33)
-    rounded = int(round(np.clip(cct, 1800.0, 24000.0) / 100.0))
-    return (f"D{rounded}" if rounded >= 40 else f"T{rounded * 100}"), cct
+    # U92: the continuous form of the rule (film_preview.cct_light), on the colour temperature range of the RAW white balance of Alcedo Studio.
+    return f"CCT{int(round(np.clip(cct, 2000.0, 15000.0)))}", cct
 
 
 def resolve_as_shot(settings: "RenderSettings", path: Path) -> "RenderSettings":

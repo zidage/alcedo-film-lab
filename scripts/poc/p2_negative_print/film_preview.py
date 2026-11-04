@@ -365,6 +365,19 @@ def solve_amounts(target: np.ndarray, base_density: np.ndarray, dyes: np.ndarray
     return a, np.abs(r).max(axis=1)
 
 
+def cct_light(kelvin: float, wl: np.ndarray, xyz) -> np.ndarray:
+    """Rule 'light_from_raw_white', continuous form (U92): a Planckian light at 4000 K and below, a CIE daylight at 5000 K and above, and between
+    them the blend of the two at the same colour temperature, linear in mired, each with Y = 1. The blend removes the step of the two loci at 4000 K."""
+    planck = wl ** -5.0 / np.expm1(1.4388e7 / (wl * kelvin))
+    if kelvin <= 4000.0:
+        return planck
+    daylight = p0.cie_daylight_relative_spd(kelvin, wl)
+    if kelvin >= 5000.0:
+        return daylight
+    t = (250.0 - 1e6 / kelvin) / (250.0 - 200.0)
+    return (1.0 - t) * planck / xyz(planck)[1] + t * daylight / xyz(daylight)[1]
+
+
 class FilmPreview:
     _grade_grey: np.ndarray | None = None  # rule 'negative_show_grade'; a model of rule 'setup_without_tables' has none
 
@@ -395,7 +408,7 @@ class FilmPreview:
         self._prepare_mask()
 
     def light(self, name: str) -> np.ndarray:
-        """Spectrum with Y = 1. 'E_ref'; 'D55' (CIE daylight, 100 K units); 'T3200' (Planckian); a CIE FL, LED or HP name."""
+        """Spectrum with Y = 1. 'E_ref'; 'D55' (CIE daylight, 100 K units); 'T3200' (Planckian); 'CCT5650' (function cct_light, U92; kelvin); a CIE FL, LED or HP name."""
         wl = self.c.wavelengths
         if name in SCENE_PRESETS:
             # Rule 'scene_mixture': the weights are shares of the luminance, because each light has Y = 1.
@@ -404,6 +417,8 @@ class FilmPreview:
             spectrum = self.c.e_ref
         elif name[0] == "D" and name[1:].isdigit():
             spectrum = p0.cie_daylight_relative_spd(float(name[1:]) * 100.0, wl)
+        elif name.startswith("CCT") and name[3:].isdigit():
+            spectrum = cct_light(float(name[3:]), wl, self.c.xyz)
         elif name[0] == "T" and name[1:].isdigit():
             spectrum = wl ** -5.0 / np.expm1(1.4388e7 / (wl * float(name[1:])))
         else:
