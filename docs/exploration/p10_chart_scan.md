@@ -300,3 +300,110 @@ clean tree; record: [`product_resources.json`](../../results/p7_spectral_acceler
   against `ChartScanPreview.render`, largest 4.7e-13 of a code. The other checks of step P7 pass with no change.
 - Expected values under `build/tmp/p7/product_resources/expected/` (not committed), the same four selections as section 11: `scan__*.bin`,
   `display/scan__*.bin`, and `image/scan__*.bin` (`build_image_expected.py _DSC8148.ARW --scan-only`; the AP1 equals `ap1.bin`).
+
+## 14. Seventh round: the light of the frame, the black, and the blue (U90)
+
+The user tested Lab Scan of U89 on more photos and finds that the colour of 5219 and 5207 does not come out; the cause that the user names is
+that the spectral inversion runs on a white-balanced image. Film Analyzer values are a test only (U28): the records below hold the values of the
+paths and their differences to the scans. Probes and sheets are local (`build/tmp/p10/u90_*.py`, `build/tmp/p10/review_u90*/`); the night photos
+are the user's own files, not committed.
+
+Findings, in the order of the round:
+- With scene light `reference`, a stock is lit by its balance light and calibrated under the same light, so a stock never sees a light that
+  it is not balanced for: the camera white balance took the cast of the real light away before the film. Scene light `as_shot` (P4 rule
+  `light_from_raw_white`: camera white balance and camera matrix of the RAW file, McCamy CCT, CIE daylight from 4000 K, Planckian below) puts
+  the light of the frame back. The user white balance stays a creative cast on the reflectance, so nothing counts twice.
+- Scan timing is the lever of the cast that stays (rule `scan_timing`). On the 5219 Film Analyzer set under daylight, U89 form: timing 1, Delta E
+  13.5, hue 13.0 degrees; 0.75: 11.4 and 8.4; 0.5: 12.5 and 8.4. The real scan does not take the daylight cast of 5219 away in full; a printer
+  corrects a frame in part for the same reason (subject failure). Photos at 6700 to 7800 K turn too blue at 0.5. Selected: 0.75.
+- Black (rule `scan_base_black`): the straight line of U88 and U89 floors at the film base, near -4.4 to -4.8 stops for e, so the black of the log
+  curve stays at 11 to 15 of 255 on a ramp (the user: the shadows do not sink). With the black at the base, the ramp reaches 0 and is darker than
+  the digital input from -5 stops; on photos the darkest 1 % goes from 14 to 1. Under daylight the base of 5219 gives e0 = 0.0135, 0.0064, 0.0050
+  (red, green, blue), so its shadows turn cool. The image-plane steps do not change the dark percentiles by more than 1 code. Strength 1.5 crisps
+  the image and 2 clips black clothes; selected: 1. On the Film Analyzer chart the black has no effect, because the darkest patch stays far from
+  the base.
+- Blue: against the chart reference, the real scans of 5219 raise the chroma of Blue, Blue Sky, Purplish Blue, and Purple far more than of the
+  other patches. U89 reaches 0.64, 0.70, 0.72, and 0.62 of the real chroma of these patches; the hue is toward cyan by 9 to 27 degrees, and 5207
+  shows the same, so it is the scan form and not the stock.
+  - Rule `scan_matrix_domain` (option `matrix_domain`): `code`, the curve per film channel first and then the matrix on the codes, as a scan
+    program curves its scanner channels and a profile acts on the encoded scan. Median hue error against the scans: 5219 8.1 to 4.8 degrees,
+    5207 CoolScan 8.4 to 4.9, Portra 6.0 to 4.3; the chroma of the blues does not change. `log` (the matrix on the stops) is near `code` and
+    slightly worse.
+  - Rule `dye_reading_density_contrast` (option `slope_source = 'density'`, scanner `analytical`): the scanner reads the dye amounts. The
+    integral mask of a colour negative is made to cancel the unwanted absorptions of the dyes, so a masked negative read after the mask is near
+    its dye amounts; Status M reads them with the crosstalk. The contrast stays that of rule `fixed_scan_slope` in Status M density, so the tone
+    of each stock is that of U89. On 5219 the chroma of the four blue patches goes to 0.84, 0.96, 0.98, and 0.94 of the real scan.
+- Film Analyzer, with as-shot daylight, timing 0.75, black at the base, and `matrix_domain = 'code'` (median of the colour patches):
+
+| Set | Status M reading, Delta E / hue | Dye reading, Delta E / hue |
+| --- | --- | --- |
+| 5207, CoolScan 9000 | 12.3 / 4.9 | 6.2 / 2.6 |
+| 5207, X-T5 | 8.5 / 10.8 | 15.1 / 8.0 |
+| 5219, CoolScan 9000 | 10.1 / 4.8 | 8.6 / 3.8 |
+| Portra 400, X-T5 | 9.3 / 4.3 | 14.0 / 8.7 |
+
+  The two sets of the dedicated scanner move toward the scans; the two sets scanned with a camera move away. A camera scan keeps more of the
+  crosstalk of the dyes. The target of Lab Scan is a lab scanner, so the dye reading is selected; this is the author's reading of the table,
+  for the user to confirm.
+- Rejected: one mean dye slope for all stocks (the dye amounts per stop of the cine stocks are near 0.155 and of the consumer stocks near 0.2,
+  so one value flattens 5207 and 5219); the mean sensitivity matrix of the eight stocks (no gain of chroma); the Frontier band estimate and APD
+  with the stock slope (less chroma than the dye reading).
+- Photos (`build/tmp/p10/review_u90_final/`, U89 against U90): 5219 under daylight gives a deeper blue sky with warm lights and clean black; the
+  blue-violet lamp of `artificial_lights/3754960364.dng` turns violet in place of the hard blue of U89; 5219 turns foliage under daylight to a
+  strong teal, which the user should judge.
+- All 30 negatives of the catalog give a finite output in 0 to 1 on a ramp of -8 to +8 stops and a colour sweep; the largest fall of the green
+  channel is 0.00023 code (Portra 400), under the limit 0.002 of `check_p6_mvp.py`.
+
+The viewer (method `chart_scan`): scene light `as_shot`, settings `chart_scan_reading` (`dye`, default; `status_m`) and `chart_scan_matrix`
+(`code`, default; `linear`), and controls `chart_scan_timing` (0.75) and `chart_scan_black` (1). The scan timing of this method is no longer
+`print_timing`. A RAW file with no camera matrix stops with an error for `as_shot`. `SELECTED_FORM` and the resources of schema 7 are those of
+U89 until the user accepts this form.
+
+Cost in the product: none per pixel. The dye reading removes the Status M table, because the record of FP5 is already the dye amounts; the
+black is one subtraction per channel; the order of the matrix and the curve does not change the count of operations. The as-shot light needs
+the camera white of the RAW file in the film print module and scene lights on a grid of colour temperature in place of the five named lights.
+
+## 15. Eighth round: a wide gamut and a display rendering transform (U91)
+
+The user finds that the colour of the step to Rec. 709 is not right and asks to take the scan to a wide gamut and to try OpenDRT, ACES 2.0,
+Cineon, and AgX, from public OCIO configs. `scripts/poc/p10_chart_scan/display_transforms.py`: views ACES 2.0 and AgX of the Blender colour
+management config, OpenDRT 1.0.0 of OpenDRT-OCIO-Config (Chris Brejon; OpenDRT of Jed Smith, GPL-3.0), and the Kodak Cineon conversion, on the
+linear AP1 of the sensitivity matrix, each with an exposure that shows the grey at the code of the log curve (ACES 2.0 +0.78 stops, OpenDRT
++0.56, Cineon +0.25, AgX 0). The configs are downloaded by `fetch()` into `build/tmp/p10/drt/` and not committed. Option `display_transform`
+of `ChartScanPreview`, setting `chart_scan_display` of the viewer.
+
+Reading (sheets `build/tmp/p10/review_u91_drt/`): the colour of a stock (the blue sky and the teal foliage of 5219) is the same under every
+transform, so it comes from the scan before the display. ACES 2.0 and OpenDRT give much deeper shadows; AgX has the tone nearest the log
+curve; the blue-violet lamp shows violet only with the curve before the matrix.
+
+## 16. Ninth round: the ADX scan (U92)
+
+The user found the most convincing form in the viewer: method `apd` (the scan of P3) with the LAD aim off, ACES 2.0, and scene light
+`as_shot`, and asks why it works and how AgX and OpenDRT compare after the ADX to ACES step. The form: the negative read in printing density
+(APD, ST 2065-2), ADX10 code values on the base of the film (ST 2065-3), no offset (LAD aim off), the Academy ADX10 to ACES transform (a
+channel unmixing matrix, one fixed curve of an average negative, one matrix to ACES; no parameter of the stock), and the ACES 2.0 output.
+
+Why (probes `build/tmp/p10/u92_*.py`, sheets `build/tmp/p10/review_u92_adx/`):
+- Tone. On a neutral ramp the green code is 1, 5, 20, 107, 227 at -5, -4, -3, 0, +4 stops (5207), against 6, 12, 26, 118, 232 for the log
+  curve of U90 and 17, 27, 41, 118, 255 for the digital input: the shadows reach black, as the user asked in U90.
+- Balance. With the LAD aim off, the scan sits on the film base and no grey is balanced, as an untimed scan. The 18 % grey of 5219 under D55
+  is at ADX10 415, 484, 533 against the aim 445, so the grey shows a* -9, b* -11; the Film Analyzer scan of 5219 has a* -8, b* -13 at Neutral 5
+  (Lab Scan of U90: a* -2, b* -7). The cine stocks sit near the aim; a consumer stock does not (Portra 400 under D55: a* +16, b* -11), which is
+  why the user keeps the LAD aim as an option for strong casts.
+- Colour. The transform is the same for all stocks and is not fitted to a chart, and ACES 2.0 compresses chroma, so the colour is muted. On
+  the Film Analyzer charts this form is far from the scans: Delta E 19 to 31 (U90: 6 to 15), chroma 0.46 to 0.6 of the CoolScan scans, hue 14 to
+  25 degrees. The match the user sees is of tone, cast, and saturation on photos, not of the chart.
+- Reading. The Kodak 2383 printing density (the printer lamp times the published sensitivity of the paper, `w_printing` of the model) in place
+  of APD gives the same result within 1 to 2 Delta E on the four sets. APD is defined as such a printing density, and the 2383 data already
+  ship with the product, so the SMPTE tables are not needed. Option `reading = 'print2383'` of `aces_scan.ScanPreview`.
+- Display after the ADX to ACES step (AgX and OpenDRT at the grey code of ACES 2.0): OpenDRT is near ACES 2.0 (the same toe, highlights 230
+  against 227 at +4 stops, the same cast and chroma); AgX has a softer toe (code 7 at -5 stops), a flatter tone, and less chroma. With no
+  exposure change (option `drt_grey = 'native'`), ACES 0.18 shows at code 0.368 on OpenDRT, 0.461 on AgX, and 0.349 on ACES 2.0.
+
+The viewer, method `apd`: outputs `agx` and `opendrt`, setting `apd_reading` (`apd`, `print2383`), and setting `apd_drt_grey` (`aces20`,
+`native`). Scene light `as_shot` acts for every method.
+
+The user accepts this form for the product (2026-11-04): Lab Scan of Alcedo Studio issue 661 is redone as this ADX scan with the 2383
+printing density, the LAD aim off by default, scene light as shot by default (linked to the colour temperature of the RAW decode, reference
+for an input that is not RAW), and OpenDRT with all its settings. The chart-calibrated form of sections 1 to 14 stays in the lab as method
+`chart_scan`; the resources of schema 7 (section 13) are replaced in the next schema.

@@ -61,6 +61,26 @@ Round 6 (the stocks look alike, U89):
   and a stock whose layers differ in gamma from the fixed ratio keeps its crossover, as a scan with one fixed setup for all films. The values
   are the mean slope of rule 'chart_straight_line' of the eight stocks of ACCEPTED_STOCKS of the viewer, under the scene light 'reference'
   (fit_fixed_slope.py, results/p10_chart_scan/fixed_slope.json). With slope_source = 'stock' (the form of round 5), each stock has its own slope.
+Round 7 (the colour of 5219 and 5207, U90):
+- 'scan_base_black' (option base_black, inversion 'straight'): the scanner puts the black of each channel at the film base, as a lab scanner
+  sets its black point on the unexposed film: e'_k = 0.18 (e_k - b e0_k) / (0.18 - b e0_k), with e0_k the value of rule 'chart_straight_line' at
+  the record of the unexposed film (base and fog: a flat grey at 2^BASE_STOPS of the grey under the calibration light) and b the share of
+  base_black. A grey of the calibration light stays at 0.18. A layer that the scene light exposes less reaches its base sooner, so its
+  shadows go to black first (crossover in the shadows). The base is a value of the stock, not a statistic of the frame. 0: no change.
+- 'scan_matrix_domain' (option matrix_domain, with sensitivity_matrix and output 'log_curve'): where the matrix to Rec. 709 acts. 'linear'
+  (round 5): on the linear e, then the curve per Rec. 709 channel. 'code': the curve per film channel of e first, as a scan program curves
+  its scanner channels, then the matrix on the display codes, as a profile acts on the encoded scan, then the RGC-style compression and a
+  clip to 0-1. 'log': the matrix on the stops s = log2(e / 0.18), floored at LOG_MATRIX_FLOOR stops, then the curve per Rec. 709 channel.
+  The matrix keeps white, so a grey keeps its code in all three.
+- 'dye_reading_density_contrast' (option slope_source = 'density', scanner 'analytical'): the scanner reads the dye amounts (the integral mask of a
+  colour negative is made to cancel the unwanted absorptions of the dyes, so a masked negative read after the mask is near its dye amounts),
+  and the contrast stays that of rule 'fixed_scan_slope' in Status M density: slope_k = (dye slope of the stock)_k * (Status M slope of the
+  stock)_k / FIXED_STATUS_M_SLOPE_k, all on the grey scale in STRAIGHT_WINDOW. So the tone of each stock is that of U89, and only the colour
+  separation changes. A fixed mean dye slope was rejected: the dye amounts per stop of the cine stocks are near 0.155 and of the consumer stocks
+  near 0.2, so one value flattens 5207 and 5219.
+Round 8 (U91): option display_transform (with sensitivity_matrix and output 'log_curve'): 'log_curve' (the rules above), or a display
+rendering transform of display_transforms.py ('aces20', 'agx', 'opendrt', 'cineon') on the linear AP1 of the sensitivity matrix, with an
+exposure that shows the grey at the code of the log curve. The scan steps before the matrix do not change.
 SELECTED_FORM (round 5, ROADMAP U88) is the form that the Python viewer runs as method 'chart_scan'.
 The inhibition and the other image-plane steps of the negative act on images, as in the print path; the chart and the grey scale are flat areas.
 """
@@ -79,17 +99,21 @@ for step in ("p1_spectral_input", "p2_negative_print", "p3_scan_and_scene", "p6_
     sys.path.insert(0, str(SCRIPT_DIR.parent / step))
 import aces_scan as acs  # noqa: E402
 import film_preview as fp  # noqa: E402
+import display_transforms as dt  # noqa: E402
 import spectral_datasets as sd  # noqa: E402
 
 CHART_WORKBOOK = REPO_ROOT / "build" / "tmp" / "p10" / "sources" / "bc" / "ColorChecker_RGB_and_spectra.xls"
 RAMP_STOPS = (-10.0, 10.0)
 RAMP_STEP = 1.0 / 32.0
 RAMP_MIN_RISE = 1e-5
+MATRIX_DOMAINS = ("linear", "code", "log")
+LOG_MATRIX_FLOOR = -8.0  # rule 'scan_matrix_domain': stops below the grey where the log form stops
+BASE_STOPS = -20.0  # rule 'scan_base_black': the exposure of the unexposed film, in stops from the grey
 STRAIGHT_WINDOW = (-2.0, 2.0)  # rule 'chart_straight_line': stops of the grey scale for the slope
 INVERSIONS = ("curves", "straight")
 OUTPUTS = ("clip709", "channel_curve", "log_curve")
 SCANNERS = ("apd", "frontier", "status_m", "analytical")
-SLOPES = ("stock", "fixed")
+SLOPES = ("stock", "fixed", "density")
 FIXED_STATUS_M_SLOPE = (0.160868, 0.170611, 0.181802)  # rule 'fixed_scan_slope': Status M density per stop, red, green, blue
 # The selected form of report sections 8 and 10 (scan_timing comes from the option print_timing of the viewer). Status M in place of APD
 # (section 10): the same result, and its table (python-colormath, BSD-3-Clause) can ship with the product; the SMPTE table cannot.
@@ -195,7 +219,7 @@ class ChartScanPreview(acs.ScanPreview):
 
     def __init__(self, options: fp.FilmOptions, chart: Chart, matrix: bool = True, inversion: str = "curves", output: str = "clip709",
                  scanner: str = "apd", unmix: bool = False, common_slope: bool = False, sensitivity_matrix: bool = False, scan_timing: float = 0.0, display_compress: bool = False, exposure_stops: float = 0.0,
-                 slope_source: str = "stock") -> None:
+                 slope_source: str = "stock", base_black: float = 0.0, matrix_domain: str = "linear", display_transform: str = "log_curve") -> None:
         if scanner not in SCANNERS:
             raise ValueError(f"unknown scanner {scanner!r}")
         super().__init__(options, lad_aim=False, scanner=frontier_responsivity() if scanner == "frontier" else None)
@@ -251,10 +275,24 @@ class ChartScanPreview(acs.ScanPreview):
             if scanner != "status_m" or inversion != "straight" or common_slope:
                 raise ValueError("slope_source 'fixed' needs scanner 'status_m', inversion 'straight', and no common_slope")
             self.straight_slope = np.array(FIXED_STATUS_M_SLOPE, dtype=np.float64)
+        if slope_source == "density":
+            if scanner != "analytical" or inversion != "straight" or common_slope:
+                raise ValueError("slope_source 'density' needs scanner 'analytical', inversion 'straight', and no common_slope")
+            # Rule 'dye_reading_density_contrast': the Status M slope of the same grey scale, from the dye amounts of its records.
+            film = n.film
+            records, _ = n.negative_density(n.layer_gain * c.layer_exposure(np.outer(GREY * 2.0 ** stops[window], np.ones(len(c.wavelengths))) * self.calibration_light))
+            status_m = film.status_density(film.negative_spectral_density(n._record_amounts(records)), film.w_status_m)
+            self.status_m_slope = np.array([np.polyfit(stops[window], status_m[:, k], 1)[0] for k in range(3)])
+            self.straight_slope = self.stock_slope * self.status_m_slope / np.array(FIXED_STATUS_M_SLOPE)
         self.straight_grey = ramp[int(np.argmin(np.abs(stops)))]
         if scan_timing:
             scene_grey = self.density(n.negative_density(n.layer_gain * c.layer_exposure(GREY * n.scene_spectrum)[None])[0])[0]
             self.straight_grey = self.straight_grey + scan_timing * (scene_grey - self.straight_grey)
+        if base_black and inversion != "straight":
+            raise ValueError("base_black needs inversion 'straight'")
+        self.base_black = float(base_black)
+        self.base_record = self.patch_apd(np.full((1, len(c.wavelengths)), GREY * 2.0 ** BASE_STOPS))[0]
+        self.base_e = self.base_black * GREY * 2.0 ** ((self.base_record - self.straight_grey) / self.straight_slope)
         light_white = c.xyz(self.calibration_light)
         self.ap1_white = c.ap1_to_xyz @ np.ones(3)
         self.to_ap1 = c.xyz_to_ap1 @ fp.bradford_matrix(light_white, self.ap1_white)
@@ -262,6 +300,16 @@ class ChartScanPreview(acs.ScanPreview):
         self.target_chart = self.patch_ap1(chart.reflectance)
         self.matrix = fit_white_preserving(self.e_chart, self.target_chart) if matrix else np.eye(3)
         self.sensitivity_matrix = sensitivity_matrix
+        if matrix_domain not in MATRIX_DOMAINS:
+            raise ValueError(f"unknown matrix domain {matrix_domain!r}")
+        if matrix_domain != "linear" and (not sensitivity_matrix or output != "log_curve"):
+            raise ValueError("matrix_domain 'code' or 'log' needs sensitivity_matrix and output 'log_curve'")
+        self.matrix_domain = matrix_domain
+        if display_transform not in dt.TRANSFORMS:
+            raise ValueError(f"unknown display transform {display_transform!r}")
+        if display_transform != "log_curve" and (not sensitivity_matrix or output != "log_curve"):
+            raise ValueError("a display transform needs sensitivity_matrix and output 'log_curve'")
+        self.display_transform = display_transform
         self.display_compress = display_compress
         self.exposure_scale = 2.0 ** exposure_stops
         if sensitivity_matrix:
@@ -295,7 +343,10 @@ class ChartScanPreview(acs.ScanPreview):
     def equivalent_exposure(self, apd: np.ndarray) -> tuple[np.ndarray, int]:
         """Rule 'chart_equivalent_exposure' (inversion 'curves') or 'chart_straight_line' (inversion 'straight'). The second value counts the records outside the kept part of a curve."""
         if self.inversion == "straight":
-            return GREY * 2.0 ** ((apd - self.straight_grey) / self.straight_slope), 0
+            e = GREY * 2.0 ** ((apd - self.straight_grey) / self.straight_slope)
+            if self.base_black:
+                e = GREY * (e - self.base_e) / (GREY - self.base_e)
+            return e, 0
         out = np.empty(apd.shape, dtype=np.float64)
         outside = 0
         for k in range(3):
@@ -308,7 +359,7 @@ class ChartScanPreview(acs.ScanPreview):
         image = np.ascontiguousarray(ap1, dtype=np.float32)
         record, stats = self.negative.negative_image(image[None] if image.ndim == 2 else image)
         e, outside = self.equivalent_exposure(self.density(record))
-        out = e @ self.matrix.T
+        out = e if self.matrix_domain != "linear" else e @ self.matrix.T
         stats = {**stats, "record_outside_curve": outside}
         return (out[0] if image.ndim == 2 else out), stats
 
@@ -325,12 +376,22 @@ class ChartScanPreview(acs.ScanPreview):
         q = n.layer_gain * n.c.layer_exposure(reflectance * light)
         record, _ = n.negative_density(q)
         e, _ = self.equivalent_exposure(self.density(record))
+        if self.matrix_domain != "linear":
+            return self.matrix_after_curve(e)
         scene = e @ self.matrix.T
         if self.output == "clip709":
             return self.display(scene)[0]
         if self.sensitivity_matrix:
             scene = self.compress_709(scene @ self.ap1_to_rec709.T)
         return self.display_channels(scene)
+
+    def matrix_after_curve(self, e: np.ndarray) -> np.ndarray:
+        """Rule 'scan_matrix_domain', forms 'code' and 'log': e (film channels) to display code."""
+        m = self.ap1_to_rec709 @ self.matrix
+        if self.matrix_domain == "code":
+            return np.clip(self.compress_709(self.display_channels(e) @ m.T), 0.0, 1.0)
+        s = np.maximum(np.log2(np.maximum(e, 1e-12) / GREY), LOG_MATRIX_FLOOR) @ m.T
+        return 1.0 / (1.0 + np.exp(-(s - self.log_s0) / self.log_w))
 
     def compress_709(self, rgb: np.ndarray) -> np.ndarray:
         if not self.display_compress:
@@ -349,6 +410,13 @@ class ChartScanPreview(acs.ScanPreview):
     def render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
         scene, stats = self.scene_ap1(ap1)
         scene = scene * self.exposure_scale
+        if self.display_transform != "log_curve":
+            stats["display_clipped"] = 0
+            ap1 = scene if self.matrix_domain == "linear" else scene @ self.matrix.T
+            return dt.render(self.display_transform, ap1, self.ap1_to_rec709, fp.srgb_encode), stats
+        if self.matrix_domain != "linear":
+            stats["display_clipped"] = 0
+            return self.matrix_after_curve(scene), stats
         if self.output != "clip709":
             stats["display_clipped"] = 0
             if self.sensitivity_matrix:

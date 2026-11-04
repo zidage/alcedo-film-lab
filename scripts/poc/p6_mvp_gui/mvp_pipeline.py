@@ -19,6 +19,15 @@ Rules of this step:
   matrix of the stock, the scan timing of option print_timing, the display compression on Rec. 709, and a log curve per channel. No ACES
   output transform and no statistic of a frame. The print controls do not act. Setting chart_scan_slope (U89): 'fixed' (default) applies rule
   'fixed_scan_slope', one Status M slope per channel for all stocks; 'stock' is the form of U88, the slope of the grey scale of each stock.
+  Round 7 (U90): setting chart_scan_reading 'dye' (default) reads the dye amounts with the Status M contrast of U89 (chart_scan.py rule
+  'dye_reading_density_contrast'), 'status_m' is the reading of U88 and U89; chart_scan_matrix 'code' (default) curves the film channels and then
+  applies the matrix to the codes (rule 'scan_matrix_domain'), 'linear' is the form of U88; control chart_scan_black is rule 'scan_base_black'
+  (1: black at the film base); control chart_scan_timing is the scan timing (it replaces print_timing for this method).
+  Round 8 (U91): setting chart_scan_display, 'log_curve' (default) or a display rendering transform of a public OCIO config ('aces20', 'agx',
+  'opendrt') or the Cineon conversion ('cineon'), on the linear AP1 of the scan (p10_chart_scan/display_transforms.py).
+- Scene light 'as_shot' (U90, P4 rule 'light_from_raw_white'): the camera white balance and the camera matrix of the RAW file give the XYZ
+  of the neutral and a correlated colour temperature (McCamy); at 4000 K and above the light is a CIE daylight, below a Planckian light. The
+  renderer replaces 'as_shot' with the name of that light (as_shot_light). A RAW file with no camera matrix stops with an error.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -38,7 +47,9 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parents[2]
 sys.path.insert(0, str(SCRIPT_DIR))
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p3_scan_and_scene"))
-from aces_scan import OUTPUT_TRANSFORMS, ScanPreview, fp  # noqa: E402
+from aces_scan import DRT_GREYS, DRT_OUTPUTS, OUTPUT_TRANSFORMS, READINGS, ScanPreview, fp  # noqa: E402
+
+SCAN_OUTPUTS = (*OUTPUT_TRANSFORMS, *DRT_OUTPUTS)  # U92
 
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p9_reversal_light_table"))
 import reversal_film as rf  # noqa: E402
@@ -63,7 +74,8 @@ ACCEPTED_STOCKS = {"kodak_5207": "5207_2383", "kodak_5219": "5219_2383", "kodak_
                    "kodak_portra_800": "portra800_endura", "kodak_ektar_100": "ektar100_endura", "kodak_gold_200": "gold200_endura", "fuji_c200": "c200_endura"}
 STOCK_PRINT_FIELDS = ("print_profile", "print_midscale_status_a", "viewing_cct_k", "neutral_printing", "grey_anchor", "balance_light", "scene_light")
 REFERENCE_LIGHT = "reference"
-SCENE_LIGHTS = (REFERENCE_LIGHT, *fp.PRODUCT_LIGHTS, *fp.SCENE_PRESETS)
+AS_SHOT = "as_shot"
+SCENE_LIGHTS = (REFERENCE_LIGHT, AS_SHOT, *fp.PRODUCT_LIGHTS, *fp.SCENE_PRESETS)
 SPECTRAL_PRIORS = ("light_like", "measured_reflectance")
 METHODS = ("print", "apd", "light_table", "chart_scan")
 REVERSAL_ORDER = ("fuji_velvia_50", "fuji_velvia_100", "fuji_provia_100f", "fuji_astia_100f", "kodak_ektachrome_e100")
@@ -79,6 +91,9 @@ SCAN = ("apd",)
 LIGHT_TABLE = ("light_table",)
 CHART_SCAN = ("chart_scan",)
 CHART_SCAN_SLOPES = ("fixed", "stock")
+CHART_SCAN_READINGS = ("dye", "status_m")
+CHART_SCAN_MATRICES = ("code", "linear")
+CHART_SCAN_DISPLAYS = ("log_curve", "aces20", "agx", "opendrt", "cineon")
 BOTH = METHODS
 
 
@@ -109,8 +124,10 @@ CONTROLS = (
     Control("print_flash", "Paper flash", "Print", 0.0, 0.2, 0.01, 3, PRINT, "Uniform exposure of the paper, as a share of the balance exposure. It softens the print highlights."),
     Control("enlarger_flare", "Enlarger flare", "Print", 0.0, 0.1, 0.005, 3, (*PRINT, *LIGHT_TABLE), "Stray light of the enlarger lens, as a share of the light. It lifts the print shadows. On the light table: the flare of the loupe, in linear light; it lifts the shadows of the slide."),
     Control("viewing_flare", "Surface reflection", "Print", 0.0, 0.03, 0.001, 4, PRINT, "Reflection of the print surface. It lifts the black."),
-    Control("print_timing", "Timing", "Negative", 0.0, 1.0, 0.1, 2, (*PRINT, *SCAN, *CHART_SCAN), "Share of the mid grey cast of the scene light that the printer lights, the scanner offset, or the grey of the chart scan remove. It acts when the scene light is not 'reference', and on a stock with a relative sensitivity chart."),
+    Control("print_timing", "Timing", "Negative", 0.0, 1.0, 0.1, 2, (*PRINT, *SCAN), "Share of the mid grey cast of the scene light that the printer lights or the scanner offset remove. It acts when the scene light is not 'reference', and on a stock with a relative sensitivity chart."),
     Control("apd_exposure_stops", "Scanner light (stops)", "Scan", -3.0, 3.0, 0.25, 2, SCAN, "One neutral offset of the ADX10 code values. 0: the mid grey at code value 445, as the ADX to ACES transform assumes. +0.53 on ACES 2.0 and +0.37 on ACES 1.3 show the grey of the print (P3 report)."),
+    Control("chart_scan_timing", "Scan timing", "Chart scan", 0.0, 1.0, 0.05, 2, CHART_SCAN, "Rule scan_timing: share of the mid grey cast of the scene light that the scan removes. 1: a grey of any light is neutral. Below 1, part of the cast stays, as a lab that does not correct a frame in full (U90)."),
+    Control("chart_scan_black", "Black at film base", "Chart scan", 0.0, 2.0, 0.25, 2, CHART_SCAN, "Rule scan_base_black: share of the value of the unexposed film that the scanner takes as black. 1: black at the film base. Above 1, the toe of the negative clips to black (U90)."),
     Control("chart_scan_exposure_stops", "Scan exposure (stops)", "Chart scan", -3.0, 3.0, 0.25, 2, CHART_SCAN, "Rule scan_exposure: one neutral scale of the scene values before the log curve, as a scanner light. 0: the grey of the chart shows as a digital grey."),
 )
 
@@ -145,8 +162,15 @@ class RenderSettings:
     apd_exposure_stops: float = 0.0
     chart_scan_exposure_stops: float = 0.0
     chart_scan_slope: str = "fixed"
+    chart_scan_reading: str = "dye"
+    chart_scan_matrix: str = "code"
+    chart_scan_display: str = "log_curve"
+    chart_scan_timing: float = 0.75
+    chart_scan_black: float = 1.0
     apd_lad_aim: bool = True
     apd_output: str = "aces20"
+    apd_reading: str = "apd"
+    apd_drt_grey: str = "aces20"
 
     def validate(self) -> None:
         if self.reversal not in CATALOG["reversals"]:
@@ -161,16 +185,28 @@ class RenderSettings:
         if self.print_material not in CATALOG["prints"]:
             reason = CATALOG["not_usable"].get(self.print_material, {}).get("reason", "not in the catalog")
             raise ValueError(f"print material {self.print_material!r}: {reason}")
-        if self.scene_light not in SCENE_LIGHTS:
+        if self.scene_light not in SCENE_LIGHTS and not is_light_name(self.scene_light):
             raise ValueError(f"unknown scene light {self.scene_light!r}")
+        if self.scene_light == AS_SHOT:
+            raise ValueError("scene light 'as_shot' needs the white of a RAW file: render through resolve_as_shot")
+        if self.chart_scan_reading not in CHART_SCAN_READINGS:
+            raise ValueError(f"unknown chart scan reading {self.chart_scan_reading!r}")
+        if self.chart_scan_display not in CHART_SCAN_DISPLAYS:
+            raise ValueError(f"unknown chart scan display {self.chart_scan_display!r}")
+        if self.chart_scan_matrix not in CHART_SCAN_MATRICES:
+            raise ValueError(f"unknown chart scan matrix {self.chart_scan_matrix!r}")
         if self.spectral_prior not in SPECTRAL_PRIORS:
             raise ValueError(f"unknown spectral prior {self.spectral_prior!r}")
         if self.display_white not in DISPLAY_WHITES:
             raise ValueError(f"unknown display white {self.display_white!r}")
         if self.chart_scan_slope not in CHART_SCAN_SLOPES:
             raise ValueError(f"unknown chart scan slope {self.chart_scan_slope!r}")
-        if self.apd_output not in OUTPUT_TRANSFORMS:
-            raise ValueError(f"unknown ACES output {self.apd_output!r}")
+        if self.apd_output not in SCAN_OUTPUTS:
+            raise ValueError(f"unknown output {self.apd_output!r}")
+        if self.apd_drt_grey not in DRT_GREYS:
+            raise ValueError(f"unknown DRT grey {self.apd_drt_grey!r}")
+        if self.apd_reading not in READINGS:
+            raise ValueError(f"unknown scanner reading {self.apd_reading!r}")
         for control in CONTROLS:
             value = getattr(self, control.name)
             if not control.low <= value <= control.high:
@@ -217,6 +253,33 @@ def print_conditions(print_material: str) -> dict:
     return dict(print_profile=print_material, print_midscale_status_a=0.75, viewing_cct_k=5000.0, neutral_printing=False, display_white="reflector")
 
 
+def is_light_name(name: str) -> bool:
+    """A light of rule 'light_from_raw_white': 'D' and hundreds of kelvin (CIE daylight), or 'T' and kelvin (Planckian)."""
+    return len(name) > 2 and name[0] in "DT" and name[1:].isdigit()
+
+
+def as_shot_light(path: Path) -> tuple[str, float]:
+    """P4 rule 'light_from_raw_white' (render_light_and_detail_review.estimated_light): the light name and the CCT in K."""
+    import rawpy
+
+    with rawpy.imread(str(path)) as raw:
+        multipliers = np.array(raw.camera_whitebalance[:3], dtype=np.float64)
+        camera_from_xyz = np.array(raw.rgb_xyz_matrix[:3], dtype=np.float64)
+    if multipliers.min() <= 0.0 or abs(np.linalg.det(camera_from_xyz)) < 1e-9:
+        raise ValueError(f"{Path(path).name}: the RAW file has no camera white balance or no camera matrix, so scene light 'as_shot' cannot run")
+    xyz = np.linalg.solve(camera_from_xyz, 1.0 / multipliers)
+    x, y = xyz[0] / xyz.sum(), xyz[1] / xyz.sum()
+    n = (x - 0.3320) / (y - 0.1858)
+    cct = float(-449.0 * n ** 3 + 3525.0 * n ** 2 - 6823.3 * n + 5520.33)
+    rounded = int(round(np.clip(cct, 1800.0, 24000.0) / 100.0))
+    return (f"D{rounded}" if rounded >= 40 else f"T{rounded * 100}"), cct
+
+
+def resolve_as_shot(settings: "RenderSettings", path: Path) -> "RenderSettings":
+    """Scene light 'as_shot': the light of the RAW white in its place. Other lights do not change."""
+    return replace(settings, scene_light=as_shot_light(path)[0]) if settings.scene_light == AS_SHOT else settings
+
+
 def light_conditions(negative: str, scene_light: str, physics: dict | None = None) -> dict:
     """Rule 'no_anchor_at_reference_light'."""
     fitted = (physics if physics is not None else load_physics()).get(negative, {})
@@ -246,14 +309,21 @@ def film_options(settings: RenderSettings, print_material: str | None = None, ph
                    display_white=options.display_white if settings.display_white == MEDIUM_WHITE else settings.display_white, gamut_compress=settings.gamut_compress)
 
 
+def chart_scan_reading(settings: RenderSettings) -> dict:
+    """Options of ChartScanPreview for setting chart_scan_reading: 'dye' (U90) or 'status_m' with setting chart_scan_slope (U88, U89)."""
+    if settings.chart_scan_reading == "dye":
+        return dict(scanner="analytical", slope_source="density")
+    return dict(scanner="status_m", slope_source=settings.chart_scan_slope)
+
+
 def control_values(settings: RenderSettings, method: str) -> tuple:
     """The values of a model of this method, so that a change of a control of the other method keeps the model."""
     values = (settings.foliage, settings.negative_grade, *(getattr(settings, c.name) for c in CONTROLS if method in c.methods))
     if method == "light_table":
         return (*values, settings.gamut_compress)
     if method == "chart_scan":
-        return (*values, settings.chart_scan_slope)
-    return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output)
+        return (*values, settings.chart_scan_slope, settings.chart_scan_reading, settings.chart_scan_matrix, settings.chart_scan_display)
+    return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output, settings.apd_reading, settings.apd_drt_grey)
 
 
 def light_table_options(settings: RenderSettings) -> fp.FilmOptions:
@@ -305,7 +375,7 @@ class Pipeline:
 
     def scan_model(self, settings: RenderSettings) -> ScanPreview:
         negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "apd" not in c.methods})
-        return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim, exposure_stops=settings.apd_exposure_stops))
+        return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim, exposure_stops=settings.apd_exposure_stops, reading=settings.apd_reading, drt_grey=settings.apd_drt_grey))
 
     def chart_scan_model(self, settings: RenderSettings):
         sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
@@ -313,8 +383,10 @@ class Pipeline:
 
         negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "chart_scan" not in c.methods})
         return self._model(("chart_scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "chart_scan")),
-                           lambda: cs.ChartScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), cs.cached_chart(), **cs.SELECTED_FORM,
-                                                       scan_timing=settings.print_timing, exposure_stops=settings.chart_scan_exposure_stops, slope_source=settings.chart_scan_slope))
+                           lambda: cs.ChartScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), cs.cached_chart(),
+                                                       **{**cs.SELECTED_FORM, **chart_scan_reading(settings)}, scan_timing=settings.chart_scan_timing, exposure_stops=settings.chart_scan_exposure_stops,
+                                                       base_black=settings.chart_scan_black, matrix_domain=settings.chart_scan_matrix,
+                                                       display_transform=settings.chart_scan_display))
 
     def light_table_model(self, settings: RenderSettings) -> rf.ReversalPreview:
         return self._model(("light_table", settings.reversal, settings.scene_light, settings.spectral_prior, control_values(settings, "light_table")), lambda: rf.ReversalPreview(light_table_options(settings)))
@@ -343,6 +415,7 @@ class Pipeline:
         return image
 
     def render_file(self, path: Path, settings: RenderSettings, long_edge: int = DEFAULT_LONG_EDGE) -> tuple[np.ndarray, dict]:
+        settings = resolve_as_shot(settings, path)
         settings.validate()
         start = time.perf_counter()
         colorimetry = self.colorimetry(settings)

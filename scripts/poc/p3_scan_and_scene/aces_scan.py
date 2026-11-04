@@ -20,7 +20,11 @@ Stages:
 4. ADX10 to ACES2065-1: port of ACEScsc.Academy.ADX10_to_ACES (aces-dev v1.3.1, A.M.P.A.S. license, THIRD_PARTY_NOTICES.md).
    This transform has no stock parameter.
 5. Output: OpenColorIO built-in transforms, ACES2065-1 to XYZ D65, then sRGB encoding. 'aces13' is the
-   SDR-VIDEO transform of ACES 1.x, 'aces20' the 100 nit Rec. 709 transform of ACES 2.0.
+   SDR-VIDEO transform of ACES 1.x, 'aces20' the 100 nit Rec. 709 transform of ACES 2.0. Step P10, U92: 'agx' and 'opendrt' are the
+   transforms of p10_chart_scan/display_transforms.py on ACES2065-1 converted to AP1, with the exposure that shows ACES 0.18 at the code of
+   'aces20'. Option reading (U92): 'apd' (ST 2065-2) or 'print2383', the printing density of the print material of the options (Kodak 2383
+   in the viewer: the printer lamp times the published spectral sensitivity of the paper), which stands for APD and can ship. Option
+   drt_grey (U92, with 'agx' and 'opendrt'): 'aces20' moves the exposure as above; 'native' gives ACES 0.18 to the transform as 0.18.
 """
 
 from __future__ import annotations
@@ -46,6 +50,10 @@ ADX10_PER_STOP = float(np.log10(2.0)) * 0.55 * ADX10_PER_DENSITY  # the transfor
 OUTPUT_TRANSFORMS = {"aces13": "ACES-OUTPUT - ACES2065-1_to_CIE-XYZ-D65 - SDR-VIDEO_1.0",
                      "aces20": "ACES-OUTPUT - ACES2065-1_to_CIE-XYZ-D65 - SDR-100nit-REC709_2.0"}
 DISPLAY_TRANSFORM = "DISPLAY - CIE-XYZ-D65_to_sRGB"
+DRT_OUTPUTS = ("agx", "opendrt")  # U92
+DRT_GREYS = ("aces20", "native")  # U92
+READINGS = ("apd", "print2383")  # U92
+AP0_TO_AP1 = np.array([[1.4514393161, -0.2365107469, -0.2149285693], [-0.0765537734, 1.1762296998, -0.0996759264], [0.0083161484, -0.0060324498, 0.9977163014]])
 
 # Constants of ACEScsc.Academy.ADX10_to_ACES.ctl, aces-dev v1.3.1. The CTL multiplies row vectors.
 CDD_TO_CID = np.array([[0.75573, 0.05901, 0.16134], [0.22197, 0.96928, 0.07406], [0.02230, -0.02829, 0.76460]])
@@ -103,8 +111,18 @@ class ScanPreview:
     and the enlarger flare is off, because the scan has no enlarger."""
 
     def __init__(self, options: fp.FilmOptions, output: str = "aces20", timing: float | None = None, lad_aim: bool = True, exposure_stops: float = 0.0,
-                 scanner: tuple[str, np.ndarray, np.ndarray] | None = None) -> None:
+                 scanner: tuple[str, np.ndarray, np.ndarray] | None = None, reading: str = "apd", drt_grey: str = "aces20") -> None:
+        if drt_grey not in DRT_GREYS:
+            raise ValueError(f"unknown DRT grey {drt_grey!r}")
+        self.drt_grey = drt_grey
         self.negative = fp.FilmPreview(replace(options, enlarger_flare=0.0))
+        if reading not in READINGS:
+            raise ValueError(f"unknown reading {reading!r}")
+        if reading == "print2383":
+            if scanner is not None:
+                raise ValueError("reading 'print2383' and a scanner exclude each other")
+            film = self.negative.film
+            scanner = ("print_density", film.grid.wavelengths, np.asarray(film.w_printing, dtype=np.float64))
         self.output_name = output
         self.timing = options.print_timing if timing is None else timing
         self.lad_aim = lad_aim
@@ -119,7 +137,13 @@ class ScanPreview:
         self.apd_dmin = self.apd(film.negative_dmin[None])[0]
         self.table = self._build_table()
         self.offset = self._adx_offset()
-        self.output_cpu = builtin_processor(OUTPUT_TRANSFORMS[output], DISPLAY_TRANSFORM)
+        if output in DRT_OUTPUTS:
+            self.output_cpu = None
+            self.grey_code = float(apply_processor(builtin_processor(OUTPUT_TRANSFORMS["aces20"], DISPLAY_TRANSFORM), np.full((1, 3), 0.18))[0, 1])
+        elif output in OUTPUT_TRANSFORMS:
+            self.output_cpu = builtin_processor(OUTPUT_TRANSFORMS[output], DISPLAY_TRANSFORM)
+        else:
+            raise ValueError(f"unknown output {output!r}")
 
     def apd(self, spectral_density: np.ndarray) -> np.ndarray:
         """Equation 1 of ST 2065-2."""
@@ -173,7 +197,17 @@ class ScanPreview:
     def render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
         """Linear AP1 to sRGB through the scan and the ACES output transform."""
         code, stats = self.adx10(ap1)
-        display = apply_processor(self.output_cpu, adx10_to_aces(code))
+        if self.output_cpu is None:
+            sys.path.insert(0, str(SCRIPT_DIR.parent / "p10_chart_scan"))
+            import display_transforms as dt  # step P10, U92
+
+            ap1_scene = adx10_to_aces(code) @ AP0_TO_AP1.T
+            if self.drt_grey == "native":
+                display = dt.render_native(self.output_name, ap1_scene, fp.srgb_encode)
+            else:
+                display = dt.render_at(self.output_name, ap1_scene, self.grey_code, fp.srgb_encode)
+        else:
+            display = apply_processor(self.output_cpu, adx10_to_aces(code))
         if not np.isfinite(display).all():
             raise RuntimeError("the output transform returned values that are not finite")
         stats["display_outside_0_1"] = int(((display < 0) | (display > 1)).any(axis=-1).sum())

@@ -27,9 +27,18 @@ class RenderWorker(QObject):
         self.pipeline = mp.Pipeline()
         self._source: tuple[tuple[Path, int], np.ndarray, dict] | None = None
 
+    def _resolve(self, path: Path, settings: mp.RenderSettings) -> mp.RenderSettings:
+        """Scene light 'as_shot': the light of the RAW white, read once per file."""
+        if settings.scene_light != mp.AS_SHOT:
+            return settings
+        if getattr(self, "_as_shot", (None,))[0] != path:
+            self._as_shot = (path, mp.as_shot_light(path)[0])
+        return mp.replace(settings, scene_light=self._as_shot[1])
+
     @Slot(object, object, int)
     def render(self, path: Path, settings: mp.RenderSettings, long_edge: int) -> None:
         try:
+            settings = self._resolve(path, settings)
             colorimetry = self.pipeline.colorimetry(settings) if settings.validate() is None else None
             if self._source is None or self._source[0] != (path, long_edge):
                 ap1, decode = mp.decode_raw(path, colorimetry, long_edge)
@@ -84,14 +93,26 @@ class MainWindow(QMainWindow):
             groups.setdefault(control.group, QFormLayout()).addRow(control.label, spin)
         groups["Print"].addRow("Display white", self.display_white)
         groups["Print"].addRow("", self.gamut)
-        self.apd_output = self._combo({"aces20": {"name": "ACES 2.0 (Rec. 709, 100 nit)"}, "aces13": {"name": "ACES 1.3 (SDR video)"}}, defaults.apd_output)
+        self.apd_output = self._combo({"aces20": {"name": "ACES 2.0 (Rec. 709, 100 nit)"}, "aces13": {"name": "ACES 1.3 (SDR video)"},
+                                       "agx": {"name": "AgX (grey of ACES 2.0)"}, "opendrt": {"name": "OpenDRT 1.0.0 (grey of ACES 2.0)"}}, defaults.apd_output)
+        self.apd_reading = self._combo({"apd": {"name": "APD (ST 2065-2)"}, "print2383": {"name": "Kodak 2383 printing density"}}, defaults.apd_reading)
         self.lad_aim = QCheckBox("Mid grey at ADX10 445 (LAD aim)")
         self.lad_aim.setChecked(defaults.apd_lad_aim)
         self.lad_aim.toggled.connect(self.schedule)
-        groups["Scan"].addRow("ACES output", self.apd_output)
+        groups["Scan"].addRow("Output", self.apd_output)
+        groups["Scan"].addRow("Scanner reading", self.apd_reading)
+        self.apd_drt_grey = self._combo({"aces20": {"name": "At the grey of ACES 2.0"}, "native": {"name": "Native (ACES 0.18 as is)"}}, defaults.apd_drt_grey)
+        groups["Scan"].addRow("AgX / OpenDRT grey", self.apd_drt_grey)
         groups["Scan"].addRow("", self.lad_aim)
         self.chart_scan_slope = self._combo({"fixed": {"name": "Fixed, the same for all stocks"}, "stock": {"name": "Grey scale of the stock (U88)"}}, defaults.chart_scan_slope)
-        groups["Chart scan"].addRow("Slope", self.chart_scan_slope)
+        groups["Chart scan"].addRow("Slope (Status M)", self.chart_scan_slope)
+        self.chart_scan_reading = self._combo({"dye": {"name": "Dye amounts, Status M contrast (U90)"}, "status_m": {"name": "Status M (U88, U89)"}}, defaults.chart_scan_reading)
+        groups["Chart scan"].addRow("Scanner reading", self.chart_scan_reading)
+        self.chart_scan_matrix = self._combo({"code": {"name": "Curve on film channels, then matrix (U90)"}, "linear": {"name": "Matrix, then curve on Rec. 709 (U88)"}}, defaults.chart_scan_matrix)
+        groups["Chart scan"].addRow("Matrix", self.chart_scan_matrix)
+        self.chart_scan_display = self._combo({"log_curve": {"name": "Log curve (P10)"}, "aces20": {"name": "ACES 2.0"}, "agx": {"name": "AgX"},
+                                               "opendrt": {"name": "OpenDRT 1.0.0"}, "cineon": {"name": "Cineon, Kodak conversion (DI, no print)"}}, defaults.chart_scan_display)
+        groups["Chart scan"].addRow("Display (U91)", self.chart_scan_display)
         form = QFormLayout()
         for label, widget in (("Negative", self.negative), ("Method", self.method), ("Reversal film", self.reversal), ("Print material", self.print_material), ("Scene light", self.light), ("Spectral prior", self.prior),
                               ("Exposure (EV)", self.exposure), ("Contrast", self.contrast), ("Saturation", self.saturation), ("Long edge (pixels)", self.long_edge)):
@@ -165,12 +186,13 @@ class MainWindow(QMainWindow):
     def settings(self) -> mp.RenderSettings:
         return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), reversal=self.reversal.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
                                  spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
-                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), chart_scan_slope=self.chart_scan_slope.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
+                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
+                                 chart_scan_matrix=self.chart_scan_matrix.currentData(), chart_scan_display=self.chart_scan_display.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
 
     @Slot()
     def reset_controls(self) -> None:
         defaults = mp.RenderSettings()
-        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.chart_scan_slope]
+        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display]
         for widget in widgets:
             widget.blockSignals(True)
         for name, spin in self.controls.items():
@@ -179,7 +201,12 @@ class MainWindow(QMainWindow):
         self.gamut.setChecked(defaults.gamut_compress)
         self.apd_output.setCurrentIndex(self.apd_output.findData(defaults.apd_output))
         self.lad_aim.setChecked(defaults.apd_lad_aim)
+        self.apd_reading.setCurrentIndex(self.apd_reading.findData(defaults.apd_reading))
+        self.apd_drt_grey.setCurrentIndex(self.apd_drt_grey.findData(defaults.apd_drt_grey))
         self.chart_scan_slope.setCurrentIndex(self.chart_scan_slope.findData(defaults.chart_scan_slope))
+        self.chart_scan_reading.setCurrentIndex(self.chart_scan_reading.findData(defaults.chart_scan_reading))
+        self.chart_scan_matrix.setCurrentIndex(self.chart_scan_matrix.findData(defaults.chart_scan_matrix))
+        self.chart_scan_display.setCurrentIndex(self.chart_scan_display.findData(defaults.chart_scan_display))
         for widget in widgets:
             widget.blockSignals(False)
         self.schedule()

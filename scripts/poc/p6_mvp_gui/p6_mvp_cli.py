@@ -32,8 +32,13 @@ def main() -> int:
         parser.add_argument("--" + control.name.replace("_", "-"), type=float, default=getattr(defaults, control.name), help=f"{control.note} Range {control.low} to {control.high}. Method: {', '.join(control.methods)}.")
     parser.add_argument("--display-white", default=defaults.display_white, choices=mp.DISPLAY_WHITES, help="Print method: 'reflector' keeps the paper base, and 'paper' maps the paper to display white.")
     parser.add_argument("--no-gamut-compress", action="store_true", help="Print method: clip in place of rule rgc_style_display_compression.")
-    parser.add_argument("--apd-output", default=defaults.apd_output, choices=sorted(mp.OUTPUT_TRANSFORMS), help="APD method: the ACES output transform.")
+    parser.add_argument("--apd-output", default=defaults.apd_output, choices=mp.SCAN_OUTPUTS, help="APD method: the output transform (ACES 1.3, ACES 2.0, or AgX and OpenDRT at the grey of ACES 2.0, U92).")
+    parser.add_argument("--apd-drt-grey", default=defaults.apd_drt_grey, choices=mp.DRT_GREYS, help="APD method with AgX or OpenDRT: 'aces20', ACES 0.18 at the grey code of ACES 2.0; 'native', no exposure change (U92).")
+    parser.add_argument("--apd-reading", default=defaults.apd_reading, choices=mp.READINGS, help="APD method: 'apd' (ST 2065-2) or 'print2383', the printing density of Kodak 2383 (U92).")
     parser.add_argument("--no-lad-aim", action="store_true", help="APD method: no offset per channel, so the stock keeps its own grey position in ADX10.")
+    parser.add_argument("--chart-scan-reading", default=defaults.chart_scan_reading, choices=mp.CHART_SCAN_READINGS, help="Method chart_scan: 'dye', the dye amounts with the Status M contrast of U89 (U90); 'status_m', the reading of U88 and U89.")
+    parser.add_argument("--chart-scan-matrix", default=defaults.chart_scan_matrix, choices=mp.CHART_SCAN_MATRICES, help="Method chart_scan: 'code', curve on the film channels then the matrix (U90); 'linear', the matrix then the curve (U88).")
+    parser.add_argument("--chart-scan-display", default=defaults.chart_scan_display, choices=mp.CHART_SCAN_DISPLAYS, help="Method chart_scan: the log curve or a display rendering transform on the linear AP1 of the scan (U91).")
     parser.add_argument("--chart-scan-slope", default=defaults.chart_scan_slope, choices=mp.CHART_SCAN_SLOPES, help="Method chart_scan: 'fixed', one Status M slope for all stocks (rule fixed_scan_slope); 'stock', the slope of the grey scale of the stock (U88).")
     parser.add_argument("--list", action="store_true", help="List the materials and stop.")
     args = parser.parse_args()
@@ -49,7 +54,7 @@ def main() -> int:
     if args.input is None or args.output is None:
         parser.error("INPUT and OUTPUT are necessary")
     settings = mp.RenderSettings(negative=args.negative, method=args.method, reversal=args.reversal, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior,
-                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim, chart_scan_slope=args.chart_scan_slope,
+                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim, apd_reading=args.apd_reading, apd_drt_grey=args.apd_drt_grey, chart_scan_slope=args.chart_scan_slope, chart_scan_reading=args.chart_scan_reading, chart_scan_matrix=args.chart_scan_matrix, chart_scan_display=args.chart_scan_display,
                                  **{control.name: getattr(args, control.name) for control in mp.CONTROLS})
     image, record = mp.Pipeline().render_file(args.input, settings, args.long_edge)
     for path in mp.write_outputs(image, record, args.output):
