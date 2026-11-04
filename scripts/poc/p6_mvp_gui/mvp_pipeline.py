@@ -51,6 +51,7 @@ sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p3_scan_and_scene"))
 from aces_scan import DRT_GREYS, DRT_OUTPUTS, ENCODINGS, OUTPUT_TRANSFORMS, READINGS, ScanPreview, fp  # noqa: E402
 
 SCAN_OUTPUTS = (*OUTPUT_TRANSFORMS, *DRT_OUTPUTS)  # U92
+SCAN_COLOURS = ("academy", "print_hue_scene_chroma", "print_hue_scan_chroma", "scene_hue_scan_chroma", "print_hue_print_chroma")  # U95, scan_colour.COLOURS
 
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p9_reversal_light_table"))
 import reversal_film as rf  # noqa: E402
@@ -169,11 +170,12 @@ class RenderSettings:
     chart_scan_timing: float = 0.75
     chart_scan_black: float = 1.0
     apd_lad_aim: bool = True
-    apd_output: str = "aces20"
-    apd_reading: str = "apd"
-    apd_drt_grey: str = "aces20"
+    apd_output: str = "opendrt"  # U95: the display of the product form
+    apd_reading: str = "print2383"  # U95: the reading of the product form
+    apd_drt_grey: str = "native"  # U95: the grey of the product form
     apd_encoding: str = "adx16"  # U93
     apd_slope_match: bool = True  # U93, rule 'adx_slope_match' of aces_scan.py
+    apd_colour: str = "print_hue_scene_chroma"  # U95, rule 'scan_print_colour' of p10_chart_scan/scan_colour.py
 
     def validate(self) -> None:
         if self.reversal not in CATALOG["reversals"]:
@@ -212,6 +214,8 @@ class RenderSettings:
             raise ValueError(f"unknown scanner reading {self.apd_reading!r}")
         if self.apd_encoding not in ENCODINGS:
             raise ValueError(f"unknown scan encoding {self.apd_encoding!r}")
+        if self.apd_colour not in SCAN_COLOURS:
+            raise ValueError(f"unknown scan colour {self.apd_colour!r}")
         for control in CONTROLS:
             value = getattr(self, control.name)
             if not control.low <= value <= control.high:
@@ -298,6 +302,15 @@ def light_conditions(negative: str, scene_light: str, physics: dict | None = Non
     return dict(grey_anchor=True, balance_light=balance, scene_light=light)
 
 
+def scan_colour_print(settings: RenderSettings) -> fp.FilmOptions | None:
+    """Rule 'scan_colour_print_by_medium' (U95): the print of rule 'scan_print_colour' is Kodak 2383 for a cine negative and Kodak Endura Premier for a
+    photo negative, under the scene light of the scan."""
+    if settings.apd_colour == "academy":
+        return None
+    paper = "kodak_2383" if CATALOG["negatives"][settings.negative]["medium"].lower() == "cine" else "kodak_endura_premier"
+    return film_options(replace(settings, method="print", print_material=paper))
+
+
 def film_options(settings: RenderSettings, print_material: str | None = None, physics: dict | None = None, image_part: bool = True) -> fp.FilmOptions:
     material = print_material or settings.print_material
     options = fp.FilmOptions(**{**fp.DARKROOM, **negative_options(settings.negative, physics, image_part), **print_conditions(material), **light_conditions(settings.negative, settings.scene_light, physics),
@@ -328,7 +341,7 @@ def control_values(settings: RenderSettings, method: str) -> tuple:
         return (*values, settings.gamut_compress)
     if method == "chart_scan":
         return (*values, settings.chart_scan_slope, settings.chart_scan_reading, settings.chart_scan_matrix, settings.chart_scan_display)
-    return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output, settings.apd_reading, settings.apd_drt_grey, settings.apd_encoding, settings.apd_slope_match)
+    return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output, settings.apd_reading, settings.apd_drt_grey, settings.apd_encoding, settings.apd_slope_match, settings.apd_colour)
 
 
 def light_table_options(settings: RenderSettings) -> fp.FilmOptions:
@@ -380,7 +393,7 @@ class Pipeline:
 
     def scan_model(self, settings: RenderSettings) -> ScanPreview:
         negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "apd" not in c.methods})
-        return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim, exposure_stops=settings.apd_exposure_stops, reading=settings.apd_reading, drt_grey=settings.apd_drt_grey, encoding=settings.apd_encoding, slope_match=settings.apd_slope_match))
+        return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim, exposure_stops=settings.apd_exposure_stops, reading=settings.apd_reading, drt_grey=settings.apd_drt_grey, encoding=settings.apd_encoding, slope_match=settings.apd_slope_match, colour=settings.apd_colour, colour_print=scan_colour_print(settings)))
 
     def chart_scan_model(self, settings: RenderSettings):
         sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))

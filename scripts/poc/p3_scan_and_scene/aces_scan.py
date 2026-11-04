@@ -34,6 +34,8 @@ then rise by about the same code values per stop. A negative for colour paper re
 the slope of green at the grey: s_c = 0.92 * slope_G / slope_c, where slope is the printing density per stop of the 18 % grey of the scene light
 (central difference at 2^-1 and 2^+1 of 0.18). The pivot is that grey (density D_g): code = code(D_g with the scale of equation 2) +
 s * (D - D_g) * code values per density. So the grey keeps the code of equation 2 (the LAD aim off keeps its cast), and only the slope changes.
+Option colour (U95): 'academy' (the transform alone) or a target of rule 'scan_print_colour' (p10_chart_scan/scan_colour.py), a correction of hue
+and chroma at fixed luminance after the transform; option colour_print gives the options of the print of that rule.
 """
 
 from __future__ import annotations
@@ -127,7 +129,7 @@ class ScanPreview:
 
     def __init__(self, options: fp.FilmOptions, output: str = "aces20", timing: float | None = None, lad_aim: bool = True, exposure_stops: float = 0.0,
                  scanner: tuple[str, np.ndarray, np.ndarray] | None = None, reading: str = "apd", drt_grey: str = "aces20", encoding: str = "adx10",
-                 slope_match: bool = False) -> None:
+                 slope_match: bool = False, colour: str = "academy", colour_print: fp.FilmOptions | None = None) -> None:
         if encoding not in ENCODINGS:
             raise ValueError(f"unknown encoding {encoding!r}")
         self.encoding = encoding
@@ -161,6 +163,14 @@ class ScanPreview:
         if slope_match:
             self.scale, self.pivot = self.slope_match(self.negative.options.scene_light)
         self.offset = self._adx_offset()
+        self.colour = None
+        if colour != "academy":
+            sys.path.insert(0, str(SCRIPT_DIR.parent / "p10_chart_scan"))
+            import scan_colour  # step P10, U95
+
+            if colour_print is None:
+                raise ValueError(f"scan colour {colour!r} needs the options of the print (colour_print)")
+            self.colour = scan_colour.ScanColour(fp, self, fp.FilmPreview(colour_print), colour)
         if output in DRT_OUTPUTS:
             self.output_cpu = None
             self.grey_code = float(apply_processor(builtin_processor(OUTPUT_TRANSFORMS["aces20"], DISPLAY_TRANSFORM), np.full((1, 3), 0.18))[0, 1])
@@ -235,6 +245,11 @@ class ScanPreview:
         """The ADX10 or ADX16 to ACES2065-1 transform."""
         return cdd_to_aces((np.asarray(code, dtype=np.float64) - self.code_dmin) / self.per_density)
 
+    def scene_aces(self, code: np.ndarray) -> np.ndarray:
+        """ACES2065-1 of the scan: the transform, then rule 'scan_print_colour' when option colour selects it."""
+        aces = self.to_aces(code)
+        return aces if self.colour is None else self.colour.apply(aces)
+
     def render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:
         """Linear AP1 to sRGB through the scan and the ACES output transform."""
         code, stats = self.adx10(ap1)
@@ -242,13 +257,13 @@ class ScanPreview:
             sys.path.insert(0, str(SCRIPT_DIR.parent / "p10_chart_scan"))
             import display_transforms as dt  # step P10, U92
 
-            ap1_scene = self.to_aces(code) @ AP0_TO_AP1.T
+            ap1_scene = self.scene_aces(code) @ AP0_TO_AP1.T
             if self.drt_grey == "native":
                 display = dt.render_native(self.output_name, ap1_scene, fp.srgb_encode)
             else:
                 display = dt.render_at(self.output_name, ap1_scene, self.grey_code, fp.srgb_encode)
         else:
-            display = apply_processor(self.output_cpu, self.to_aces(code))
+            display = apply_processor(self.output_cpu, self.scene_aces(code))
         if not np.isfinite(display).all():
             raise RuntimeError("the output transform returned values that are not finite")
         stats["display_outside_0_1"] = int(((display < 0) | (display > 1)).any(axis=-1).sum())

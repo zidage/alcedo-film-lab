@@ -36,6 +36,7 @@ def main() -> int:
     parser.add_argument("--apd-drt-grey", default=defaults.apd_drt_grey, choices=mp.DRT_GREYS, help="APD method with AgX or OpenDRT: 'aces20', ACES 0.18 at the grey code of ACES 2.0; 'native', no exposure change (U92).")
     parser.add_argument("--apd-encoding", default=defaults.apd_encoding, choices=tuple(mp.ENCODINGS), help="APD method: 'adx16' (no clip) or 'adx10' (clip at 1023), U93.")
     parser.add_argument("--no-slope-match", action="store_true", help="APD method: the scale 1.00, 0.92, 0.95 of ST 2065-3 for every stock, in place of rule 'adx_slope_match' (U93).")
+    parser.add_argument("--apd-colour", default=defaults.apd_colour, choices=mp.SCAN_COLOURS, help="APD method: rule 'scan_print_colour' target, or 'academy' (U95).")
     parser.add_argument("--apd-reading", default=defaults.apd_reading, choices=mp.READINGS, help="APD method: 'apd' (ST 2065-2) or 'print2383', the printing density of Kodak 2383 (U92).")
     parser.add_argument("--no-lad-aim", action="store_true", help="APD method: no offset per channel, so the stock keeps its own grey position in ADX10.")
     parser.add_argument("--chart-scan-reading", default=defaults.chart_scan_reading, choices=mp.CHART_SCAN_READINGS, help="Method chart_scan: 'dye', the dye amounts with the Status M contrast of U89 (U90); 'status_m', the reading of U88 and U89.")
@@ -56,7 +57,7 @@ def main() -> int:
     if args.input is None or args.output is None:
         parser.error("INPUT and OUTPUT are necessary")
     settings = mp.RenderSettings(negative=args.negative, method=args.method, reversal=args.reversal, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior,
-                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim, apd_reading=args.apd_reading, apd_drt_grey=args.apd_drt_grey, apd_encoding=args.apd_encoding, apd_slope_match=not args.no_slope_match, chart_scan_slope=args.chart_scan_slope, chart_scan_reading=args.chart_scan_reading, chart_scan_matrix=args.chart_scan_matrix, chart_scan_display=args.chart_scan_display,
+                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim, apd_reading=args.apd_reading, apd_drt_grey=args.apd_drt_grey, apd_encoding=args.apd_encoding, apd_slope_match=not args.no_slope_match, apd_colour=args.apd_colour, chart_scan_slope=args.chart_scan_slope, chart_scan_reading=args.chart_scan_reading, chart_scan_matrix=args.chart_scan_matrix, chart_scan_display=args.chart_scan_display,
                                  **{control.name: getattr(args, control.name) for control in mp.CONTROLS})
     image, record = mp.Pipeline().render_file(args.input, settings, args.long_edge)
     for path in mp.write_outputs(image, record, args.output):
