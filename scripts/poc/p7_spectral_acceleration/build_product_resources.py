@@ -45,12 +45,13 @@ mired: the spectra (each with Y = 1) and the setup values of the light. A colour
 Expected values: scan__<negative>__<light>.bin (the printing density table on the record nodes, the base density, the ADX10 grey, the LAD offset) for
 SCAN_EXPECTED_SELECTIONS, and scan__<negative>__cct<kelvin>.bin (the share of the second node, the blended spectrum, layer gain, ADX10 grey, and
 LAD offset) for SCAN_BLEND_SELECTIONS; the blended spectrum and layer gain are checked against the model of the blend light (limit 1e-9).
-Checks, on 4 random and the expected scan selections:
+Checks, on 4 random and the expected scan selections, and on the grid:
 
 | Check | Comparison rule | Limit |
 | Scan setup | adx_grey, adx_base_printing_density, the LAD offset, and the printing weights against a new ScanPreview: largest absolute difference | 1e-9 |
 | Scan point form | ACES2065-1 of the formula of issue 661 from the stored values against ScanPreview, LAD aim on and off, on a neutral ramp of -5 to +5 stops and 4096 random colours: largest relative difference | 1e-9 |
-| Grid blend | The blend of two nodes against the exact light, at the mid-points of CCT_BLEND_CHECKS: the print (Kodak 2383) in sRGB, and the scan through ACES 2.0, LAD aim off and on; 8 bit code | largest at most 0.5 |
+| Grid blend, print | The blend of two nodes against the exact light, at the mid-points of CCT_BLEND_CHECKS: 5207 on Kodak 2383 in sRGB, 8 bit code | largest at most 0.5 |
+| Grid blend, scan | The same for the scan of four negatives, LAD aim off and on: ACES2065-1, values above 2^-10, in stops (the code through ACES 2.0 is recorded) | largest at most 0.01 stops |
 """
 
 from __future__ import annotations
@@ -102,7 +103,12 @@ SCAN_RANDOM_CHECKS = 4
 SCAN_POINT_LIMIT = 1e-9
 CCT_GRID_MIRED = (*(float(m) for m in range(500, 69, -10)), 1e6 / 15000.0)
 CCT_BLEND_CHECKS = (495.0, 335.0, 245.0, 205.0, 195.0, 105.0)  # mired, mid-points of grid segments (U92 probe: largest 0.11 code)
-CCT_BLEND_LIMIT = 0.5
+CCT_BLEND_LIMIT = 0.5  # print, 8 bit sRGB code
+# Scan: ACES2065-1 in stops for values above 2^-10, the form of the scan tests of issue 661. Through ACES 2.0 the same blend shows up to 0.75 code
+# at bright saturated blue (ACES B about 4), where the gamut compression of the display is steep: 0.0015 stops there (U92 probe). Recorded, not limited.
+CCT_BLEND_STOPS_LIMIT = 0.01
+CCT_BLEND_FLOOR = 2.0 ** -10
+CCT_BLEND_SCAN_NEGATIVES = ("kodak_5207", "kodak_portra_400", "kodak_ektar_100", "kodak_5219")
 
 
 def write_arrays(path: Path, arrays: dict[str, np.ndarray], metadata: dict | None = None) -> None:
@@ -396,14 +402,21 @@ def check_grid_blend(images: dict[str, np.ndarray]) -> dict:
         blend_print.film.printer_balance_log10 = (1.0 - w) * np.asarray(fp.FilmPreview(print_options[a]).film.printer_balance_log10) + w * np.asarray(fp.FilmPreview(print_options[b]).film.printer_balance_log10)
         blend_print.density_grid, blend_print.print_table, blend_print.table_counts = blend_print._build_print_table()
         row["print_5207_2383"] = float(np.abs(np.asarray(exact_print.render(ap1)[0]) - np.asarray(blend_print.render(ap1)[0])).max() * 255.0)
-        for negative in ("kodak_5219", "kodak_portra_400"):
+        if row["print_5207_2383"] > CCT_BLEND_LIMIT:
+            raise ValueError(f"grid blend at {kelvin:.0f} K: the print differs from the exact light by {row['print_5207_2383']:.3g} codes")
+        for negative in CCT_BLEND_SCAN_NEGATIVES:
             for lad in (False, True):
-                shown = [acs.apply_processor(aces20, scan_aces(model, ap1).reshape(-1, 3)) for model in (scan_model(negative, exact, lad), scan_blend_model(negative, kelvin, lad))]
-                row[f"scan_{negative}_lad_{'on' if lad else 'off'}"] = float(np.abs(shown[0] - shown[1]).max() * 255.0)
+                values = [scan_aces(model, ap1).reshape(-1, 3) for model in (scan_model(negative, exact, lad), scan_blend_model(negative, kelvin, lad))]
+                keep = (values[0] > CCT_BLEND_FLOOR) & (values[1] > CCT_BLEND_FLOOR)
+                stops = float(np.abs(np.log2(np.where(keep, values[0], 1.0) / np.where(keep, values[1], 1.0))).max())
+                shown = [acs.apply_processor(aces20, v) for v in values]
+                key = f"scan_{negative}_lad_{'on' if lad else 'off'}"
+                row[f"{key}_stops"] = stops
+                row[f"{key}_aces20_code"] = float(np.abs(shown[0] - shown[1]).max() * 255.0)
+                if stops > CCT_BLEND_STOPS_LIMIT:
+                    raise ValueError(f"grid blend at {kelvin:.0f} K: {key} differs from the exact light by {stops:.3g} stops")
         out[f"{kelvin:.0f} K between {a} and {b}"] = row
         print(f"grid blend at {kelvin:.0f} K: {row}", flush=True)
-        if max(row.values()) > CCT_BLEND_LIMIT:
-            raise ValueError(f"grid blend at {kelvin:.0f} K: {row} codes")
     return out
 
 
@@ -774,7 +787,7 @@ def main() -> int:
         expected_files[name] = {"bytes": (expected / name).stat().st_size, "node_a": a, "node_b": b, "share_of_b": w}
     grid_checks = check_grid_blend(scan_images)
 
-    record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "reversal_films": len(metadata["reversal_films"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "scan_point_limit_relative": SCAN_POINT_LIMIT, "scan": scan_checks, "grid_blend_limit_code": CCT_BLEND_LIMIT, "grid_blend": grid_checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
+    record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "reversal_films": len(metadata["reversal_films"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "scan_point_limit_relative": SCAN_POINT_LIMIT, "scan": scan_checks, "grid_blend_print_limit_code": CCT_BLEND_LIMIT, "grid_blend_scan_limit_stops": CCT_BLEND_STOPS_LIMIT, "grid_blend": grid_checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
     RESULT.parent.mkdir(parents=True, exist_ok=True)
     RESULT.write_bytes((json.dumps(record, indent=1) + "\n").encode("utf-8"))
     print(json.dumps(manifest, indent=1))
