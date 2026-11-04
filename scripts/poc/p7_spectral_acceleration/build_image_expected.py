@@ -7,7 +7,7 @@ Machine rule: CPU only, one process, no GPU job. The arrays take about 290 MB pe
 | ap1.bin | ap1, (rows, columns, 3) | The AP1 array after the product grade, as check_fast_image_steps.py makes it. |
 | <selection>.bin | srgb, (rows, columns, 3) | Its sRGB through the image-plane rules of the lab, with all sliders at their defaults. |
 
-The selections are the expected selections of build_product_resources.py, with rule 'foliage_spectra', as in the product resources.
+The selections are the expected selections of build_product_resources.py, without rule 'foliage_spectra' since schema 8 (U93), as in the product resources.
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', through ReversalPreview (method 'light_table'), with all sliders at their defaults. The files are reversal__<film>__reference.bin.
 Lab Scan (step P10, ROADMAP U92, Alcedo Studio issue 661): the ADX scan as ACES2065-1 before the display transform (array 'aces' in place of 'srgb'), on
 SCAN_IMAGE_SELECTIONS: the scan expected selections of build_product_resources.py with the LAD aim off, and kodak_5219 at 5650 K (a blend of grid nodes) with the

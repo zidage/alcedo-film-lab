@@ -53,7 +53,7 @@ def load_physics() -> dict:
     return json.loads(PHYSICS_PATH.read_text(encoding="utf-8")) if PHYSICS_PATH.exists() else {}
 
 
-def reversal_options(film: str, scene_light: str = REFERENCE_LIGHT, physics: dict | None = None, foliage: bool = True, light_spectra: bool = True) -> fp.FilmOptions:
+def reversal_options(film: str, scene_light: str = REFERENCE_LIGHT, physics: dict | None = None, foliage: bool = False, light_spectra: bool = True) -> fp.FilmOptions:
     """The options of one film: rule 'stock_options_from_catalog' of step P6 (grey at 12.5 / ISO lux seconds, the published dyes, spread and inhibition from the modulation transfer), and the rules of this step."""
     entry = CATALOG["films"][film]
     fitted = (physics if physics is not None else load_physics()).get(film, {})

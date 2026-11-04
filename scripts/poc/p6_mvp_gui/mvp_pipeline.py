@@ -10,7 +10,7 @@ Rules of this step:
 - 'print_conditions_by_medium': a cine print material takes the conditions of 2383 (projection at D65, neutral printing, grey aim 0.85), and a paper takes those of Endura (D50 viewing, grey aim 0.75).
 - 'no_anchor_at_reference_light': the default scene has no rule grey_anchor (U58). Another scene light needs the rule, because the printer balance follows the light. A stock with a relative sensitivity chart keeps the rule at each light.
 - 'spectral_prior': 'light_like' applies rule 'light_like_spectra' of P4, and 'measured_reflectance' uses the reflectance prior of P1 with no change.
-- 'foliage_spectra': on by default for each stock; see the header of film_preview.py.
+- 'foliage_spectra': off by default since U93 (2026-11-04: some photos look strange with it); on through RenderSettings.foliage; see the header of film_preview.py.
 - 'negative_show_grade': on for the tungsten stocks on print material cine_look (ROADMAP U82 to U84); see negative_grade.py.
 - 'light_table' (step P9, ROADMAP U86): the method of the reversal films of reversal_catalog.json, with no print. The film is the field 'reversal'; see scripts/poc/p9_reversal_light_table/reversal_film.py.
   The controls of the negative act on the slide, 'Enlarger flare' is the flare of the loupe, and the print controls do not act.
@@ -141,7 +141,7 @@ class RenderSettings:
     print_material: str = "kodak_endura_premier"
     scene_light: str = REFERENCE_LIGHT
     spectral_prior: str = "light_like"
-    foliage: bool = True
+    foliage: bool = False  # U93
     negative_grade: bool = True
     exposure_ev: float = 1.5
     contrast: float = float(fp.PRODUCT_CONTRAST)

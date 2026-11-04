@@ -9,7 +9,7 @@ Each resource is one array file: 8 bytes 'ALCDFILM', a little-endian uint64 head
 | manifest.json | Schema version, lab commit, and the file name, size, and SHA-256 of each resource |
 | film_stock_bundle.bin | Per negative, per paper, per reversal film, each scene spectrum, and the values that are the same for all stocks. The header holds the catalog names. |
 | film_print_setup.bin | The scalar values of each film, print material, and scene light: printer balance, layer gain, printing gain, aim, display matrix; and of each reversal film and scene light: layer gain, display matrix |
-| film_reflectance_table.bin | The compact form of the final reflectance table, with rule 'foliage_spectra', by rule 'compact_reflectance_table' |
+| film_reflectance_table.bin | The compact form of the final reflectance table, without rule 'foliage_spectra' since schema 8 (U93), by rule 'compact_reflectance_table' |
 
 Rule 'compact_reflectance_table' (user decision of 2026-11-01): the file holds only the wavelengths where a weight of a negative is not zero, only the u'v' nodes that a read can reach after rule 'spectral_locus_projection', and values rounded to 12 mantissa bits. Each byte of a float32 is in its own plane, so that the compression of the installer finds the repeated high bytes. A node that a read can reach: it is inside the hull, or it is 1 node from such a node, or it is a corner of a cell that the edge of the hull crosses.
 
@@ -81,7 +81,7 @@ fp = mp.fp
 rf = mp.rf
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 8  # 6: the reversal films (step P9); 7: Lab Scan (step P10); 8: the ADX scan and the colour temperature grid (U92)
+SCHEMA_VERSION = 8  # 6: the reversal films (step P9); 7: Lab Scan (step P10); 8: the ADX scan and the colour temperature grid (U92), and no rule foliage_spectra (U93)
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
