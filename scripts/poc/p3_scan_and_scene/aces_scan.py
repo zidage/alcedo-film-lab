@@ -38,6 +38,8 @@ Option colour (U95): 'academy' (the transform alone) or a target of rule 'scan_p
 and chroma at fixed luminance after the transform; option colour_print gives the options of the print of that rule.
 Option numbers (U96): the two matrices of the ADX to ACES transform, (CDD_TO_CID, EXP_TO_ACES); None keeps the Academy numbers. Rule
 'adx_stock_numbers' (p10_chart_scan/scan_unbuild.py) derives them per stock. The curve of the transform does not change.
+Option axis (U97): 'academy' is rule 'untimed_axis_academy' (p10_chart_scan/scan_axis.py): the neutral axis of the scan at its offset through the
+Academy numbers, the colours about it through the numbers of option numbers at the offset of the LAD aim at the scene light.
 """
 
 from __future__ import annotations
@@ -56,6 +58,8 @@ import film_preview as fp  # noqa: E402
 
 APD_TABLE = SCRIPT_DIR.parents[2] / "build" / "tmp" / "p3" / "sources" / "st2065-2" / "st2065-2a-2020.csv"
 ADX10_SCALE = np.array([1.00, 0.92, 0.95])
+# Option axis (U97): 'numbers', the neutral axis of the numbers of the scan; 'academy', rule 'untimed_axis_academy' of p10_chart_scan/scan_axis.py.
+AXES = ("numbers", "academy")
 ADX10_PER_DENSITY = 500.0
 ADX10_DMIN = 95.0
 ADX10_LAD = 445.0
@@ -135,7 +139,8 @@ class ScanPreview:
 
     def __init__(self, options: fp.FilmOptions, output: str = "aces20", timing: float | None = None, lad_aim: bool = True, exposure_stops: float = 0.0,
                  scanner: tuple[str, np.ndarray, np.ndarray] | None = None, reading: str = "apd", drt_grey: str = "aces20", encoding: str = "adx10",
-                 slope_match: bool = False, colour: str = "academy", colour_print: fp.FilmOptions | None = None, numbers: tuple[np.ndarray, np.ndarray] | None = None) -> None:
+                 slope_match: bool = False, colour: str = "academy", colour_print: fp.FilmOptions | None = None, numbers: tuple[np.ndarray, np.ndarray] | None = None,
+                 axis: str = "numbers") -> None:
         if encoding not in ENCODINGS:
             raise ValueError(f"unknown encoding {encoding!r}")
         self.encoding = encoding
@@ -170,6 +175,14 @@ class ScanPreview:
         if slope_match:
             self.scale, self.pivot = self.slope_match(self.negative.options.scene_light)
         self.offset = self._adx_offset()
+        if axis not in AXES:
+            raise ValueError(f"unknown axis {axis!r}")
+        self.axis = None
+        if axis == "academy":
+            sys.path.insert(0, str(SCRIPT_DIR.parent / "p10_chart_scan"))
+            import scan_axis  # step P10, U97
+
+            self.axis = scan_axis.UntimedAxis(self, CDD_TO_CID, EXP_TO_ACES)
         self.colour = None
         if colour != "academy":
             sys.path.insert(0, str(SCRIPT_DIR.parent / "p10_chart_scan"))
@@ -258,7 +271,7 @@ class ScanPreview:
 
     def scene_aces(self, code: np.ndarray) -> np.ndarray:
         """ACES2065-1 of the scan: the transform, then rule 'scan_print_colour' when option colour selects it."""
-        aces = self.to_aces(code)
+        aces = self.to_aces(code) if self.axis is None else self.axis.apply(code)
         return aces if self.colour is None else self.colour.apply(aces)
 
     def render(self, ap1: np.ndarray) -> tuple[np.ndarray, dict]:

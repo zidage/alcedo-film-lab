@@ -48,21 +48,32 @@ def training(fp, c) -> np.ndarray:
     return np.concatenate([base * 2.0 ** e for e in (-1.0, 0.0, 1.0)]).astype(np.float32)
 
 
-def derive(fp, balance) -> tuple[np.ndarray, np.ndarray]:
-    """The derived CDD_TO_CID and EXP_TO_ACES from a ScanPreview whose scene light is the balance light, with the LAD aim at that light."""
+def jacobian(balance) -> np.ndarray:
+    """T[i, j] = d cdd_j / d log10 H_i at the 18 % grey of the scene light of a ScanPreview (the balance light of the stock)."""
     n = balance.negative
     q = n.layer_gain * n.c.layer_exposure(0.18 * n.light(n.options.scene_light))
 
     def cdd(shift):
         record, _ = n.negative_density((q * 10.0 ** shift)[None])
         return balance.scale * balance.table_apd(record)[0]
-    t = np.stack([(cdd(JACOBIAN_STEP * np.eye(3)[i]) - cdd(-JACOBIAN_STEP * np.eye(3)[i])) / (2 * JACOBIAN_STEP) for i in range(3)])
+    return np.stack([(cdd(JACOBIAN_STEP * np.eye(3)[i]) - cdd(-JACOBIAN_STEP * np.eye(3)[i])) / (2 * JACOBIAN_STEP) for i in range(3)])
+
+
+def unmixing(t: np.ndarray) -> np.ndarray:
+    """CDD_TO_CID of a Jacobian: T^-1 with each column divided by its sum."""
     inverse = np.linalg.inv(t)
-    cdd_to_cid = inverse / inverse.sum(axis=0, keepdims=True)
-    train = training(fp, n.c)
-    code, _ = balance.adx10(train[None])
-    exposure = balance.exposure_of(code.reshape(-1, 3), cdd_to_cid)
-    target = lab(train @ np.linalg.inv(AP0_TO_AP1).T)
+    return inverse / inverse.sum(axis=0, keepdims=True)
+
+
+def fit_exp_to_aces(fp, balances, cdd_to_cid: np.ndarray) -> np.ndarray:
+    """EXP_TO_ACES (columns sum to 1) with the least CIELAB dE to the scene, on the TRAINING colours of each ScanPreview of balances, pooled."""
+    exposure, target = [], []
+    for balance in balances:
+        train = training(fp, balance.negative.c)
+        code, _ = balance.adx10(train[None])
+        exposure.append(balance.exposure_of(code.reshape(-1, 3), cdd_to_cid))
+        target.append(lab(train @ np.linalg.inv(AP0_TO_AP1).T))
+    exposure, target = np.concatenate(exposure), np.concatenate(target)
 
     def matrix(p):
         top = p.reshape(2, 3)
@@ -70,4 +81,17 @@ def derive(fp, balance) -> tuple[np.ndarray, np.ndarray]:
 
     import aces_scan
     fit = least_squares(lambda p: (lab(exposure @ matrix(p)) - target).ravel(), aces_scan.EXP_TO_ACES[:2].ravel())
-    return cdd_to_cid, matrix(fit.x)
+    return matrix(fit.x)
+
+
+def derive(fp, balance) -> tuple[np.ndarray, np.ndarray]:
+    """The derived CDD_TO_CID and EXP_TO_ACES from a ScanPreview whose scene light is the balance light, with the LAD aim at that light."""
+    cdd_to_cid = unmixing(jacobian(balance))
+    return cdd_to_cid, fit_exp_to_aces(fp, [balance], cdd_to_cid)
+
+
+def derive_pooled(fp, balances) -> tuple[np.ndarray, np.ndarray]:
+    """One set of numbers for several stocks, as the Academy numbers are one set for an average negative: CDD_TO_CID of the mean Jacobian,
+    EXP_TO_ACES fitted on the training colours of all the stocks."""
+    cdd_to_cid = unmixing(np.mean([jacobian(b) for b in balances], axis=0))
+    return cdd_to_cid, fit_exp_to_aces(fp, balances, cdd_to_cid)

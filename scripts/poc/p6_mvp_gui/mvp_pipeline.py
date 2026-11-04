@@ -178,6 +178,7 @@ class RenderSettings:
     apd_colour: str = "academy"  # U95, rule 'scan_print_colour' of p10_chart_scan/scan_colour.py; 'academy': no correction (U96)
     apd_numbers: str = "stock"  # U96: 'stock' (rule 'adx_stock_numbers' of p10_chart_scan/scan_unbuild.py) or 'academy'
     apd_untimed: str = "stock_balance"  # U96: the LAD aim off; 'stock_balance' (the grey of the balance light of the stock on the aim) or 'film_base' (offset 0, U92)
+    apd_axis: str = "academy"  # U97: the LAD aim off with numbers 'stock'; 'academy' (rule 'untimed_axis_academy' of p10_chart_scan/scan_axis.py) or 'numbers' (U96)
 
     def validate(self) -> None:
         if self.reversal not in CATALOG["reversals"]:
@@ -218,8 +219,8 @@ class RenderSettings:
             raise ValueError(f"unknown scan encoding {self.apd_encoding!r}")
         if self.apd_colour not in SCAN_COLOURS:
             raise ValueError(f"unknown scan colour {self.apd_colour!r}")
-        if self.apd_numbers not in ("stock", "academy") or self.apd_untimed not in ("stock_balance", "film_base"):
-            raise ValueError(f"unknown scan numbers {self.apd_numbers!r} or untimed form {self.apd_untimed!r}")
+        if self.apd_numbers not in ("stock", "academy") or self.apd_untimed not in ("stock_balance", "film_base") or self.apd_axis not in ("academy", "numbers"):
+            raise ValueError(f"unknown scan numbers {self.apd_numbers!r}, untimed form {self.apd_untimed!r} or axis {self.apd_axis!r}")
         for control in CONTROLS:
             value = getattr(self, control.name)
             if not control.low <= value <= control.high:
@@ -345,7 +346,7 @@ def control_values(settings: RenderSettings, method: str) -> tuple:
         return (*values, settings.gamut_compress)
     if method == "chart_scan":
         return (*values, settings.chart_scan_slope, settings.chart_scan_reading, settings.chart_scan_matrix, settings.chart_scan_display)
-    return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output, settings.apd_reading, settings.apd_drt_grey, settings.apd_encoding, settings.apd_slope_match, settings.apd_colour, settings.apd_numbers, settings.apd_untimed)
+    return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output, settings.apd_reading, settings.apd_drt_grey, settings.apd_encoding, settings.apd_slope_match, settings.apd_colour, settings.apd_numbers, settings.apd_untimed, settings.apd_axis)
 
 
 def light_table_options(settings: RenderSettings) -> fp.FilmOptions:
@@ -400,7 +401,8 @@ class Pipeline:
         return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: self._scan(settings, negative_only))
 
     def _scan(self, settings: RenderSettings, negative_only: RenderSettings) -> ScanPreview:
-        """Method 'apd'. With the LAD aim off, form 'stock_balance' (U96) is the LAD aim at the balance light of the stock (timing 0): a lab scans
+        """Method 'apd'. With the LAD aim off and numbers 'stock', axis 'academy' (U97): the neutral axis of the untimed scan through the Academy
+        numbers, the colours about it through the stock numbers. With the LAD aim off, form 'stock_balance' (U96) is the LAD aim at the balance light of the stock (timing 0): a lab scans
         each film type with its own channel balance, and only the cast of the scene light against that light stays. Numbers 'stock' (U96): rule
         'adx_stock_numbers', derived on a scan model under the balance light."""
         common = dict(reading=settings.apd_reading, encoding=settings.apd_encoding, slope_match=settings.apd_slope_match)
@@ -413,8 +415,9 @@ class Pipeline:
             balance_model = ScanPreview(film_options(replace(negative_only, scene_light=balance), SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=True, timing=1.0, **common)
             numbers = scan_unbuild.derive(fp, balance_model)
         untimed = not settings.apd_lad_aim and settings.apd_untimed == "stock_balance"
+        axis = settings.apd_axis if not settings.apd_lad_aim and settings.apd_numbers == "stock" else "numbers"
         return ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim or untimed, timing=0.0 if untimed else None,
-                           exposure_stops=settings.apd_exposure_stops, drt_grey=settings.apd_drt_grey, colour=settings.apd_colour, colour_print=scan_colour_print(settings), numbers=numbers, **common)
+                           exposure_stops=settings.apd_exposure_stops, drt_grey=settings.apd_drt_grey, colour=settings.apd_colour, colour_print=scan_colour_print(settings), numbers=numbers, axis=axis, **common)
 
     def chart_scan_model(self, settings: RenderSettings):
         sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))

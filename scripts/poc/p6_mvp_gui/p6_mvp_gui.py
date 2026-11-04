@@ -114,6 +114,8 @@ class MainWindow(QMainWindow):
         groups["Scan"].addRow("ADX to ACES numbers", self.apd_numbers)
         self.apd_untimed = self._combo({"stock_balance": {"name": "Balance of the stock (U96)"}, "film_base": {"name": "Film base, offset 0 (U92)"}}, defaults.apd_untimed)
         groups["Scan"].addRow("LAD aim off", self.apd_untimed)
+        self.apd_axis = self._combo({"academy": {"name": "Academy scan axis (U97)"}, "numbers": {"name": "Axis of the numbers (U96)"}}, defaults.apd_axis)
+        groups["Scan"].addRow("Untimed cast", self.apd_axis)
         self.apd_colour = self._combo({"academy": {"name": "None"}, "print_hue_scene_chroma": {"name": "U95 B: print hue, scene chroma"}, "print_hue_scan_chroma": {"name": "U95 A: print hue, scan chroma"},
                                        "scene_hue_scan_chroma": {"name": "U95 C: scene hue, scan chroma"}, "print_hue_print_chroma": {"name": "U95: print hue and chroma"}}, defaults.apd_colour)
         groups["Scan"].addRow("Colour table", self.apd_colour)
@@ -199,13 +201,13 @@ class MainWindow(QMainWindow):
     def settings(self) -> mp.RenderSettings:
         return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), reversal=self.reversal.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
                                  spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
-                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), apd_encoding=self.apd_encoding.currentData(), apd_slope_match=self.slope_match.isChecked(), apd_colour=self.apd_colour.currentData(), apd_numbers=self.apd_numbers.currentData(), apd_untimed=self.apd_untimed.currentData(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
+                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), apd_encoding=self.apd_encoding.currentData(), apd_slope_match=self.slope_match.isChecked(), apd_colour=self.apd_colour.currentData(), apd_numbers=self.apd_numbers.currentData(), apd_untimed=self.apd_untimed.currentData(), apd_axis=self.apd_axis.currentData(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
                                  chart_scan_matrix=self.chart_scan_matrix.currentData(), chart_scan_display=self.chart_scan_display.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
 
     @Slot()
     def reset_controls(self) -> None:
         defaults = mp.RenderSettings()
-        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.apd_encoding, self.slope_match, self.apd_colour, self.apd_numbers, self.apd_untimed, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display]
+        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.apd_encoding, self.slope_match, self.apd_colour, self.apd_numbers, self.apd_untimed, self.apd_axis, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display]
         for widget in widgets:
             widget.blockSignals(True)
         for name, spin in self.controls.items():
@@ -221,6 +223,7 @@ class MainWindow(QMainWindow):
         self.apd_colour.setCurrentIndex(self.apd_colour.findData(defaults.apd_colour))
         self.apd_numbers.setCurrentIndex(self.apd_numbers.findData(defaults.apd_numbers))
         self.apd_untimed.setCurrentIndex(self.apd_untimed.findData(defaults.apd_untimed))
+        self.apd_axis.setCurrentIndex(self.apd_axis.findData(defaults.apd_axis))
         self.chart_scan_slope.setCurrentIndex(self.chart_scan_slope.findData(defaults.chart_scan_slope))
         self.chart_scan_reading.setCurrentIndex(self.chart_scan_reading.findData(defaults.chart_scan_reading))
         self.chart_scan_matrix.setCurrentIndex(self.chart_scan_matrix.findData(defaults.chart_scan_matrix))
