@@ -1,23 +1,23 @@
 {
- "schema_version": 6,
+ "schema_version": 7,
  "manifest": {
-  "schema_version": 6,
-  "lab_commit": "851cf59acda0a599c8a53855888481db72c54b12",
+  "schema_version": 7,
+  "lab_commit": "9bb4284e256fa3b991aaba851cfb9f74761fc92e",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
-    "bytes": 3075120,
-    "sha256": "e77a0ff11f5953d8c0a9359660940d0474714dbd7f41f4723bce8668eab29b59"
+    "bytes": 3086880,
+    "sha256": "134ff8ec5ac5e488dc5f2687690ddc5843996fc6f72c83f3475ec2cd97fdecad"
    },
    "print_setup": {
     "file": "film_print_setup.bin",
-    "bytes": 185776,
-    "sha256": "4d80b802f71d7c41aa4914156d80af36f699e7f4c8ba3405c304c9146db8ff46"
+    "bytes": 225568,
+    "sha256": "3ed1b7a93cbeaf7306b9fa5af5d2acb9d3fbea5695a5b43b04b7e1fae4462bfe"
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
     "bytes": 25127352,
-    "sha256": "d953b7f81f1c118741039c91b43208cb6b190c40b326f0967cc98a5cf669a2cf"
+    "sha256": "72f8545ae06f7a6da88d7c825d6c516826ae93cb4f27129fb728b9e862add0a2"
    }
   }
  },
@@ -48,6 +48,65 @@
   "reversal fuji_velvia_100 under fluorescent": 0.0,
   "reversal kodak_ektachrome_e100 under daylight": 0.0,
   "reversal fuji_provia_100f under street_mixed": 0.0
+ },
+ "scan_point_limit_code": 1e-06,
+ "scan": {
+  "fuji_pro_160c under led": {
+   "setup": 0.0,
+   "point_form_largest_code": {
+    "neutral_ramp": 5.6621374255882984e-14,
+    "random_colours": 5.237477118669176e-13
+   }
+  },
+  "kodak_5203 under reference": {
+   "setup": 0.0,
+   "point_form_largest_code": {
+    "neutral_ramp": 5.6621374255882984e-14,
+    "random_colours": 3.963496197911809e-13
+   }
+  },
+  "fuji_pro_160c under fluorescent": {
+   "setup": 0.0,
+   "point_form_largest_code": {
+    "neutral_ramp": 5.6621374255882984e-14,
+    "random_colours": 3.5388358909926865e-13
+   }
+  },
+  "kodak_5213 under led": {
+   "setup": 0.0,
+   "point_form_largest_code": {
+    "neutral_ramp": 5.6621374255882984e-14,
+    "random_colours": 3.963496197911809e-13
+   }
+  },
+  "kodak_5207 under reference": {
+   "setup": 0.0,
+   "point_form_largest_code": {
+    "neutral_ramp": 5.6621374255882984e-14,
+    "random_colours": 3.680389326632394e-13
+   }
+  },
+  "kodak_portra_400 under reference": {
+   "setup": 0.0,
+   "point_form_largest_code": {
+    "neutral_ramp": 5.6621374255882984e-14,
+    "random_colours": 3.114175584073564e-13
+   }
+  },
+  "kodak_ektar_100 under reference": {
+   "setup": 0.0,
+   "point_form_largest_code": {
+    "neutral_ramp": 5.6621374255882984e-14,
+    "random_colours": 3.2557290197132716e-13
+   }
+  },
+  "kodak_5219 under daylight": {
+   "setup": 0.0,
+   "point_form_largest_code": {
+    "neutral_ramp": 5.6621374255882984e-14,
+    "random_colours": 4.812816811750054e-13
+   }
+  }
  },
  "compact_table": {
   "mantissa_bits": 12,
@@ -255,7 +314,19 @@
   },
   "reversal__fuji_provia_100f__street_mixed.bin": {
    "bytes": 8397712
+  },
+  "scan__kodak_5207__reference.bin": {
+   "bytes": 6591656
+  },
+  "scan__kodak_portra_400__reference.bin": {
+   "bytes": 6591656
+  },
+  "scan__kodak_ektar_100__reference.bin": {
+   "bytes": 6591656
+  },
+  "scan__kodak_5219__daylight.bin": {
+   "bytes": 6591656
   }
  },
- "seconds": 231.2
+ "seconds": 448.1
 }

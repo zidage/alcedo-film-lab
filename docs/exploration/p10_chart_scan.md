@@ -222,3 +222,26 @@ Status M. The sensitivity matrix, the grey scale, and the timing are computed wi
 
 Check of all 30 negatives again: all finite, in 0 to 1. The largest fall of a ramp channel is 0.00012 code (kodak_portra_400, green, at +6.4
 stops), under the limit 0.002 of `check_p6_mvp.py`; on the same stock the print falls 0.00007 and the APD method 0.00039.
+
+## 11. Resources of the port
+
+For [Alcedo Studio issue 661](https://github.com/zidage/AlcedoStudio/issues/661). Scripts of step P7, changed in lab commit `9bb4284`; record:
+[`product_resources.json`](../../results/p7_spectral_acceleration/product_resources.json), key `scan`.
+
+- Schema version 7. `film_print_setup.bin` (225568 bytes) has per negative and scene light `scan_slope` (3), `scan_grey` (3), and
+  `scan_rec709_matrix` (3, 3). `film_stock_bundle.bin` (3086880 bytes) has `common/scan_status_m_weights` (3, 481, on `common/wavelengths_nm`)
+  and `common/scan_log_curve` (s0 0.2581, w 1.6664), and the metadata `lab_scan` (id `lab_scan`, name "Lab Scan"). All three are per scene light,
+  because the calibration light is the balance light of the stock, which depends on the scene light.
+- The product builds the Status M table on the record nodes of the print table, as the lab does in `ScanPreview._build_table`. The lab ships no
+  table (ROADMAP U68).
+- The compact reflectance table does not change: its arrays are equal to schema 6, and only the schema version of its header differs, so its
+  SHA-256 changes.
+- Checks: the stored values of 8 scan selections (4 random, the 4 expected) against `ChartScanPreview` of the viewer, largest difference 0 (limit
+  1e-9); the layer gain of each scan model against `layer_gain` of the setup, 0; the formula of issue 661 from the stored values against
+  `ChartScanPreview.render`, largest 5.2e-13 of a code on a neutral ramp and 4096 random colours (limit 1e-6). The other checks of step P7 pass
+  with no change.
+- Expected values under `build/tmp/p7/product_resources/expected/` (not committed), for `kodak_5207`, `kodak_portra_400`, and `kodak_ektar_100`
+  under `reference` and `kodak_5219` under `daylight`: `scan__<negative>__<light>.bin` with the Status M table and the stored values;
+  `display/scan__*.bin` with the ramp and chart sRGB (the calibration with the default point steps of the inhibition, the render with the two
+  steps of the product); `image/scan__*.bin` with the 6000 x 4006 sRGB of `_DSC8148.ARW` (`build_image_expected.py --scan-only`, which checks
+  that the AP1 equals `ap1.bin` of the earlier run).
