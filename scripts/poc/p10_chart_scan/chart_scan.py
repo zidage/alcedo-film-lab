@@ -54,6 +54,13 @@ time at run time (a table built once, or one 3 x 3 product):
   takes below 0 on a saturated light (a blue-violet lamp: red 0 and a hard blue without it).
 - 'scan_exposure' (option exposure_stops): one neutral scale 2^stops of the scene values before the display steps, as a scanner light or a
   brightness setting of a scan program. 0: no change.
+Round 6 (the stocks look alike, U89):
+- 'fixed_scan_slope' (option slope_source = 'fixed', inversion 'straight', Status M): one Status M slope per channel, the same for all stocks, in
+  place of the slope of the grey scale of the stock: e_k = 0.18 * 2^((record_k - record_grey_k) / FIXED_STATUS_M_SLOPE_k). The record of the
+  grey of the stock stays, so a grey of the calibration light stays neutral. A stock with a higher gamma gives more contrast and more chroma,
+  and a stock whose layers differ in gamma from the fixed ratio keeps its crossover, as a scan with one fixed setup for all films. The values
+  are the mean slope of rule 'chart_straight_line' of the eight stocks of ACCEPTED_STOCKS of the viewer, under the scene light 'reference'
+  (fit_fixed_slope.py, results/p10_chart_scan/fixed_slope.json). With slope_source = 'stock' (the form of round 5), each stock has its own slope.
 SELECTED_FORM (round 5, ROADMAP U88) is the form that the Python viewer runs as method 'chart_scan'.
 The inhibition and the other image-plane steps of the negative act on images, as in the print path; the chart and the grey scale are flat areas.
 """
@@ -82,6 +89,8 @@ STRAIGHT_WINDOW = (-2.0, 2.0)  # rule 'chart_straight_line': stops of the grey s
 INVERSIONS = ("curves", "straight")
 OUTPUTS = ("clip709", "channel_curve", "log_curve")
 SCANNERS = ("apd", "frontier", "status_m", "analytical")
+SLOPES = ("stock", "fixed")
+FIXED_STATUS_M_SLOPE = (0.160868, 0.170611, 0.181802)  # rule 'fixed_scan_slope': Status M density per stop, red, green, blue
 # The selected form of report sections 8 and 10 (scan_timing comes from the option print_timing of the viewer). Status M in place of APD
 # (section 10): the same result, and its table (python-colormath, BSD-3-Clause) can ship with the product; the SMPTE table cannot.
 SELECTED_FORM = dict(matrix=False, inversion="straight", output="log_curve", scanner="status_m", sensitivity_matrix=True, display_compress=True)
@@ -185,7 +194,8 @@ class ChartScanPreview(acs.ScanPreview):
     """The negative through the ideal APD scanner, inverted by rule 'chart_calibrated_scan' (see the module text)."""
 
     def __init__(self, options: fp.FilmOptions, chart: Chart, matrix: bool = True, inversion: str = "curves", output: str = "clip709",
-                 scanner: str = "apd", unmix: bool = False, common_slope: bool = False, sensitivity_matrix: bool = False, scan_timing: float = 0.0, display_compress: bool = False, exposure_stops: float = 0.0) -> None:
+                 scanner: str = "apd", unmix: bool = False, common_slope: bool = False, sensitivity_matrix: bool = False, scan_timing: float = 0.0, display_compress: bool = False, exposure_stops: float = 0.0,
+                 slope_source: str = "stock") -> None:
         if scanner not in SCANNERS:
             raise ValueError(f"unknown scanner {scanner!r}")
         super().__init__(options, lad_aim=False, scanner=frontier_responsivity() if scanner == "frontier" else None)
@@ -233,6 +243,14 @@ class ChartScanPreview(acs.ScanPreview):
         self.straight_slope = np.array([np.polyfit(stops[window], ramp[window, k], 1)[0] for k in range(3)])
         if common_slope:
             self.straight_slope = np.full(3, self.straight_slope.mean())
+        if slope_source not in SLOPES:
+            raise ValueError(f"unknown slope source {slope_source!r}")
+        self.slope_source = slope_source
+        self.stock_slope = self.straight_slope.copy()
+        if slope_source == "fixed":
+            if scanner != "status_m" or inversion != "straight" or common_slope:
+                raise ValueError("slope_source 'fixed' needs scanner 'status_m', inversion 'straight', and no common_slope")
+            self.straight_slope = np.array(FIXED_STATUS_M_SLOPE, dtype=np.float64)
         self.straight_grey = ramp[int(np.argmin(np.abs(stops)))]
         if scan_timing:
             scene_grey = self.density(n.negative_density(n.layer_gain * c.layer_exposure(GREY * n.scene_spectrum)[None])[0])[0]

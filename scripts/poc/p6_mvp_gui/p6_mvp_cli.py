@@ -34,6 +34,7 @@ def main() -> int:
     parser.add_argument("--no-gamut-compress", action="store_true", help="Print method: clip in place of rule rgc_style_display_compression.")
     parser.add_argument("--apd-output", default=defaults.apd_output, choices=sorted(mp.OUTPUT_TRANSFORMS), help="APD method: the ACES output transform.")
     parser.add_argument("--no-lad-aim", action="store_true", help="APD method: no offset per channel, so the stock keeps its own grey position in ADX10.")
+    parser.add_argument("--chart-scan-slope", default=defaults.chart_scan_slope, choices=mp.CHART_SCAN_SLOPES, help="Method chart_scan: 'fixed', one Status M slope for all stocks (rule fixed_scan_slope); 'stock', the slope of the grey scale of the stock (U88).")
     parser.add_argument("--list", action="store_true", help="List the materials and stop.")
     args = parser.parse_args()
     if args.list:
@@ -48,7 +49,7 @@ def main() -> int:
     if args.input is None or args.output is None:
         parser.error("INPUT and OUTPUT are necessary")
     settings = mp.RenderSettings(negative=args.negative, method=args.method, reversal=args.reversal, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior,
-                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim,
+                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim, chart_scan_slope=args.chart_scan_slope,
                                  **{control.name: getattr(args, control.name) for control in mp.CONTROLS})
     image, record = mp.Pipeline().render_file(args.input, settings, args.long_edge)
     for path in mp.write_outputs(image, record, args.output):

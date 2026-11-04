@@ -1,6 +1,6 @@
 # P10: chart-calibrated scan
 
-**Status:** first results 2026-11-03 (ROADMAP U87). Scripts: [`scripts/poc/p10_chart_scan/`](../../scripts/poc/p10_chart_scan/README.md).
+**Status:** first results 2026-11-03 (ROADMAP U87); round 6 on 2026-11-04 (U89). Scripts: [`scripts/poc/p10_chart_scan/`](../../scripts/poc/p10_chart_scan/README.md).
 Results: `results/p10_chart_scan/chart_scan.json`, `review.json`. Review sheets: `build/tmp/p10/review/<stock>.jpg` (local only). No user review yet.
 Nothing in the product changes.
 
@@ -245,3 +245,44 @@ For [Alcedo Studio issue 661](https://github.com/zidage/AlcedoStudio/issues/661)
   `display/scan__*.bin` with the ramp and chart sRGB (the calibration with the default point steps of the inhibition, the render with the two
   steps of the product); `image/scan__*.bin` with the 6000 x 4006 sRGB of `_DSC8148.ARW` (`build_image_expected.py --scan-only`, which checks
   that the AP1 equals `ap1.bin` of the earlier run).
+
+## 12. Sixth round: the stocks look alike (U89)
+
+The user finds that the stocks look alike again on Lab Scan, and asks for the cause from a sweep of hue and lightness, not from photos.
+
+`check_stock_spread.py`: CIELab hues 0 to 345 degrees in 15 degree steps, L* 85 to 25, C* 30, and a neutral ramp of -6 to +6 stops, through the
+eight stocks of `ACCEPTED_STOCKS` under `reference`, with no change of the input by the product grade. The spread between stocks is the mean Delta
+E*ab of a stock to the mean of the stocks, per patch. Record: [`stock_spread.json`](../../results/p10_chart_scan/stock_spread.json).
+
+| Form | Spread, Delta E | Spread, L* | Hue, std | Chroma ratio, std | Neutral, L* spread | Neutral, C* |
+| --- | --- | --- | --- | --- | --- | --- |
+| Print on Endura Premier | 3.73 | 1.06 | 7.40 | 0.137 | 0.38 | 2.65 |
+| APD method | 3.08 | 1.07 | 5.79 | 0.152 | 0.77 | 2.34 |
+| Lab Scan, U88 (slope of the stock) | 2.36 | 0.51 | 3.10 | 0.099 | 0.38 | 1.53 |
+| U88, with the mean sensitivity matrix of the eight stocks | 2.51 | 0.72 | 3.82 | 0.090 | 0.38 | 1.52 |
+| U88, slopes scaled to one mean, the contrast of each stock kept | 2.97 | 0.86 | 3.34 | 0.123 | 0.98 | 1.55 |
+| U88, one slope for all stocks and channels | 3.66 | 0.82 | 5.45 | 0.148 | 0.80 | 3.79 |
+| **Lab Scan, U89 (rule `fixed_scan_slope`)** | **3.57** | 0.80 | 5.46 | 0.145 | 0.78 | 2.66 |
+
+Reading:
+- The cause is rule `chart_straight_line`: each channel is divided by the slope of the grey scale of its own stock. The Status M slopes differ
+  between stocks (5207 0.14 to 0.16 per stop, Ektar 100 and C200 0.17 to 0.20), and with one log curve for all stocks every grey scale gives the
+  same tone. This takes away the contrast of the stock (the row "contrast of each stock kept" gives back part of the spread, mostly in chroma and
+  L*) and the ratio of the gammas of the three layers (the rest, and most of the hue).
+- The sensitivity matrix of each stock is not the cause: the matrices are near each other, and the mean matrix changes the spread from 2.36 to 2.51.
+  It pulls each stock toward the digital input by the same amount.
+- On U88 each stock is 3.5 to 6.2 Delta E from the digital input through the same display steps.
+
+Rule `fixed_scan_slope` (`chart_scan.py`, option `slope_source = 'fixed'`): one Status M slope per channel for all stocks, `FIXED_STATUS_M_SLOPE` =
+0.160868, 0.170611, 0.181802, the mean slope of the eight stocks under `reference` (`fit_fixed_slope.py`, `fixed_slope.json`, largest difference
+3.4e-7). The record of the grey of each stock stays, so a grey of the calibration light stays neutral and scan timing acts as before. A stock with
+a higher gamma gives more contrast and chroma, and a stock whose layers differ from the fixed ratio keeps its crossover, as a scan with one fixed
+setup for all films. The neutral C* of the ramp is 2.66, the same as the print (2.65).
+
+Checks: all 30 negatives of the catalog give a finite output in 0 to 1 on a neutral ramp of -8 to +8 stops and a colour sweep
+(`build/tmp/p10/all_negatives_check.py`, local). The largest fall of the green channel of the ramp is 0.0003 code on Portra 400 and 0.00017 on Portra
+800, at the shoulder, under the limit 0.002 of `check_p6_mvp.py` (0.00012 on U88). The largest channel spread of the ramp between -6 and +6 stops
+is 0.085 code (kodak_5247).
+
+The user reviewed the form in the Python viewer and accepts it. Method `chart_scan` uses it by default; setting `chart_scan_slope = 'stock'` keeps
+U88. The resources of schema 7 hold it (section 13).

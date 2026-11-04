@@ -17,7 +17,8 @@ Rules of this step:
 - 'chart_scan' (step P10, ROADMAP U88): the negative of the stock read with Status M densitometry, inverted from a chart and a grey scale photographed
   on the same stock (scripts/poc/p10_chart_scan/chart_scan.py, SELECTED_FORM): the straight line of the grey scale per channel, the sensitivity
   matrix of the stock, the scan timing of option print_timing, the display compression on Rec. 709, and a log curve per channel. No ACES
-  output transform and no statistic of a frame. The print controls do not act.
+  output transform and no statistic of a frame. The print controls do not act. Setting chart_scan_slope (U89): 'fixed' (default) applies rule
+  'fixed_scan_slope', one Status M slope per channel for all stocks; 'stock' is the form of U88, the slope of the grey scale of each stock.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -77,6 +78,7 @@ PRINT = ("print",)
 SCAN = ("apd",)
 LIGHT_TABLE = ("light_table",)
 CHART_SCAN = ("chart_scan",)
+CHART_SCAN_SLOPES = ("fixed", "stock")
 BOTH = METHODS
 
 
@@ -142,6 +144,7 @@ class RenderSettings:
     gamut_compress: bool = bool(fp.DARKROOM["gamut_compress"])
     apd_exposure_stops: float = 0.0
     chart_scan_exposure_stops: float = 0.0
+    chart_scan_slope: str = "fixed"
     apd_lad_aim: bool = True
     apd_output: str = "aces20"
 
@@ -164,6 +167,8 @@ class RenderSettings:
             raise ValueError(f"unknown spectral prior {self.spectral_prior!r}")
         if self.display_white not in DISPLAY_WHITES:
             raise ValueError(f"unknown display white {self.display_white!r}")
+        if self.chart_scan_slope not in CHART_SCAN_SLOPES:
+            raise ValueError(f"unknown chart scan slope {self.chart_scan_slope!r}")
         if self.apd_output not in OUTPUT_TRANSFORMS:
             raise ValueError(f"unknown ACES output {self.apd_output!r}")
         for control in CONTROLS:
@@ -247,7 +252,7 @@ def control_values(settings: RenderSettings, method: str) -> tuple:
     if method == "light_table":
         return (*values, settings.gamut_compress)
     if method == "chart_scan":
-        return values
+        return (*values, settings.chart_scan_slope)
     return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output)
 
 
@@ -309,7 +314,7 @@ class Pipeline:
         negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "chart_scan" not in c.methods})
         return self._model(("chart_scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "chart_scan")),
                            lambda: cs.ChartScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), cs.cached_chart(), **cs.SELECTED_FORM,
-                                                       scan_timing=settings.print_timing, exposure_stops=settings.chart_scan_exposure_stops))
+                                                       scan_timing=settings.print_timing, exposure_stops=settings.chart_scan_exposure_stops, slope_source=settings.chart_scan_slope))
 
     def light_table_model(self, settings: RenderSettings) -> rf.ReversalPreview:
         return self._model(("light_table", settings.reversal, settings.scene_light, settings.spectral_prior, control_values(settings, "light_table")), lambda: rf.ReversalPreview(light_table_options(settings)))

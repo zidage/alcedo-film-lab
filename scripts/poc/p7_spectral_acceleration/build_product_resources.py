@@ -31,7 +31,8 @@ The compact reflectance table keeps the wavelengths of the reversal films too. T
 
 Lab Scan (step P10, ROADMAP U87 and U88, Alcedo Studio issue 661). Method 'chart_scan' of the viewer (scripts/poc/p10_chart_scan/chart_scan.py, SELECTED_FORM)
 has no print: print material 'lab_scan' of the product selects the scan form of FP6 for any negative. Values:
-- The setup holds per negative and scene light 'scan_slope' (3, Status M density per stop of the grey scale, rule 'chart_straight_line'), 'scan_grey'
+- The setup holds per negative and scene light 'scan_slope' (3, Status M density per stop; since U89 rule 'fixed_scan_slope', the same three values for
+  all negatives and scene lights, in the place of the slope of rule 'chart_straight_line'), 'scan_grey'
   (3, Status M density of the grey with the scan timing of print_timing), and 'scan_rec709_matrix' (3, 3: from e to linear Rec. 709, rule
   'film_sensitivity_matrix' with AP1 to Rec. 709 folded in). The calibration light is the balance light of the stock, which depends on the scene light
   (rule 'no_anchor_at_reference_light'), so all three are per scene light.

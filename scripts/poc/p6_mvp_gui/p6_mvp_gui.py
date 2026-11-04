@@ -90,6 +90,8 @@ class MainWindow(QMainWindow):
         self.lad_aim.toggled.connect(self.schedule)
         groups["Scan"].addRow("ACES output", self.apd_output)
         groups["Scan"].addRow("", self.lad_aim)
+        self.chart_scan_slope = self._combo({"fixed": {"name": "Fixed, the same for all stocks"}, "stock": {"name": "Grey scale of the stock (U88)"}}, defaults.chart_scan_slope)
+        groups["Chart scan"].addRow("Slope", self.chart_scan_slope)
         form = QFormLayout()
         for label, widget in (("Negative", self.negative), ("Method", self.method), ("Reversal film", self.reversal), ("Print material", self.print_material), ("Scene light", self.light), ("Spectral prior", self.prior),
                               ("Exposure (EV)", self.exposure), ("Contrast", self.contrast), ("Saturation", self.saturation), ("Long edge (pixels)", self.long_edge)):
@@ -163,12 +165,12 @@ class MainWindow(QMainWindow):
     def settings(self) -> mp.RenderSettings:
         return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), reversal=self.reversal.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
                                  spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
-                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), **{name: spin.value() for name, spin in self.controls.items()})
+                                 display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), chart_scan_slope=self.chart_scan_slope.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
 
     @Slot()
     def reset_controls(self) -> None:
         defaults = mp.RenderSettings()
-        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim]
+        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.chart_scan_slope]
         for widget in widgets:
             widget.blockSignals(True)
         for name, spin in self.controls.items():
@@ -177,6 +179,7 @@ class MainWindow(QMainWindow):
         self.gamut.setChecked(defaults.gamut_compress)
         self.apd_output.setCurrentIndex(self.apd_output.findData(defaults.apd_output))
         self.lad_aim.setChecked(defaults.apd_lad_aim)
+        self.chart_scan_slope.setCurrentIndex(self.chart_scan_slope.findData(defaults.chart_scan_slope))
         for widget in widgets:
             widget.blockSignals(False)
         self.schedule()
