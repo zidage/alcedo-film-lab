@@ -8,6 +8,10 @@ Scripts of step P6 ([report](../../../docs/exploration/p6_python_mvp.md), ROADMA
 | `fit_stock_physics.py` | the profiles | `stock_physics.json`; rule `relative_sensitivity_level` in the profiles that need it |
 | `fit_inhibition_image.py` | the profiles, `stock_physics.json` | `inhibition_image.json`: the spread and the image part of rule `inhibition_image_part` |
 | `mvp_pipeline.py` | library | used by the scripts below |
+| `stock_character.py` | library | rule `stock_character` of control `--stock-character` (step P12, ROADMAP section 2, point 7) |
+| `scene_input.py` | library | P13 complete RAW white, spectral families and constrained input with stock character |
+| `check_scene_input.py` | night RAW and P13 reference | display comparison at stock character 1/2 and cache checks in `build/tmp/p13_gui/` |
+| `check_scene_input_gui.py` | night RAW | Qt worker, stock character 2/3, cached rerender and export checks |
 | `p6_mvp_cli.py` | a RAW file and options | image and a parameter file |
 | `p6_mvp_gui.py` | a RAW file, chosen in the window | display and export |
 | `check_p6_mvp.py` | a RAW file | `results/p6_python_mvp/checks.json` |
@@ -21,7 +25,47 @@ Step P9 adds the method `light_table`: a reversal film on a light table, with no
 
 Step P10 adds the method `chart_scan` (ROADMAP U88): the negative scanned with APD and inverted from a chart photographed on the same stock, with a log curve and no ACES output transform (`--method chart_scan`, control `--chart-scan-exposure-stops`; in the window: Method "Scan, chart calibrated (log curve)"; see [the P10 scripts](../p10_chart_scan/README.md)). Setting `--chart-scan-slope` (U89; window: Slope in the group Chart scan): `fixed` (default), one Status M slope for all stocks; `stock`, the slope of the grey scale of each stock (U88). It reads the BabelColor chart of `build/tmp/p10/sources/` (run `scripts/poc/p10_chart_scan/fetch_sources.py` once) and needs `xlrd`.
 
+Step P12 adds control `--stock-character` (window: Stock character, group Negative; ROADMAP section 2, point 7): a creative control k that
+enlarges how the sensitivities and the characteristic curves of a negative differ from the average negative of its medium (the pool of rule
+generic_scan). 1 is the data, 0 the average, 2 doubles each difference. The changed profile is kept in memory (`PROFILE_OVERRIDES` of
+`film_spectral_reference.py`); no file is written. See the [P12 report](../../../docs/exploration/p12_real_pair.md), section 5.
+
 The window and the command line have the controls of `mvp_pipeline.CONTROLS` (ROADMAP U62). `p6_mvp_cli.py --help` lists them with their ranges. A new value of a control that is part of the print table (print contrast, paper flash, surface reflection, print grey density shift, print timing, overexposure, development inhibition) composes one more table in about 0.02 seconds, and the model takes about 0.3 seconds. These tables are not stored. If `build/tmp/p2/tables/` is empty, the next run builds the reflectance tables again from the sources of P1 in `build/tmp/p1/sources/`, and this reads the ISSA workbook through `openpyxl`.
+
+## Full RAW white and stock character (P13)
+
+In the window, click **P13 smooth scan** to use the reviewed combination:
+Lab Scan, full RAW white / smooth, measured prior, generic scan numbers,
+OpenDRT native, and scene cast retained (P13 balance0). The button keeps the
+selected negative and Stock character value. Change **Stock character** in
+the Negative group to use the changed sensitivity and curves with this input.
+
+**Spectral input** also offers the matched-white LED and fluorescent families,
+and constrained smooth or LED reconstruction. These modes use the complete
+estimated white of the open RAW. Scene light and Spectral prior are fixed by
+that choice and are disabled while it is active. The current input remains
+available. P13 modes apply to Lab Scan; other methods keep their existing input.
+
+Constrained modes keep the full 360--840 nm, 1 nm grid and float64 spectral solve.
+They can take longer. No complete spectral image is allocated. Two layer-exposure
+images are cached; the image, scene light and actual film sensitivity weights
+identify a cached result. A stock-character change therefore recomputes the
+layer exposures. The RAW white, input family and solver statistics are in the
+export parameter file. The generic scanner remains based on stock character 1.
+
+CLI example (use the existing environment):
+
+```powershell
+& build/tmp/p6/venv/Scripts/python.exe -I scripts/poc/p6_mvp_gui/p6_mvp_cli.py INPUT.RAW build/tmp/p6/out/smooth.jpg --method apd --negative kodak_portra_400 --spectral-input white_smooth --stock-character 2 --no-lad-aim --apd-axis numbers
+```
+
+Checks (set BLAS, OpenMP and Numba to one CPU thread for the recorded run):
+
+```powershell
+& build/tmp/p6/venv/Scripts/python.exe -I scripts/poc/p6_mvp_gui/check_scene_input.py
+$env:QT_QPA_PLATFORM='offscreen'
+& build/tmp/p6/venv/Scripts/python.exe -I scripts/poc/p6_mvp_gui/check_scene_input_gui.py
+```
 
 ## Commands
 

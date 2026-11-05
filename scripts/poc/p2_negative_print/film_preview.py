@@ -226,6 +226,7 @@ class FilmOptions:
     print_contrast: float = 1.0
     viewing_flare: float = 0.0
     scene_flare: float = 0.0  # not part of the print table
+    scene_spectrum: tuple[float, ...] | None = None  # P13: explicit scene radiance shape on the unchanged wavelength grid
     display_white: str = "reflector"  # not part of the print table; 'reflector', 'paper', or 'print_dmin'
     surround_exponent: float = 1.0  # rule 'dark_surround_on_display'; 1: no change
     interlayer_gain: float = 0.2  # part of the print table: the printer balance under a scene light uses it
@@ -410,6 +411,14 @@ class FilmPreview:
     def light(self, name: str) -> np.ndarray:
         """Spectrum with Y = 1. 'E_ref'; 'D55' (CIE daylight, 100 K units); 'T3200' (Planckian); 'CCT5650' (function cct_light, U92; kelvin); a CIE FL, LED or HP name."""
         wl = self.c.wavelengths
+        if name == self.options.scene_light and self.options.scene_spectrum is not None:
+            spectrum = np.asarray(self.options.scene_spectrum, dtype=np.float64)
+            if spectrum.shape != wl.shape or not np.isfinite(spectrum).all() or np.min(spectrum) < 0:
+                raise ValueError("explicit scene spectrum must be finite, non-negative and on the model wavelength grid")
+            luminance = self.c.xyz(spectrum)[1]
+            if luminance <= 0:
+                raise ValueError("explicit scene spectrum must have positive luminance")
+            return spectrum / luminance
         if name in SCENE_PRESETS:
             # Rule 'scene_mixture': the weights are shares of the luminance, because each light has Y = 1.
             return sum(weight * self.light(light) for light, weight in SCENE_PRESETS[name])
@@ -853,6 +862,13 @@ class FilmPreview:
         self._grade_grey = self.negative_image(np.full((1, 1, 3), 0.18, dtype=np.float32))[0][0, 0].astype(np.float64)
         INHIBITION_STEPS_POINT = steps
 
+    def _image_layer_exposure(self, image: np.ndarray) -> tuple[np.ndarray, int, int]:
+        """Layer exposure before the existing spatial and development operations."""
+        projection = self._projection()
+        return fk.layer_exposure(image, float(self.options.scene_flare), self.c.ap1_to_xyz,
+                                 projection.normals, self._room, projection.white,
+                                 projection.LOCUS_INSET, self._uv_f32, np.array(UV_MAX), self.layer_gain)
+
     def negative_image(self, image: np.ndarray) -> tuple[np.ndarray, dict]:
         """Linear AP1 (rows, columns, 3; float32) to negative Status M, through the kernels. The print and the scan start here."""
         o = self.options
@@ -860,9 +876,7 @@ class FilmPreview:
             image = reference_gamut_compress(image)
         # Rule 'no_image_plane_steps_on_ramps': a test ramp (fewer than 16 rows) has no image plane.
         spatial = min(image.shape[:2]) >= 16
-        projection = self._projection()
-        q, moved, not_positive = fk.layer_exposure(image, float(o.scene_flare), self.c.ap1_to_xyz, projection.normals, self._room, projection.white, projection.LOCUS_INSET,
-                                                   self._uv_f32, np.array(UV_MAX), self.layer_gain)
+        q, moved, not_positive = self._image_layer_exposure(image)
         pixel = self._pixel_um(image)
         if spatial and o.scatter_um:
             sigma = o.scatter_um / pixel

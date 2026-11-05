@@ -407,3 +407,168 @@ The user accepts this form for the product (2026-11-04): Lab Scan of Alcedo Stud
 printing density, the LAD aim off by default, scene light as shot by default (linked to the colour temperature of the RAW decode, reference
 for an input that is not RAW), and OpenDRT with all its settings. The chart-calibrated form of sections 1 to 14 stays in the lab as method
 `chart_scan`; the resources of schema 7 (section 13) are replaced in the next schema.
+
+## 17. Tenth round: a generic scan (U98)
+
+Question. U95 to U97 correct the scan with the data of each stock: the print colour tables (U95), the ADX to ACES matrices fitted per stock to the
+scene (rule `adx_stock_numbers`, U96), and the colours of those matrices about the Academy axis (U97). The user finds this the wrong way and asks
+for a generic scan that starts from the Academy method, without the cyan turn of the Academy numbers on the stocks of the model (U94).
+
+Method. Rule `generic_scan` (`scan_generic.py`, option `fixed_scale` of `aces_scan.ScanPreview`, viewer setting `apd_numbers = 'generic'`). The
+Academy form stays: CDD_TO_CID, the Academy curve, EXP_TO_ACES. Its numbers are derived once from an average negative of the model, as the Academy
+numbers describe an average motion picture negative:
+- one channel scale per medium, in place of the per-stock rule `adx_slope_match` (U93): s_c = 0.92 * mean slope_G / mean slope_c, from the
+  printing density per stop of the 18 % grey of each stock of the pool under its balance light;
+- one pair of matrices per medium: rule `derive_pooled` of `scan_unbuild.py` on the pool with that scale.
+Pools: the four Vision3 stocks (5203, 5207, 5213, 5219) for the cine stocks, and Portra 400, 160, 800, Ektar 100, Gold 200, and C200 for the photo
+stocks. Only the offset depends on the stock (rule `stock_balance` with the LAD aim off). The Academy axis of U97 is kept with these numbers.
+
+Scales: cine 1.026, 0.92, 1.002; photo 0.816, 0.92, 0.873 (equation 2 of ST 2065-3: 1.00, 0.92, 0.95).
+
+Measures: the CAM16 sweep of U97 (`scan_appearance.py`; probes `build/tmp/p10/u98_sweep.py`, `u98_medium.py`, `u98_cross_share.py`, local), and
+the Film Analyzer chart as a test only (U28; `u98_pair_probe.py`, `u98_pair_generic.py`, `u98_real_range.py`, local). Review sheets
+`build/tmp/p10/review_u98/` (`u98_review.py`): no film, Academy numbers, U97, U98, on 5219, 5207, Portra 400, Gold 200, and Ektar 100.
+
+Results, sweep, as-shot light 5979 K (dune) and 4138 K (night), CAM16-UCS of the display:
+
+| Measure | Academy | U97 | U98, one pool of 8 stocks | U98, pool per medium, Academy axis |
+| --- | --- | --- | --- | --- |
+| Portra 400, 5979 K: 180-degree hue rotation (rms) | 12.1 | 1.7 | 1.9 | 1.5 |
+| Portra 400, 5979 K: dune hue / colourfulness | -22.7 / 0.82 | -1.5 / 0.94 | -0.5 / 0.95 | +3.3 / 0.95 |
+| Colourfulness ratio, 5979 K: Ektar 100 / Portra 400 / Gold 200 | 0.93 / 0.84 / 0.75 | 1.05 / 1.02 / 0.96 | 1.15 / 1.05 / 0.89 | 1.14 / 1.04 / 0.88 |
+| 5207, 5979 K: green axis at -4 / +4 stops | +0.7 / +0.4 | +0.8 / +0.5 | -5.7 / +5.1 | +0.5 / +0.7 |
+| 5219, 4138 K: cast at 0 stops (blue / green) | +9.6 / +3.8 | +9.3 / +4.1 | +11.4 / -0.2 (without the axis) | +9.3 / +4.1 |
+| Spread of the photo stocks, 5979 K (output) | 1.48 | 1.34 | 1.68 | 1.55 |
+
+- The generic numbers remove the cyan turn of the Academy numbers without any data of a single stock.
+- One pool for both media gives the cine stocks the slopes of the photo stocks, so 5207 turns magenta in the shadows and green in the highlights,
+  and on the Film Analyzer chart it keeps 0.85 of the chroma of the scene. One pool per medium removes this.
+- Without the Academy axis, 5219 at night is blue along the colour temperature axis only, as in U96. With the axis it keeps the cyan blue of the
+  Academy scan.
+- The photo stocks still differ little. The same six photo stocks printed on Endura Premier (untimed) differ by 1.13 dE' (output) and 1.06
+  (character), less than on the scan. So the small spread comes from the negatives of the model, not from the scan: every photo stock has the
+  band-split dyes from its neutral, and Gold 200 has no inhibition (E-7022 has no modulation transfer chart), which is why it has the lowest
+  colourfulness. The inferred `inhibition_cross_share` (0.5, no source) changes the spread little: 1.67 at 0.8 and 1.77 at 1.0 on the scan, 1.34
+  and 1.48 on the print.
+
+Results, Film Analyzer chart (test only), Neutral 5 at L* 60, Portra 400 against 5207 on the 18 colour patches:
+
+| Flow | Delta E*ab | Hue rms | Correlation with the real differences, hue / chroma |
+| --- | --- | --- | --- |
+| Real X-T5 scans | 5.6 | 7.5 | - |
+| U97 | 1.3 | 1.2 | -0.09 / -0.45 |
+| U98, one pool | 9.1 | 14.6 | -0.31 / -0.05 |
+| U98, pool per medium, Academy axis | 1.8 | 2.8 | +0.48 / +0.46 |
+
+The real scans are 10 to 20 Delta E*ab from the chart through OpenDRT with no film, with 1.11 to 1.41 of its chroma; U98 is 4.8 to 5.4 from it,
+with 0.95 to 1.00. One pair of stocks and an unknown inversion of the X-T5 scans: these values show a direction only.
+
+Recommendation. U98 is the default of method `apd` in the viewer (numbers `generic`, Academy axis). It gives the same look as U97 by a generic
+method. A larger difference between the photo stocks needs data of the negatives (the dyes and the interlayer effects of each stock); it does not
+come from the scan.
+
+Open items: user review; the Lab Scan resources (schema 8) still hold the form of U93; the scanner timing of a frame for a daylight stock at night
+(the yellow of Portra 400 at 4138 K: -6.3 / -3.8; with the LAD aim on and a timing of 0.75, -2.8 / -0.3, which also lowers the cast of 5219 to +3.5 / +0.6).
+
+## 18. Probe: the interlayer strength of the model against the Academy numbers (no decision)
+
+Question (2026-11-04). The photo stocks of the model differ little on every scan and on the print (section 17), and no public source gives the dyes
+or the interlayer effects of a single photo stock. Can a physical model infer them? This probe asks first whether the model has the interlayer
+strength of real negatives at all.
+
+Method (`build/tmp/p10/u99_interimage.py`, local). The Academy CDD_TO_CID is the inverse of the Jacobian T of an average real motion picture
+negative read in APD, with its columns normalised. So R = T / diag(T) by rows is the change of the density of channel j per unit change of the
+density of channel i when only layer i takes more exposure. For the model: the mean Jacobian of the four Vision3 stocks under their balance light,
+read in APD with the scale of equation 2. The inhibition of every stock (`inhibition_total`, `inhibition_image`) is multiplied by alpha.
+
+| Layer exposed: channel | Academy (real negatives) | Model, alpha 1 | Model, alpha 2 | Model, alpha 3 |
+| --- | --- | --- | --- | --- |
+| red: green / blue | -0.067 / -0.205 | +0.094 / +0.030 | +0.068 / +0.004 | +0.040 / -0.024 |
+| green: red / blue | -0.293 / -0.035 | +0.045 / +0.064 | +0.012 / +0.035 | -0.024 / +0.002 |
+| blue: red / green | -0.039 / +0.032 | -0.027 / +0.072 | -0.061 / +0.042 | -0.097 / +0.008 |
+
+- In the real negatives, more exposure of one layer lowers the density of the other channels (interlayer inhibition and masking), most strongly
+  green on red (-0.29) and red on blue (-0.21). In the model it raises them (the crosstalk of the dyes is left). The sign is opposite. This is the
+  measured form of the hypothesis in `scan_unbuild.py` (U96): the Academy unmixing removes interlayer effects that the model does not have, so on
+  the model it lowers chroma (colourfulness 0.75 to 0.84 on the photo stocks, section 17) and turns the hues.
+- The present inhibition cannot reach the real values. Its strength comes from the modulation transfer charts, which show only the part of the
+  inhibitor that spreads in the image plane (rule `inhibition_total_from_image_part`, U80). At alpha 3 the scan and the print become unstable
+  (colourfulness 0.25 to 2.99 among the photo stocks), and at alpha 4 rule development_inhibition fails (F_i does not exist), while the cross terms
+  are still near zero.
+- Spread of the photo stocks (CCT 5979 K, output): generic scan 1.55 at alpha 1, 1.77 at alpha 2; print 1.20 and 1.48.
+
+Open: a form of the interlayer effect at zero frequency that keeps the published neutral curve and stays stable at the strength of the Academy
+numbers; its source for the photo stocks.
+
+## 19. Eleventh round: the interlayer effect of a large area (U99)
+
+**Rejected (2026-11-04).** The user judged the direction of section 19 wrong. It repeats the idea of a K from the Academy CDD_TO_CID, which the user had already rejected by eye on 2026-11-02. The rule and its scripts are removed from the code; the scripts are kept locally in `build/tmp/p10/u99_rejected/`. Sections 18 and 19 stay as the record of the measurement.
+
+Question. Section 18 shows that the negatives of the model lack the interlayer effect that the Academy numbers describe for real motion picture
+negatives. Can a physical model add it from public data only, and does it separate the stocks? The user asks to try at any cost; the print and
+Cine Look do not bind this test.
+
+Method.
+- Rule `interimage_colour_difference` (`film_preview.py`, option `interimage`). With h the log H of each layer on the axis of the published
+  curves and a_i(h) the dye amount of the neutral curve of layer i: h'_j = h_j - sum_(i != j) k_ij (a_i(h_i) - a_i(h_j)). The term is zero on
+  every neutral, so the published curves hold (checked: largest difference 4e-16 on a neutral ramp). It is explicit, so it needs no fixed point
+  and stays finite at any strength (checked on random and saturated exposures). It acts on the layer exposure after the spread of the light and
+  before the curves and rule development_inhibition, on points and on images.
+- Rule `interimage_academy` (`interimage_academy.py`, `fit_interimage_academy.py`). K_BASE: six cross values solved so that the mean Jacobian of
+  the four Vision3 stocks, read in APD with the scale of equation 2 and the LAD aim at the grey of their balance light, has the rows R of the
+  Academy Jacobian. Six values, six conditions; largest residual 2e-13. Per stock: k_ij = K_BASE_ij * r_j, with r_j the image part of the
+  inhibition of the stock (from its modulation transfer chart) over the Vision3 mean. Inferred: the effect of a large area scales with the part
+  that the chart shows. Kodak Gold 200 has no chart and takes r = 1. Viewer control `interimage_scale` (default 1, every method). Rule
+  `generic_scan` derives its numbers at the same strength.
+
+K_BASE, log10 H per unit of dye amount (row: the layer that develops; column: the layer held back):
+
+| | red | green | blue |
+| --- | --- | --- | --- |
+| red | 0 | 0.429 | 0.664 |
+| green | 0.700 | 0 | 0.206 |
+| blue | 0.021 | 0.111 | 0 |
+
+All six are positive, so all act as inhibition. The image part of the inhibition from the modulation transfer is about 0.2 per layer.
+
+Results (CAM16 sweep `build/tmp/p10/u99_sweep.py`; review sheets `build/tmp/p10/review_u99/` from `u99_review.py`; all local).
+
+Prediction check, the Academy numbers on the model (5979 K):
+
+| Stock | Measure | Without the rule | With the rule |
+| --- | --- | --- | --- |
+| 5207 | colourfulness ratio | 0.76 | 1.04 |
+| 5207 | sky hue / dune hue | -17.0 / -18.7 | -2.4 / -12.7 |
+| 5207, 5219 | 180-degree hue rotation | 9.5, 11.6 | 9.0, 4.0 |
+
+The loss of chroma and the cyan sky of the Academy numbers come from the missing interlayer effect. The turn of orange to red does not: with the
+rule, CDD_TO_CID of the cine pool equals the Academy one, but EXP_TO_ACES of the model (rows 0.494, 0.068, 0.025 / 0.287, 0.777, -0.016 / 0.219,
+0.154, 0.991) stays far from the Academy one (0.723, 0.119, 0.014 / 0.126, 0.764, 0.082 / 0.151, 0.117, 0.904). So the sensitivities of the model
+differ from those of the average negative of the Academy.
+
+Generic scan with the Academy axis (U98), 5979 K. U98 values are from section 17 (the U98 runs); in `u99_sweep.py` the rows with the rule off
+used generic numbers derived with the rule on, before `generic_scan` took the strength of the settings, so they are not U98.
+
+| Measure | U98 | U99 |
+| --- | --- | --- |
+| Spread of the photo stocks, output / character | 1.55 / 1.47 | 2.17 / 2.10 |
+| Colourfulness: Ektar 100, Portra 400, C200, Gold 200, Portra 160 | 1.14, 1.04, 1.06, 0.88, 0.91 | 1.28, 1.10, 1.09, 0.92, 0.86 |
+| Dune hue: Ektar 100, Portra 400, C200, Gold 200 | -7.4, +3.3, -1.5, +4.6 | -13.3, +9.7, +9.7, +16.4 |
+| Skin hue: Ektar 100, Portra 400, Gold 200 | -7.5, +0.2, +0.9 | -13.7, +5.0, +16.8 |
+
+With the rule, UltraMax 400 and Portra 160 turn the dune by -8.2 and -9.7 and skin by -16.3 and -15.1. The stocks now differ in a direction of
+their own: Ektar 100, UltraMax 400, and Portra 160 turn warm hues toward red, and Gold 200, Portra 400, and C200 toward yellow; Ektar has the most
+chroma. The direction comes from the ratios r of each stock, so it carries the inference of the rule.
+
+Film Analyzer chart (test only, U28), Portra 400 against 5207, Neutral 5 at L* 60: 6.3 Delta E*ab (real X-T5 scans 5.6, U98 1.8), chroma ratio
+1.16 (real 1.03), hue rms 1.8 degrees (real 7.5), correlation with the real differences +0.47 in hue and in chroma. Against the chart through
+OpenDRT with no film: Portra 400 6.6 Delta E*ab and chroma 1.03, 5207 6.9 and 0.87 (real 10 to 11 and 1.11 to 1.15).
+
+Casts. The rule separates the layers of a cast too: at 4138 K, 5219 goes from +9.7/+4.0 to +15.1/+4.9 and Portra 400 from -6.1/-3.8 to
+-10.1/-7.3 (colour temperature / green axis). With the LAD aim on and a timing of 0.75, the casts on the night photo fall to +0.9/0.0 (5219) and
+-1.9/-0.4 (Portra 400).
+
+Print (not a constraint of this test): the colourfulness ratio of the photo stocks on Endura goes from 1.41 to 1.74 without the rule to 2.11 to 2.62 with it.
+
+Open items: user review; a source for the per-stock ratios (the main inference); the sensitivities behind the remaining turn of orange to red;
+the scanner timing at night; the product resources and the C++ tables do not have rule `interimage_colour_difference`.

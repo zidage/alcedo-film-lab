@@ -23,7 +23,7 @@ OpenCL.
   a report, and a new user decision goes in ROADMAP.md.
 - `docs/research/` holds source analysis, material data audits, papers, and algorithm
   comparisons.
-- `docs/exploration/` holds one report per step (P0 to P7; P8 and MVP are cancelled, ROADMAP U70) and an index of the measured
+- `docs/exploration/` holds one report per step (P0 to P10; P8 and the MVP are cancelled) and an index of the measured
   status.
 - New prototypes go under `scripts/poc/<name>/`. Each prototype directory has a `README.md` with
   the commands and a `requirements.txt`.
@@ -81,13 +81,13 @@ engineering blocker.
 
 The decisions in [ROADMAP.md](ROADMAP.md) bind every proposal and prototype. The most important ones:
 
-- **ACES means ACES Reference Gamut Compression (RGC).** The ACES output path of P3 (ROADMAP U23) was tested and
-  is dropped from other paths (ROADMAP U26). The one exception is the APD method of the P6 program (ROADMAP U64),
+- **ACES means ACES Reference Gamut Compression (RGC).** The ACES output path of P3 was tested and
+  is dropped from other paths. The one exception is the APD method of the P6 program and of Lab Scan (P10),
   which follows the standard chain to an ACES output transform. In other paths, do not append the ACES output
   transform or its tone scale after the film model. A variant of RGC with other parameters or another domain
   has its own name and is not "the standard ACES RGC".
 - **Film grain is outside this lab.** Alcedo Studio keeps its own grain implementation.
-- **Reference projects (ROADMAP U11, U12).** spectral_film_lut (MIT): code, methods, and data can
+- **Reference projects (ROADMAP section 2).** spectral_film_lut (MIT): code, methods, and data can
   be adopted directly. Fotufilm (Apache-2.0): use as a reference; reused code keeps its notice.
   spektrafilm: avoid as a reference for new work as far as possible. Label each reuse in the code
   and the report, and add its notice to [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Do not
@@ -97,7 +97,7 @@ The decisions in [ROADMAP.md](ROADMAP.md) bind every proposal and prototype. The
   unless its terms permit redistribution.
 - The model must fit the scene-referred architecture of Alcedo Studio (linear AP1 input to the
   DRT).
-- **A colour cast is not a fault of a film simulation (ROADMAP U36).** The cast and the character of
+- **A colour cast is not a fault of a film simulation (ROADMAP section 2).** The cast and the character of
   each stock are wanted, and each stock must show them. Do not correct, neutralize, or limit a cast.
   Do not report a cast or a change of tint as a fault or as a cost. Measure a cast only as a property
   of a stock. Work from the physical process, and let the user decide the look by eye.
@@ -121,7 +121,7 @@ The decisions in [ROADMAP.md](ROADMAP.md) bind every proposal and prototype. The
 
 - Do not commit photos, crops, or images made from photos of the user or of third parties. Keep
   them under `build/tmp/`. A report can name a photo file and describe its content in words.
-  One exception (ROADMAP U65, U66): `docs/images/` holds figures of the README made from the files
+  One exception (user decisions of 2026-10-31, in the git history of ROADMAP.md): `docs/images/` holds figures of the README made from the files
   listed in `docs/images/CREDITS.md`: Signature Edits files with no recognizable person, brand, or
   work of art, and two Hong Kong photos that the user selected.
 - Renders of manufacturer charts (for curve overlays) stay local. Each report states the command

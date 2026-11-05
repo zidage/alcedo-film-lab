@@ -15,7 +15,8 @@ from PySide6.QtCore import QObject, Qt, QThread, QTimer, Signal, Slot
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox, QFileDialog, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QMainWindow, QPushButton, QScrollArea, QSpinBox, QVBoxLayout, QWidget)
 
-import mvp_pipeline as mp
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import mvp_pipeline as mp  # noqa: E402
 
 
 class RenderWorker(QObject):
@@ -29,11 +30,15 @@ class RenderWorker(QObject):
 
     def _resolve(self, path: Path, settings: mp.RenderSettings) -> mp.RenderSettings:
         """Scene light 'as_shot': the light of the RAW white, read once per file."""
-        if settings.scene_light != mp.AS_SHOT:
+        if settings.scene_light != mp.AS_SHOT and settings.spectral_input == "current":
             return settings
-        if getattr(self, "_as_shot", (None,))[0] != path:
-            self._as_shot = (path, mp.as_shot_light(path)[0])
-        return mp.replace(settings, scene_light=self._as_shot[1])
+        key = (path, path.stat().st_mtime_ns, settings.spectral_input)
+        if getattr(self, "_as_shot", (None,))[0] != key:
+            resolved = mp.resolve_as_shot(settings, path)
+            self._as_shot = (key, resolved.scene_light, resolved.scene_white_xyz)
+        return mp.replace(settings, scene_light=self._as_shot[1],
+                          scene_white_xyz=self._as_shot[2],
+                          spectral_prior="measured_reflectance" if settings.spectral_input != "current" else settings.spectral_prior)
 
     @Slot(object, object, int)
     def render(self, path: Path, settings: mp.RenderSettings, long_edge: int) -> None:
@@ -45,7 +50,8 @@ class RenderWorker(QObject):
                 self._source = ((path, long_edge), ap1, decode)
             _, ap1, decode = self._source
             image = self.pipeline.render_array(ap1, settings)
-            self.finished.emit(image, {"input": str(path), "settings": mp.asdict(settings), **decode})
+            self.finished.emit(image, {"input": str(path), "settings": mp.asdict(settings), **decode,
+                                       "spectral_input": self.pipeline.spectral_input_record(settings)})
         except Exception as error:  # noqa: BLE001 - the window shows the real error of the pipeline and renders no substitute
             self.failed.emit(f"{type(error).__name__}: {error}")
 
@@ -71,6 +77,8 @@ class MainWindow(QMainWindow):
         self.print_material = self._combo(mp.CATALOG["prints"], defaults.print_material)
         self.light = self._combo({k: {"name": k} for k in mp.SCENE_LIGHTS}, defaults.scene_light)
         self.prior = self._combo({"light_like": {"name": "Light-like spectra"}, "measured_reflectance": {"name": "Measured reflectance"}}, defaults.spectral_prior)
+        self.spectral_input = self._combo({key: {"name": name} for key, name in mp.scene_input.MODES.items()}, defaults.spectral_input)
+        self.spectral_input.setToolTip("Lab Scan: use the full estimated RAW white. P13 modes use the measured prior. Constrained modes solve on the full wavelength grid and can take longer.")
         self.exposure = self._spin(-6.0, 6.0, defaults.exposure_ev, 0.25)
         self.contrast = self._spin(-100.0, 100.0, defaults.contrast, 1.0)
         self.saturation = self._spin(0.0, 2.0, defaults.saturation, 0.05)
@@ -110,7 +118,7 @@ class MainWindow(QMainWindow):
         self.slope_match.setChecked(defaults.apd_slope_match)
         self.slope_match.toggled.connect(self.schedule)
         groups["Scan"].addRow("", self.slope_match)
-        self.apd_numbers = self._combo({"stock": {"name": "Derived per stock (U96)"}, "academy": {"name": "Academy numbers"}}, defaults.apd_numbers)
+        self.apd_numbers = self._combo({"stock": {"name": "Derived per stock (U96)"}, "academy": {"name": "Academy numbers"}, "generic": {"name": "Generic scan, one setup per medium (U98)"}}, defaults.apd_numbers)
         groups["Scan"].addRow("ADX to ACES numbers", self.apd_numbers)
         self.apd_untimed = self._combo({"stock_balance": {"name": "Balance of the stock (U96)"}, "film_base": {"name": "Film base, offset 0 (U92)"}}, defaults.apd_untimed)
         groups["Scan"].addRow("LAD aim off", self.apd_untimed)
@@ -129,7 +137,7 @@ class MainWindow(QMainWindow):
                                                "opendrt": {"name": "OpenDRT 1.0.0"}, "cineon": {"name": "Cineon, Kodak conversion (DI, no print)"}}, defaults.chart_scan_display)
         groups["Chart scan"].addRow("Display (U91)", self.chart_scan_display)
         form = QFormLayout()
-        for label, widget in (("Negative", self.negative), ("Method", self.method), ("Reversal film", self.reversal), ("Print material", self.print_material), ("Scene light", self.light), ("Spectral prior", self.prior),
+        for label, widget in (("Negative", self.negative), ("Method", self.method), ("Reversal film", self.reversal), ("Print material", self.print_material), ("Scene light", self.light), ("Spectral prior", self.prior), ("Spectral input", self.spectral_input),
                               ("Exposure (EV)", self.exposure), ("Contrast", self.contrast), ("Saturation", self.saturation), ("Long edge (pixels)", self.long_edge)):
             form.addRow(label, widget)
         open_button = QPushButton("Open RAW...")
@@ -138,11 +146,15 @@ class MainWindow(QMainWindow):
         export_button.clicked.connect(self.export)
         reset_button = QPushButton("Reset the controls below")
         reset_button.clicked.connect(self.reset_controls)
+        self.smooth_button = QPushButton("P13 smooth scan")
+        self.smooth_button.setToolTip("Full RAW white, smooth spectrum, generic Lab Scan, scene cast retained (P13 balance0). Keep the selected stock and Stock character value.")
+        self.smooth_button.clicked.connect(self.use_smooth_scan)
         self.status = QLabel("Open a RAW file.")
         self.status.setWordWrap(True)
         panel = QVBoxLayout()
         panel.addWidget(open_button)
         panel.addLayout(form)
+        panel.addWidget(self.smooth_button)
         panel.addWidget(export_button)
         panel.addWidget(self.status)
         panel.addWidget(reset_button)
@@ -199,10 +211,30 @@ class MainWindow(QMainWindow):
         return spin
 
     def settings(self) -> mp.RenderSettings:
+        spectral_input = self.spectral_input.currentData() if self.method.currentData() == "apd" else "current"
         return mp.RenderSettings(negative=self.negative.currentData(), method=self.method.currentData(), reversal=self.reversal.currentData(), print_material=self.print_material.currentData(), scene_light=self.light.currentData(),
-                                 spectral_prior=self.prior.currentData(), exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
+                                 spectral_prior="measured_reflectance" if spectral_input != "current" else self.prior.currentData(), spectral_input=spectral_input,
+                                 exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
                                  display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), apd_encoding=self.apd_encoding.currentData(), apd_slope_match=self.slope_match.isChecked(), apd_colour=self.apd_colour.currentData(), apd_numbers=self.apd_numbers.currentData(), apd_untimed=self.apd_untimed.currentData(), apd_axis=self.apd_axis.currentData(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
                                  chart_scan_matrix=self.chart_scan_matrix.currentData(), chart_scan_display=self.chart_scan_display.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
+
+    @Slot()
+    def use_smooth_scan(self) -> None:
+        """Apply the reviewed P13 balance0 settings; retain stock and its character."""
+        choices = ((self.method, "apd"), (self.spectral_input, "white_smooth"),
+                   (self.light, mp.AS_SHOT), (self.prior, "measured_reflectance"),
+                   (self.apd_numbers, "generic"), (self.apd_axis, "numbers"),
+                   (self.apd_untimed, "stock_balance"), (self.apd_colour, "academy"),
+                   (self.apd_reading, "print2383"), (self.apd_encoding, "adx16"),
+                   (self.apd_output, "opendrt"), (self.apd_drt_grey, "native"))
+        for widget, value in choices:
+            widget.blockSignals(True)
+            widget.setCurrentIndex(widget.findData(value))
+            widget.blockSignals(False)
+        self.lad_aim.blockSignals(True)
+        self.lad_aim.setChecked(False)
+        self.lad_aim.blockSignals(False)
+        self.schedule()
 
     @Slot()
     def reset_controls(self) -> None:
@@ -238,6 +270,15 @@ class MainWindow(QMainWindow):
         self.negative.setEnabled(not light_table)
         self.reversal.setEnabled(light_table)
         self.print_material.setEnabled(method == "print")
+        self.spectral_input.setEnabled(scan)
+        full_white = scan and self.spectral_input.currentData() != "current"
+        self.light.setEnabled(not full_white)
+        self.prior.setEnabled(not full_white)
+        if full_white:
+            for widget, value in ((self.light, mp.AS_SHOT), (self.prior, "measured_reflectance")):
+                widget.blockSignals(True)
+                widget.setCurrentIndex(widget.findData(value))
+                widget.blockSignals(False)
         # The print group holds 'Enlarger flare', which is the loupe flare of the light table; its other controls do not act there.
         self.groups["Print"].setEnabled(not scan and not chart_scan)
         self.groups["Scan"].setEnabled(scan)
@@ -254,7 +295,7 @@ class MainWindow(QMainWindow):
             self.pending = True
             return
         self.busy = True
-        self.status.setText("Rendering...")
+        self.status.setText("Rendering... solving the full-grid scene spectrum." if self.settings().spectral_input.startswith("conditioned_") else "Rendering...")
         self.request.emit(self.path, self.settings(), self.long_edge.value())
 
     @Slot()

@@ -1,0 +1,6 @@
+# Use the installed P6 environment and its dependencies.
+numpy
+scipy
+Pillow
+rawpy
+matplotlib

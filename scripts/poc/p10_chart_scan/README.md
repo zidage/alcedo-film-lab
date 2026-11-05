@@ -14,6 +14,7 @@ This is a CPU review tool, not the product path.
 | `compare_lab_scans.py` | the library, `build/tmp/p3/filmanalyzer/measurements.json` (local, public chart scans of real film, no license stated) | `results/p10_chart_scan/lab_scan_compare.json`; with `--spectral`, `lab_scan_compare_spectral.json` (chart spectra straight to the film) |
 | `fit_fixed_slope.py` | the viewer, the eight stocks of `ACCEPTED_STOCKS` | `results/p10_chart_scan/fixed_slope.json`; stops if `FIXED_STATUS_M_SLOPE` differs from the mean slope by more than 1e-6 |
 | `check_stock_spread.py` | the viewer, a synthetic hue and lightness sweep, no photo | `results/p10_chart_scan/stock_spread.json`; sheet `build/tmp/p10/stock_spread/sweep_sheet.png` (local) |
+| `scan_generic.py` | the viewer (method `apd`), the stocks of `POOLS` | library: rule `generic_scan` (U98), one channel scale and one pair of ADX to ACES matrices per medium |
 | `render_chart_scan_review.py` | RAW files of the Alcedo Studio sample images | `build/tmp/p10/review3/<stock>.jpg` with a label on every panel (local only), `results/p10_chart_scan/review4.json` (round 4; earlier rounds wrote `review/`, `review3/`) |
 
 ```

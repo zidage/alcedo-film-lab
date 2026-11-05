@@ -40,6 +40,8 @@ Option numbers (U96): the two matrices of the ADX to ACES transform, (CDD_TO_CID
 'adx_stock_numbers' (p10_chart_scan/scan_unbuild.py) derives them per stock. The curve of the transform does not change.
 Option axis (U97): 'academy' is rule 'untimed_axis_academy' (p10_chart_scan/scan_axis.py): the neutral axis of the scan at its offset through the
 Academy numbers, the colours about it through the numbers of option numbers at the offset of the LAD aim at the scene light.
+Option fixed_scale (U98): a channel scale that is the same for every stock, in place of equation 2 or of rule 'adx_slope_match'; the pivot is the
+18 % grey of the scene light, as in that rule. Rule 'generic_scan' (p10_chart_scan/scan_generic.py) gives it with the numbers of option numbers.
 """
 
 from __future__ import annotations
@@ -140,7 +142,7 @@ class ScanPreview:
     def __init__(self, options: fp.FilmOptions, output: str = "aces20", timing: float | None = None, lad_aim: bool = True, exposure_stops: float = 0.0,
                  scanner: tuple[str, np.ndarray, np.ndarray] | None = None, reading: str = "apd", drt_grey: str = "aces20", encoding: str = "adx10",
                  slope_match: bool = False, colour: str = "academy", colour_print: fp.FilmOptions | None = None, numbers: tuple[np.ndarray, np.ndarray] | None = None,
-                 axis: str = "numbers") -> None:
+                 axis: str = "numbers", fixed_scale: np.ndarray | None = None) -> None:
         if encoding not in ENCODINGS:
             raise ValueError(f"unknown encoding {encoding!r}")
         self.encoding = encoding
@@ -172,8 +174,12 @@ class ScanPreview:
         self.apd_weights = responsivities
         self.apd_dmin = self.apd(film.negative_dmin[None])[0]
         self.table = self._build_table()
+        if slope_match and fixed_scale is not None:
+            raise ValueError("options slope_match and fixed_scale exclude each other")
         if slope_match:
             self.scale, self.pivot = self.slope_match(self.negative.options.scene_light)
+        if fixed_scale is not None:
+            self.scale, self.pivot = np.asarray(fixed_scale, dtype=np.float64), self.grey_apd(self.negative.options.scene_light)
         self.offset = self._adx_offset()
         if axis not in AXES:
             raise ValueError(f"unknown axis {axis!r}")

@@ -10,7 +10,8 @@ import argparse
 import sys
 from pathlib import Path
 
-import mvp_pipeline as mp
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import mvp_pipeline as mp  # noqa: E402
 
 
 def main() -> int:
@@ -24,6 +25,8 @@ def main() -> int:
     parser.add_argument("--print-material", default=defaults.print_material, choices=list(mp.CATALOG["prints"]))
     parser.add_argument("--scene-light", default=defaults.scene_light, choices=mp.SCENE_LIGHTS)
     parser.add_argument("--spectral-prior", default=defaults.spectral_prior, choices=mp.SPECTRAL_PRIORS)
+    parser.add_argument("--spectral-input", default=defaults.spectral_input, choices=tuple(mp.scene_input.MODES),
+                        help="Lab Scan: current input, or the P13 full RAW white / constrained spectrum. P13 reads the RAW white and uses the measured prior.")
     parser.add_argument("--exposure-ev", type=float, default=defaults.exposure_ev)
     parser.add_argument("--contrast", type=float, default=defaults.contrast)
     parser.add_argument("--saturation", type=float, default=defaults.saturation)
@@ -37,8 +40,8 @@ def main() -> int:
     parser.add_argument("--apd-encoding", default=defaults.apd_encoding, choices=tuple(mp.ENCODINGS), help="APD method: 'adx16' (no clip) or 'adx10' (clip at 1023), U93.")
     parser.add_argument("--no-slope-match", action="store_true", help="APD method: the scale 1.00, 0.92, 0.95 of ST 2065-3 for every stock, in place of rule 'adx_slope_match' (U93).")
     parser.add_argument("--apd-colour", default=defaults.apd_colour, choices=mp.SCAN_COLOURS, help="APD method: rule 'scan_print_colour' target, or 'academy' (U95).")
-    parser.add_argument("--apd-numbers", default=defaults.apd_numbers, choices=("stock", "academy"), help="APD method: the matrices of the ADX to ACES transform, derived per stock (rule adx_stock_numbers) or of the Academy (U96).")
-    parser.add_argument("--apd-axis", default=defaults.apd_axis, choices=("academy", "numbers"), help="APD method with --no-lad-aim and stock numbers: the neutral axis of the Academy scan or of the numbers (U97).")
+    parser.add_argument("--apd-numbers", default=defaults.apd_numbers, choices=mp.SCAN_NUMBERS, help="APD method: the matrices of the ADX to ACES transform, derived per stock (rule adx_stock_numbers, U96), of the Academy, or one generic set with one channel scale for every stock of a medium (rule generic_scan, U98).")
+    parser.add_argument("--apd-axis", default=defaults.apd_axis, choices=("academy", "numbers"), help="APD method with --no-lad-aim and stock or generic numbers: the neutral axis of the Academy scan or of the numbers (U97).")
     parser.add_argument("--apd-untimed", default=defaults.apd_untimed, choices=("stock_balance", "film_base"), help="APD method with --no-lad-aim: the balance of the stock or offset 0 (U96).")
     parser.add_argument("--apd-reading", default=defaults.apd_reading, choices=mp.READINGS, help="APD method: 'apd' (ST 2065-2) or 'print2383', the printing density of Kodak 2383 (U92).")
     parser.add_argument("--no-lad-aim", action="store_true", help="APD method: no offset per channel, so the stock keeps its own grey position in ADX10.")
@@ -59,7 +62,7 @@ def main() -> int:
         return 0
     if args.input is None or args.output is None:
         parser.error("INPUT and OUTPUT are necessary")
-    settings = mp.RenderSettings(negative=args.negative, method=args.method, reversal=args.reversal, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior,
+    settings = mp.RenderSettings(negative=args.negative, method=args.method, reversal=args.reversal, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior, spectral_input=args.spectral_input,
                                  exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim, apd_reading=args.apd_reading, apd_drt_grey=args.apd_drt_grey, apd_encoding=args.apd_encoding, apd_slope_match=not args.no_slope_match, apd_colour=args.apd_colour, apd_numbers=args.apd_numbers, apd_untimed=args.apd_untimed, apd_axis=args.apd_axis, chart_scan_slope=args.chart_scan_slope, chart_scan_reading=args.chart_scan_reading, chart_scan_matrix=args.chart_scan_matrix, chart_scan_display=args.chart_scan_display,
                                  **{control.name: getattr(args, control.name) for control in mp.CONTROLS})
     image, record = mp.Pipeline().render_file(args.input, settings, args.long_edge)

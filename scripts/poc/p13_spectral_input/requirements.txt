@@ -1,0 +1,1 @@
+-r ../p6_mvp_gui/requirements.txt

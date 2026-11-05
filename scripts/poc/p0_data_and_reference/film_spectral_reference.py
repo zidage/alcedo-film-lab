@@ -32,6 +32,7 @@ toe, where the curve is flat on the chart and the first value is kept (rule
 from __future__ import annotations
 
 import ast
+import copy
 import csv
 import json
 from dataclasses import dataclass
@@ -108,7 +109,13 @@ def status_aim_log_h(curves, status_a: float | tuple[float, float, float]) -> np
     return np.array([c.log_h_at(a) for c, a in zip(curves, np.broadcast_to(status_a, 3))])
 
 
+# Profiles changed in memory, under a name of their own (rule 'stock_character' of p6_mvp_gui/stock_character.py, step P12). No file is written.
+PROFILE_OVERRIDES: dict[str, dict] = {}
+
+
 def load_profile(name: str) -> dict:
+    if name in PROFILE_OVERRIDES:
+        return copy.deepcopy(PROFILE_OVERRIDES[name])
     return json.loads((PROFILE_DIR / f"{name}.json").read_text(encoding="utf-8"))
 
 

@@ -1,7 +1,7 @@
 """The shared pipeline of the Python MVP: RAW file to display image, by the print method, the APD scan method, or a reversal film on a light table.
 
 Input: a RAW file that LibRaw reads, a negative and a print material of stock_catalog.json, a scene light, a spectral prior, and the product grade.
-Output: sRGB display code (float32) with its parameters. No value of a frame is kept between renders. The print and APD tables are built in memory and are not stored (ROADMAP U68); the reflectance tables stay in build/tmp/p2/tables/.
+Output: sRGB display code (float32) with its parameters. The P13 constrained input keeps at most two layer-exposure images in memory; no complete spectral image is retained. The print and APD tables are built in memory and are not stored (ROADMAP U68); the reflectance tables stay in build/tmp/p2/tables/.
 Step: P6, ROADMAP U61 and U64. The negative chain and the print are those of P2 to P5 (film_preview.py). The APD method is the path of P3 (aces_scan.py): APD (ST 2065-2), ADX10 (ST 2065-3), the mid grey at code value 445, ADX10 to ACES, and an ACES output transform.
 
 Rules of this step:
@@ -29,6 +29,10 @@ Rules of this step:
   of the neutral and a correlated colour temperature (McCamy), clipped to 2000-15000 K; the light is film_preview.cct_light (U92: Planckian to
   4000 K, CIE daylight from 5000 K, a blend linear in mired between). The
   renderer replaces 'as_shot' with the name of that light (as_shot_light). A RAW file with no camera matrix stops with an error.
+- 'stock_character' (step P12, user decision of 2026-11-04): control stock_character k; the sensitivities and the characteristic curves of the
+  negative differ from the average negative of its medium (the pool of rule generic_scan) k times as much as in the data. k = 1 is the data. See
+  stock_character.py. The scanner setup of rule generic_scan stays that of the data (k = 1). A medium with no pool stops with an error at k != 1.
+- 'spectral_input' (P13): the full RAW white defines a smooth, LED or fluorescent spectral family. Constrained modes use the full-grid P13 solve. Stock character changes the sensitivities of the layer integrals; the scene spectrum and generic scanner setup do not depend on it.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -51,10 +55,13 @@ sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p3_scan_and_scene"))
 from aces_scan import DRT_GREYS, DRT_OUTPUTS, ENCODINGS, OUTPUT_TRANSFORMS, READINGS, ScanPreview, fp  # noqa: E402
 
 SCAN_OUTPUTS = (*OUTPUT_TRANSFORMS, *DRT_OUTPUTS)  # U92
+SCAN_NUMBERS = ("stock", "academy", "generic")  # U96, U98
 SCAN_COLOURS = ("academy", "print_hue_scene_chroma", "print_hue_scan_chroma", "scene_hue_scan_chroma", "print_hue_print_chroma")  # U95, scan_colour.COLOURS
 
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p9_reversal_light_table"))
 import reversal_film as rf  # noqa: E402
+import stock_character  # noqa: E402  step P12
+import scene_input  # noqa: E402  step P13
 
 CATALOG = json.loads((SCRIPT_DIR / "stock_catalog.json").read_text(encoding="utf-8"))
 # Print material 'cine_look' (ROADMAP U83): the data of Kodak 2383, with rules 'print_cinema_look' and 'negative_show_grade'. Print material kodak_2383 has neither of them.
@@ -115,6 +122,7 @@ class Control:
 
 
 CONTROLS = (
+    Control("stock_character", "Stock character", "Negative", 0.0, 3.0, 0.25, 2, (*PRINT, *SCAN, *CHART_SCAN), "Rule stock_character (P12): how much the sensitivities and the curves of this stock differ from the average negative of its medium, times the data. 1: the data. 0: the average. 2: each difference doubled. A creative control."),
     Control("overexposure_stops", "Overexposure (stops)", "Negative", -2.0, 4.0, 0.25, 2, (*PRINT, *SCAN, *CHART_SCAN), "Rule overexposed_negative: the negative takes more light, and the printer lights take it back. It moves the shadows off the toe."),
     Control("inhibition_scale", "Development inhibition", "Negative", 0.0, 1.5, 0.1, 2, BOTH, "Scale of the inhibition from the modulation transfer curves. 0: off. A stock with no curve has no inhibition."),
     Control("layer_spread_scale", "Light spread", "Negative", 0.0, 3.0, 0.25, 2, BOTH, "Scale of the spread length of each layer. 0: off. A stock with no curve has no spread."),
@@ -142,11 +150,14 @@ class RenderSettings:
     print_material: str = "kodak_endura_premier"
     scene_light: str = REFERENCE_LIGHT
     spectral_prior: str = "light_like"
+    spectral_input: str = "current"
+    scene_white_xyz: tuple[float, float, float] | None = None
     foliage: bool = False  # U93
     negative_grade: bool = True
     exposure_ev: float = 1.5
     contrast: float = float(fp.PRODUCT_CONTRAST)
     saturation: float = float(fp.PRODUCT_SATURATION)
+    stock_character: float = 1.0  # rule 'stock_character' (P12)
     overexposure_stops: float = 0.0
     inhibition_scale: float = 1.0
     layer_spread_scale: float = 1.0
@@ -176,7 +187,7 @@ class RenderSettings:
     apd_encoding: str = "adx16"  # U93
     apd_slope_match: bool = True  # U93, rule 'adx_slope_match' of aces_scan.py
     apd_colour: str = "academy"  # U95, rule 'scan_print_colour' of p10_chart_scan/scan_colour.py; 'academy': no correction (U96)
-    apd_numbers: str = "stock"  # U96: 'stock' (rule 'adx_stock_numbers' of p10_chart_scan/scan_unbuild.py) or 'academy'
+    apd_numbers: str = "generic"  # U98 default; U96: 'stock' (rule 'adx_stock_numbers' of p10_chart_scan/scan_unbuild.py) or 'academy'; U98: 'generic' (rule 'generic_scan' of p10_chart_scan/scan_generic.py: one channel scale and one set of numbers for every stock of a medium; it replaces rule adx_slope_match)
     apd_untimed: str = "stock_balance"  # U96: the LAD aim off; 'stock_balance' (the grey of the balance light of the stock on the aim) or 'film_base' (offset 0, U92)
     apd_axis: str = "academy"  # U97: the LAD aim off with numbers 'stock'; 'academy' (rule 'untimed_axis_academy' of p10_chart_scan/scan_axis.py) or 'numbers' (U96)
 
@@ -205,6 +216,16 @@ class RenderSettings:
             raise ValueError(f"unknown chart scan matrix {self.chart_scan_matrix!r}")
         if self.spectral_prior not in SPECTRAL_PRIORS:
             raise ValueError(f"unknown spectral prior {self.spectral_prior!r}")
+        if self.spectral_input not in scene_input.MODES:
+            raise ValueError(f"unknown spectral input {self.spectral_input!r}")
+        if self.spectral_input != "current":
+            if self.method != "apd":
+                raise ValueError("full RAW white spectral input is available for Lab Scan (method apd)")
+            white = np.asarray(self.scene_white_xyz, dtype=np.float64)
+            if white.shape != (3,) or not np.isfinite(white).all() or np.min(white) <= 0:
+                raise ValueError("full RAW white spectral input needs a valid RAW XYZ white: use resolve_as_shot")
+            if self.foliage or self.spectral_prior != "measured_reflectance":
+                raise ValueError("P13 spectral input uses the measured prior with foliage off")
         if self.display_white not in DISPLAY_WHITES:
             raise ValueError(f"unknown display white {self.display_white!r}")
         if self.chart_scan_slope not in CHART_SCAN_SLOPES:
@@ -219,7 +240,7 @@ class RenderSettings:
             raise ValueError(f"unknown scan encoding {self.apd_encoding!r}")
         if self.apd_colour not in SCAN_COLOURS:
             raise ValueError(f"unknown scan colour {self.apd_colour!r}")
-        if self.apd_numbers not in ("stock", "academy") or self.apd_untimed not in ("stock_balance", "film_base") or self.apd_axis not in ("academy", "numbers"):
+        if self.apd_numbers not in SCAN_NUMBERS or self.apd_untimed not in ("stock_balance", "film_base") or self.apd_axis not in ("academy", "numbers"):
             raise ValueError(f"unknown scan numbers {self.apd_numbers!r}, untimed form {self.apd_untimed!r} or axis {self.apd_axis!r}")
         for control in CONTROLS:
             value = getattr(self, control.name)
@@ -291,6 +312,10 @@ def as_shot_light(path: Path) -> tuple[str, float]:
 
 def resolve_as_shot(settings: "RenderSettings", path: Path) -> "RenderSettings":
     """Scene light 'as_shot': the light of the RAW white in its place. Other lights do not change."""
+    if settings.spectral_input != "current":
+        white, cct = scene_input.raw_white(path)
+        return replace(settings, scene_light=f"CCT{int(round(np.clip(cct, 2000, 15000)))}",
+                       scene_white_xyz=white, spectral_prior="measured_reflectance")
     return replace(settings, scene_light=as_shot_light(path)[0]) if settings.scene_light == AS_SHOT else settings
 
 
@@ -316,15 +341,37 @@ def scan_colour_print(settings: RenderSettings) -> fp.FilmOptions | None:
     return film_options(replace(settings, method="print", print_material=paper))
 
 
+def character_profile(negative: str, k: float, physics: dict | None = None) -> str:
+    """Rule 'stock_character' (P12): the name of the profile of the negative with stock character k, kept in memory (p0.PROFILE_OVERRIDES).
+    The pool is the pool of rule generic_scan for the medium of the negative; the anchor of each curve is the 18 % grey exposure of the stock."""
+    sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
+    import scan_generic  # step P10, U98
+
+    medium = CATALOG["negatives"][negative]["medium"].lower()
+    if medium not in scan_generic.POOLS:
+        raise ValueError(f"rule stock_character has no pool for medium {medium!r} of {negative!r}")
+    default_anchor = fp.FilmOptions().midscale_log_h
+
+    def anchor_of(stock: str) -> float:
+        return float(negative_options(stock, physics).get("midscale_log_h", default_anchor))
+
+    return stock_character.register(fp.p0.PROFILE_OVERRIDES, fp.p0.load_profile, negative, float(k), scan_generic.POOLS[medium], anchor_of)
+
+
 def film_options(settings: RenderSettings, print_material: str | None = None, physics: dict | None = None, image_part: bool = True) -> fp.FilmOptions:
     material = print_material or settings.print_material
     options = fp.FilmOptions(**{**fp.DARKROOM, **negative_options(settings.negative, physics, image_part), **print_conditions(material), **light_conditions(settings.negative, settings.scene_light, physics),
                                 "light_spectra": settings.spectral_prior == "light_like", "foliage": settings.foliage, "entry_gamut_compress": settings.method == "print",
                                 "negative_grade": settings.negative_grade and settings.method == "print" and material == CINE_LOOK_PRINT and settings.negative in NEGATIVE_GRADE_STOCKS})
+    if settings.spectral_input != "current":
+        spectrum, _ = scene_input.matched_spectrum(settings.spectral_input, settings.scene_white_xyz)
+        options = replace(options, scene_spectrum=spectrum, light_spectra=False)
 
     def scaled(values: tuple[float, float, float], scale: float) -> tuple[float, float, float]:
         return tuple(float(v) * scale for v in values)
 
+    if settings.stock_character != 1.0:
+        options = replace(options, negative_profile=character_profile(settings.negative, settings.stock_character, physics))
     return replace(options, overexposure_stops=settings.overexposure_stops, inhibition_total=scaled(options.inhibition_total, settings.inhibition_scale),
                    inhibition_image=None if options.inhibition_image is None else scaled(options.inhibition_image, settings.inhibition_scale), layer_spread_um=scaled(options.layer_spread_um, settings.layer_spread_scale),
                    halation=scaled(options.halation, settings.halation_scale), halation_um=settings.halation_um, scene_flare=settings.scene_flare, print_midscale_status_a=tuple(np.broadcast_to(options.print_midscale_status_a, 3) + settings.print_grey_shift),
@@ -385,6 +432,8 @@ class Pipeline:
 
     def __init__(self) -> None:
         self._models: dict[tuple, object] = {}
+        self._generic: dict[tuple, tuple] = {}
+        self._constrained_input: scene_input.ConstrainedInput | None = None
 
     def _model(self, tag: tuple, build):
         if tag not in self._models:
@@ -398,26 +447,64 @@ class Pipeline:
 
     def scan_model(self, settings: RenderSettings) -> ScanPreview:
         negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "apd" not in c.methods})
-        return self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior, control_values(settings, "apd")), lambda: self._scan(settings, negative_only))
+        model = self._model(("scan", settings.negative, settings.scene_light, settings.spectral_prior,
+                             settings.spectral_input, settings.scene_white_xyz,
+                             control_values(settings, "apd")), lambda: self._scan(settings, negative_only))
+        if settings.spectral_input.startswith("conditioned_"):
+            if self._constrained_input is None:
+                self._constrained_input = scene_input.ConstrainedInput()
+            self._constrained_input.bind(model.negative)
+        return model
+
+    def spectral_input_record(self, settings: RenderSettings) -> dict:
+        """Export the actual input family, full estimated white and solver checks."""
+        if settings.spectral_input == "current":
+            return {"mode": "current"}
+        _, record = scene_input.matched_spectrum(settings.spectral_input, settings.scene_white_xyz)
+        record = {"mode": settings.spectral_input, **record}
+        if settings.spectral_input.startswith("conditioned_") and self._constrained_input is not None:
+            record["reconstruction"] = self._constrained_input.last_stats
+        return record
 
     def _scan(self, settings: RenderSettings, negative_only: RenderSettings) -> ScanPreview:
         """Method 'apd'. With the LAD aim off and numbers 'stock', axis 'academy' (U97): the neutral axis of the untimed scan through the Academy
         numbers, the colours about it through the stock numbers. With the LAD aim off, form 'stock_balance' (U96) is the LAD aim at the balance light of the stock (timing 0): a lab scans
         each film type with its own channel balance, and only the cast of the scene light against that light stays. Numbers 'stock' (U96): rule
         'adx_stock_numbers', derived on a scan model under the balance light."""
-        common = dict(reading=settings.apd_reading, encoding=settings.apd_encoding, slope_match=settings.apd_slope_match)
-        numbers = None
+        common = dict(reading=settings.apd_reading, encoding=settings.apd_encoding, slope_match=settings.apd_slope_match and settings.apd_numbers != "generic")
+        numbers, fixed_scale = None, None
         if settings.apd_numbers == "stock":
             sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
             import scan_unbuild  # step P10, U96
 
             balance = "tungsten" if CATALOG["negatives"][settings.negative].get("exposure_kelvin", 5500) < 4500 else "daylight"
-            balance_model = ScanPreview(film_options(replace(negative_only, scene_light=balance), SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=True, timing=1.0, **common)
+            balance_model = ScanPreview(film_options(replace(negative_only, scene_light=balance, spectral_input="current", scene_white_xyz=None), SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=True, timing=1.0, **common)
             numbers = scan_unbuild.derive(fp, balance_model)
+        elif settings.apd_numbers == "generic":
+            fixed_scale, numbers = self.generic_scan(settings)
         untimed = not settings.apd_lad_aim and settings.apd_untimed == "stock_balance"
-        axis = settings.apd_axis if not settings.apd_lad_aim and settings.apd_numbers == "stock" else "numbers"
+        axis = settings.apd_axis if not settings.apd_lad_aim and settings.apd_numbers in ("stock", "generic") else "numbers"
         return ScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), output=settings.apd_output, lad_aim=settings.apd_lad_aim or untimed, timing=0.0 if untimed else None,
-                           exposure_stops=settings.apd_exposure_stops, drt_grey=settings.apd_drt_grey, colour=settings.apd_colour, colour_print=scan_colour_print(settings), numbers=numbers, axis=axis, **common)
+                           exposure_stops=settings.apd_exposure_stops, drt_grey=settings.apd_drt_grey, colour=settings.apd_colour, colour_print=scan_colour_print(settings), numbers=numbers, axis=axis, fixed_scale=fixed_scale, **common)
+
+    def generic_scan(self, settings: RenderSettings) -> tuple[np.ndarray, tuple[np.ndarray, np.ndarray]]:
+        """Rule 'generic_scan' (U98): the channel scale and the numbers of the average negative of the medium of the stock (scan_generic.POOLS), for
+        the reading and the encoding of the settings; derived once per medium, reading, and encoding, from the default settings of each stock."""
+        sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
+        import scan_generic  # step P10, U98
+
+        medium = CATALOG["negatives"][settings.negative]["medium"].lower()
+        if medium not in scan_generic.POOLS:
+            raise ValueError(f"rule generic_scan has no pool for medium {medium!r} of {settings.negative!r}")
+        key = (medium, settings.apd_reading, settings.apd_encoding)
+        if key not in self._generic:
+            def make_scan(stock, fixed_scale):
+                balance = "tungsten" if CATALOG["negatives"][stock].get("exposure_kelvin", 5500) < 4500 else "daylight"
+                base = RenderSettings(method="apd", negative=stock, scene_light=balance, apd_reading=settings.apd_reading, apd_encoding=settings.apd_encoding)
+                return ScanPreview(film_options(base, SCAN_CARRIER_PRINT), output="opendrt", lad_aim=True, timing=1.0, reading=settings.apd_reading,
+                                   encoding=settings.apd_encoding, fixed_scale=fixed_scale)
+            self._generic[key] = scan_generic.derive(fp, make_scan, scan_generic.POOLS[medium])
+        return self._generic[key]
 
     def chart_scan_model(self, settings: RenderSettings):
         sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
@@ -467,7 +554,9 @@ class Pipeline:
         decoded = time.perf_counter() - start
         start = time.perf_counter()
         image = self.render_array(ap1, settings)
-        record = {"input": str(path), "settings": asdict(settings), **decode, "model_load_s": round(load, 2), "decode_s": round(decoded, 2), "render_s": round(time.perf_counter() - start, 2)}
+        record = {"input": str(path), "settings": asdict(settings), **decode,
+                  "spectral_input": self.spectral_input_record(settings),
+                  "model_load_s": round(load, 2), "decode_s": round(decoded, 2), "render_s": round(time.perf_counter() - start, 2)}
         return image, record
 
 
