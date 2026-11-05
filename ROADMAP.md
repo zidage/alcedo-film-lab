@@ -86,6 +86,11 @@ replace them.
    and #664 take it, and the form of PR #663 is dropped (the pull request is done again). The port has two phases: first the model layer
    (resources, host tables, document, panel), then the GPU passes (CUDA and OpenCL, then Metal).
 
+11. **Product resources of schema 10 (2026-11-05).** `build_product_resources.py` writes the Negative Scan values in place of the Lab Scan
+   forms: the default scanner, D_base, the gamma of each medium, D_aim and the light axis of each negative and light, and the expected
+   values of the product tests (a second scanner, the auto colour, the point form). Section 9 of the
+   [P14 report](docs/exploration/p14_negative_scan.md) lists them with the checks.
+
 The target source license is GPL-3.0-only. Third-party code, measurements, profiles, and derived
 tables retain their applicable license terms.
 

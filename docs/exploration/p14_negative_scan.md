@@ -203,14 +203,49 @@ round 2 sheets.
 
 ## 7. Open items
 
-- The port: phase 1 (model layer, issue #661), phase 2 (CUDA and OpenCL, issue #664; Metal, issue #662). The resources of the next schema
-  are a precondition of phase 1.
+- The port: phase 1 (model layer, issue #661), phase 2 (CUDA and OpenCL, issue #664; Metal, issue #662). The resources of schema 10
+  (section 9) are in place.
 - Scanner styles from measured samples (the request's step P5) are not done. The test needs an unprocessed high bit-depth scan and the lab
   JPEG of the same negative; the only real film data of this lab is the 5207 strips of P12, scanned on a Hasselblad X5.
-- The method is not in the C++ resources or in Alcedo Studio. The product needs the scanner table (the same form as the APD table of P7),
-  three gammas and an aim per stock, and one reduction pass for the auto colour.
+- The C++ resources have the method from schema 10 (section 9). The product builds the scanner table on the host, as the APD table of P7.
 - Not measured: GPU time and memory, cine stocks other than 5207 on the sheets, reversal films (the method is for negatives), stock character
   other than 1.
+
+## 9. Product resources, schema 10 (issue 661)
+
+`p7_spectral_acceleration/build_product_resources.py` writes the values of Negative Scan in place of the Lab Scan forms of schemas 8 and 9
+(the ADX arrays, the printing paper, and the LAD aim are removed). Lab commit fb785ef; the run took 762 s.
+
+- Bundle: the default scanner (`common/negative_scan_centres_nm`, `_width_nm`, `_band_cut`, `_lamp_kelvin`, `_planck_c2_nm_k`), D_base per
+  negative (`negative/<n>/scan_base_density`), the gamma of each medium (`scan_medium/<m>/gamma`), and the spectra D55, T3200, and D65.
+  The metadata gives each negative its medium and its balance light, and `negative_scan` gives the identifier, the name, the default light,
+  the axis lights, and the pool of each medium with the scene light of each pool stock.
+- Setup: `negative_scan_aim_density` and `negative_scan_light_axis`, (negatives, scene lights, 3). Both depend on the light, because the
+  layer gain of a stock that is not relative to its balance light differs under `reference`.
+- The grey records of the stored values use the point form of the lab (16 steps of rule `development_inhibition`). The product derives the
+  values again for a scanner other than the default, with the same form.
+
+Checks of the run (limits of the script):
+
+| Check | Largest value | Limit |
+| --- | --- | --- |
+| Setup values against the model, 10 selections | 0 | 1e-9 |
+| Scanner table nodes against the model, 8 tables | 2.7e-15 | 1e-12 |
+| Grid blend of As Shot, print 5207 on 2383 | 0.104 code | 0.5 code |
+| Grid blend of As Shot, scan, 4 negatives | 0.0028 stops | 0.03 stops |
+
+Expected values for the product tests (`build/tmp/p7/product_resources/expected`):
+
+- `scan__<negative>__<light>.bin`: the scanner table, the record grid, the default scanner weights, D_base, D_aim, the light axis, gamma,
+  and the layer gain, for 5207, Portra 400, and Ektar 100 under `reference` and 5219 under `daylight`.
+- `scan__<negative>__cct<K>.bin`: the blend of two grid lights (5219 at 5650 K, 5207 at 3100 K).
+- `scan__scanner_b.bin`: a second scanner (630/530/460 nm, 60 nm, equal energy). Its gamma is cine 0.42353, 0.53584, 0.50498 and photo
+  0.46778, 0.54907, 0.57709; the file also has D_base, D_aim, and the light axis of the four negatives under `daylight`.
+- `scan__auto.bin`: rule `frame_auto_colour` on two frames of x (257 x 391), with five cases each. Frame a takes the near-neutral estimate;
+  frame b (a near-neutral band of sky over a strong cast) takes the white-patch estimate.
+- `display/scan__*__auto_<off|neutral>.bin` (`build_display_expected.py`): a neutral ramp of 241 values and the chart of 180 + 3916 values,
+  as linear AP1 with the shift and the prescan. `image/scan__*` (`build_image_expected.py`): the linear AP1 of the RAW frame of the image
+  tests.
 
 ## 8. Commands
 

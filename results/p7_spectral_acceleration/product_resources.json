@@ -1,23 +1,23 @@
 {
- "schema_version": 7,
+ "schema_version": 10,
  "manifest": {
-  "schema_version": 7,
-  "lab_commit": "10c159b50f4fcf9f324fd90a2a866ac4a92305cd",
+  "schema_version": 10,
+  "lab_commit": "fb785ef370ffec246347ade0378648f96fbccddb",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
-    "bytes": 3086880,
-    "sha256": "134ff8ec5ac5e488dc5f2687690ddc5843996fc6f72c83f3475ec2cd97fdecad"
+    "bytes": 3434296,
+    "sha256": "9b9cc0c001f18fdef2f38202afb3e4d0f1571eb044e3b3b030591203a837b5b3"
    },
    "print_setup": {
     "file": "film_print_setup.bin",
-    "bytes": 225568,
-    "sha256": "97302a277bf8e70fef53d65be46c8a138da5ac6640e090728b79ba9f92509292"
+    "bytes": 1681936,
+    "sha256": "ad7898fd4db8ed57e07b4d87dd67fc77d6431927ed2edd297dd06936ac0abb4e"
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
     "bytes": 25127352,
-    "sha256": "72f8545ae06f7a6da88d7c825d6c516826ae93cb4f27129fb728b9e862add0a2"
+    "sha256": "c7de988ed11bad7dfdbf523a48312d8c252e3fc5b3db63fd054c7eb20aa78408"
    }
   }
  },
@@ -25,87 +25,201 @@
   "negatives": 30,
   "print_materials": 19,
   "reversal_films": 5,
-  "scene_lights": 11
+  "scene_lights": 99
  },
  "setup_difference_limit": 1e-09,
  "setup_difference": {
-  "kodak_exr_5248 on fuji_3523XD on daylight": 0.0,
-  "kodak_5207 on fuji_3513di on reference": 0.0,
-  "fuji_c200 on fujiflex_new on led": 0.0,
-  "kodak_5203 on fuji_ca_maxima on tungsten": 0.0,
-  "kodak_5219 on kodak_portra_endura on street_sodium": 0.0,
-  "fuji_eterna_500 on fuji_ca_maxima on interior_warm": 0.0,
-  "agfa_vista_100 on kodak_5381 on reference": 0.0,
-  "kodak_5247 on kodak_5383 on daylight": 0.0,
+  "kodak_exr_5248 on fuji_3523XD on CCT2062": 0.0,
+  "kodak_5207 on fuji_3513di on CCT8696": 0.0,
+  "fuji_c200 on fuji_3513di on CCT7143": 0.0,
+  "fuji_pro_400h on fujiflex_old on CCT2899": 0.0,
+  "fuji_natura_1600 on fuji_ca_maxima on CCT3704": 0.0,
+  "kodak_5248 on kodak_endura_premier on CCT2000": 0.0,
+  "fuji_natura_1600 on cine_look on CCT3030": 0.0,
+  "agfa_vista_100 on kodak_endura_premier on CCT3226": 0.0,
   "kodak_5207 on kodak_2383 on reference": 0.0,
   "kodak_portra_400 on kodak_endura_premier on daylight": 0.0,
   "fuji_eterna_500 on kodak_2383 on street_mixed": 0.0,
   "kodak_5219 on cine_look on reference": 0.0,
   "kodak_5207 on cine_look on reference": 0.0,
+  "reversal fuji_astia_100f under CCT4167": 0.0,
+  "reversal fuji_astia_100f under CCT2273": 0.0,
+  "reversal fuji_astia_100f under CCT6452": 0.0,
+  "reversal fuji_velvia_100 under CCT2500": 0.0,
   "reversal fuji_velvia_50 under reference": 0.0,
-  "reversal fuji_provia_100f under interior_office": 0.0,
-  "reversal fuji_astia_100f under interior_office": 0.0,
-  "reversal fuji_velvia_100 under fluorescent": 0.0,
   "reversal kodak_ektachrome_e100 under daylight": 0.0,
   "reversal fuji_provia_100f under street_mixed": 0.0
  },
- "scan_point_limit_code": 1e-06,
+ "scan_point_limit_relative": 1e-09,
  "scan": {
-  "fuji_pro_160c under led": {
+  "fuji_pro_160c under CCT2778": {
    "setup": 0.0,
-   "point_form_largest_code": {
-    "neutral_ramp": 5.6621374255882984e-14,
-    "random_colours": 4.671263376110346e-13
-   }
+   "point_form_largest_relative": {
+    "neutral_ramp, rendering 0": 0.0,
+    "random_colours, rendering 0": 0.0,
+    "neutral_ramp, rendering 1": 0.0,
+    "random_colours, rendering 1": 0.0,
+    "neutral_ramp, rendering 2": 0.0,
+    "random_colours, rendering 2": 0.0
+   },
+   "table_nodes_largest": 2.4424906541753444e-15
   },
-  "kodak_5203 under reference": {
+  "kodak_5203 under CCT15000": {
    "setup": 0.0,
-   "point_form_largest_code": {
-    "neutral_ramp": 5.6621374255882984e-14,
-    "random_colours": 3.2557290197132716e-13
-   }
+   "point_form_largest_relative": {
+    "neutral_ramp, rendering 0": 0.0,
+    "random_colours, rendering 0": 0.0,
+    "neutral_ramp, rendering 1": 0.0,
+    "random_colours, rendering 1": 0.0,
+    "neutral_ramp, rendering 2": 0.0,
+    "random_colours, rendering 2": 0.0
+   },
+   "table_nodes_largest": 2.4424906541753444e-15
   },
-  "fuji_pro_160c under fluorescent": {
+  "agfa_vista_100 under CCT2198": {
    "setup": 0.0,
-   "point_form_largest_code": {
-    "neutral_ramp": 5.6621374255882984e-14,
-    "random_colours": 3.963496197911809e-13
-   }
+   "point_form_largest_relative": {
+    "neutral_ramp, rendering 0": 0.0,
+    "random_colours, rendering 0": 0.0,
+    "neutral_ramp, rendering 1": 0.0,
+    "random_colours, rendering 1": 0.0,
+    "neutral_ramp, rendering 2": 0.0,
+    "random_colours, rendering 2": 0.0
+   },
+   "table_nodes_largest": 2.4424906541753444e-15
   },
-  "kodak_5213 under led": {
+  "kodak_gold_200 under CCT2469": {
    "setup": 0.0,
-   "point_form_largest_code": {
-    "neutral_ramp": 5.6621374255882984e-14,
-    "random_colours": 3.2557290197132716e-13
-   }
+   "point_form_largest_relative": {
+    "neutral_ramp, rendering 0": 0.0,
+    "random_colours, rendering 0": 0.0,
+    "neutral_ramp, rendering 1": 0.0,
+    "random_colours, rendering 1": 0.0,
+    "neutral_ramp, rendering 2": 0.0,
+    "random_colours, rendering 2": 0.0
+   },
+   "table_nodes_largest": 2.6645352591003757e-15
   },
   "kodak_5207 under reference": {
    "setup": 0.0,
-   "point_form_largest_code": {
-    "neutral_ramp": 5.6621374255882984e-14,
-    "random_colours": 3.2557290197132716e-13
-   }
+   "point_form_largest_relative": {
+    "neutral_ramp, rendering 0": 0.0,
+    "random_colours, rendering 0": 0.0,
+    "neutral_ramp, rendering 1": 0.0,
+    "random_colours, rendering 1": 0.0,
+    "neutral_ramp, rendering 2": 0.0,
+    "random_colours, rendering 2": 0.0
+   },
+   "table_nodes_largest": 2.4424906541753444e-15
   },
   "kodak_portra_400 under reference": {
    "setup": 0.0,
-   "point_form_largest_code": {
-    "neutral_ramp": 5.6621374255882984e-14,
-    "random_colours": 2.9726221484338566e-13
-   }
+   "point_form_largest_relative": {
+    "neutral_ramp, rendering 0": 0.0,
+    "random_colours, rendering 0": 0.0,
+    "neutral_ramp, rendering 1": 0.0,
+    "random_colours, rendering 1": 0.0,
+    "neutral_ramp, rendering 2": 0.0,
+    "random_colours, rendering 2": 0.0
+   },
+   "table_nodes_largest": 2.55351295663786e-15
   },
   "kodak_ektar_100 under reference": {
    "setup": 0.0,
-   "point_form_largest_code": {
-    "neutral_ramp": 5.6621374255882984e-14,
-    "random_colours": 3.8219427622721014e-13
-   }
+   "point_form_largest_relative": {
+    "neutral_ramp, rendering 0": 0.0,
+    "random_colours, rendering 0": 0.0,
+    "neutral_ramp, rendering 1": 0.0,
+    "random_colours, rendering 1": 0.0,
+    "neutral_ramp, rendering 2": 0.0,
+    "random_colours, rendering 2": 0.0
+   },
+   "table_nodes_largest": 2.4424906541753444e-15
   },
   "kodak_5219 under daylight": {
    "setup": 0.0,
-   "point_form_largest_code": {
-    "neutral_ramp": 5.6621374255882984e-14,
-    "random_colours": 4.388156504830931e-13
-   }
+   "point_form_largest_relative": {
+    "neutral_ramp, rendering 0": 0.0,
+    "random_colours, rendering 0": 0.0,
+    "neutral_ramp, rendering 1": 0.0,
+    "random_colours, rendering 1": 0.0,
+    "neutral_ramp, rendering 2": 0.0,
+    "random_colours, rendering 2": 0.0
+   },
+   "table_nodes_largest": 2.4424906541753444e-15
+  },
+  "kodak_5219 at 5650 K, blend": {
+   "setup": 0.0
+  },
+  "kodak_5207 at 3100 K, blend": {
+   "setup": 0.0
+  }
+ },
+ "grid_blend_print_limit_code": 0.5,
+ "grid_blend_scan_limit_stops": 0.03,
+ "grid_blend": {
+  "2010 K between CCT2000 and CCT2020": {
+   "print_5207_2383": 0.048485398292541504,
+   "scan_kodak_5207_stops": 0.002266947768107118,
+   "scan_kodak_portra_400_stops": 0.0021566933950989053,
+   "scan_kodak_ektar_100_stops": 0.001803239409428474,
+   "scan_kodak_5219_stops": 0.0013445684726100951
+  },
+  "2963 K between CCT2941 and CCT2985": {
+   "print_5207_2383": 0.03231346607208252,
+   "scan_kodak_5207_stops": 0.0015178692486476533,
+   "scan_kodak_portra_400_stops": 0.0012447013124474667,
+   "scan_kodak_ektar_100_stops": 0.0011150315893812862,
+   "scan_kodak_5219_stops": 0.0008969025380884418
+  },
+  "3960 K between CCT3922 and CCT4000": {
+   "print_5207_2383": 0.04234492778778076,
+   "scan_kodak_5207_stops": 0.0019516854176226223,
+   "scan_kodak_portra_400_stops": 0.00228583129918212,
+   "scan_kodak_ektar_100_stops": 0.0020311984655779223,
+   "scan_kodak_5219_stops": 0.0016429126997063873
+  },
+  "4040 K between CCT4000 and CCT4082": {
+   "print_5207_2383": 0.0972747802734375,
+   "scan_kodak_5207_stops": 0.0025237443085352903,
+   "scan_kodak_portra_400_stops": 0.0009213025360973078,
+   "scan_kodak_ektar_100_stops": 0.0010054903330618315,
+   "scan_kodak_5219_stops": 0.0015635887781807892
+  },
+  "4494 K between CCT4444 and CCT4545": {
+   "print_5207_2383": 0.08063167333602905,
+   "scan_kodak_5207_stops": 0.0023748343224454633,
+   "scan_kodak_portra_400_stops": 0.0008856582570691893,
+   "scan_kodak_ektar_100_stops": 0.0009854904426983553,
+   "scan_kodak_5219_stops": 0.0012805041757562147
+  },
+  "4938 K between CCT4878 and CCT5000": {
+   "print_5207_2383": 0.10361284017562866,
+   "scan_kodak_5207_stops": 0.0027652767257515367,
+   "scan_kodak_portra_400_stops": 0.0014241747944633292,
+   "scan_kodak_ektar_100_stops": 0.001530685869461986,
+   "scan_kodak_5219_stops": 0.0019058753210839544
+  },
+  "5063 K between CCT5000 and CCT5128": {
+   "print_5207_2383": 0.057528913021087646,
+   "scan_kodak_5207_stops": 0.002247556872375758,
+   "scan_kodak_portra_400_stops": 0.0021960759990593687,
+   "scan_kodak_ektar_100_stops": 0.0018804662484547617,
+   "scan_kodak_5219_stops": 0.001844575014756651
+  },
+  "9756 K between CCT9524 and CCT10000": {
+   "print_5207_2383": 0.009932667016983032,
+   "scan_kodak_5207_stops": 0.0004072818104278657,
+   "scan_kodak_portra_400_stops": 0.00043927391038953373,
+   "scan_kodak_ektar_100_stops": 0.00037527381297253534,
+   "scan_kodak_5219_stops": 0.0003897700792239375
+  },
+  "13793 K between CCT13333 and CCT14286": {
+   "print_5207_2383": 0.005730092525482178,
+   "scan_kodak_5207_stops": 0.0004126172256566825,
+   "scan_kodak_portra_400_stops": 0.0005970515989768368,
+   "scan_kodak_ektar_100_stops": 0.0005513282204086327,
+   "scan_kodak_5219_stops": 0.00048797971413479317
   }
  },
  "compact_table": {
@@ -117,142 +231,152 @@
   "uv_relative_limit": 0.0002,
   "display_code_limit": 0.5,
   "checks": {
-   "kodak_exr_5248 on fuji_3523XD on daylight": {
-    "uv_relative": 0.00010530209798397086,
+   "kodak_exr_5248 on fuji_3523XD on CCT2062": {
+    "uv_relative": 0.0001053020979839516,
     "display_largest_code": {
-     "se188": 0.001991093158721924,
-     "_DSC8148": 0.0033818185329437256,
-     "digital_ap1": 0.0018429011106491089,
+     "se188": 0.002264678478240967,
+     "_DSC8148": 0.0038605928421020508,
+     "digital_ap1": 0.002165883779525757,
+     "neutral_ramp": 0.00027358531951904297,
+     "random_colours": 0.0034350156784057617
+    }
+   },
+   "kodak_5207 on fuji_3513di on CCT8696": {
+    "uv_relative": 0.00010342252092288278,
+    "display_largest_code": {
+     "se188": 0.001421123743057251,
+     "_DSC8148": 0.0014287233352661133,
+     "digital_ap1": 0.0011019408702850342,
      "neutral_ramp": 0.00022798776626586914,
-     "random_colours": 0.0033514201641082764
+     "random_colours": 0.002720654010772705
     }
    },
-   "kodak_5207 on fuji_3513di on reference": {
-    "uv_relative": 0.00010342252092293928,
+   "fuji_c200 on fuji_3513di on CCT7143": {
+    "uv_relative": 0.00010842871304994193,
     "display_largest_code": {
-     "se188": 0.0014363229274749756,
-     "_DSC8148": 0.0014743208885192871,
-     "digital_ap1": 0.0011589378118515015,
-     "neutral_ramp": 0.00022798776626586914,
-     "random_colours": 0.0027130544185638428
+     "se188": 0.0028270483016967773,
+     "_DSC8148": 0.002796649932861328,
+     "digital_ap1": 0.0020784884691238403,
+     "neutral_ramp": 0.0003191828727722168,
+     "random_colours": 0.0030778348445892334
     }
    },
-   "fuji_c200 on fujiflex_new on led": {
-    "uv_relative": 0.00010842871304970014,
-    "display_largest_code": {
-     "se188": 0.003313422203063965,
-     "_DSC8148": 0.00359460711479187,
-     "digital_ap1": 0.0027092546224594116,
-     "neutral_ramp": 0.00040277838706970215,
-     "random_colours": 0.004658550024032593
-    }
+   "fuji_pro_400h on fujiflex_old on CCT2899": {
+    "uv_relative": 0.00011750452099497716
    },
-   "kodak_5203 on fuji_ca_maxima on tungsten": {
-    "uv_relative": 0.00011667835807374136
+   "fuji_natura_1600 on fuji_ca_maxima on CCT3704": {
+    "uv_relative": 0.00010529732526177764
    },
-   "kodak_5219 on kodak_portra_endura on street_sodium": {
-    "uv_relative": 9.820720284813003e-05
+   "kodak_5248 on kodak_endura_premier on CCT2000": {
+    "uv_relative": 9.725858037418488e-05
    },
-   "fuji_eterna_500 on fuji_ca_maxima on interior_warm": {
-    "uv_relative": 0.00010024942765143874
+   "fuji_natura_1600 on cine_look on CCT3030": {
+    "uv_relative": 0.00010531150227830153
    },
-   "agfa_vista_100 on kodak_5381 on reference": {
-    "uv_relative": 8.973425871455402e-05
-   },
-   "kodak_5247 on kodak_5383 on daylight": {
-    "uv_relative": 9.72585803741773e-05
+   "agfa_vista_100 on kodak_endura_premier on CCT3226": {
+    "uv_relative": 8.973425871475122e-05
    },
    "kodak_5207 on kodak_2383 on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.0014439225196838379,
-     "_DSC8148": 0.0015351176261901855,
+     "se188": 0.0014287233352661133,
+     "_DSC8148": 0.0015503168106079102,
      "digital_ap1": 0.0011513382196426392,
      "neutral_ramp": 0.00021278858184814453,
-     "random_colours": 0.002971440553665161
+     "random_colours": 0.0030360370874404907
     }
    },
    "kodak_portra_400 on kodak_endura_premier on daylight": {
     "uv_relative": 0.00011185274424518433,
     "display_largest_code": {
-     "se188": 0.002264678478240967,
-     "_DSC8148": 0.002447068691253662,
+     "se188": 0.0022342801094055176,
+     "_DSC8148": 0.002469867467880249,
      "digital_ap1": 0.0018277019262313843,
      "neutral_ramp": 0.000349581241607666,
-     "random_colours": 0.004179775714874268
+     "random_colours": 0.004217773675918579
     }
    },
    "fuji_eterna_500 on kodak_2383 on street_mixed": {
     "uv_relative": 0.0001002333348196537,
     "display_largest_code": {
-     "se188": 0.002295076847076416,
-     "_DSC8148": 0.002492666244506836,
+     "se188": 0.002264678478240967,
+     "_DSC8148": 0.0024850666522979736,
      "digital_ap1": 0.0012805312871932983,
      "neutral_ramp": 0.00025838613510131836,
-     "random_colours": 0.003488212823867798
+     "random_colours": 0.0034350156784057617
     }
    },
    "kodak_5219 on cine_look on reference": {
     "uv_relative": 9.820720284806474e-05,
     "display_largest_code": {
-     "se188": 0.00184670090675354,
+     "se188": 0.0018998980522155762,
      "_DSC8148": 0.002021491527557373,
      "digital_ap1": 0.0014439225196838379,
      "neutral_ramp": 0.0003039836883544922,
-     "random_colours": 0.15992581844329834
+     "random_colours": 0.20604774355888367
     }
    },
    "kodak_5207 on cine_look on reference": {
     "uv_relative": 0.00010342252092293928,
     "display_largest_code": {
-     "se188": 0.0018239021301269531,
-     "_DSC8148": 0.002097487449645996,
+     "se188": 0.001869499683380127,
+     "_DSC8148": 0.0020822882652282715,
      "digital_ap1": 0.0013755261898040771,
      "neutral_ramp": 0.0003191828727722168,
-     "random_colours": 0.13811498880386353
+     "random_colours": 0.10949492454528809
     }
+   },
+   "reversal fuji_astia_100f under CCT4167": {
+    "uv_relative": 9.233349555051811e-05,
+    "display_largest_code": {
+     "se188": 0.001869499683380127,
+     "_DSC8148": 0.00194549560546875,
+     "digital_ap1": 0.001223534345626831,
+     "neutral_ramp": 0.00022038817405700684,
+     "random_colours": 0.0029106438159942627
+    }
+   },
+   "reversal fuji_astia_100f under CCT2273": {
+    "uv_relative": 9.233349555075486e-05,
+    "display_largest_code": {
+     "se188": 0.0017023086547851562,
+     "_DSC8148": 0.0018846988677978516,
+     "digital_ap1": 0.001048743724822998,
+     "neutral_ramp": 0.00024318695068359375,
+     "random_colours": 0.0025610625743865967
+    }
+   },
+   "reversal fuji_astia_100f under CCT6452": {
+    "uv_relative": 9.233349555069575e-05
+   },
+   "reversal fuji_velvia_100 under CCT2500": {
+    "uv_relative": 0.00011089331799830081
    },
    "reversal fuji_velvia_50 under reference": {
     "uv_relative": 0.00010651760849394032,
     "display_largest_code": {
      "se188": 0.0025382637977600098,
-     "_DSC8148": 0.002644658088684082,
+     "_DSC8148": 0.002614259719848633,
      "digital_ap1": 0.001519918441772461,
      "neutral_ramp": 0.0003191828727722168,
-     "random_colours": 0.003146231174468994
+     "random_colours": 0.0031006336212158203
     }
-   },
-   "reversal fuji_provia_100f under interior_office": {
-    "uv_relative": 0.00011004762971563226,
-    "display_largest_code": {
-     "se188": 0.002295076847076416,
-     "_DSC8148": 0.002249479293823242,
-     "digital_ap1": 0.0012007355690002441,
-     "neutral_ramp": 0.0004559755325317383,
-     "random_colours": 0.003115832805633545
-    }
-   },
-   "reversal fuji_astia_100f under interior_office": {
-    "uv_relative": 9.233349555051943e-05
-   },
-   "reversal fuji_velvia_100 under fluorescent": {
-    "uv_relative": 0.00011089331799812636
    },
    "reversal kodak_ektachrome_e100 under daylight": {
     "uv_relative": 0.00011006413172428536,
     "display_largest_code": {
-     "se188": 0.002219080924987793,
+     "se188": 0.0022038817405700684,
      "_DSC8148": 0.0021886825561523438,
      "digital_ap1": 0.0011399388313293457,
      "neutral_ramp": 0.0003191828727722168,
-     "random_colours": 0.002842247486114502
+     "random_colours": 0.0028270483016967773
     }
    },
    "reversal fuji_provia_100f under street_mixed": {
     "uv_relative": 0.00010998817079329741,
     "display_largest_code": {
-     "se188": 0.0028574466705322266,
-     "_DSC8148": 0.0028270483016967773,
+     "se188": 0.002842247486114502,
+     "_DSC8148": 0.002842247486114502,
      "digital_ap1": 0.0013299286365509033,
      "neutral_ramp": 0.00022798776626586914,
      "random_colours": 0.0030854344367980957
@@ -271,7 +395,7 @@
    }
   },
   "kodak_portra_400__kodak_endura_premier__daylight.bin": {
-   "bytes": 8397872,
+   "bytes": 8397880,
    "table_counts": {
     "negative_not_reached": 0,
     "print_not_reached": 160573,
@@ -289,7 +413,7 @@
    }
   },
   "kodak_5219__cine_look__reference.bin": {
-   "bytes": 8397856,
+   "bytes": 8397864,
    "table_counts": {
     "negative_not_reached": 0,
     "print_not_reached": 163085,
@@ -298,7 +422,7 @@
    }
   },
   "kodak_5207__cine_look__reference.bin": {
-   "bytes": 8397856,
+   "bytes": 8397864,
    "table_counts": {
     "negative_not_reached": 0,
     "print_not_reached": 165634,
@@ -310,23 +434,395 @@
    "bytes": 8397712
   },
   "reversal__kodak_ektachrome_e100__daylight.bin": {
-   "bytes": 8397712
+   "bytes": 8397720
   },
   "reversal__fuji_provia_100f__street_mixed.bin": {
    "bytes": 8397712
   },
   "scan__kodak_5207__reference.bin": {
-   "bytes": 6591656
+   "bytes": 6600176
   },
   "scan__kodak_portra_400__reference.bin": {
-   "bytes": 6591656
+   "bytes": 6600184
   },
   "scan__kodak_ektar_100__reference.bin": {
-   "bytes": 6591656
+   "bytes": 6600184
   },
   "scan__kodak_5219__daylight.bin": {
-   "bytes": 6591656
+   "bytes": 6600176
+  },
+  "scan__kodak_5219__cct5650.bin": {
+   "bytes": 4360,
+   "node_a": "CCT5556",
+   "node_b": "CCT5714",
+   "share_of_b": 0.6016758149434309
+  },
+  "scan__kodak_5207__cct3100.bin": {
+   "bytes": 4360,
+   "node_a": "CCT3077",
+   "node_b": "CCT3125",
+   "share_of_b": 0.4830309139785004
+  },
+  "scan__scanner_b.bin": {
+   "bytes": 10592,
+   "gamma": {
+    "cine": [
+     0.4235262058223929,
+     0.5358358184424732,
+     0.5049795749219329
+    ],
+    "photo": [
+     0.4677838712660846,
+     0.5490669185202618,
+     0.5770929140253181
+    ]
+   }
+  },
+  "scan__auto.bin": {
+   "bytes": 5115408,
+   "cases": [
+    {
+     "frame": "a",
+     "mode": "neutral",
+     "strength": 0.8,
+     "density": 0.0,
+     "white_patch_used": false,
+     "record": {
+      "auto": "neutral",
+      "cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "near_neutral_cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "white_patch_cast_log10": [
+       0.06,
+       0.0136,
+       -0.0736
+      ],
+      "along_light_axis": -0.0927,
+      "shift_log10": [
+       -0.049,
+       -0.0064,
+       0.0554
+      ],
+      "frame_mean_log10": -0.3532,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 5130.78
+     }
+    },
+    {
+     "frame": "a",
+     "mode": "warm",
+     "strength": 0.8,
+     "density": 0.0,
+     "white_patch_used": false,
+     "record": {
+      "auto": "warm",
+      "cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "near_neutral_cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "white_patch_cast_log10": [
+       0.06,
+       0.0136,
+       -0.0736
+      ],
+      "along_light_axis": -0.0927,
+      "shift_log10": [
+       -0.0706,
+       -0.0083,
+       0.0789
+      ],
+      "frame_mean_log10": -0.3532,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 5130.78
+     }
+    },
+    {
+     "frame": "a",
+     "mode": "cool",
+     "strength": 0.8,
+     "density": 0.0,
+     "white_patch_used": false,
+     "record": {
+      "auto": "cool",
+      "cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "near_neutral_cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "white_patch_cast_log10": [
+       0.06,
+       0.0136,
+       -0.0736
+      ],
+      "along_light_axis": -0.0927,
+      "shift_log10": [
+       -0.0274,
+       -0.0045,
+       0.0318
+      ],
+      "frame_mean_log10": -0.3532,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 5130.78
+     }
+    },
+    {
+     "frame": "a",
+     "mode": "neutral",
+     "strength": 0.35,
+     "density": 0.5,
+     "white_patch_used": false,
+     "record": {
+      "auto": "neutral",
+      "cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "near_neutral_cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "white_patch_cast_log10": [
+       0.06,
+       0.0136,
+       -0.0736
+      ],
+      "along_light_axis": -0.0927,
+      "shift_log10": [
+       0.1552,
+       0.1738,
+       0.2008
+      ],
+      "frame_mean_log10": -0.3532,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 5130.78
+     }
+    },
+    {
+     "frame": "a",
+     "mode": "neutral",
+     "strength": 1.0,
+     "density": 1.0,
+     "white_patch_used": false,
+     "record": {
+      "auto": "neutral",
+      "cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "near_neutral_cast_log10": [
+       0.0599,
+       0.0104,
+       -0.0703
+      ],
+      "white_patch_cast_log10": [
+       0.06,
+       0.0136,
+       -0.0736
+      ],
+      "along_light_axis": -0.0927,
+      "shift_log10": [
+       0.2919,
+       0.3452,
+       0.4224
+      ],
+      "frame_mean_log10": -0.3532,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 5130.78
+     }
+    },
+    {
+     "frame": "b",
+     "mode": "neutral",
+     "strength": 0.8,
+     "density": 0.0,
+     "white_patch_used": true,
+     "record": {
+      "auto": "neutral",
+      "cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "near_neutral_cast_log10": [
+       0.1495,
+       0.1297,
+       -0.2792
+      ],
+      "white_patch_cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "along_light_axis": -0.0003,
+      "shift_log10": [
+       -0.0002,
+       0.0001,
+       0.0001
+      ],
+      "frame_mean_log10": 0.7204,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 672.82
+     }
+    },
+    {
+     "frame": "b",
+     "mode": "warm",
+     "strength": 0.8,
+     "density": 0.0,
+     "white_patch_used": true,
+     "record": {
+      "auto": "warm",
+      "cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "near_neutral_cast_log10": [
+       0.1495,
+       0.1297,
+       -0.2792
+      ],
+      "white_patch_cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "along_light_axis": -0.0003,
+      "shift_log10": [
+       -0.0218,
+       -0.0019,
+       0.0237
+      ],
+      "frame_mean_log10": 0.7204,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 672.82
+     }
+    },
+    {
+     "frame": "b",
+     "mode": "cool",
+     "strength": 0.8,
+     "density": 0.0,
+     "white_patch_used": true,
+     "record": {
+      "auto": "cool",
+      "cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "near_neutral_cast_log10": [
+       0.1495,
+       0.1297,
+       -0.2792
+      ],
+      "white_patch_cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "along_light_axis": -0.0003,
+      "shift_log10": [
+       0.0214,
+       0.002,
+       -0.0234
+      ],
+      "frame_mean_log10": 0.7204,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 672.82
+     }
+    },
+    {
+     "frame": "b",
+     "mode": "neutral",
+     "strength": 0.35,
+     "density": 0.5,
+     "white_patch_used": true,
+     "record": {
+      "auto": "neutral",
+      "cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "near_neutral_cast_log10": [
+       0.1495,
+       0.1297,
+       -0.2792
+      ],
+      "white_patch_cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "along_light_axis": -0.0003,
+      "shift_log10": [
+       -0.3603,
+       -0.3602,
+       -0.3601
+      ],
+      "frame_mean_log10": 0.7204,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 672.82
+     }
+    },
+    {
+     "frame": "b",
+     "mode": "neutral",
+     "strength": 1.0,
+     "density": 1.0,
+     "white_patch_used": true,
+     "record": {
+      "auto": "neutral",
+      "cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "near_neutral_cast_log10": [
+       0.1495,
+       0.1297,
+       -0.2792
+      ],
+      "white_patch_cast_log10": [
+       0.0003,
+       -0.0002,
+       -0.0001
+      ],
+      "along_light_axis": -0.0003,
+      "shift_log10": [
+       -0.7207,
+       -0.7203,
+       -0.7202
+      ],
+      "frame_mean_log10": 0.7204,
+      "prescan_pixels": 6048,
+      "near_neutral_weight": 672.82
+     }
+    }
+   ]
   }
  },
- "seconds": 439.4
+ "seconds": 762.3
 }
