@@ -9,10 +9,12 @@ Machine rule: CPU only, one process, no GPU job. The arrays take about 290 MB pe
 
 The selections are the expected selections of build_product_resources.py, without rule 'foliage_spectra' since schema 8 (U93), as in the product resources.
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', through ReversalPreview (method 'light_table'), with all sliders at their defaults. The files are reversal__<film>__reference.bin.
-Lab Scan (step P10, Alcedo Studio issues 661 and 664): the scan of method 'apd' of the viewer as ACES2065-1 before the display transform (array 'aces' in place of
-'srgb'), on SCAN_IMAGE_SELECTIONS: the negatives of the scan expected selections of build_product_resources.py, each under its SCAN_DISPLAY_LIGHTS (reference,
-daylight, and two colour temperatures between grid nodes in the blend form of the product, from the stored values of the resources), with the LAD aim off and
-on: 32 files of about 290 MB. The files are scan__<negative>__<light>__lad_<off|on>.bin, a blend light named cct<kelvin>.
+Negative Scan (step P14, Alcedo Studio issues 661 and 664): NegativeScanPreview of the viewer as linear AP1 before the display transform (array 'linear' in
+place of 'srgb'), on SCAN_IMAGE_SELECTIONS: the negatives of the scan expected selections of build_product_resources.py, each under its SCAN_DISPLAY_LIGHTS
+(reference, daylight, and two colour temperatures between grid nodes), with auto colour off and 'neutral': 32 files of about 290 MB. Each file also holds
+'shift' (3, the log10 shift of rule frame_auto_colour on the full frame; 0 with auto off), 'prescan' (the x frame reduced by area to a long edge of 96), and
+'light_axis'. The files are scan__<negative>__<light>__auto_<off|neutral>.bin, a blend light named cct<kelvin>. As in build_display_expected.py, the scan
+model is built with the default point steps and rendered with the steps of the product.
 """
 
 from __future__ import annotations
@@ -30,7 +32,7 @@ fp = bpr.fp
 fk = fp.fk
 OUTPUT = bpr.OUTPUT / "expected" / "image"
 LONG_EDGE = 6000
-SCAN_IMAGE_SELECTIONS = tuple((negative, light, lad) for negative in dict.fromkeys(n for n, _ in bpr.SCAN_EXPECTED_SELECTIONS) for light in bpr.SCAN_DISPLAY_LIGHTS for lad in (False, True))
+SCAN_IMAGE_SELECTIONS = tuple((negative, light, auto) for negative in dict.fromkeys(n for n, _ in bpr.SCAN_EXPECTED_SELECTIONS) for light in bpr.SCAN_DISPLAY_LIGHTS for auto in ("off", "neutral"))
 
 
 def read_ap1(path: Path) -> np.ndarray:
@@ -51,7 +53,7 @@ def options_of(negative: str, paper: str, light: str) -> fp.FilmOptions:
 
 
 def main() -> int:
-    # Option --scan-only: only the Lab Scan files; the ap1.bin and the other files of an earlier run stay (the same RAW file gives the same AP1).
+    # Option --scan-only: only the Negative Scan files; the ap1.bin and the other files of an earlier run stay (the same RAW file gives the same AP1).
     scan_only = "--scan-only" in sys.argv
     arguments = [a for a in sys.argv[1:] if a != "--scan-only"]
     if len(arguments) != 1:
@@ -78,14 +80,19 @@ def main() -> int:
             raise FloatingPointError(f"reversal {film}: the output is not finite")
         bpr.write_arrays(OUTPUT / f"reversal__{film}__reference.bin", {"srgb": srgb}, {"reversal": film, "scene_light": "reference", "lab_commit": commit})
         print(f"reversal {film}: {srgb.shape}", flush=True)
-    scan_setup, scan_metadata = bpr.read_scan_resources()
-    for negative, light, lad in SCAN_IMAGE_SELECTIONS:
-        aces = np.asarray(bpr.scan_aces(bpr.scan_expected_model(negative, light, lad, scan_setup, scan_metadata), graded), dtype=np.float32)
-        if not np.isfinite(aces).all():
+    point_steps = fp.INHIBITION_STEPS_POINT
+    for negative, light, auto in SCAN_IMAGE_SELECTIONS:
+        fp.INHIBITION_STEPS_POINT = point_steps
+        model = bpr.scan_expected_model(negative, light)
+        fp.INHIBITION_STEPS_POINT = fp.INHIBITION_STEPS_IMAGE
+        linear, shift, prescan = bpr.scan_linear(model, graded, auto)
+        fp.INHIBITION_STEPS_POINT = point_steps
+        if not np.isfinite(linear).all():
             raise FloatingPointError(f"scan {negative} under {light}: the output is not finite")
         label = bpr.scan_light_label(light)
-        bpr.write_arrays(OUTPUT / f"scan__{negative}__{label}__lad_{'on' if lad else 'off'}.bin", {"aces": aces}, {"negative": negative, "print_material": bpr.LAB_SCAN["id"], "scene_light": label, "lad_aim": lad, "lab_commit": commit})
-        print(f"scan {negative} under {label}, LAD aim {'on' if lad else 'off'}: {aces.shape}", flush=True)
+        bpr.write_arrays(OUTPUT / f"scan__{negative}__{label}__auto_{auto}.bin", {"linear": linear, "shift": shift, "prescan": prescan, "light_axis": np.asarray(model.light_axis, dtype=np.float64)},
+                         {"negative": negative, "print_material": bpr.NEGATIVE_SCAN["id"], "scene_light": label, "auto": auto, "lab_commit": commit})
+        print(f"scan {negative} under {label}, auto {auto}: {linear.shape}, shift {shift}", flush=True)
     return 0
 
 

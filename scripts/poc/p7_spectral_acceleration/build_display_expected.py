@@ -13,12 +13,14 @@ This script sets INHIBITION_STEPS_POINT to INHIBITION_STEPS_IMAGE, because the k
 The selections are the expected selections of build_product_resources.py, and one negative with no inhibition (kodak_gold_200).
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', and the reversal expected selections of build_product_resources.py, through ReversalPreview (method 'light_table').
 The files are reversal__<film>__<light>.bin. Astia 100F has no spread and no inhibition, and E100 has no inhibition.
-Lab Scan (step P10, Alcedo Studio issues 661 and 664): the scan of method 'apd' of the viewer (build_product_resources.scan_model) as ACES2065-1 before the display
-transform, in arrays ramp_aces and chart_aces in place of the sRGB arrays. The negatives of SCAN_EXPECTED_SELECTIONS, each under SCAN_DISPLAY_LIGHTS of
-build_product_resources.py (reference, daylight, and two colour temperatures between grid nodes in the blend form of the product, from the stored values of the
-resources of an earlier run of build_product_resources.py), with the LAD aim off and on. The files are scan__<negative>__<light>__lad_<off|on>.bin, a blend light
-named cct<kelvin>. A scan model (its offsets and its ramp) is built with the default point steps, as the stored values of the resources; only its render uses
-the steps of the product.
+Negative Scan (step P14, Alcedo Studio issues 661 and 664): NegativeScanPreview of the viewer (build_product_resources.scan_model) as linear AP1 before the
+display transform (stage e of negative_scan.py), in arrays ramp_linear and chart_linear in place of the sRGB arrays. The negatives of SCAN_EXPECTED_SELECTIONS,
+each under SCAN_DISPLAY_LIGHTS of build_product_resources.py (reference, daylight, and two colour temperatures between grid nodes: the model of the blend
+light, whose D_aim and light axis agree with the blend of the stored values of the resources to 1e-9), with auto colour off and 'neutral'. The ramp and the
+chart are each one frame of one row, as the GPU tests render them, so rule frame_auto_colour reads that row: arrays ramp_shift and chart_shift (3, log10)
+hold its shift, ramp_prescan and chart_prescan its prescan, and light_axis the light axis of the selection. The files are
+scan__<negative>__<light>__auto_<off|neutral>.bin, a blend light named cct<kelvin>. A scan model (D_aim, the light axis, gamma) is built with the default
+point steps, as the stored values of the resources; only its render uses the steps of the product.
 """
 
 from __future__ import annotations
@@ -39,6 +41,7 @@ REVERSAL_SELECTIONS = tuple(dict.fromkeys((*((film, "reference") for film in mp.
 CHART_SEED = 20261101
 CHART_RANDOM_COLOURS = 3916
 POINT_STEPS = fp.INHIBITION_STEPS_POINT  # the default, before main() sets the steps of the product
+SCAN_AUTO_MODES = ("off", "neutral")
 
 
 def neutral_ramp() -> np.ndarray:
@@ -64,7 +67,6 @@ def srgb_of(model: fp.FilmPreview, ap1: np.ndarray) -> np.ndarray:
 def main() -> int:
     fp.INHIBITION_STEPS_POINT = fp.INHIBITION_STEPS_IMAGE
     ramp, patches = neutral_ramp(), chart()
-    scan_setup, scan_metadata = bpr.read_scan_resources()
     for negative, paper, light in SELECTIONS:
         model = fp.FilmPreview(mp.film_options(mp.RenderSettings(negative=negative, print_material=paper, scene_light=light)))
         ramp_srgb, chart_srgb = srgb_of(model, ramp), srgb_of(model, patches)
@@ -83,21 +85,23 @@ def main() -> int:
         print(f"reversal {film} under {light}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
     for negative in dict.fromkeys(negative for negative, _ in bpr.SCAN_EXPECTED_SELECTIONS):
         for light in bpr.SCAN_DISPLAY_LIGHTS:
-            for lad in (False, True):
-                # The LAD offset is a stored value of the resources, made with the default steps; the render uses the steps of the product.
+            for auto in SCAN_AUTO_MODES:
+                # D_aim, the light axis and gamma are stored values of the resources, made with the default steps; the render uses the steps of the product.
                 fp.INHIBITION_STEPS_POINT = POINT_STEPS
-                model = bpr.scan_expected_model(negative, light, lad, scan_setup, scan_metadata)
+                model = bpr.scan_expected_model(negative, light)
                 fp.INHIBITION_STEPS_POINT = fp.INHIBITION_STEPS_IMAGE
-                ramp_aces, chart_aces = (np.asarray(bpr.scan_aces(model, values[None])[0], dtype=np.float32) for values in (ramp, patches))
-                if not np.isfinite(ramp_aces).all() or not np.isfinite(chart_aces).all():
+                (ramp_linear, ramp_shift, ramp_prescan), (chart_linear, chart_shift, chart_prescan) = (bpr.scan_linear(model, values[None], auto) for values in (ramp, patches))
+                if not np.isfinite(ramp_linear).all() or not np.isfinite(chart_linear).all():
                     raise FloatingPointError(f"scan {negative} under {light}: the output is not finite")
                 label = bpr.scan_light_label(light)
-                metadata = {"negative": negative, "print_material": bpr.LAB_SCAN["id"], "scene_light": label, "lad_aim": lad, "lab_commit": bpr.lab_commit()}
+                metadata = {"negative": negative, "print_material": bpr.NEGATIVE_SCAN["id"], "scene_light": label, "auto": auto, "lab_commit": bpr.lab_commit()}
                 if not isinstance(light, str):
                     a, b, w = bpr.grid_blend(light)
                     metadata.update({"kelvin": light, "node_a": a, "node_b": b, "share_of_b": w})
-                bpr.write_arrays(OUTPUT / f"scan__{negative}__{label}__lad_{'on' if lad else 'off'}.bin", {"ramp_ap1": ramp, "ramp_aces": ramp_aces, "chart_ap1": patches, "chart_aces": chart_aces}, metadata)
-                print(f"scan {negative} under {label}, LAD aim {'on' if lad else 'off'}: {len(ramp)} ramp values, {len(patches)} chart colours", flush=True)
+                bpr.write_arrays(OUTPUT / f"scan__{negative}__{label}__auto_{auto}.bin",
+                                 {"ramp_ap1": ramp, "ramp_linear": ramp_linear[0], "ramp_shift": ramp_shift, "ramp_prescan": ramp_prescan, "chart_ap1": patches,
+                                  "chart_linear": chart_linear[0], "chart_shift": chart_shift, "chart_prescan": chart_prescan, "light_axis": np.asarray(model.light_axis, dtype=np.float64)}, metadata)
+                print(f"scan {negative} under {label}, auto {auto}: shift ramp {ramp_shift}, chart {chart_shift}", flush=True)
     return 0
 
 

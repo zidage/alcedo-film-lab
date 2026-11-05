@@ -29,46 +29,51 @@ Group 'light_table/' holds the values of rule 'light_table_view' that are the sa
 The setup holds per film and scene light the layer gain (rule 'daylight_reversal_balance'), and per film the display matrix of rule 'clear_film_white'. The product builds the light table (65^3 over the record, cube root of XYZ) from these values.
 The compact reflectance table keeps the wavelengths of the reversal films too. The checks above run on 3 expected and 4 random reversal selections with ReversalPreview in place of FilmPreview, with the same limits; check 'Compact table, display' runs on the 3 expected and 2 random ones.
 
-Lab Scan (step P10, Alcedo Studio issues 661 and 664): the ADX scan of method 'apd' of the viewer with its defaults (Pipeline._scan of mvp_pipeline.py:
-reading 'print2383', encoding 'adx16', numbers 'generic' (rule generic_scan, U98), untimed form 'stock_balance' (U96), axis 'academy' (rule
-untimed_axis_academy, U97), no colour table, stock character 1, spectral input 'current'). Print material 'lab_scan' selects it for any negative. With the
-record in the printing density D of Kodak 2383 (the printing weights of 'paper/kodak_2383/'), the medium m of the negative, and the stored values of the
-negative and the scene light:
-    x = 7120 + 8000 * s_m * (D - D_g)                          (the code with the grey of the scene light on the LAD aim)
-    shift = 0 (LAD aim on), or balance_offset - (7120 - c_g)   (LAD aim off, rule stock_balance)
-    code = clip(clip(x + shift, 0, 65535) - shift, 0, 65535)   (the two clips of scan_axis.UntimedAxis.apply)
-    content = the steps of ADX16_to_ACES after cdd = (code - 1520) / 8000, with CDD_TO_CID and EXP_TO_ACES of the medium
-    LAD aim on: ACES = content. Off: ACES = C^-1 (g(log2 Y) * (C content)), with C the cone matrix, Y the luminance of the content, and g the ramp.
+Negative Scan (step P14, Alcedo Studio issues 661, 664 and 662): method 'negative_scan' of the viewer (negative_scan.NegativeScanPreview through
+Pipeline.negative_scan_model of mvp_pipeline.py) with its defaults: scanner 650, 545 and 450 nm, 40 nm, halogen; primaries 'channels'; stock character 1;
+spectral input 'current'. Print material 'negative_scan' selects it for any negative. It replaces all forms of Lab Scan (schema 7 to 9). With the record
+a of the negative (the dye amounts), the scanner weights w_i = L S_i on the nodes of the model grid where a band is at least BAND_CUT of its peak, and the
+stored values of the negative and the scene light:
+    T(a) = log10(sum w_i) - log10(sum w_i 10^-(base + dyes a))     (rule ideal_scanner_bands; a table on the record nodes of the print table, trilinear)
+    D = T(a) - D_base                                              (rule base_relative_density; D_base = T(0), the unexposed film)
+    x = contrast (D - D_aim) / gamma                               (rule generic_density_inversion)
+    x = x + s_auto + exposure_stops log10(2) - (cyan, magenta, yellow)
+    E = 0.18 10^x, E_base = 0.18 10^(x at D = 0), E' = 0.18 (E - b E_base) / (0.18 - b E_base), not below 0 (rule black_at_film_base)
+E' is linear AP1, shown by OpenDRT with 0.18 as 0.18.
 Values:
-- 'negative/<negative>/adx_base_printing_density' (3): the printing density of the negative base (D-min of equation 2 of ST 2065-3).
-- 'scan_medium/<medium>/channel_scale' (3, s_m), 'cdd_to_cid' (3, 3), 'exp_to_aces' (3, 3): rule generic_scan for each medium of metadata 'scan_media'.
-  Metadata 'negatives' holds the medium of each negative.
-- The setup holds per negative and scene light 'adx_grey_printing_density' (3, D_g: the 18 % grey under the light), 'adx_grey' (3, c_g: 1520 + 8000
-  (1.00, 0.92, 0.95) (D_g - D-min)), 'adx_balance_offset' (3: 7120 - the code of the 18 % grey of the balance light of the stock, rule stock_balance, timing 0),
-  'adx_axis_log2_y' (N) and 'adx_axis_log_gain' (N, 3): the ramp of rule untimed_axis_academy on the N nodes of scan_axis.STOPS (filled_ramp: a node
-  that the rule removes takes the values of the node before it). A pixel reads the first node with log2 Y above its value and the node before it,
-  linear between them, held at the ends (ramp_read).
-- 'common/adx_*': the encoding (code_per_density 8000, code_base 1520, lad_aim 7120, code_max 65535, equation_scale 1.00, 0.92, 0.95), the
-  constants of the Academy ADX to ACES transform (aces-dev v1.3.1, A.M.P.A.S. license): cdd_to_cid, exp_to_aces (row vectors; the numbers of the axis),
-  lut_cid, lut_log_e, ref_pt; the stops of the ramp nodes (axis_stops), the cone matrix C of ACES2065-1 (aces_to_cone: M16 of CAM16 on the XYZ of
-  AP0), and the luminance row of ACES2065-1 (aces_luminance).
-- Metadata 'lab_scan': the id, the name, and the print material of the printing weights.
+- 'common/negative_scan_centres_nm' (3: R, G, B), 'common/negative_scan_width_nm' (full width at half maximum), 'common/negative_scan_band_cut',
+  'common/negative_scan_lamp_kelvin', 'common/negative_scan_planck_c2_nm_k': the default scanner of rule ideal_scanner_bands. S_i is a Gaussian, L is the
+  Planckian radiator lambda^-5 / (exp(c2 / (lambda T)) - 1) ('halogen') or 1 ('equal_energy'). The product builds the weights from these values.
+- 'negative/<negative>/scan_base_density' (3, D_base) for the default scanner.
+- 'scan_medium/<medium>/gamma' (3): the channel density per log10 exposure of the 18 % grey of the average negative of the medium (the pool of rule
+  generic_scan, each stock under its balance light, central difference at 0.09 and 0.36), for the default scanner. Metadata 'negative_scan' holds the
+  pool of each medium and the scene light of each pool stock (its balance light), so the product can derive gamma for another scanner (derive_medium).
+- The setup holds per negative and scene light 'negative_scan_aim_density' (3, D_aim: rule stock_balance, the D of the 18 % grey under the balance light of
+  the stock, with the layer gain of the scene light) and 'negative_scan_light_axis' (3: the change of x of the 18 % grey from T3200 to D65, contrast 1,
+  for rule frame_auto_colour), for the default scanner. Both read the stored layer gain and the spectra of the bundle (light/D55, light/T3200, light/D65).
+- Metadata 'negative_scan': the id, the name, the default light, the lights, the axis lights, the pools; metadata 'negatives' holds the medium and the
+  balance light ('scan_balance_light') of each negative.
+The grey records of the stored values use the default inhibition steps of the point form (INHIBITION_STEPS_POINT, 16); the kernels of the product use
+rule inhibition_two_steps. A product that derives the values for another scanner must use the same 16 steps.
 Scene light 'as_shot' (U92): the scene lights hold a grid of colour temperature, CCT_GRID_MIRED (5 mired from 500 to 70, and 15000 K), named
 'CCT<kelvin>', each from film_preview.cct_light (Planckian to 4000 K, CIE daylight from 5000 K, a blend linear in mired between). Metadata
 'cct_grid' holds the mired, the kelvin, and the names. The product blends the two nodes around the colour temperature of the RAW decode, linear in
-mired: the spectra (each with Y = 1) and the setup values of the light (for the scan D_g, c_g, the balance offset, and the ramp, node by node). A
-colour temperature outside the grid takes the nearest end.
-Expected values: scan__<negative>__<light>.bin (the printing density table on the record nodes, the base density, the stored scan values, the LAD
-offset, and the numbers of the medium) for SCAN_EXPECTED_SELECTIONS, and scan__<negative>__cct<kelvin>.bin (the share of the second node, the blended
-spectrum, layer gain, stored scan values, and LAD offset) for SCAN_BLEND_SELECTIONS; the blended spectrum and layer gain are checked against the model
-of the blend light (limit 1e-9).
+mired: the spectra (each with Y = 1) and the setup values of the light (for Negative Scan D_aim and the light axis). A colour temperature outside the grid
+takes the nearest end.
+Expected values: scan__<negative>__<light>.bin (the scanner weights, the table T on the record nodes, D_base, D_aim, the light axis, the gamma of the
+medium, the layer gain) for SCAN_EXPECTED_SELECTIONS; scan__<negative>__cct<kelvin>.bin (the share of the second node, the blended spectrum, layer gain,
+D_aim and light axis) for SCAN_BLEND_SELECTIONS, checked against the model of the blend light (limit 1e-9); scan__scanner_b.bin (the weights of
+SCANNER_B, the gamma of each medium derived for it, and D_base, D_aim and the light axis of the negatives of SCAN_EXPECTED_SELECTIONS under 'daylight');
+scan__auto.bin (rule frame_auto_colour on two random frames of x, a and b: each frame, its prescan, the light axis, and the shift of each of AUTO_CASES;
+frame a takes the near-neutral estimate and frame b the white-patch estimate of rule smaller_cast).
 Checks, on 4 random and the expected scan selections, and on the grid:
 
 | Check | Comparison rule | Limit |
-| Scan setup | adx_grey, adx_grey_printing_density, the balance offset, the numbers and the channel scale of the medium, adx_base_printing_density, the LAD offset, the read of the stored ramp (on and between the nodes of the viewer), and the printing weights against the viewer: largest absolute difference | 1e-9 |
-| Scan point form | ACES2065-1 of the formula above from the stored values against the viewer, LAD aim on and off, on a neutral ramp of -10 to +10 stops and 4096 random colours: largest difference per pixel relative to its largest channel | 1e-9 |
+| Scan setup | D_base, D_aim, the light axis, gamma, and the layer gain against NegativeScanPreview of the viewer: largest absolute difference | 1e-9 |
+| Scan point form | Linear AP1 of the formula above from the stored values against NegativeScanPreview.positive, auto off, contrast, keys and black at their defaults and at other values, on a neutral ramp of -10 to +10 stops and 4096 random colours: largest difference per pixel relative to its largest channel | 1e-9 |
+| Scanner table | The table T on 512 random nodes against the direct sum of numpy on the model grid (VirtualScan.scan.apd of the spectral density): largest absolute difference in density | 1e-12 |
 | Grid blend, print | The blend of two nodes against the exact light, at the mid-points of CCT_BLEND_CHECKS: 5207 on Kodak 2383 in sRGB, 8 bit code | largest at most 0.5 |
-| Grid blend, scan | The same for the scan of four negatives, LAD aim off and on (the blend of the stored values, the ramp node by node): ACES2065-1, values above 2^-10, in stops (the code through ACES 2.0 is recorded) | largest at most 0.03 stops |
+| Grid blend, scan | The same for Negative Scan of four negatives (the blended spectrum and layer gain, the blend of the stored values): linear AP1, values above 2^-10, in stops | largest at most 0.03 stops |
 """
 
 from __future__ import annotations
@@ -92,13 +97,12 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p6_mvp_gui"))
 import mvp_pipeline as mp  # noqa: E402
 
-import aces_scan as acs  # noqa: E402  (P3, on the path through mvp_pipeline)
 
 fp = mp.fp
 rf = mp.rf
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 9  # 6: the reversal films (step P9); 7: Lab Scan (step P10); 8: the ADX16 scan with the slope match and the colour temperature grid (U92, U93), and no rule foliage_spectra (U93); 9: the generic scan of each medium, rule stock_balance, and rule untimed_axis_academy (U96 to U98, issue 664)
+SCHEMA_VERSION = 10  # 6: the reversal films (step P9); 7: Lab Scan (step P10); 8: the ADX16 scan with the slope match and the colour temperature grid (U92, U93), and no rule foliage_spectra (U93); 9: the generic scan of each medium, rule stock_balance, and rule untimed_axis_academy (U96 to U98, issue 664); 10: Negative Scan (step P14, issue 661) in place of all Lab Scan forms
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
@@ -112,24 +116,30 @@ UV_RELATIVE_LIMIT = 2e-4
 DISPLAY_CODE_LIMIT = 0.5
 RENDER_PHOTOS = {"se188": "p3/input/se188", "_DSC8148": "baseline/night/_DSC8148_ap1", "digital_ap1": "p5/real_5207/pair/digital_ap1"}
 RENDER_RANDOM_SELECTIONS = 3
-LAB_SCAN = {"id": "lab_scan", "name": "Lab Scan", "printing_paper": "kodak_2383"}
+NEGATIVE_SCAN = {"id": "negative_scan", "name": "Negative Scan"}
 SCAN_EXPECTED_SELECTIONS = (("kodak_5207", "reference"), ("kodak_portra_400", "reference"), ("kodak_ektar_100", "reference"), ("kodak_5219", "daylight"))
 # Colour temperatures between grid nodes for the expected values of the blend (issue 661): one below and one above 4000 K.
 SCAN_BLEND_SELECTIONS = (("kodak_5219", 5650.0), ("kodak_5207", 3100.0))
 SCAN_RANDOM_CHECKS = 4
 SCAN_MEDIA = ("cine", "photo")  # the pools of rule generic_scan (p10_chart_scan/scan_generic.POOLS)
 SCAN_POINT_LIMIT = 1e-9
+SCAN_TABLE_LIMIT = 1e-12
+SCAN_AXIS_LIGHTS = ("T3200", "D65")  # rule frame_auto_colour: the light axis from T3200 to D65
+SCAN_SPECTRA = ("D55", "T3200", "D65")  # the balance lights and the axis lights, in the bundle as light/<name>/spectrum
+# A second scanner for the expected values of a scanner change (issue 661: gamma derived again for a second scanner setting).
+SCANNER_B = {"neg_scan_red_nm": 630.0, "neg_scan_green_nm": 530.0, "neg_scan_blue_nm": 460.0, "neg_scan_width_nm": 60.0, "neg_scan_light": "equal_energy"}
+# Point form check: rendering settings other than the defaults (auto stays off: the auto shift has its own check and file).
+SCAN_POINT_RENDERINGS = ({}, {"neg_scan_contrast": 1.2, "neg_scan_exposure_stops": -0.75, "neg_scan_cyan": 0.05, "neg_scan_magenta": -0.03, "neg_scan_yellow": 0.11, "neg_scan_black": 0.6},
+                         {"neg_scan_contrast": 0.7, "neg_scan_black": 0.0})
+# Rule frame_auto_colour on a random frame (scan__auto.bin): mode, strength, density strength.
+AUTO_CASES = (("neutral", 0.8, 0.0), ("warm", 0.8, 0.0), ("cool", 0.8, 0.0), ("neutral", 0.35, 0.5), ("neutral", 1.0, 1.0))
+AUTO_FRAME_SHAPE = (257, 391)  # not a multiple of the prescan, so the area reduction has partial boxes
 # 5 mired from 500 to 70, and 15000 K. A step of 10 mired gave up to 0.0115 stops between the blend and the exact light (5128 K, Portra 400, LAD aim on).
 CCT_GRID_MIRED = (*(float(m) for m in range(500, 69, -5)), 1e6 / 15000.0)
 CCT_BLEND_CHECKS = (497.5, 337.5, 252.5, 247.5, 222.5, 202.5, 197.5, 102.5, 72.5)  # mired, mid-points of grid segments
 CCT_BLEND_LIMIT = 0.5  # print, 8 bit sRGB code
-# Scan: ACES2065-1 in stops for values above 2^-10, the form of the scan tests. Through ACES 2.0 the same blend shows up to 0.75 code at bright
-# saturated blue (ACES B about 4), where the gamut compression of the display is steep: 0.0015 stops there (U92 probe). Recorded, not limited.
-# Issue 664: with the numbers of rule generic_scan and the ramp of rule untimed_axis_academy the largest values are in channels near 0 of saturated
-# colours and in the shadows (the record of the run lists them; largest 0.0219 stops, Portra 400 at 3960 K with the LAD aim off; 5219 at 3960 K,
-# LAD aim off, 0.0139 stops with blue at 0.012 beside green 7.4, where the gain of a bright cone channel leaks into a channel near 0 through the
-# cone matrix; through ACES 2.0 at most 0.27 code), so the limit is 0.03 stops. The ramp blends node by node (one node is one scene exposure of the grey); a blend of the two ramp functions at each log2 Y
-# differs from the exact light by up to 0.17 stops.
+# Scan: linear AP1 in stops for values above 2^-10, the form of the scan tests. The Lab Scan forms of schema 8 and 9 had up to 0.022 stops, so the limit
+# stays 0.03 stops.
 CCT_BLEND_STOPS_LIMIT = 0.03
 CCT_BLEND_FLOOR = 2.0 ** -10
 CCT_BLEND_SCAN_NEGATIVES = ("kodak_5207", "kodak_portra_400", "kodak_ektar_100", "kodak_5219")
@@ -333,28 +343,45 @@ def blend_light(kelvin: float) -> tuple[str, str, str, float]:
     return name, a, b, w
 
 
-PIPELINE = mp.Pipeline()  # one viewer pipeline: it keeps the numbers of rule generic_scan of each medium
-SCAN_FORM = {"apd_reading": "print2383", "apd_encoding": "adx16", "apd_numbers": "generic", "apd_untimed": "stock_balance", "apd_axis": "academy", "apd_colour": "academy",
-             "apd_exposure_stops": 0.0, "stock_character": 1.0, "spectral_input": "current", "print_timing": 1.0}
+PIPELINE = mp.Pipeline()  # one viewer pipeline: it keeps the gamma of each medium and scanner
+ns = mp.negative_scan  # step P14
+# The defaults of the product form (issue 661). A viewer default that differs stops the script.
+SCAN_FORM = {"stock_character": 1.0, "spectral_input": "current", "neg_scan_primaries": "channels", "neg_scan_auto": "off", "neg_scan_contrast": 1.0,
+             "neg_scan_exposure_stops": 0.0, "neg_scan_cyan": 0.0, "neg_scan_magenta": 0.0, "neg_scan_yellow": 0.0, "neg_scan_black": 1.0,
+             "neg_scan_auto_strength": 0.8, "neg_scan_auto_density": 0.0}
 
 
-def scan_settings(negative: str, light: str, lad: bool) -> "mp.RenderSettings":
-    """The settings of method 'apd' of the viewer with the defaults of the other controls (issue 664). A default that is not the form of the product
-    stops the script."""
+def scan_settings(negative: str, light: str, **values) -> "mp.RenderSettings":
+    """The settings of method 'negative_scan' of the viewer with the defaults of the other controls, and @p values."""
     register_lights()
-    settings = mp.RenderSettings(negative=negative, method="apd", scene_light=light, apd_lad_aim=lad)
-    settings.validate()
+    default = mp.RenderSettings(negative=negative, method="negative_scan", scene_light=light)
     for name, value in SCAN_FORM.items():
-        if getattr(settings, name) != value:
-            raise ValueError(f"the viewer default {name} = {getattr(settings, name)!r} of method 'apd' is not the form of the product ({value!r})")
+        if getattr(default, name) != value:
+            raise ValueError(f"the viewer default {name} = {getattr(default, name)!r} of method 'negative_scan' is not the form of the product ({value!r})")
+    if Pipeline_scanner(default) != ns.ScannerSetup():
+        raise ValueError("the default scanner of the viewer is not negative_scan.ScannerSetup()")
+    settings = replace(default, **values)
+    settings.validate()
     return settings
 
 
-def scan_model(negative: str, light: str, lad: bool) -> "acs.ScanPreview":
-    """Lab Scan of issue 664: method 'apd' of the viewer (Pipeline._scan), a new model each call."""
-    settings = scan_settings(negative, light, lad)
-    negative_only = replace(settings, **{c.name: getattr(mp.RenderSettings(), c.name) for c in mp.CONTROLS if "apd" not in c.methods})
-    return PIPELINE._scan(settings, negative_only)
+def Pipeline_scanner(settings: "mp.RenderSettings") -> "ns.ScannerSetup":
+    return mp.Pipeline.scanner_setup(settings)
+
+
+def scan_read(negative: str, light: str, **scanner) -> "ns.VirtualScan":
+    """Part 1 of Negative Scan for one negative, with no cache: the options of Pipeline.negative_scan_model."""
+    settings = scan_settings(negative, light, **scanner)
+    negative_only = replace(settings, **{c.name: getattr(mp.RenderSettings(), c.name) for c in mp.CONTROLS if "negative_scan" not in c.methods})
+    return ns.VirtualScan(mp.film_options(negative_only, mp.SCAN_CARRIER_PRINT), Pipeline_scanner(settings))
+
+
+def scan_model(negative: str, light: str, **values) -> "ns.NegativeScanPreview":
+    """Negative Scan of issue 661: method 'negative_scan' of the viewer (Pipeline.negative_scan_model). The cache of the pipeline is cleared after each
+    call, so the memory stays bounded; the gamma of each medium stays."""
+    model = PIPELINE.negative_scan_model(scan_settings(negative, light, **values))
+    PIPELINE._models.clear()
+    return model
 
 
 def medium_of(negative: str) -> str:
@@ -364,226 +391,206 @@ def medium_of(negative: str) -> str:
     return medium
 
 
-def medium_numbers(medium: str) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Rule 'generic_scan': the channel scale, CDD_TO_CID, and EXP_TO_ACES of a medium, from the viewer."""
-    stock = scan_generic().POOLS[medium][0]
-    scale, (cdd_to_cid, exp_to_aces) = PIPELINE.generic_scan(scan_settings(stock, "daylight", True))
-    return np.asarray(scale, dtype=np.float64), np.asarray(cdd_to_cid, dtype=np.float64), np.asarray(exp_to_aces, dtype=np.float64)
-
-
 def scan_generic():
     sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
-    import scan_generic as module  # step P10, U98
+    import scan_generic as module  # step P10, U98: the pools
 
     return module
 
 
-def scan_axis():
-    sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
-    import scan_axis as module  # step P10, U97
-
-    return module
+def pool_scene_light(stock: str) -> str:
+    """The scene light of a pool stock in Pipeline.negative_scan_medium: its balance light, as a product light name."""
+    return "tungsten" if mp.CATALOG["negatives"][stock].get("exposure_kelvin", 5500) < 4500 else "daylight"
 
 
-def filled_ramp(log_y: np.ndarray, log_gain: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """The ramp of rule untimed_axis_academy on all nodes of scan_axis.STOPS: a node that the rule removes (its log2 Y does not rise) takes the values
-    of the node before it, so each selection has the same node count and log2 Y does not fall. A read with the first node of log2 Y above the value
-    (upper bound) then gives numpy.interp on the nodes that the rule keeps."""
-    keep = np.concatenate([[True], np.diff(np.maximum.accumulate(log_y)) > 1e-6])
-    index = np.maximum.accumulate(np.where(keep, np.arange(len(log_y)), 0))
-    return log_y[index], log_gain[index]
+def balance_of(negative: str) -> str:
+    return ns.balance_light_name(mp.CATALOG["negatives"][negative])
 
 
-def ramp_read(log_y_nodes: np.ndarray, log_gain_nodes: np.ndarray, log_y: np.ndarray) -> np.ndarray:
-    """The read of the product on a filled ramp: the first node above the value, linear between it and the node before it, held at the ends."""
-    upper = np.searchsorted(log_y_nodes, log_y, side="right")
-    last = len(log_y_nodes) - 1
-    hi = np.clip(upper, 1, last)
-    lo = hi - 1
-    span = log_y_nodes[hi] - log_y_nodes[lo]
-    t = np.where(span > 0, (log_y - log_y_nodes[lo]) / np.where(span > 0, span, 1.0), 0.0)
-    gain = log_gain_nodes[lo] + t[..., None] * (log_gain_nodes[hi] - log_gain_nodes[lo])
-    gain = np.where((upper == 0)[..., None], log_gain_nodes[0], gain)
-    return np.where((upper > last)[..., None], log_gain_nodes[last], gain)
+def medium_gamma(medium: str, **scanner) -> np.ndarray:
+    """Rule 'generic_density_inversion': gamma of a medium for a scanner, from the viewer (Pipeline.negative_scan_medium, lab derive_medium)."""
+    stock = scan_generic().POOLS[medium][0]
+    return np.asarray(PIPELINE.negative_scan_medium(scan_settings(stock, pool_scene_light(stock), **scanner))["gamma"], dtype=np.float64)
 
 
-class StoredAxis:
-    """Rule untimed_axis_academy with a stored or blended ramp in the form of the product (filled_ramp, ramp_read), in place of scan_axis.UntimedAxis."""
-
-    def __init__(self, scan: "acs.ScanPreview", log_y: np.ndarray, log_gain: np.ndarray, shift: np.ndarray) -> None:
-        self.scan, self.log_y, self.log_gain, self.shift = scan, log_y, log_gain, shift
-
-    def apply(self, code: np.ndarray) -> np.ndarray:
-        axis = scan_axis()
-        s = self.scan
-        content = s.to_aces(np.clip(np.asarray(code, dtype=np.float64) + self.shift, 0.0, s.code_max))
-        g = np.exp(ramp_read(self.log_y, self.log_gain, np.log2(np.maximum(content @ axis.AP0_TO_XYZ[1], 1e-12))))
-        return ((content @ axis.CONE.T) * g) @ axis.CONE_INVERSE.T
+def scan_grey(read: "ns.VirtualScan", gain: np.ndarray, spectrum: np.ndarray, value: float = 0.18) -> np.ndarray:
+    """D of a neutral of @p value under @p spectrum with the layer gain @p gain: VirtualScan.grey_density with a stored gain and spectrum."""
+    n = read.negative
+    q = gain * n.c.layer_exposure(value * spectrum)
+    return read.scan.table_apd(n.negative_density(q[None])[0])[0] - read.base
 
 
-def scan_blend_model(negative: str, kelvin: float, lad: bool, setup: dict[str, np.ndarray], metadata: dict) -> "acs.ScanPreview":
-    """Lab Scan at a colour temperature between grid nodes, as the product computes it: the blended spectrum and layer gain (the light of the model),
-    and the blend of the stored D_g, ADX16 grey, balance offset, and ramp of the two nodes (issue 664)."""
-    name, a, b, w = blend_light(kelvin)
-    model = scan_model(negative, name, lad)
+def scan_light_values(read: "ns.VirtualScan", gain: np.ndarray, gamma: np.ndarray, spectra: dict[str, np.ndarray], balance: str) -> dict[str, np.ndarray]:
+    """D_aim and the light axis of one negative and scene light, as NegativeScanPreview computes them, from the stored layer gain and spectra."""
+    aim = scan_grey(read, gain, spectra[balance])
+    axis = (scan_grey(read, gain, spectra[SCAN_AXIS_LIGHTS[1]]) - scan_grey(read, gain, spectra[SCAN_AXIS_LIGHTS[0]])) / gamma
+    return {"negative_scan_aim_density": aim, "negative_scan_light_axis": axis}
+
+
+SCAN_SETUP_NAMES = ("negative_scan_aim_density", "negative_scan_light_axis")
+
+
+def scanner_arrays(setup: "ns.ScannerSetup") -> dict[str, np.ndarray]:
+    """The weights w_i = L S_i of a scanner and the index of their first node on the model grid."""
+    nodes, weights = setup.responsivities()
+    return {"first_node": np.array(int(np.searchsorted(ns.MODEL_GRID_NM, nodes[0])), dtype=np.int64), "weights": np.asarray(weights, dtype=np.float64)}
+
+
+def collect_scan(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], negatives: list[str], lights: list[str], spectrum_names: list[str]) -> tuple[dict[str, np.ndarray], dict]:
+    """The values of Negative Scan (issue 661). One VirtualScan per negative builds the scanner table, which does not depend on the light; the values of
+    each light read it with the stored layer gain (scan_light_values). Adds the scanner setup, the base densities, the gamma of each medium, and the spectra
+    of the balance and axis lights to the bundle."""
+    if not np.array_equal(bundle["common/wavelengths_nm"], ns.MODEL_GRID_NM):
+        raise ValueError("the wavelengths of the bundle are not the model grid of negative_scan.py")
+    default = ns.ScannerSetup()
+    bundle.update({"common/negative_scan_centres_nm": np.asarray(default.centres_nm, dtype=np.float64), "common/negative_scan_width_nm": scalar(default.width_nm),
+                   "common/negative_scan_band_cut": scalar(ns.BAND_CUT), "common/negative_scan_lamp_kelvin": scalar(3200.0), "common/negative_scan_planck_c2_nm_k": scalar(1.4388e7)})
+    # The weights of the stored setup are those of ScannerSetup.responsivities; the product builds them from the values above.
+    probe = scanner_arrays(default)
+    nodes = ns.MODEL_GRID_NM[int(probe["first_node"]):int(probe["first_node"]) + probe["weights"].shape[1]]
+    sigma = default.width_nm / (2.0 * np.sqrt(2.0 * np.log(2.0)))
+    bands = np.stack([np.exp(-0.5 * ((nodes - c) / sigma) ** 2) for c in default.centres_nm])
+    lamp = nodes ** -5.0 / np.expm1(float(bundle["common/negative_scan_planck_c2_nm_k"]) / (nodes * float(bundle["common/negative_scan_lamp_kelvin"])))
+    if not np.array_equal(np.where(bands >= ns.BAND_CUT, bands, 0.0) * lamp, probe["weights"]):
+        raise ValueError("the stored scanner values do not give the weights of ScannerSetup.responsivities")
+    started = time.perf_counter()
+    reference = scan_read(negatives[0], lights[0])
+    for name in SCAN_SPECTRA:
+        spectrum = np.asarray(reference.negative.light(name), dtype=np.float64)
+        key = f"light/{name}/spectrum"
+        if key in bundle:
+            if not np.array_equal(bundle[key], spectrum):
+                raise ValueError(f"{key}: the stored spectrum differs from FilmPreview.light")
+        else:
+            bundle[key] = spectrum
+            spectrum_names.append(name)
+    spectra = {name: bundle[f"light/{name}/spectrum"] for name in SCAN_SPECTRA}
+    gamma = {}
+    for medium in SCAN_MEDIA:
+        gamma[medium] = medium_gamma(medium)
+        bundle[f"scan_medium/{medium}/gamma"] = gamma[medium]
+        print(f"scan medium {medium}: gamma {gamma[medium]}, {time.perf_counter() - started:.0f} s", flush=True)
+    values = {name: np.zeros((len(negatives), len(lights), 3)) for name in SCAN_SETUP_NAMES}
+    for n, negative in enumerate(negatives):
+        read = scan_read(negative, lights[0])
+        bundle[f"negative/{negative}/scan_base_density"] = np.asarray(read.base, dtype=np.float64)
+        for l in range(len(lights)):
+            light_values = scan_light_values(read, setup["layer_gain"][n, l], gamma[medium_of(negative)], spectra, balance_of(negative))
+            for name in SCAN_SETUP_NAMES:
+                values[name][n, l] = light_values[name]
+        print(f"scan {negative}: {n + 1} of {len(negatives)}, {time.perf_counter() - started:.0f} s", flush=True)
+    grid = {"mired": [1e6 / round(1e6 / m) for m in CCT_GRID_MIRED], "kelvin": [round(1e6 / m) for m in CCT_GRID_MIRED], "lights": list(CCT_LIGHTS)}
+    pools = {medium: {"pool": list(scan_generic().POOLS[medium]), "pool_scene_lights": [pool_scene_light(s) for s in scan_generic().POOLS[medium]]} for medium in SCAN_MEDIA}
+    metadata = {"negative_scan": {**NEGATIVE_SCAN, "light": default.light, "lights": list(ns.LIGHTS), "axis_lights": list(SCAN_AXIS_LIGHTS), "media": pools},
+                "cct_grid": grid, "scan_media": list(SCAN_MEDIA)}
+    return values, metadata
+
+
+def stored_scan(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], metadata: dict, negative: str, light: str) -> dict[str, np.ndarray]:
+    n, l = sorted(metadata["negatives"]).index(negative), metadata["scene_lights"].index(light)
+    medium = metadata["negatives"][negative]["medium"]
+    return {"base": bundle[f"negative/{negative}/scan_base_density"], "gamma": bundle[f"scan_medium/{medium}/gamma"], "layer_gain": setup["layer_gain"][n, l],
+            **{name: setup[name][n, l] for name in SCAN_SETUP_NAMES}}
+
+
+def scan_point_form(model: "ns.NegativeScanPreview", stored: dict[str, np.ndarray], rendering: "ns.RenderingSetup", ap1: np.ndarray) -> np.ndarray:
+    """Check 'Scan point form': linear AP1 of the formula of the header from the stored values. The record and the table come from the model."""
+    record, _ = model.negative.negative_image(np.ascontiguousarray(ap1[None], dtype=np.float32))
+    d = model.read.scan.table_apd(record)[0] - stored["base"]
+    shift = rendering.exposure_stops * np.log10(2.0) - np.array([rendering.cyan, rendering.magenta, rendering.yellow])
+    x = rendering.contrast * (d - stored["negative_scan_aim_density"]) / stored["gamma"] + shift
+    x_base = rendering.contrast * (0.0 - stored["negative_scan_aim_density"]) / stored["gamma"] + shift
+    e, e_base = 0.18 * 10.0 ** x, 0.18 * 10.0 ** x_base
+    b = rendering.black
+    return np.maximum(0.18 * (e - b * e_base) / (0.18 - b * e_base), 0.0)
+
+
+def check_scan(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], metadata: dict, selection: tuple[str, str], images: dict[str, np.ndarray]) -> tuple["ns.NegativeScanPreview", dict]:
+    """Checks 'Scan setup', 'Scan point form' and 'Scanner table' on one selection, against the viewer."""
+    negative, light = selection
+    stored = stored_scan(bundle, setup, metadata, negative, light)
+    model = scan_model(negative, light)
+    pairs = [(model.read.base, stored["base"]), (model.aim, stored["negative_scan_aim_density"]), (model.light_axis, stored["negative_scan_light_axis"]),
+             (model.gamma, stored["gamma"]), (np.asarray(model.negative.layer_gain), stored["layer_gain"])]
+    largest = max(float(np.abs(np.asarray(a) - np.asarray(b)).max()) for a, b in pairs)
+    if largest > SETUP_LIMIT:
+        raise ValueError(f"scan {selection}: the stored values differ from the viewer by {largest:.3g}")
+    point = {}
+    for index, values in enumerate(SCAN_POINT_RENDERINGS):
+        rendering = PIPELINE.negative_scan_rendering(scan_settings(negative, light, **values))
+        model.set_rendering(rendering)
+        for name, ap1 in images.items():
+            record, _ = model.negative.negative_image(np.ascontiguousarray(ap1[None], dtype=np.float32))
+            reference, _ = model.positive(model.read.density(record)[0], spatial=False)
+            formula = scan_point_form(model, stored, rendering, ap1)
+            scale = np.maximum(np.abs(reference).max(axis=-1, keepdims=True), 1e-12)
+            point[f"{name}, rendering {index}"] = float((np.abs(formula - reference) / scale).max())
+    if max(point.values()) > SCAN_POINT_LIMIT:
+        raise ValueError(f"scan {selection}: the formula of issue 661 differs from the viewer by {point}")
+    # The table on its nodes against the direct sum of numpy on the model grid.
+    film = model.negative.film
+    grid = model.negative.density_grid
+    rng = np.random.default_rng(20261105)
+    index = rng.integers(0, len(grid[0]), size=(512, 3))
+    amounts = np.stack([np.asarray(grid[k])[index[:, k]] for k in range(3)], axis=-1)
+    direct = model.read.scan.apd(film.negative_dmin[None] + amounts @ film.negative_dyes)
+    table = model.read.scan.table[index[:, 0], index[:, 1], index[:, 2]]
+    table_difference = float(np.abs(direct - table).max())
+    if table_difference > SCAN_TABLE_LIMIT:
+        raise ValueError(f"scan {selection}: the scanner table differs from the direct sum by {table_difference:.3g} at its nodes")
+    return model, {"setup": largest, "point_form_largest_relative": point, "table_nodes_largest": table_difference}
+
+
+def scan_blend_model(negative: str, kelvin: float, **values) -> "ns.NegativeScanPreview":
+    """Negative Scan at a colour temperature between grid nodes: the blended spectrum and layer gain (the light of the model). D_aim and the light axis of
+    the model are those of the blend light; the product blends the stored values of the two nodes, and the expected files check that they agree."""
+    name, _, _, _ = blend_light(kelvin)
+    return scan_model(negative, name, **values)
+
+
+def blended_scan(setup: dict[str, np.ndarray], metadata: dict, negative: str, kelvin: float) -> tuple[dict[str, np.ndarray], str, str, float]:
+    _, a, b, w = blend_light(kelvin)
     n = sorted(metadata["negatives"]).index(negative)
     la, lb = metadata["scene_lights"].index(a), metadata["scene_lights"].index(b)
-    blended = {key: (1.0 - w) * setup[key][n, la] + w * setup[key][n, lb] for key in SCAN_SETUP_NAMES}
-    model.pivot = blended["adx_grey_printing_density"]
-    timed = model.code_lad - blended["adx_grey"]
-    model.offset = timed if lad else blended["adx_balance_offset"]
-    model.axis = None if lad else StoredAxis(model, blended["adx_axis_log2_y"], blended["adx_axis_log_gain"], timed - blended["adx_balance_offset"])
-    return model
+    return {name: (1.0 - w) * setup[name][n, la] + w * setup[name][n, lb] for name in (*SCAN_SETUP_NAMES, "layer_gain")}, a, b, w
 
 
-SCAN_DISPLAY_LIGHTS = ("reference", "daylight", *(kelvin for _, kelvin in SCAN_BLEND_SELECTIONS))  # the lights of the expected values of the scan form (issue 664)
+SCAN_DISPLAY_LIGHTS = ("reference", "daylight", *(kelvin for _, kelvin in SCAN_BLEND_SELECTIONS))  # the lights of the expected values of the scan form (issue 661)
 
 
 def scan_light_label(light: str | float) -> str:
     return light if isinstance(light, str) else f"cct{round(light)}"
 
 
-def scan_expected_model(negative: str, light: str | float, lad: bool, setup: dict[str, np.ndarray], metadata: dict) -> "acs.ScanPreview":
+def scan_expected_model(negative: str, light: str | float, **values) -> "ns.NegativeScanPreview":
     """A named light of the resources (the viewer), or a colour temperature between grid nodes in the blend form of the product."""
-    return scan_model(negative, light, lad) if isinstance(light, str) else scan_blend_model(negative, light, lad, setup, metadata)
+    return scan_model(negative, light, **values) if isinstance(light, str) else scan_blend_model(negative, light, **values)
 
 
-def scan_aces(model: "acs.ScanPreview", ap1: np.ndarray) -> np.ndarray:
-    """ACES2065-1 of the scan, before the display transform."""
-    code, _ = model.adx10(np.ascontiguousarray(ap1, dtype=np.float32))
-    return model.scene_aces(code)
+def prescan_shape(rows: int, columns: int) -> tuple[int, int]:
+    """The shape (rows, columns) of negative_scan.reduce_frame of a frame."""
+    scale = ns.AUTO_LONG_EDGE / max(rows, columns)
+    if scale >= 1.0:
+        return rows, columns
+    return max(1, round(rows * scale)), max(1, round(columns * scale))
 
 
-def adx_constants() -> dict[str, np.ndarray]:
-    per_density, code_base, lad_aim, code_max = acs.ENCODINGS["adx16"]
-    axis = scan_axis()
-    return {"common/adx_code_per_density": scalar(per_density), "common/adx_code_base": scalar(code_base), "common/adx_lad_aim": scalar(lad_aim), "common/adx_code_max": scalar(code_max),
-            "common/adx_equation_scale": np.asarray(acs.ADX10_SCALE, dtype=np.float64), "common/adx_cdd_to_cid": np.asarray(acs.CDD_TO_CID, dtype=np.float64),
-            "common/adx_exp_to_aces": np.asarray(acs.EXP_TO_ACES, dtype=np.float64), "common/adx_lut_cid": np.asarray(acs.LUT_CID, dtype=np.float64),
-            "common/adx_lut_log_e": np.asarray(acs.LUT_LOG_E, dtype=np.float64), "common/adx_ref_pt": scalar(acs.REF_PT),
-            "common/adx_axis_stops": np.asarray(axis.STOPS, dtype=np.float64), "common/adx_aces_to_cone": np.asarray(axis.CONE, dtype=np.float64),
-            "common/adx_aces_luminance": np.asarray(axis.AP0_TO_XYZ[1], dtype=np.float64)}
-
-
-SCAN_SETUP_NAMES = ("adx_grey_printing_density", "adx_grey", "adx_balance_offset", "adx_axis_log2_y", "adx_axis_log_gain")
-
-
-def scan_light_values(model: "acs.ScanPreview", scale: np.ndarray, numbers: tuple[np.ndarray, np.ndarray], spectrum: np.ndarray, balance_spectrum: np.ndarray, gain: np.ndarray) -> dict[str, np.ndarray]:
-    """The stored values of one negative and scene light, from the printing density table of @p model, the stored spectrum and layer gain of the light,
-    and the spectrum of the balance light of the selection, as ScanPreview.grey_apd, rule generic_scan, rule stock_balance, and
-    scan_axis.UntimedAxis compute them."""
-    axis = scan_axis()
-    neg = model.negative
-    stops = axis.STOPS
-    values = np.concatenate([0.18 * 2.0 ** stops, [0.18]])
-    q = gain * np.stack([neg.c.layer_exposure(v * spectrum) for v in values])
-    q_balance = gain * neg.c.layer_exposure(0.18 * balance_spectrum)
-    density = model.table_apd(neg.negative_density(np.concatenate([q, q_balance[None]]))[0])
-    ramp, grey, balance = density[:-2], density[-2], density[-1]
-    grey_code = acs.ADX10_SCALE * (grey - model.apd_dmin) * model.per_density + model.code_dmin
-    code = grey_code + scale * (ramp - grey) * model.per_density
-    balance_offset = model.code_lad - (grey_code + scale * (balance - grey) * model.per_density)
-    timed = model.code_lad - grey_code
-    cdd = (np.clip(code + balance_offset, 0.0, model.code_max) - model.code_dmin) / model.per_density
-    academy = acs.cdd_to_aces(cdd, acs.CDD_TO_CID, acs.EXP_TO_ACES)
-    content = acs.cdd_to_aces((np.clip(code + timed, 0.0, model.code_max) - model.code_dmin) / model.per_density, *numbers)
-    log_y = np.log2(np.maximum(content @ axis.AP0_TO_XYZ[1], 1e-12))
-    log_gain = np.log(np.maximum(academy @ axis.CONE.T, 1e-12) / np.maximum(content @ axis.CONE.T, 1e-12))
-    log_y, log_gain = filled_ramp(log_y, log_gain)
-    return {"adx_grey_printing_density": grey, "adx_grey": grey_code, "adx_balance_offset": balance_offset, "adx_axis_log2_y": log_y, "adx_axis_log_gain": log_gain}
-
-
-def collect_scan(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], negatives: list[str], lights: list[str], spectrum_names: list[str]) -> tuple[dict[str, np.ndarray], dict]:
-    """The values of Lab Scan (issue 664). One ScanPreview per negative builds the printing density table, which does not depend on the light; the
-    values of each light read it with the stored spectrum and layer gain (scan_light_values). Adds the base densities, the numbers of each medium, and
-    the ADX constants to the bundle."""
-    nodes = len(scan_axis().STOPS)
-    shapes = {"adx_grey_printing_density": (3,), "adx_grey": (3,), "adx_balance_offset": (3,), "adx_axis_log2_y": (nodes,), "adx_axis_log_gain": (nodes, 3)}
-    values = {name: np.zeros((len(negatives), len(lights), *shapes[name])) for name in SCAN_SETUP_NAMES}
-    started = time.perf_counter()
-    bundle.update(adx_constants())
-    media = {}
-    for medium in SCAN_MEDIA:
-        scale, cdd_to_cid, exp_to_aces = medium_numbers(medium)
-        media[medium] = (scale, (cdd_to_cid, exp_to_aces))
-        bundle.update({f"scan_medium/{medium}/channel_scale": scale, f"scan_medium/{medium}/cdd_to_cid": cdd_to_cid, f"scan_medium/{medium}/exp_to_aces": exp_to_aces})
-        print(f"scan medium {medium}: scale {scale}, {time.perf_counter() - started:.0f} s", flush=True)
-    for n, negative in enumerate(negatives):
-        scale, numbers = media[medium_of(negative)]
-        model = scan_model(negative, lights[0], True)
-        require_same("lab_scan printing weights", {"w": bundle[f"paper/{LAB_SCAN['printing_paper']}/printing_weights"]}, {"w": np.asarray(model.apd_weights, dtype=np.float64)})
-        bundle[f"negative/{negative}/adx_base_printing_density"] = np.asarray(model.apd_dmin, dtype=np.float64)
-        for l, light in enumerate(lights):
-            spectrum = bundle[f"light/{spectrum_names[setup['scene_spectrum_index'][n, l]]}/spectrum"]
-            balance_light = mp.light_conditions(negative, light)["balance_light"]
-            light_values = scan_light_values(model, scale, numbers, spectrum, model.negative.light(balance_light), setup["layer_gain"][n, l])
-            for name in SCAN_SETUP_NAMES:
-                values[name][n, l] = light_values[name]
-        print(f"scan {negative}: {n + 1} of {len(negatives)}, {time.perf_counter() - started:.0f} s", flush=True)
-    grid = {"mired": [1e6 / round(1e6 / m) for m in CCT_GRID_MIRED], "kelvin": [round(1e6 / m) for m in CCT_GRID_MIRED], "lights": list(CCT_LIGHTS)}
-    return values, {"lab_scan": dict(LAB_SCAN), "cct_grid": grid, "scan_media": list(SCAN_MEDIA)}
-
-
-def scan_point_form(model: "acs.ScanPreview", bundle: dict[str, np.ndarray], stored: dict[str, np.ndarray], medium: str, lad: bool, ap1: np.ndarray) -> np.ndarray:
-    """Check 'Scan point form': ACES2065-1 of the formula of the header from the stored values. The record and the printing density table come from the model."""
-    record, _ = model.negative.negative_image(np.ascontiguousarray(ap1[None], dtype=np.float32))
-    density = model.table_apd(record)[0]
-    per_density, base, code_max = float(bundle["common/adx_code_per_density"]), float(bundle["common/adx_code_base"]), float(bundle["common/adx_code_max"])
-    timed = float(bundle["common/adx_lad_aim"]) - stored["adx_grey"]
-    shift = np.zeros(3) if lad else stored["adx_balance_offset"] - timed
-    x = float(bundle["common/adx_lad_aim"]) + per_density * bundle[f"scan_medium/{medium}/channel_scale"] * (density - stored["adx_grey_printing_density"])
-    code = np.clip(np.clip(x + shift, 0.0, code_max) - shift, 0.0, code_max)
-    cid = ((code - base) / per_density) @ bundle[f"scan_medium/{medium}/cdd_to_cid"]
-    log_e = np.where(cid <= 0.6, np.interp(cid, bundle["common/adx_lut_cid"], bundle["common/adx_lut_log_e"]), (100.0 / 55.0) * cid - float(bundle["common/adx_ref_pt"]))
-    content = (10.0 ** log_e) @ bundle[f"scan_medium/{medium}/exp_to_aces"]
-    if lad:
-        return content
-    cone = bundle["common/adx_aces_to_cone"]
-    g = np.exp(ramp_read(stored["adx_axis_log2_y"], stored["adx_axis_log_gain"], np.log2(np.maximum(content @ bundle["common/adx_aces_luminance"], 1e-12))))
-    return ((content @ cone.T) * g) @ np.linalg.inv(cone).T
-
-
-def check_scan(bundle: dict[str, np.ndarray], setup: dict[str, np.ndarray], metadata: dict, selection: tuple[str, str], images: dict[str, np.ndarray]) -> tuple["acs.ScanPreview", dict]:
-    """Checks 'Scan setup' and 'Scan point form' on one selection, against the viewer."""
-    negative, light = selection
-    n, l = sorted(metadata["negatives"]).index(negative), metadata["scene_lights"].index(light)
-    stored = {name: setup[name][n, l] for name in SCAN_SETUP_NAMES}
-    medium = metadata["negatives"][negative]["medium"]
-    point, largest = {}, 0.0
-    model = None
-    for lad in (False, True):
-        model = scan_model(negative, light, lad)
-        scene = model.negative.options.scene_light
-        timed = model.code_lad - model.grey_adx(scene)
-        pairs = [(model.grey_adx(scene), stored["adx_grey"]), (model.pivot, stored["adx_grey_printing_density"]), (model.scale, bundle[f"scan_medium/{medium}/channel_scale"]),
-                 (model.cdd_to_cid, bundle[f"scan_medium/{medium}/cdd_to_cid"]), (model.exp_to_aces, bundle[f"scan_medium/{medium}/exp_to_aces"]),
-                 (model.apd_dmin, bundle[f"negative/{negative}/adx_base_printing_density"]), (np.asarray(model.negative.layer_gain), setup["layer_gain"][n, l]),
-                 (model.offset, timed if lad else stored["adx_balance_offset"])]
-        if lad:
-            if model.axis is not None:
-                raise ValueError(f"scan {selection}: the viewer has an axis with the LAD aim on")
-        else:
-            # The read of the stored ramp (the product form) against numpy.interp on the nodes of the viewer, on its nodes and between them.
-            log_y = np.unique(np.concatenate([model.axis.log_y, np.linspace(model.axis.log_y[0] - 1.0, model.axis.log_y[-1] + 1.0, 4001)]))
-            pairs += [(ramp_read(stored["adx_axis_log2_y"], stored["adx_axis_log_gain"], log_y), np.stack([np.interp(log_y, model.axis.log_y, model.axis.log_gain[:, k]) for k in range(3)], axis=-1)),
-                      (model.axis.shift, timed - stored["adx_balance_offset"])]
-        largest = max(largest, *(float(np.abs(np.asarray(a) - np.asarray(b)).max()) for a, b in pairs))
-        for name, ap1 in images.items():
-            reference = scan_aces(model, ap1[None])[0]
-            formula = scan_point_form(model, bundle, stored, medium, lad, ap1)
-            # Per pixel, relative to its largest channel: a channel near 0 after the cone matrices of the axis has only the rounding of the others.
-            scale = np.maximum(np.abs(reference).max(axis=-1, keepdims=True), 1e-12)
-            point[f"{name}, LAD {'on' if lad else 'off'}"] = float((np.abs(formula - reference) / scale).max())
-    if largest > SETUP_LIMIT:
-        raise ValueError(f"scan {selection}: the stored values differ from the viewer by {largest:.3g}")
-    if max(point.values()) > SCAN_POINT_LIMIT:
-        raise ValueError(f"scan {selection}: the formula of issue 664 differs from the viewer by {point}")
-    return model, {"setup": largest, "point_form_largest_relative": point}
+def scan_linear(model: "ns.NegativeScanPreview", frame: np.ndarray, auto: str) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Linear AP1 of Negative Scan before the display (stage e) of a frame (rows, columns, 3), with auto colour @p auto and the other rendering
+    controls at their defaults. The frame is the frame of the product render, so a ramp or a chart of one row gets the shift of that row.
+    Returns the linear AP1, the auto shift (3), and the prescan (rows', columns', 3)."""
+    model.set_rendering(replace(model.rendering, auto=auto))
+    record, _ = model.negative.negative_image(np.ascontiguousarray(frame, dtype=np.float32))
+    density = model.read.density(record)
+    x = model.positive_log(density)
+    shift, _ = ns.auto_colour_shift(x, model.light_axis, auto, model.rendering.auto_strength, model.rendering.auto_density)
+    prescan = ns.reduce_frame(x).reshape(*prescan_shape(*x.shape[:2]), 3)
+    linear, _ = model.positive(density, spatial=True)
+    return np.asarray(linear, dtype=np.float32), np.asarray(shift, dtype=np.float64), np.asarray(prescan, dtype=np.float64)
 
 
 def check_grid_blend(images: dict[str, np.ndarray], setup: dict[str, np.ndarray], metadata: dict) -> dict:
     """Check 'Grid blend': the blend of two nodes against the exact light at mid-points of grid segments."""
-    aces20 = acs.builtin_processor(acs.OUTPUT_TRANSFORMS["aces20"], acs.DISPLAY_TRANSFORM)
     ap1 = np.concatenate(list(images.values()))[None].astype(np.float32)
     out = {}
     for mid in CCT_BLEND_CHECKS:
@@ -601,16 +608,16 @@ def check_grid_blend(images: dict[str, np.ndarray], setup: dict[str, np.ndarray]
         if row["print_5207_2383"] > CCT_BLEND_LIMIT:
             raise ValueError(f"grid blend at {kelvin:.0f} K: the print differs from the exact light by {row['print_5207_2383']:.3g} codes")
         for negative in CCT_BLEND_SCAN_NEGATIVES:
-            for lad in (False, True):
-                values = [scan_aces(model, ap1).reshape(-1, 3) for model in (scan_model(negative, exact, lad), scan_blend_model(negative, kelvin, lad, setup, metadata))]
-                keep = (values[0] > CCT_BLEND_FLOOR) & (values[1] > CCT_BLEND_FLOOR)
-                stops = float(np.abs(np.log2(np.where(keep, values[0], 1.0) / np.where(keep, values[1], 1.0))).max())
-                shown = [acs.apply_processor(aces20, v) for v in values]
-                key = f"scan_{negative}_lad_{'on' if lad else 'off'}"
-                row[f"{key}_stops"] = stops
-                row[f"{key}_aces20_code"] = float(np.abs(shown[0] - shown[1]).max() * 255.0)
-                if stops > CCT_BLEND_STOPS_LIMIT:
-                    raise ValueError(f"grid blend at {kelvin:.0f} K: {key} differs from the exact light by {stops:.3g} stops")
+            blended, _, _, _ = blended_scan(setup, metadata, negative, kelvin)
+            exact_model, blend_model = scan_model(negative, exact), scan_blend_model(negative, kelvin)
+            # The product form: the blend model with the blended stored values in place of the values of the blend light.
+            blend_model.aim, blend_model.light_axis = blended["negative_scan_aim_density"], blended["negative_scan_light_axis"]
+            values = [np.asarray(scan_linear(model, ap1, "off")[0], dtype=np.float64).reshape(-1, 3) for model in (exact_model, blend_model)]
+            keep = (values[0] > CCT_BLEND_FLOOR) & (values[1] > CCT_BLEND_FLOOR)
+            stops = float(np.abs(np.log2(np.where(keep, values[0], 1.0) / np.where(keep, values[1], 1.0))).max())
+            row[f"scan_{negative}_stops"] = stops
+            if stops > CCT_BLEND_STOPS_LIMIT:
+                raise ValueError(f"grid blend at {kelvin:.0f} K: Negative Scan of {negative} differs from the exact light by {stops:.3g} stops")
         out[f"{kelvin:.0f} K between {a} and {b}"] = row
         print(f"grid blend at {kelvin:.0f} K: {row}", flush=True)
     return out
@@ -736,7 +743,7 @@ def collect() -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict, list]
     projection = sr.LocusProjection(last_model.c)
     bundle.update({"common/wavelengths_nm": np.asarray(last_model.c.wavelengths, dtype=np.float64), "common/ap1_to_xyz": np.asarray(last_model.c.ap1_to_xyz, dtype=np.float64), "common/locus_normals": np.asarray(projection.normals, dtype=np.float64),
                    "common/locus_room": -(projection.offsets + projection.normals @ projection.white), "common/locus_white": np.asarray(projection.white, dtype=np.float64), "common/locus_inset": scalar(projection.LOCUS_INSET)})
-    metadata = {"negatives": {k: {"name": mp.CATALOG["negatives"][k]["name"], "medium": medium_of(k)} for k in negatives}, "print_materials": {k: {"name": mp.CATALOG["prints"][k]["name"], "medium": mp.CATALOG["prints"][k]["medium"]} for k in papers}, "scene_lights": lights, "scene_spectra": spectrum_names}
+    metadata = {"negatives": {k: {"name": mp.CATALOG["negatives"][k]["name"], "medium": medium_of(k), "scan_balance_light": balance_of(k)} for k in negatives}, "print_materials": {k: {"name": mp.CATALOG["prints"][k]["name"], "medium": mp.CATALOG["prints"][k]["medium"]} for k in papers}, "scene_lights": lights, "scene_spectra": spectrum_names}
     # Rule 'negative_show_grade': the grey needs the kernels, so it comes from the complete FilmPreview. Other negatives hold 0.
     grade_grey = np.zeros((len(negatives), len(lights), 3))
     for negative in mp.NEGATIVE_GRADE_STOCKS:
@@ -949,45 +956,85 @@ def main() -> int:
     scan_images = {"neutral_ramp": np.outer(0.18 * 2.0 ** np.linspace(-10.0, 10.0, 481), np.ones(3)).astype(np.float32), "random_colours": images["random_colours"][:8].reshape(-1, 3)}
     scan_random = [(rng.choice(sorted(metadata["negatives"])), rng.choice(metadata["scene_lights"])) for _ in range(SCAN_RANDOM_CHECKS)]
     scan_checks = {}
+    default_scanner = scanner_arrays(ns.ScannerSetup())
     for selection in (*scan_random, *SCAN_EXPECTED_SELECTIONS):
         model, scan_checks[" under ".join(selection)] = check_scan(bundle, setup, metadata, selection, scan_images)
         print(f"scan {selection}: {scan_checks[' under '.join(selection)]}", flush=True)
         if selection not in SCAN_EXPECTED_SELECTIONS:
             continue
-        if not np.isfinite(model.table).all():
-            raise FloatingPointError(f"scan {selection}: the printing density table has values that are not finite")
-        n, l = sorted(metadata["negatives"]).index(selection[0]), metadata["scene_lights"].index(selection[1])
+        if not np.isfinite(model.read.scan.table).all():
+            raise FloatingPointError(f"scan {selection}: the scanner table has values that are not finite")
         name = f"scan__{selection[0]}__{selection[1]}.bin"
-        medium = metadata["negatives"][selection[0]]["medium"]
-        write_arrays(expected / name, {"printing_density_table": np.asarray(model.table, dtype=np.float64), "density_grid_start": np.array([g[0] for g in model.negative.density_grid]),
-                                       "density_grid_stop": np.array([g[-1] for g in model.negative.density_grid]), "adx_base_printing_density": bundle[f"negative/{selection[0]}/adx_base_printing_density"],
-                                       **{name: setup[name][n, l] for name in SCAN_SETUP_NAMES}, "lad_offset": float(bundle["common/adx_lad_aim"]) - setup["adx_grey"][n, l],
-                                       "channel_scale": bundle[f"scan_medium/{medium}/channel_scale"], "cdd_to_cid": bundle[f"scan_medium/{medium}/cdd_to_cid"], "exp_to_aces": bundle[f"scan_medium/{medium}/exp_to_aces"]},
-                     {"negative": selection[0], "print_material": LAB_SCAN["id"], "scene_light": selection[1], "medium": medium})
+        stored = stored_scan(bundle, setup, metadata, *selection)
+        write_arrays(expected / name, {"scanner_table": np.asarray(model.read.scan.table, dtype=np.float64), "density_grid_start": np.array([g[0] for g in model.negative.density_grid]),
+                                       "density_grid_stop": np.array([g[-1] for g in model.negative.density_grid]), "scanner_first_node": default_scanner["first_node"],
+                                       "scanner_weights": default_scanner["weights"], "base_density": stored["base"], "aim_density": stored["negative_scan_aim_density"],
+                                       "light_axis": stored["negative_scan_light_axis"], "gamma": stored["gamma"], "layer_gain": stored["layer_gain"]},
+                     {"negative": selection[0], "print_material": NEGATIVE_SCAN["id"], "scene_light": selection[1], "medium": metadata["negatives"][selection[0]]["medium"]})
         expected_files[name] = {"bytes": (expected / name).stat().st_size}
     for negative, kelvin in SCAN_BLEND_SELECTIONS:
-        _, a, b, w = blend_light(kelvin)
+        blended, a, b, w = blended_scan(setup, metadata, negative, kelvin)
+        model = scan_blend_model(negative, kelvin)
         n = sorted(metadata["negatives"]).index(negative)
         la, lb = metadata["scene_lights"].index(a), metadata["scene_lights"].index(b)
-        blended = {name: (1.0 - w) * setup[name][n, la] + w * setup[name][n, lb] for name in SCAN_SETUP_NAMES}
-        stored_difference = 0.0
-        for lad in (False, True):
-            model = scan_blend_model(negative, kelvin, lad, setup, metadata)
-            timed = model.code_lad - model.code(model.pivot)
-            stored_difference = max(stored_difference, float(np.abs(model.pivot - blended["adx_grey_printing_density"]).max()), float(np.abs(timed - (float(bundle["common/adx_lad_aim"]) - blended["adx_grey"])).max()),
-                                    float(np.abs(model.offset - (timed if lad else blended["adx_balance_offset"])).max()))
+        stored_difference = max(float(np.abs(model.aim - blended["negative_scan_aim_density"]).max()), float(np.abs(model.light_axis - blended["negative_scan_light_axis"]).max()))
         if stored_difference > SETUP_LIMIT:
-            raise ValueError(f"scan {negative} at {kelvin} K: the blend of the model differs from the blend of the stored values by {stored_difference:.3g}")
+            raise ValueError(f"scan {negative} at {kelvin} K: the model of the blend light differs from the blend of the stored values by {stored_difference:.3g}")
         spectrum = (1.0 - w) * bundle[f"light/{a}/spectrum"] + w * bundle[f"light/{b}/spectrum"]
-        gain = (1.0 - w) * setup["layer_gain"][n, la] + w * setup["layer_gain"][n, lb]
+        gain = blended["layer_gain"]
         blend_difference = max(float(np.abs(model.negative.light(model.negative.options.scene_light) - spectrum).max()), float(np.abs(np.asarray(model.negative.layer_gain) - gain).max()))
         if blend_difference > SETUP_LIMIT:
             raise ValueError(f"scan {negative} at {kelvin} K: the blended spectrum or layer gain differs from the model of the blend by {blend_difference:.3g}")
         scan_checks[f"{negative} at {round(kelvin)} K, blend"] = {"setup": max(blend_difference, stored_difference)}
         name = f"scan__{negative}__cct{round(kelvin)}.bin"
-        write_arrays(expected / name, {"blend_share": scalar(w), **blended, "lad_offset": float(bundle["common/adx_lad_aim"]) - blended["adx_grey"], "spectrum": spectrum, "layer_gain": gain},
-                     {"negative": negative, "print_material": LAB_SCAN["id"], "kelvin": kelvin, "node_a": a, "node_b": b})
+        write_arrays(expected / name, {"blend_share": scalar(w), "aim_density": blended["negative_scan_aim_density"], "light_axis": blended["negative_scan_light_axis"], "spectrum": spectrum, "layer_gain": gain},
+                     {"negative": negative, "print_material": NEGATIVE_SCAN["id"], "kelvin": kelvin, "node_a": a, "node_b": b})
         expected_files[name] = {"bytes": (expected / name).stat().st_size, "node_a": a, "node_b": b, "share_of_b": w}
+    # A second scanner: the weights, the gamma of each medium derived again, and the values of the expected negatives under daylight.
+    scanner_b = Pipeline_scanner(scan_settings(SCAN_EXPECTED_SELECTIONS[0][0], "daylight", **SCANNER_B))
+    b_arrays = {f"weights_{key}": value for key, value in scanner_arrays(scanner_b).items()}
+    b_arrays.update({f"gamma_{medium}": medium_gamma(medium, **SCANNER_B) for medium in SCAN_MEDIA})
+    b_negatives = list(dict.fromkeys(negative for negative, _ in SCAN_EXPECTED_SELECTIONS))
+    for k, negative in enumerate(b_negatives):
+        model = scan_model(negative, "daylight", **SCANNER_B)
+        if not np.array_equal(model.gamma, b_arrays[f"gamma_{medium_of(negative)}"]):
+            raise ValueError(f"scanner B: the gamma of {negative} is not the gamma of its medium")
+        b_arrays.update({f"base_density_{k}": np.asarray(model.read.base, dtype=np.float64), f"aim_density_{k}": np.asarray(model.aim, dtype=np.float64),
+                         f"light_axis_{k}": np.asarray(model.light_axis, dtype=np.float64)})
+    write_arrays(expected / "scan__scanner_b.bin", b_arrays, {"scanner": {"centres_nm": list(scanner_b.centres_nm), "width_nm": scanner_b.width_nm, "light": scanner_b.light},
+                                                              "negatives": b_negatives, "scene_light": "daylight"})
+    expected_files["scan__scanner_b.bin"] = {"bytes": (expected / "scan__scanner_b.bin").stat().st_size, "gamma": {m: b_arrays[f"gamma_{m}"].tolist() for m in SCAN_MEDIA}}
+    print(f"scanner B {scanner_b}: gamma {expected_files['scan__scanner_b.bin']['gamma']}", flush=True)
+    # Rule frame_auto_colour on two random frames of x. Frame a: a small cast plus random colours (the near-neutral estimate is the smaller). Frame b: a
+    # strong yellow-green cast with near-neutral highlights, as the forest of the P14 report (the white-patch estimate is the smaller). Rule
+    # smaller_cast takes each branch once.
+    auto_rng = np.random.default_rng(20261105)
+    rows, columns = AUTO_FRAME_SHAPE
+    level = auto_rng.uniform(-1.8, 1.1, (rows, columns, 1))
+    frame_a = level + np.array([0.06, 0.01, -0.07]) + auto_rng.normal(0.0, 0.05, (rows, columns, 3)) + np.where(auto_rng.uniform(size=(rows, columns, 1)) < 0.3, auto_rng.normal(0.0, 0.25, (rows, columns, 3)), 0.0)
+    level_b = auto_rng.uniform(-1.5, 0.5, (rows, columns, 1))
+    bright = (np.arange(rows) < 30)[:, None, None] & np.ones((1, columns, 1), dtype=bool)  # a band of sky at the top
+    frame_b = np.where(bright, auto_rng.uniform(0.6, 0.85, (rows, columns, 1)) + auto_rng.normal(0.0, 0.02, (rows, columns, 3)),
+                       level_b + np.array([0.15, 0.13, -0.28]) + auto_rng.normal(0.0, 0.06, (rows, columns, 3)))
+    axis = stored_scan(bundle, setup, metadata, "kodak_portra_400", "daylight")["negative_scan_light_axis"]
+    auto_arrays = {"light_axis": axis}
+    auto_record = []
+    for label, frame in (("a", frame_a), ("b", frame_b)):
+        frame = frame.astype(np.float32).astype(np.float64)
+        auto_arrays.update({f"frame_{label}": frame, f"prescan_{label}": ns.reduce_frame(frame).reshape(*prescan_shape(rows, columns), 3)})
+        for index, (mode, strength, density) in enumerate(AUTO_CASES):
+            shift, record = ns.auto_colour_shift(frame, axis, mode, strength, density)
+            auto_arrays[f"shift_{label}_{index}"] = np.asarray(shift, dtype=np.float64)
+            white = float(np.linalg.norm(record["white_patch_cast_log10"])) < float(np.linalg.norm(record["near_neutral_cast_log10"]))
+            auto_record.append({"frame": label, "mode": mode, "strength": strength, "density": density, "white_patch_used": white, "record": record})
+    if {c["white_patch_used"] for c in auto_record} != {False, True}:
+        raise ValueError("scan__auto.bin: the two frames do not take both branches of rule smaller_cast")
+    constants = {"long_edge": ns.AUTO_LONG_EDGE, "valid_log": list(ns.AUTO_VALID_LOG), "sigma": ns.AUTO_SIGMA, "iterations": ns.AUTO_ITERATIONS, "cross_share": ns.AUTO_CROSS_SHARE,
+                 "highlight_share": ns.AUTO_HIGHLIGHT_SHARE, "target": ns.AUTO_TARGET}
+    write_arrays(expected / "scan__auto.bin", auto_arrays, {"cases": [{k: c[k] for k in ("mode", "strength", "density")} for c in auto_record[:len(AUTO_CASES)]],
+                                                            "white_patch_used": {f"{c['frame']}_{i % len(AUTO_CASES)}": c["white_patch_used"] for i, c in enumerate(auto_record)},
+                                                            "constants": constants})
+    expected_files["scan__auto.bin"] = {"bytes": (expected / "scan__auto.bin").stat().st_size, "cases": auto_record}
     grid_checks = check_grid_blend(scan_images, setup, metadata)
 
     record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "reversal_films": len(metadata["reversal_films"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "scan_point_limit_relative": SCAN_POINT_LIMIT, "scan": scan_checks, "grid_blend_print_limit_code": CCT_BLEND_LIMIT, "grid_blend_scan_limit_stops": CCT_BLEND_STOPS_LIMIT, "grid_blend": grid_checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
