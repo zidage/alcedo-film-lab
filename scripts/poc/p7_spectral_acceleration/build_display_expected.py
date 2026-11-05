@@ -13,11 +13,12 @@ This script sets INHIBITION_STEPS_POINT to INHIBITION_STEPS_IMAGE, because the k
 The selections are the expected selections of build_product_resources.py, and one negative with no inhibition (kodak_gold_200).
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', and the reversal expected selections of build_product_resources.py, through ReversalPreview (method 'light_table').
 The files are reversal__<film>__<light>.bin. Astia 100F has no spread and no inhibition, and E100 has no inhibition.
-Lab Scan (step P10, ROADMAP U92, Alcedo Studio issue 661): the ADX16 scan with rule 'adx_slope_match' (build_product_resources.scan_model: ScanPreview, reading 'print2383', timing 1; U93) as
-ACES2065-1 before the display transform, in arrays ramp_aces and chart_aces in place of the sRGB arrays. The negatives of SCAN_EXPECTED_SELECTIONS, each under
-SCAN_DISPLAY_LIGHTS of build_product_resources.py (reference, daylight, and two colour temperatures between grid nodes in the blend form of the product), with
-the LAD aim off and on. The files are scan__<negative>__<light>__lad_<off|on>.bin, a blend light named cct<kelvin>. A scan model (its LAD offset) is built with the
-default point steps, as the stored values of the resources; only its render uses the steps of the product.
+Lab Scan (step P10, Alcedo Studio issues 661 and 664): the scan of method 'apd' of the viewer (build_product_resources.scan_model) as ACES2065-1 before the display
+transform, in arrays ramp_aces and chart_aces in place of the sRGB arrays. The negatives of SCAN_EXPECTED_SELECTIONS, each under SCAN_DISPLAY_LIGHTS of
+build_product_resources.py (reference, daylight, and two colour temperatures between grid nodes in the blend form of the product, from the stored values of the
+resources of an earlier run of build_product_resources.py), with the LAD aim off and on. The files are scan__<negative>__<light>__lad_<off|on>.bin, a blend light
+named cct<kelvin>. A scan model (its offsets and its ramp) is built with the default point steps, as the stored values of the resources; only its render uses
+the steps of the product.
 """
 
 from __future__ import annotations
@@ -63,6 +64,7 @@ def srgb_of(model: fp.FilmPreview, ap1: np.ndarray) -> np.ndarray:
 def main() -> int:
     fp.INHIBITION_STEPS_POINT = fp.INHIBITION_STEPS_IMAGE
     ramp, patches = neutral_ramp(), chart()
+    scan_setup, scan_metadata = bpr.read_scan_resources()
     for negative, paper, light in SELECTIONS:
         model = fp.FilmPreview(mp.film_options(mp.RenderSettings(negative=negative, print_material=paper, scene_light=light)))
         ramp_srgb, chart_srgb = srgb_of(model, ramp), srgb_of(model, patches)
@@ -84,7 +86,7 @@ def main() -> int:
             for lad in (False, True):
                 # The LAD offset is a stored value of the resources, made with the default steps; the render uses the steps of the product.
                 fp.INHIBITION_STEPS_POINT = POINT_STEPS
-                model = bpr.scan_expected_model(negative, light, lad)
+                model = bpr.scan_expected_model(negative, light, lad, scan_setup, scan_metadata)
                 fp.INHIBITION_STEPS_POINT = fp.INHIBITION_STEPS_IMAGE
                 ramp_aces, chart_aces = (np.asarray(bpr.scan_aces(model, values[None])[0], dtype=np.float32) for values in (ramp, patches))
                 if not np.isfinite(ramp_aces).all() or not np.isfinite(chart_aces).all():

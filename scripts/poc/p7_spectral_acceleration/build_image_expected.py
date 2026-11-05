@@ -9,10 +9,10 @@ Machine rule: CPU only, one process, no GPU job. The arrays take about 290 MB pe
 
 The selections are the expected selections of build_product_resources.py, without rule 'foliage_spectra' since schema 8 (U93), as in the product resources.
 Reversal films (step P9, Alcedo Studio issue 654): each of the five films under the scene light 'reference', through ReversalPreview (method 'light_table'), with all sliders at their defaults. The files are reversal__<film>__reference.bin.
-Lab Scan (step P10, ROADMAP U92 and U93, Alcedo Studio issue 661): the ADX16 scan with rule 'adx_slope_match' as ACES2065-1 before the display transform (array 'aces' in place of 'srgb'), on
-SCAN_IMAGE_SELECTIONS: the scan expected selections of build_product_resources.py with the LAD aim off, and kodak_5219 at 5650 K (a blend of grid nodes) with the
-LAD aim on. Each file is about 290 MB, so the other cases of the display expected values are not repeated at full size. The files are
-scan__<negative>__<light>__lad_<off|on>.bin, a blend light named cct<kelvin>.
+Lab Scan (step P10, Alcedo Studio issues 661 and 664): the scan of method 'apd' of the viewer as ACES2065-1 before the display transform (array 'aces' in place of
+'srgb'), on SCAN_IMAGE_SELECTIONS: the negatives of the scan expected selections of build_product_resources.py, each under its SCAN_DISPLAY_LIGHTS (reference,
+daylight, and two colour temperatures between grid nodes in the blend form of the product, from the stored values of the resources), with the LAD aim off and
+on: 32 files of about 290 MB. The files are scan__<negative>__<light>__lad_<off|on>.bin, a blend light named cct<kelvin>.
 """
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ fp = bpr.fp
 fk = fp.fk
 OUTPUT = bpr.OUTPUT / "expected" / "image"
 LONG_EDGE = 6000
-SCAN_IMAGE_SELECTIONS = (*((negative, light, False) for negative, light in bpr.SCAN_EXPECTED_SELECTIONS), ("kodak_5219", 5650.0, True))
+SCAN_IMAGE_SELECTIONS = tuple((negative, light, lad) for negative in dict.fromkeys(n for n, _ in bpr.SCAN_EXPECTED_SELECTIONS) for light in bpr.SCAN_DISPLAY_LIGHTS for lad in (False, True))
 
 
 def read_ap1(path: Path) -> np.ndarray:
@@ -78,8 +78,9 @@ def main() -> int:
             raise FloatingPointError(f"reversal {film}: the output is not finite")
         bpr.write_arrays(OUTPUT / f"reversal__{film}__reference.bin", {"srgb": srgb}, {"reversal": film, "scene_light": "reference", "lab_commit": commit})
         print(f"reversal {film}: {srgb.shape}", flush=True)
+    scan_setup, scan_metadata = bpr.read_scan_resources()
     for negative, light, lad in SCAN_IMAGE_SELECTIONS:
-        aces = np.asarray(bpr.scan_aces(bpr.scan_expected_model(negative, light, lad), graded), dtype=np.float32)
+        aces = np.asarray(bpr.scan_aces(bpr.scan_expected_model(negative, light, lad, scan_setup, scan_metadata), graded), dtype=np.float32)
         if not np.isfinite(aces).all():
             raise FloatingPointError(f"scan {negative} under {light}: the output is not finite")
         label = bpr.scan_light_label(light)
