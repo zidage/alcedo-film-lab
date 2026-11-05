@@ -32,6 +32,11 @@ generic_scan). 1 is the data, 0 the average, 2 doubles each difference. The chan
 
 The window and the command line have the controls of `mvp_pipeline.CONTROLS` (ROADMAP U62). `p6_mvp_cli.py --help` lists them with their ranges. A new value of a control that is part of the print table (print contrast, paper flash, surface reflection, print grey density shift, print timing, overexposure, development inhibition) composes one more table in about 0.02 seconds, and the model takes about 0.3 seconds. These tables are not stored. If `build/tmp/p2/tables/` is empty, the next run builds the reflectance tables again from the sources of P1 in `build/tmp/p1/sources/`, and this reads the ISSA workbook through `openpyxl`.
 
+Step P14 adds method `negative_scan` (window: Method "Negative Scan (virtual scanner, P14)", group "Negative scan"; CLI `--method negative_scan`,
+`--neg-scan-auto off|neutral|warm|cool`, and the `--neg-scan-*` controls): a virtual film scanner reads the negative, and a rendering model
+inverts it, with an optional automatic colour from the frame. See [the P14 scripts](../p14_negative_scan/README.md). Since 2026-11-05 the window
+and the command line start with this method, auto colour off, and scene light As Shot (`mvp_pipeline.VIEWER_DEFAULTS`).
+
 ## Full RAW white and stock character (P13)
 
 In the window, click **P13 smooth scan** to use the reviewed combination:

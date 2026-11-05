@@ -33,6 +33,11 @@ Rules of this step:
   negative differ from the average negative of its medium (the pool of rule generic_scan) k times as much as in the data. k = 1 is the data. See
   stock_character.py. The scanner setup of rule generic_scan stays that of the data (k = 1). A medium with no pool stops with an error at k != 1.
 - 'spectral_input' (P13): the full RAW white defines a smooth, LED or fluorescent spectral family. Constrained modes use the full-grid P13 solve. Stock character changes the sensitivities of the layer integrals; the scene spectrum and generic scanner setup do not depend on it.
+- 'negative_scan' (step P14, user request of 2026-11-04): the negative read by a virtual film scanner (light x Gaussian band per channel x
+  10^-D of the negative), the density above the film base, a straight-line inversion with one channel gamma per medium (the pool of rule
+  generic_scan) about the grey of the balance light of the stock, an optional automatic colour from the frame (rule frame_auto_colour; off is
+  'Neutral Scan'), manual keys, the black at the film base, and OpenDRT with its native grey. See scripts/poc/p14_negative_scan/negative_scan.py.
+  The input is the current spectral input (P13 is not used). The print controls do not act.
 - 'user_controls': CONTROLS lists the values that the user can change, with their ranges. Each one is a value of the model or of the APD method that was fixed before; the defaults give the same image as before. They are creative controls and not measurements. A value outside its range stops with an error.
 """
 
@@ -63,6 +68,9 @@ import reversal_film as rf  # noqa: E402
 import stock_character  # noqa: E402  step P12
 import scene_input  # noqa: E402  step P13
 
+sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p14_negative_scan"))
+import negative_scan  # noqa: E402  step P14
+
 CATALOG = json.loads((SCRIPT_DIR / "stock_catalog.json").read_text(encoding="utf-8"))
 # Print material 'cine_look' (ROADMAP U83): the data of Kodak 2383, with rules 'print_cinema_look' and 'negative_show_grade'. Print material kodak_2383 has neither of them.
 CINE_LOOK_PRINT = "cine_look"
@@ -86,7 +94,7 @@ REFERENCE_LIGHT = "reference"
 AS_SHOT = "as_shot"
 SCENE_LIGHTS = (REFERENCE_LIGHT, AS_SHOT, *fp.PRODUCT_LIGHTS, *fp.SCENE_PRESETS)
 SPECTRAL_PRIORS = ("light_like", "measured_reflectance")
-METHODS = ("print", "apd", "light_table", "chart_scan")
+METHODS = ("print", "apd", "light_table", "chart_scan", "negative_scan")
 REVERSAL_ORDER = ("fuji_velvia_50", "fuji_velvia_100", "fuji_provia_100f", "fuji_astia_100f", "kodak_ektachrome_e100")
 CATALOG["reversals"] = {key: rf.CATALOG["films"][key] for key in REVERSAL_ORDER}
 SCAN_CARRIER_PRINT = "kodak_2383"
@@ -99,6 +107,7 @@ PRINT = ("print",)
 SCAN = ("apd",)
 LIGHT_TABLE = ("light_table",)
 CHART_SCAN = ("chart_scan",)
+NEG_SCAN = ("negative_scan",)
 CHART_SCAN_SLOPES = ("fixed", "stock")
 CHART_SCAN_READINGS = ("dye", "status_m")
 CHART_SCAN_MATRICES = ("code", "linear")
@@ -122,8 +131,8 @@ class Control:
 
 
 CONTROLS = (
-    Control("stock_character", "Stock character", "Negative", 0.0, 3.0, 0.25, 2, (*PRINT, *SCAN, *CHART_SCAN), "Rule stock_character (P12): how much the sensitivities and the curves of this stock differ from the average negative of its medium, times the data. 1: the data. 0: the average. 2: each difference doubled. A creative control."),
-    Control("overexposure_stops", "Overexposure (stops)", "Negative", -2.0, 4.0, 0.25, 2, (*PRINT, *SCAN, *CHART_SCAN), "Rule overexposed_negative: the negative takes more light, and the printer lights take it back. It moves the shadows off the toe."),
+    Control("stock_character", "Stock character", "Negative", 0.0, 3.0, 0.25, 2, (*PRINT, *SCAN, *CHART_SCAN, *NEG_SCAN), "Rule stock_character (P12): how much the sensitivities and the curves of this stock differ from the average negative of its medium, times the data. 1: the data. 0: the average. 2: each difference doubled. A creative control."),
+    Control("overexposure_stops", "Overexposure (stops)", "Negative", -2.0, 4.0, 0.25, 2, (*PRINT, *SCAN, *CHART_SCAN, *NEG_SCAN), "Rule overexposed_negative: the negative takes more light, and the printer lights take it back. It moves the shadows off the toe."),
     Control("inhibition_scale", "Development inhibition", "Negative", 0.0, 1.5, 0.1, 2, BOTH, "Scale of the inhibition from the modulation transfer curves. 0: off. A stock with no curve has no inhibition."),
     Control("layer_spread_scale", "Light spread", "Negative", 0.0, 3.0, 0.25, 2, BOTH, "Scale of the spread length of each layer. 0: off. A stock with no curve has no spread."),
     Control("halation_scale", "Halation", "Negative", 0.0, 8.0, 0.5, 2, BOTH, "Scale of the halation strength. 0: off."),
@@ -139,6 +148,18 @@ CONTROLS = (
     Control("chart_scan_timing", "Scan timing", "Chart scan", 0.0, 1.0, 0.05, 2, CHART_SCAN, "Rule scan_timing: share of the mid grey cast of the scene light that the scan removes. 1: a grey of any light is neutral. Below 1, part of the cast stays, as a lab that does not correct a frame in full (U90)."),
     Control("chart_scan_black", "Black at film base", "Chart scan", 0.0, 2.0, 0.25, 2, CHART_SCAN, "Rule scan_base_black: share of the value of the unexposed film that the scanner takes as black. 1: black at the film base. Above 1, the toe of the negative clips to black (U90)."),
     Control("chart_scan_exposure_stops", "Scan exposure (stops)", "Chart scan", -3.0, 3.0, 0.25, 2, CHART_SCAN, "Rule scan_exposure: one neutral scale of the scene values before the log curve, as a scanner light. 0: the grey of the chart shows as a digital grey."),
+    Control("neg_scan_red_nm", "Scanner red centre (nm)", "Negative scan", 600.0, 720.0, 5.0, 0, NEG_SCAN, "Rule ideal_scanner_bands: the centre of the Gaussian red band of the virtual scanner."),
+    Control("neg_scan_green_nm", "Scanner green centre (nm)", "Negative scan", 500.0, 590.0, 5.0, 0, NEG_SCAN, "Rule ideal_scanner_bands: the centre of the green band."),
+    Control("neg_scan_blue_nm", "Scanner blue centre (nm)", "Negative scan", 400.0, 490.0, 5.0, 0, NEG_SCAN, "Rule ideal_scanner_bands: the centre of the blue band."),
+    Control("neg_scan_width_nm", "Scanner band width (nm)", "Negative scan", 10.0, 120.0, 5.0, 0, NEG_SCAN, "Rule ideal_scanner_bands: the full width at half maximum of each band. A wide band reads more of the other dyes."),
+    Control("neg_scan_contrast", "Scan contrast", "Negative scan", 0.5, 1.5, 0.05, 2, NEG_SCAN, "Scale of the inversion about the grey: 1 is the gamma of the average negative of the medium."),
+    Control("neg_scan_exposure_stops", "Scan exposure (stops)", "Negative scan", -3.0, 3.0, 0.25, 2, NEG_SCAN, "One neutral offset of the positive, as the density key of a lab scanner."),
+    Control("neg_scan_cyan", "Cyan key (log10)", "Negative scan", -0.3, 0.3, 0.01, 2, NEG_SCAN, "Takes red away from the positive (log10 units; 0.3 is one stop), as the C key of a lab scanner."),
+    Control("neg_scan_magenta", "Magenta key (log10)", "Negative scan", -0.3, 0.3, 0.01, 2, NEG_SCAN, "Takes green away from the positive, as the M key."),
+    Control("neg_scan_yellow", "Yellow key (log10)", "Negative scan", -0.3, 0.3, 0.01, 2, NEG_SCAN, "Takes blue away from the positive, as the Y key."),
+    Control("neg_scan_black", "Black at film base", "Negative scan", 0.0, 1.5, 0.05, 2, NEG_SCAN, "Rule black_at_film_base: share of the positive of the film base that is subtracted per channel. 1: black at the base. 0: the lifted black of a plain inversion."),
+    Control("neg_scan_auto_strength", "Auto colour strength", "Negative scan", 0.0, 1.0, 0.05, 2, NEG_SCAN, "Rule frame_auto_colour: share of the cast of the frame that the scanner removes along the light axis (half of it across). Acts when Auto colour is not off."),
+    Control("neg_scan_auto_density", "Auto density", "Negative scan", 0.0, 1.0, 0.05, 2, NEG_SCAN, "Rule frame_auto_colour: share of the mean level of the frame that moves to the grey. 0: off."),
 )
 
 
@@ -180,6 +201,21 @@ class RenderSettings:
     chart_scan_display: str = "log_curve"
     chart_scan_timing: float = 0.75
     chart_scan_black: float = 1.0
+    neg_scan_red_nm: float = 650.0  # step P14, negative_scan.ScannerSetup
+    neg_scan_green_nm: float = 545.0
+    neg_scan_blue_nm: float = 450.0
+    neg_scan_width_nm: float = 40.0
+    neg_scan_light: str = "halogen"
+    neg_scan_contrast: float = 1.0
+    neg_scan_exposure_stops: float = 0.0
+    neg_scan_cyan: float = 0.0
+    neg_scan_magenta: float = 0.0
+    neg_scan_yellow: float = 0.0
+    neg_scan_black: float = 1.0
+    neg_scan_auto: str = "off"  # 'off' is Neutral Scan
+    neg_scan_auto_strength: float = 0.8
+    neg_scan_auto_density: float = 0.0
+    neg_scan_primaries: str = "channels"
     apd_lad_aim: bool = True
     apd_output: str = "opendrt"  # U95: the display of the product form
     apd_reading: str = "print2383"  # U95: the reading of the product form
@@ -228,6 +264,8 @@ class RenderSettings:
                 raise ValueError("P13 spectral input uses the measured prior with foliage off")
         if self.display_white not in DISPLAY_WHITES:
             raise ValueError(f"unknown display white {self.display_white!r}")
+        if self.neg_scan_auto not in negative_scan.AUTO_MODES or self.neg_scan_primaries not in negative_scan.PRIMARIES or self.neg_scan_light not in negative_scan.LIGHTS:
+            raise ValueError(f"unknown negative scan auto {self.neg_scan_auto!r}, primaries {self.neg_scan_primaries!r} or light {self.neg_scan_light!r}")
         if self.chart_scan_slope not in CHART_SCAN_SLOPES:
             raise ValueError(f"unknown chart scan slope {self.chart_scan_slope!r}")
         if self.apd_output not in SCAN_OUTPUTS:
@@ -246,6 +284,12 @@ class RenderSettings:
             value = getattr(self, control.name)
             if not control.low <= value <= control.high:
                 raise ValueError(f"{control.name} = {value}: outside its range {control.low} to {control.high}")
+
+
+# The defaults of the window and the command line (user decision of 2026-11-05): method negative_scan (P14) with no automatic correction
+# (Neutral Scan) and scene light As Shot, so the cast of the RAW white stays. RenderSettings() keeps its own defaults for the scripts of the
+# earlier steps.
+VIEWER_DEFAULTS = replace(RenderSettings(), method="negative_scan", scene_light=AS_SHOT, neg_scan_auto="off")
 
 
 def load_physics() -> dict:
@@ -391,6 +435,8 @@ def control_values(settings: RenderSettings, method: str) -> tuple:
     values = (settings.foliage, settings.negative_grade, *(getattr(settings, c.name) for c in CONTROLS if method in c.methods))
     if method == "light_table":
         return (*values, settings.gamut_compress)
+    if method == "negative_scan":
+        return (*values, settings.neg_scan_auto, settings.neg_scan_primaries, settings.neg_scan_light)
     if method == "chart_scan":
         return (*values, settings.chart_scan_slope, settings.chart_scan_reading, settings.chart_scan_matrix, settings.chart_scan_display)
     return (*values, settings.display_white, settings.gamut_compress) if method == "print" else (*values, settings.apd_lad_aim, settings.apd_output, settings.apd_reading, settings.apd_drt_grey, settings.apd_encoding, settings.apd_slope_match, settings.apd_colour, settings.apd_numbers, settings.apd_untimed, settings.apd_axis)
@@ -433,6 +479,7 @@ class Pipeline:
     def __init__(self) -> None:
         self._models: dict[tuple, object] = {}
         self._generic: dict[tuple, tuple] = {}
+        self._negative_scan_media: dict[tuple, dict] = {}
         self._constrained_input: scene_input.ConstrainedInput | None = None
 
     def _model(self, tag: tuple, build):
@@ -517,6 +564,52 @@ class Pipeline:
                                                        base_black=settings.chart_scan_black, matrix_domain=settings.chart_scan_matrix,
                                                        display_transform=settings.chart_scan_display))
 
+    @staticmethod
+    def scanner_setup(settings: RenderSettings) -> "negative_scan.ScannerSetup":
+        return negative_scan.ScannerSetup(centres_nm=(settings.neg_scan_red_nm, settings.neg_scan_green_nm, settings.neg_scan_blue_nm),
+                                          width_nm=settings.neg_scan_width_nm, light=settings.neg_scan_light)
+
+    @staticmethod
+    def negative_scan_rendering(settings: RenderSettings) -> "negative_scan.RenderingSetup":
+        return negative_scan.RenderingSetup(contrast=settings.neg_scan_contrast, exposure_stops=settings.neg_scan_exposure_stops, cyan=settings.neg_scan_cyan,
+                                            magenta=settings.neg_scan_magenta, yellow=settings.neg_scan_yellow, black=settings.neg_scan_black, auto=settings.neg_scan_auto,
+                                            auto_strength=settings.neg_scan_auto_strength, auto_density=settings.neg_scan_auto_density, primaries=settings.neg_scan_primaries)
+
+    def negative_scan_medium(self, settings: RenderSettings) -> dict:
+        """Rule 'generic_density_inversion' (P14): the channel gamma and the comparison matrix of the medium of the stock, for this scanner;
+        from the pool of rule generic_scan at stock character 1, each stock under its balance light. Derived once per medium and scanner."""
+        sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p10_chart_scan"))
+        import scan_generic  # step P10, U98: the pools
+
+        medium = CATALOG["negatives"][settings.negative]["medium"].lower()
+        if medium not in scan_generic.POOLS:
+            raise ValueError(f"method negative_scan has no pool for medium {medium!r} of {settings.negative!r}")
+        setup = self.scanner_setup(settings)
+        key = (medium, setup)
+        if key not in self._negative_scan_media:
+            def make_read(stock: str) -> negative_scan.VirtualScan:
+                light = "tungsten" if CATALOG["negatives"][stock].get("exposure_kelvin", 5500) < 4500 else "daylight"
+                return negative_scan.VirtualScan(film_options(RenderSettings(method="negative_scan", negative=stock, scene_light=light), SCAN_CARRIER_PRINT), setup)
+
+            self._negative_scan_media[key] = negative_scan.derive_medium(make_read, scan_generic.POOLS[medium], lambda stock: negative_scan.balance_light_name(CATALOG["negatives"][stock]))
+        return self._negative_scan_media[key]
+
+    def negative_scan_model(self, settings: RenderSettings) -> "negative_scan.NegativeScanPreview":
+        """Method 'negative_scan' (P14). The scan table is kept per negative, light and scanner; the rendering controls act after the scan, so a
+        change of one of them does not build the table again."""
+        negative_only = replace(settings, **{c.name: getattr(RenderSettings(), c.name) for c in CONTROLS if "negative_scan" not in c.methods})
+        setup = self.scanner_setup(settings)
+
+        def build() -> negative_scan.NegativeScanPreview:
+            medium = self.negative_scan_medium(settings)
+            return negative_scan.NegativeScanPreview(film_options(negative_only, SCAN_CARRIER_PRINT), setup, self.negative_scan_rendering(settings),
+                                                     negative_scan.balance_light_name(CATALOG["negatives"][settings.negative]), medium["gamma"], medium["matrix"])
+
+        negative_values = tuple(getattr(settings, c.name) for c in CONTROLS if "negative_scan" in c.methods and not c.name.startswith("neg_scan_"))
+        model = self._model(("negative_scan", settings.negative, settings.scene_light, settings.spectral_prior, settings.foliage, setup, negative_values), build)
+        model.set_rendering(self.negative_scan_rendering(settings))
+        return model
+
     def light_table_model(self, settings: RenderSettings) -> rf.ReversalPreview:
         return self._model(("light_table", settings.reversal, settings.scene_light, settings.spectral_prior, control_values(settings, "light_table")), lambda: rf.ReversalPreview(light_table_options(settings)))
 
@@ -525,6 +618,8 @@ class Pipeline:
             return self.light_table_model(settings).c
         if settings.method == "chart_scan":
             return self.chart_scan_model(settings).negative.c
+        if settings.method == "negative_scan":
+            return self.negative_scan_model(settings).negative.c
         return self.print_model(settings).c if settings.method == "print" else self.scan_model(settings).negative.c
 
     def render_array(self, ap1: np.ndarray, settings: RenderSettings) -> np.ndarray:
@@ -537,6 +632,8 @@ class Pipeline:
             image = np.asarray(self.light_table_model(settings).render(graded)[0], dtype=np.float32)
         elif settings.method == "chart_scan":
             image = np.asarray(self.chart_scan_model(settings).render(graded)[0], dtype=np.float32)
+        elif settings.method == "negative_scan":
+            image = np.asarray(self.negative_scan_model(settings).render(graded)[0], dtype=np.float32)
         else:
             image = np.asarray(self.scan_model(settings).render(graded)[0], dtype=np.float32)
         if not np.isfinite(image).all():

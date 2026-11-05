@@ -1,7 +1,7 @@
-"""Command line of the Python MVP: one RAW file to one TIFF or JPEG, by the print method, the APD scan method, a reversal film on a light table (step P9), or the chart-calibrated scan (step P10).
+"""Command line of the Python MVP: one RAW file to one TIFF or JPEG, by the print method, the APD scan method, a reversal film on a light table (step P9), the chart-calibrated scan (step P10), or the Negative Scan (step P14).
 
 Input: a RAW file; the options below. Output: the image and a parameter file <output>.json. Step: P6, ROADMAP U61.
-Usage: p6_mvp_cli.py INPUT OUTPUT [--negative NAME] [--method print|apd|light_table|chart_scan] [--reversal NAME] [--print-material NAME] [--scene-light NAME] [--spectral-prior NAME] [--list], and one option per entry of mvp_pipeline.CONTROLS, for example --print-contrast 1.0.
+Usage: p6_mvp_cli.py INPUT OUTPUT [--negative NAME] [--method print|apd|light_table|chart_scan|negative_scan] [--reversal NAME] [--print-material NAME] [--scene-light NAME] [--spectral-prior NAME] [--list], and one option per entry of mvp_pipeline.CONTROLS, for example --print-contrast 1.0.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ import mvp_pipeline as mp  # noqa: E402
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    defaults = mp.RenderSettings()
+    defaults = mp.VIEWER_DEFAULTS
     parser.add_argument("input", type=Path, nargs="?")
     parser.add_argument("output", type=Path, nargs="?")
     parser.add_argument("--negative", default=defaults.negative, choices=sorted(mp.CATALOG["negatives"]))
@@ -48,6 +48,9 @@ def main() -> int:
     parser.add_argument("--chart-scan-reading", default=defaults.chart_scan_reading, choices=mp.CHART_SCAN_READINGS, help="Method chart_scan: 'dye', the dye amounts with the Status M contrast of U89 (U90); 'status_m', the reading of U88 and U89.")
     parser.add_argument("--chart-scan-matrix", default=defaults.chart_scan_matrix, choices=mp.CHART_SCAN_MATRICES, help="Method chart_scan: 'code', curve on the film channels then the matrix (U90); 'linear', the matrix then the curve (U88).")
     parser.add_argument("--chart-scan-display", default=defaults.chart_scan_display, choices=mp.CHART_SCAN_DISPLAYS, help="Method chart_scan: the log curve or a display rendering transform on the linear AP1 of the scan (U91).")
+    parser.add_argument("--neg-scan-auto", default=defaults.neg_scan_auto, choices=mp.negative_scan.AUTO_MODES, help="Method negative_scan: rule frame_auto_colour; 'off' is Neutral Scan (P14).")
+    parser.add_argument("--neg-scan-light", default=defaults.neg_scan_light, choices=mp.negative_scan.LIGHTS, help="Method negative_scan: the light of the virtual scanner.")
+    parser.add_argument("--neg-scan-primaries", default=defaults.neg_scan_primaries, choices=mp.negative_scan.PRIMARIES, help="Method negative_scan: 'channels' (the positive channels as AP1) or the comparison matrix 'film_primaries'.")
     parser.add_argument("--chart-scan-slope", default=defaults.chart_scan_slope, choices=mp.CHART_SCAN_SLOPES, help="Method chart_scan: 'fixed', one Status M slope for all stocks (rule fixed_scan_slope); 'stock', the slope of the grey scale of the stock (U88).")
     parser.add_argument("--list", action="store_true", help="List the materials and stop.")
     args = parser.parse_args()
@@ -63,7 +66,7 @@ def main() -> int:
     if args.input is None or args.output is None:
         parser.error("INPUT and OUTPUT are necessary")
     settings = mp.RenderSettings(negative=args.negative, method=args.method, reversal=args.reversal, print_material=args.print_material, scene_light=args.scene_light, spectral_prior=args.spectral_prior, spectral_input=args.spectral_input,
-                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim, apd_reading=args.apd_reading, apd_drt_grey=args.apd_drt_grey, apd_encoding=args.apd_encoding, apd_slope_match=not args.no_slope_match, apd_colour=args.apd_colour, apd_numbers=args.apd_numbers, apd_untimed=args.apd_untimed, apd_axis=args.apd_axis, chart_scan_slope=args.chart_scan_slope, chart_scan_reading=args.chart_scan_reading, chart_scan_matrix=args.chart_scan_matrix, chart_scan_display=args.chart_scan_display,
+                                 exposure_ev=args.exposure_ev, contrast=args.contrast, saturation=args.saturation, display_white=args.display_white, gamut_compress=not args.no_gamut_compress, apd_output=args.apd_output, apd_lad_aim=not args.no_lad_aim, apd_reading=args.apd_reading, apd_drt_grey=args.apd_drt_grey, apd_encoding=args.apd_encoding, apd_slope_match=not args.no_slope_match, apd_colour=args.apd_colour, apd_numbers=args.apd_numbers, apd_untimed=args.apd_untimed, apd_axis=args.apd_axis, chart_scan_slope=args.chart_scan_slope, chart_scan_reading=args.chart_scan_reading, chart_scan_matrix=args.chart_scan_matrix, chart_scan_display=args.chart_scan_display, neg_scan_auto=args.neg_scan_auto, neg_scan_light=args.neg_scan_light, neg_scan_primaries=args.neg_scan_primaries,
                                  **{control.name: getattr(args, control.name) for control in mp.CONTROLS})
     image, record = mp.Pipeline().render_file(args.input, settings, args.long_edge)
     for path in mp.write_outputs(image, record, args.output):

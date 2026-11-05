@@ -75,6 +75,17 @@ replace them.
    balance0 scan settings and keeps the selected stock and character strength. The scene spectrum stays independent of the
    stock-character strength. C++ resources and GPU integration are not part of this request.
 
+9. **Negative Scan (2026-11-04).** The user asked for a new scan method in two parts: a Film Scanner Model (scanner light x channel
+   response x 10^-D of the negative) and a Negative Rendering Model (density above the base, inversion, colour), with a Neutral Scan that has
+   no automatic correction and an automatic colour from the frame as a separate stage; scanner styles from measured samples come later. The
+   P13 input is not used for it. Result: [P14 report](docs/exploration/p14_negative_scan.md), method `negative_scan` of the Python viewer.
+
+10. **Negative Scan is the final form (2026-11-05).** The user accepts method `negative_scan` of P14 as the final form of the scan and stops
+   the review rounds. Defaults: no automatic correction (Neutral Scan, auto colour off) and scene light As Shot, so the cast of the RAW white
+   stays. The viewer and the command line start with these defaults. In Alcedo Studio this form replaces the ADX scan: issues #661, #662,
+   and #664 take it, and the form of PR #663 is dropped (the pull request is done again). The port has two phases: first the model layer
+   (resources, host tables, document, panel), then the GPU passes (CUDA and OpenCL, then Metal).
+
 The target source license is GPL-3.0-only. Third-party code, measurements, profiles, and derived
 tables retain their applicable license terms.
 

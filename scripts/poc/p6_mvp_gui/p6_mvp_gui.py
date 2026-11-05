@@ -69,10 +69,10 @@ class MainWindow(QMainWindow):
         self.busy = False
         self.pending = False
         self.after_render = None
-        defaults = mp.RenderSettings()
+        defaults = mp.VIEWER_DEFAULTS
         self.negative = self._combo(mp.CATALOG["negatives"], defaults.negative)
         self.method = self._combo({"print": {"name": "Print"}, "apd": {"name": "APD scan (ADX, ACES output)"}, "light_table": {"name": "Reversal film on a light table"},
-                                   "chart_scan": {"name": "Scan, chart calibrated (log curve)"}}, defaults.method)
+                                   "chart_scan": {"name": "Scan, chart calibrated (log curve)"}, "negative_scan": {"name": "Negative Scan (virtual scanner, P14)"}}, defaults.method)
         self.reversal = self._combo(mp.CATALOG["reversals"], defaults.reversal)
         self.print_material = self._combo(mp.CATALOG["prints"], defaults.print_material)
         self.light = self._combo({k: {"name": k} for k in mp.SCENE_LIGHTS}, defaults.scene_light)
@@ -136,6 +136,13 @@ class MainWindow(QMainWindow):
         self.chart_scan_display = self._combo({"log_curve": {"name": "Log curve (P10)"}, "aces20": {"name": "ACES 2.0"}, "agx": {"name": "AgX"},
                                                "opendrt": {"name": "OpenDRT 1.0.0"}, "cineon": {"name": "Cineon, Kodak conversion (DI, no print)"}}, defaults.chart_scan_display)
         groups["Chart scan"].addRow("Display (U91)", self.chart_scan_display)
+        self.neg_scan_auto = self._combo({"off": {"name": "Off (Neutral Scan)"}, "neutral": {"name": "Auto neutral"}, "warm": {"name": "Auto warm"}, "cool": {"name": "Auto cool"}}, defaults.neg_scan_auto)
+        self.neg_scan_auto.setToolTip("Rule frame_auto_colour: the scanner reads the frame and removes a share of its cast. Off: the negative alone decides the colour.")
+        groups["Negative scan"].addRow("Auto colour", self.neg_scan_auto)
+        self.neg_scan_light = self._combo({"halogen": {"name": "Halogen (3200 K)"}, "equal_energy": {"name": "Equal energy"}}, defaults.neg_scan_light)
+        groups["Negative scan"].addRow("Scanner light", self.neg_scan_light)
+        self.neg_scan_primaries = self._combo({"channels": {"name": "Channels as AP1"}, "film_primaries": {"name": "Film primaries matrix (comparison)"}}, defaults.neg_scan_primaries)
+        groups["Negative scan"].addRow("Positive primaries", self.neg_scan_primaries)
         form = QFormLayout()
         for label, widget in (("Negative", self.negative), ("Method", self.method), ("Reversal film", self.reversal), ("Print material", self.print_material), ("Scene light", self.light), ("Spectral prior", self.prior), ("Spectral input", self.spectral_input),
                               ("Exposure (EV)", self.exposure), ("Contrast", self.contrast), ("Saturation", self.saturation), ("Long edge (pixels)", self.long_edge)):
@@ -216,7 +223,8 @@ class MainWindow(QMainWindow):
                                  spectral_prior="measured_reflectance" if spectral_input != "current" else self.prior.currentData(), spectral_input=spectral_input,
                                  exposure_ev=self.exposure.value(), contrast=self.contrast.value(), saturation=self.saturation.value(),
                                  display_white=self.display_white.currentData(), gamut_compress=self.gamut.isChecked(), apd_output=self.apd_output.currentData(), apd_lad_aim=self.lad_aim.isChecked(), apd_reading=self.apd_reading.currentData(), apd_drt_grey=self.apd_drt_grey.currentData(), apd_encoding=self.apd_encoding.currentData(), apd_slope_match=self.slope_match.isChecked(), apd_colour=self.apd_colour.currentData(), apd_numbers=self.apd_numbers.currentData(), apd_untimed=self.apd_untimed.currentData(), apd_axis=self.apd_axis.currentData(), chart_scan_slope=self.chart_scan_slope.currentData(), chart_scan_reading=self.chart_scan_reading.currentData(),
-                                 chart_scan_matrix=self.chart_scan_matrix.currentData(), chart_scan_display=self.chart_scan_display.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
+                                 chart_scan_matrix=self.chart_scan_matrix.currentData(), chart_scan_display=self.chart_scan_display.currentData(),
+                                 neg_scan_auto=self.neg_scan_auto.currentData(), neg_scan_light=self.neg_scan_light.currentData(), neg_scan_primaries=self.neg_scan_primaries.currentData(), **{name: spin.value() for name, spin in self.controls.items()})
 
     @Slot()
     def use_smooth_scan(self) -> None:
@@ -238,8 +246,8 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def reset_controls(self) -> None:
-        defaults = mp.RenderSettings()
-        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.apd_encoding, self.slope_match, self.apd_colour, self.apd_numbers, self.apd_untimed, self.apd_axis, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display]
+        defaults = mp.VIEWER_DEFAULTS
+        widgets = [*self.controls.values(), self.display_white, self.gamut, self.apd_output, self.lad_aim, self.apd_reading, self.apd_drt_grey, self.apd_encoding, self.slope_match, self.apd_colour, self.apd_numbers, self.apd_untimed, self.apd_axis, self.chart_scan_slope, self.chart_scan_reading, self.chart_scan_matrix, self.chart_scan_display, self.neg_scan_auto, self.neg_scan_light, self.neg_scan_primaries]
         for widget in widgets:
             widget.blockSignals(True)
         for name, spin in self.controls.items():
@@ -260,6 +268,8 @@ class MainWindow(QMainWindow):
         self.chart_scan_reading.setCurrentIndex(self.chart_scan_reading.findData(defaults.chart_scan_reading))
         self.chart_scan_matrix.setCurrentIndex(self.chart_scan_matrix.findData(defaults.chart_scan_matrix))
         self.chart_scan_display.setCurrentIndex(self.chart_scan_display.findData(defaults.chart_scan_display))
+        for box, value in ((self.neg_scan_auto, defaults.neg_scan_auto), (self.neg_scan_light, defaults.neg_scan_light), (self.neg_scan_primaries, defaults.neg_scan_primaries)):
+            box.setCurrentIndex(box.findData(value))
         for widget in widgets:
             widget.blockSignals(False)
         self.schedule()
@@ -280,9 +290,10 @@ class MainWindow(QMainWindow):
                 widget.setCurrentIndex(widget.findData(value))
                 widget.blockSignals(False)
         # The print group holds 'Enlarger flare', which is the loupe flare of the light table; its other controls do not act there.
-        self.groups["Print"].setEnabled(not scan and not chart_scan)
+        self.groups["Print"].setEnabled(not scan and not chart_scan and method != "negative_scan")
         self.groups["Scan"].setEnabled(scan)
         self.groups["Chart scan"].setEnabled(chart_scan)
+        self.groups["Negative scan"].setEnabled(method == "negative_scan")
 
     @Slot()
     def schedule(self) -> None:
