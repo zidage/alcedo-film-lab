@@ -91,6 +91,12 @@ replace them.
    values of the product tests (a second scanner, the auto colour, the point form). Section 9 of the
    [P14 report](docs/exploration/p14_negative_scan.md) lists them with the checks.
 
+12. **Grain data in the lab (2026-11-05).** The user approved the Alcedo Studio plan of film formats and stock granularity
+   (`film_grain_format_and_stock_plan.md`, issues #675 to #684) and asked for phase G0 first, with stacked pull requests. G0 is
+   lab work: the granularity of every stock, the layer noise, the cloud size, the layer correlation, the post-path target, the
+   reference evaluator, and resource schema 11. The product still renders the grain (point 1); the lab makes its data and its
+   expected values. Old projects of Alcedo Studio must open. Result: [P15 report](docs/exploration/p15_film_grain.md).
+
 The target source license is GPL-3.0-only. Third-party code, measurements, profiles, and derived
 tables retain their applicable license terms.
 

@@ -1,0 +1,348 @@
+{
+ "description": "Source files of step P15. fetch_sources.py downloads each file with a URL to build/tmp/p15_grain/sources/ and stops with an error when a SHA-256 hash differs. The file of a local copy is copied by hand.",
+ "retrieved": "2026-11-05",
+ "sources": [
+  {
+   "file": "kodak_5203_ti.pdf",
+   "url": "https://juneleung.github.io/filmdoc/Kodak/CrNeg/5203_ti2657.pdf",
+   "sha256": "adf0dedd974323b4e5d53a54023cd72bc85f447f5f814eb7882774c145d10eeb",
+   "title": "KODAK VISION3 50D Color Negative Film 5203 / 7203, technical data TI2657",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Page 4: diffuse rms granularity chart, vector."
+  },
+  {
+   "file": "kodak_5207_ti.pdf",
+   "url": "https://juneleung.github.io/filmdoc/Kodak/CrNeg/5207_ti2650.pdf",
+   "sha256": "e9806f7faeef5073118cacb8bfe3c42310c9a9fb97ab9b80ea94956d80add584",
+   "title": "KODAK VISION3 250D Color Negative Film 5207 / 7207, H-1-5207t (TI2650)",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Page 4: diffuse rms granularity chart, vector."
+  },
+  {
+   "file": "kodak_5213_ti.pdf",
+   "url": "https://juneleung.github.io/filmdoc/Kodak/CrNeg/5213_TI2653.pdf",
+   "sha256": "c2a88cb5de19c40e991f7522f9c7a43ea4c59357ccdca6957a4f5e31f2abd411",
+   "title": "KODAK VISION3 200T Color Negative Film 5213 / 7213, technical data TI2653",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Page 4: diffuse rms granularity chart, vector."
+  },
+  {
+   "file": "kodak_5219_ti.pdf",
+   "url": "https://juneleung.github.io/filmdoc/Kodak/CrNeg/5219_TI2647.pdf",
+   "sha256": "06eca2287fbaf57a1aeacbb8151bbd48e23aefb30af2114b412e9c1c63f4d1db",
+   "title": "KODAK VISION3 500T Color Negative Film 5219 / 7219, technical data TI2647C",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Page 4: diffuse rms granularity chart, vector."
+  },
+  {
+   "file": "kodak_5277.pdf",
+   "url": "https://juneleung.github.io/filmdoc/Kodak/CrNeg/5277.pdf",
+   "sha256": "476c186fbd159ba428073fcd590e97e044659d3e574b5f266c9cb1ac1e0f2132",
+   "title": "KODAK VISION 320T Color Negative Film 5277 / 7277, technical data",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Page 3: diffuse rms granularity chart, vector."
+  },
+  {
+   "file": "kodak_5293.pdf",
+   "url": "https://juneleung.github.io/filmdoc/Kodak/CrNeg/5293.pdf",
+   "sha256": "34cb0415eb47d151298113ccdeaf78d1e9ae1001627deb03208300af14cb79ab",
+   "title": "EASTMAN EXR 200T Film 5293 / 7293, technical data (rms granularity 3 in the text)",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Page 4: diffuse rms granularity chart, vector."
+  },
+  {
+   "file": "kodak_5248.pdf",
+   "url": "https://juneleung.github.io/filmdoc/Kodak/CrNeg/5248.pdf",
+   "sha256": "4735518c66d406e508928715f932a626b9f1e23647d45fd84f8c3cd4133291fc",
+   "title": "EASTMAN EXR Color Negative Film 5248 / 7248 (100T), technical data (diffuse rms granularity less than 5 in the text)",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Page 3: diffuse rms granularity chart, vector. The same file as spectral_film_lut datasheets/EXR_5248_100T.pdf."
+  },
+  {
+   "file": "kodak_5206.pdf",
+   "url": "https://www.kodak.com/content/pdfs/motion/KODAK-VERITA-200D-5206-7206-technical-information.pdf",
+   "sha256": "aa5bfd899003cf4a0ae5a86a33325e0eac2ed16b9fca61c8894532de1458bae2",
+   "title": "KODAK VERITA 200D Color Negative Film 5206 / 7206, technical information",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Page 3: diffuse rms granularity chart, vector."
+  },
+  {
+   "file": "kodak_5247_ecn_ti0835.pdf",
+   "url": "local copy: spectral_film_lut (MIT) datasheets/ECN_5247.pdf",
+   "sha256": "382665e9ab0f54740a758816bd13d42182efd882ece0d6efe6e3f50a3ddeecdd",
+   "title": "EASTMAN Color Negative Film 5247, technical information data sheet TI0835, Revised 6-93",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Text: rms granularity less than 5, red, green, blue, 48 um aperture. No granularity chart."
+  },
+  {
+   "file": "kodak_5245.pdf",
+   "url": "https://juneleung.github.io/filmdoc/Kodak/CrNeg/5245.pdf",
+   "sha256": "a9feb879fdbc0953721239bfaa194b41956eb813a9cdf6e38b5ec4912cfa6d71",
+   "title": "EASTMAN EXR 50D Color Negative Film 5245, technical data",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Not used: its chart draws the dashes as hundreds of separate pieces of mixed curves. Kept as a record of the search."
+  },
+  {
+   "file": "e4051_portra_160.pdf",
+   "url": "https://www.kodakprofessional.com/sites/default/files/2025-07/e4051.pdf",
+   "sha256": "1f3430cd8e1b4ad370d8bbf8c648f6f5871a9911dfd5794613e9bbf3bbf9cb82",
+   "title": "KODAK PROFESSIONAL PORTRA 160 Film, E-4051, Revised 1-25",
+   "publisher": "Kodak Alaris Inc.",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Print Grain Index on 135: 28, 50, 79 at 4.4X, 8.8X, 17.8X."
+  },
+  {
+   "file": "e4050_portra_400_2025.pdf",
+   "url": "https://www.kodakprofessional.com/sites/default/files/2025-07/e4050.pdf",
+   "sha256": "70b15171673c5d01505f58ace448995ad72acbe5e401d1966563a61ac0712838",
+   "title": "KODAK PROFESSIONAL PORTRA 400 Film, E-4050, Revised 1-25",
+   "publisher": "Kodak Alaris Inc.",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Print Grain Index on 135: 37, 59, 89 at 4.4X, 8.8X, 17.8X."
+  },
+  {
+   "file": "e4040_portra_800.pdf",
+   "url": "https://www.kodakprofessional.com/sites/default/files/2025-07/e4040.pdf",
+   "sha256": "13581198dffa01c5a2a38ab87d96a73cf2e2755b6514d55c65206fe621a60b5a",
+   "title": "KODAK PROFESSIONAL PORTRA 800 Film, E-4040, Revised 1-25",
+   "publisher": "Kodak Alaris Inc.",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Print Grain Index on 135: 48, 70, 99 at 4.4X, 8.8X, 17.8X."
+  },
+  {
+   "file": "e4046_ektar_100.pdf",
+   "url": "https://www.kodakprofessional.com/sites/default/files/2025-07/e4046.pdf",
+   "sha256": "38a41d47ad006cd563793033f83c8f9ef6cdd3c8300695c31facfc71d368f8db",
+   "title": "KODAK PROFESSIONAL EKTAR 100 Film, E-4046, Revised 1/25",
+   "publisher": "Kodak Alaris Inc.",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Print Grain Index on 135: less than 25, 38, 66 at 4.4X, 8.8X, 17.8X."
+  },
+  {
+   "file": "e7022_gold_200.pdf",
+   "url": "https://www.kodakprofessional.com/sites/default/files/wysiwyg/pro/resources/E7022%20Gold%20tech%20sheet.pdf",
+   "sha256": "8f20aa3ca762c898591f30479ead35587adf43eecc22a5a49acc48e54745f062",
+   "title": "KODAK GOLD 200 Film, E-7022, Revised 06-23",
+   "publisher": "Kodak Alaris Inc.",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Print Grain Index on 135: 44 at 4.4X (4 x 6 inch). The 8 x 10 value 64 is printed with the magnification 4.4X and is not used."
+  },
+  {
+   "file": "kodak_ultramax_400.pdf",
+   "url": "https://kodakprofessional.com/sites/default/files/wysiwyg/pro/resources/E7023_max_400.pdf",
+   "sha256": "598f44c39c2cd420554d9e7395ce7213e8bf9f1815fbf550dadaeb625826c77d",
+   "title": "KODAK ULTRAMAX 400 Film, E-7023",
+   "publisher": "Kodak Alaris Inc.",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Print Grain Index on 135: 46 at 4.4X."
+  },
+  {
+   "file": "kodak_ultramax_400_2009.pdf",
+   "url": "https://www.macodirect.de/media/pdf/c9/f1/df/KDB2011_Datenblatt_e.pdf",
+   "sha256": "4f2306acdf4ec6f91d9a7047ba921e00fc738773ec4d997cf5657e3545d5ab5b",
+   "title": "KODAK ULTRAMAX 400 Film, E-7023, February 2009",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Check of the value 46 only."
+  },
+  {
+   "file": "kodak_vericolor_iii.pdf",
+   "url": "https://www.chrysis.net/wp-content/uploads/2020/09/Kodak-Vericolor-III.pdf",
+   "sha256": "acff06d70affeb748579c7b8ce3d9863f6629a3124e77729bd4102f0f9e81b40",
+   "title": "KODAK VERICOLOR III Professional Film, E-26 (1997)",
+   "publisher": "Eastman Kodak Company",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Print Grain Index on 135: 39, 61, 91 at 4.4X, 8.8X, 17.8X."
+  },
+  {
+   "file": "fuji_pro_400h.pdf",
+   "url": "https://juneleung.github.io/filmdoc/fuji/pro_400h_datasheet.pdf",
+   "sha256": "9a2ca2d506cf57c7747ae5b9557d34a6102a76c009b2bb4eaedde829615205d6",
+   "title": "FUJICOLOR PRO 400H, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 4, 48 um, density 1.0 above minimum density."
+  },
+  {
+   "file": "fuji_pro_400h_af3.pdf",
+   "url": "https://www.macodirect.de/media/pdf/4f/c9/b3/FH4011_Datenblatt_e.pdf",
+   "sha256": "d48077b16c18ed3fc9ba1fe7ef016bd65f5826a3d77f4c34add93573eed09c2f",
+   "title": "FUJICOLOR PRO 400H, AF3-176E",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Check of the value 4 only."
+  },
+  {
+   "file": "fuji_pro_400h_jp.pdf",
+   "url": "https://asset.fujifilm.com/www/jp/files/2024-04/198fe31ee57628013d29171770b28218/datasheet_pro400h_01.pdf",
+   "sha256": "421e625bc24f9d9dfad01edc9d787f192934461e026e1c18527adc165a60229a",
+   "title": "PRO400H data sheet (Japanese)",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Not used: no text layer."
+  },
+  {
+   "file": "fuji_pro_160c.pdf",
+   "url": "https://juneleung.github.io/filmdoc/fuji/pro_160c_datasheet.pdf",
+   "sha256": "885baa2dece1ffde96f19b1b275288d828eaa0f762130878632e207d4afba393",
+   "title": "FUJICOLOR PRO 160C, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 3."
+  },
+  {
+   "file": "fuji_pro_160s.pdf",
+   "url": "https://juneleung.github.io/filmdoc/fuji/pro_160s_datasheet.pdf",
+   "sha256": "024bcb52ea38206b3409bde6d022dfc405cf25b563777d819bebab94cf900ba8",
+   "title": "FUJICOLOR PRO 160S, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 3."
+  },
+  {
+   "file": "fuji_pro_neg_brochure.pdf",
+   "url": "https://juneleung.github.io/filmdoc/fuji/FUJICOLOR_PRO_NEG_FAMILY_BROCHURE_101305.pdf",
+   "sha256": "0b8e106671d53128575b742b4cf8970bb09ffff144de8dc3b8e929abb51e1d77",
+   "title": "FUJICOLOR PRO negative family brochure (2005)",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Check of the value 3 of PRO 160S and 160C only."
+  },
+  {
+   "file": "fuji_superia_xtra_400.pdf",
+   "url": "https://juneleung.github.io/filmdoc/fuji/superia_xtra400_datasheet.pdf",
+   "sha256": "0f2ac1e5d113c5636b495706ece3448554e9b1dc074f92214fc67099d49e3acb",
+   "title": "FUJICOLOR SUPERIA X-TRA 400, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 4."
+  },
+  {
+   "file": "fuji_superia_reala.pdf",
+   "url": "https://juneleung.github.io/filmdoc/fuji/superia_reala_datasheet.pdf",
+   "sha256": "ec54079823e729707202749f9d0dfc8b8c52dbf21b74734098ccd7d05ff7ac27",
+   "title": "FUJICOLOR SUPERIA REALA, AF3-967E",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 4."
+  },
+  {
+   "file": "fuji_superia_1600.pdf",
+   "url": "https://juneleung.github.io/filmdoc/fuji/superia_1600_datasheet.pdf",
+   "sha256": "6e6c2a58092b7fbed63161f9f9e89a046d5235febd4cf4b48aeb5ba00f70646c",
+   "title": "FUJICOLOR SUPERIA 1600, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 7. Family value of FUJICOLOR NATURA 1600."
+  },
+  {
+   "file": "fuji_natura_1600_jp.pdf",
+   "url": "https://asset.fujifilm.com/www/jp/files/2024-04/96b634a89ec6a5abda6b70437f4d75a4/datasheet_natura1600_01.pdf",
+   "sha256": "43ce5589c48fb37064294d975317e259d3483fe8b3ee1423978d82eaaa38f53b",
+   "title": "NATURA 1600 data sheet (Japanese)",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Not used: no text layer."
+  },
+  {
+   "file": "af3_c200.pdf",
+   "url": "https://asset.fujifilm.com/www/dk/files/2019-09/cce1e1943550fc3e76c22411066f0100/films_c200_datasheet_01.pdf",
+   "sha256": "fe9a94fb0adc8817e77156517ab8cfe60fe7ce1f6275cc223686db664d6f2629",
+   "title": "FUJICOLOR C200, AF3-0249E",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 4, 48 um, density 1.0 above minimum density."
+  },
+  {
+   "file": "fuji_f250.pdf",
+   "url": "https://cinematography.net/Files/F-250.pdf",
+   "sha256": "706d9bc002c34ce983a3630c282602bae690bde2b9a95480205c5cfcd5e08dcf",
+   "title": "FUJICOLOR F-250 motion picture negative, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "RMS granularity 3.5 at visual diffuse density 1.0 above minimum, 48 um. Family value of ETERNA 500 and ETERNA VIVID 500."
+  },
+  {
+   "file": "fuji_vivid160.pdf",
+   "url": "https://cinematography.net/Files-2/vivid160.pdf",
+   "sha256": "7d7bec185f3a9d6569ceda84821ecc9f50c371979b3a72f7d98efb31502509fd",
+   "title": "FUJICOLOR ETERNA VIVID 160, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "RMS granularity 3.5. Check of the Fuji cine value only."
+  },
+  {
+   "file": "fuji_mp_manual.pdf",
+   "url": "https://www.theodoropoulos.info/attachments/076_fujifilm_motion_picture_film_manual.pdf",
+   "sha256": "76c44cb30ce447eff57bc88743f10bcfdd62cfa55825323b82d1926c6fe3f44a",
+   "title": "FUJIFILM Motion Picture Film Manual, KB-0707E",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Not used: it gives no granularity of ETERNA 500."
+  },
+  {
+   "file": "fuji_astia_100f.pdf",
+   "url": "https://juneleung.github.io/filmdoc/fuji/astia_100f_datasheet.pdf",
+   "sha256": "a3ed5826d934743b91d750a7ce6c79041c8b3ba0b1afc05ff3cf0b8d175e0809",
+   "title": "FUJICHROME ASTIA 100F, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "RMS granularity 7."
+  },
+  {
+   "file": "velvia_50.pdf",
+   "url": "https://www.ishootfujifilm.com/uploads/VELVIA%2050%20Data%20Guide.pdf",
+   "sha256": "bebfb4305fd3edc5e3505a9a0f4a0a1078da1db7672aacb4aa1bac1de3d64cfd",
+   "title": "FUJICHROME VELVIA 50, data guide",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 9."
+  },
+  {
+   "file": "velvia_100.pdf",
+   "url": "https://asset.fujifilm.com/master/emea/files/2020-10/2f3c7f90a0b0c6e605e84f98b7d489c2/films_velvia-100_datasheet_01.pdf",
+   "sha256": "4c57a27b978311ca2ef819f2bf2d74c757639d27f9f0bd94e5f49c4b1c3d5902",
+   "title": "FUJICHROME VELVIA 100, AF3-202E",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 8."
+  },
+  {
+   "file": "provia_100f.pdf",
+   "url": "https://asset.fujifilm.com/master/emea/files/2020-10/2c27854d5609945fbe7e48afc61f815d/films_provia-100f_datasheet_01.pdf",
+   "sha256": "e28d54e76e8fcdf44c8ffacc930b5b8f2ea54a7cdaeedfcc91790e68eb599de8",
+   "title": "FUJICHROME PROVIA 100F, data sheet",
+   "publisher": "FUJIFILM Corporation",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse RMS granularity value 8."
+  },
+  {
+   "file": "e4000_ektachrome_100.pdf",
+   "url": "https://business.kodakmoments.com/sites/default/files/files/products/e4000_ektachrome_100.pdf",
+   "sha256": "d6e6fa1497c4fc16010997b1a8510d9df3b4692e34c48599c8a4338d5768fab6",
+   "title": "KODAK PROFESSIONAL EKTACHROME E100, E-4000",
+   "publisher": "Kodak Alaris Inc.",
+   "license": "Manufacturer technical data. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Diffuse rms granularity 8, gross diffuse visual density 1.0, 48 um."
+  },
+  {
+   "file": "agfa_vista_brochure.pdf",
+   "url": "https://125px.com/docs/unsorted/agfa/F-AF-E6_en.pdf",
+   "sha256": "7da4cb84f555daa333d35975127d832e44bf52b263cf449a331733e1bb67d09f",
+   "title": "AGFA VISTA 100 to 800 brochure, F-AF-E6",
+   "publisher": "Agfa-Gevaert",
+   "license": "Manufacturer technical data from a public archive. No redistribution license is stated. Do not commit the PDF.",
+   "use": "Granularity (x 1000) RMS 4.0 for VISTA 100."
+  }
+ ]
+}

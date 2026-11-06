@@ -1,23 +1,23 @@
 {
- "schema_version": 10,
+ "schema_version": 11,
  "manifest": {
-  "schema_version": 10,
-  "lab_commit": "fb785ef370ffec246347ade0378648f96fbccddb",
+  "schema_version": 11,
+  "lab_commit": "d98712fdce2b27081899e86f95fa83feca3faaaf",
   "resources": {
    "stock_bundle": {
     "file": "film_stock_bundle.bin",
-    "bytes": 3434296,
-    "sha256": "9b9cc0c001f18fdef2f38202afb3e4d0f1571eb044e3b3b030591203a837b5b3"
+    "bytes": 3510824,
+    "sha256": "1edff3a9fdc4603adbaf4eea2361b5e1900396fb843e1bdb781e1337b7257a81"
    },
    "print_setup": {
     "file": "film_print_setup.bin",
     "bytes": 1681936,
-    "sha256": "ad7898fd4db8ed57e07b4d87dd67fc77d6431927ed2edd297dd06936ac0abb4e"
+    "sha256": "3cb09cc05843e808bba6b9288343425558297cc37a66d097e3cdacc92e0e6bc8"
    },
    "reflectance_table": {
     "file": "film_reflectance_table.bin",
     "bytes": 25127352,
-    "sha256": "c7de988ed11bad7dfdbf523a48312d8c252e3fc5b3db63fd054c7eb20aa78408"
+    "sha256": "f364a60c8581f14abc72259dfa24109a1ae40d94ed2bc805979660dfb1533071"
    }
   }
  },
@@ -822,7 +822,81 @@
      }
     }
    ]
+  },
+  "grain__expected.bin": {
+   "bytes": 4936,
+   "checks": {
+    "closed_form_vs_frequency_largest_relative": 4e-15,
+    "selwyn_ratio_I_times_p_green": {
+     "50": 0.95486,
+     "250": 0.99097,
+     "500": 0.99549
+    },
+    "plan_table_green_sigma_48_0_0070": {
+     "16mm": {
+      "2560": {
+       "pitch_um": 4.891,
+       "sigma_px": 0.034,
+       "blur_px": 0.409
+      },
+      "6000": {
+       "pitch_um": 2.087,
+       "sigma_px": 0.0402,
+       "blur_px": 0.958
+      },
+      "9504": {
+       "pitch_um": 1.317,
+       "sigma_px": 0.0413,
+       "blur_px": 1.518
+      }
+     },
+     "35mm": {
+      "2560": {
+       "pitch_um": 14.062,
+       "sigma_px": 0.0178,
+       "blur_px": 0.142
+      },
+      "6000": {
+       "pitch_um": 6.0,
+       "sigma_px": 0.0312,
+       "blur_px": 0.333
+      },
+      "9504": {
+       "pitch_um": 3.788,
+       "sigma_px": 0.0367,
+       "blur_px": 0.528
+      }
+     },
+     "70mm": {
+      "2560": {
+       "pitch_um": 27.344,
+       "sigma_px": 0.01,
+       "blur_px": 0.073
+      },
+      "6000": {
+       "pitch_um": 11.667,
+       "sigma_px": 0.0206,
+       "blur_px": 0.171
+      },
+      "9504": {
+       "pitch_um": 7.365,
+       "sigma_px": 0.0281,
+       "blur_px": 0.272
+      }
+     }
+    },
+    "zoom_box_over_render_range": [
+     1.0,
+     1.0
+    ],
+    "lag1_kernel_minus_continuous_largest": 1.67e-16,
+    "zoom_pattern_correlation_smallest": 0.9431,
+    "first_kernel_form_sigma_c_over_p": {
+     "lag1_too_low_by_largest": 0.278,
+     "zoom_box_over_render_smallest": 0.7927
+    }
+   }
   }
  },
- "seconds": 762.3
+ "seconds": 1349.9
 }

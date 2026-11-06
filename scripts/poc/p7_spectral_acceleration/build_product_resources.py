@@ -74,6 +74,23 @@ Checks, on 4 random and the expected scan selections, and on the grid:
 | Scanner table | The table T on 512 random nodes against the direct sum of numpy on the model grid (VirtualScan.scan.apd of the spectral density): largest absolute difference in density | 1e-12 |
 | Grid blend, print | The blend of two nodes against the exact light, at the mid-points of CCT_BLEND_CHECKS: 5207 on Kodak 2383 in sRGB, 8 bit code | largest at most 0.5 |
 | Grid blend, scan | The same for Negative Scan of four negatives (the blended spectrum and layer gain, the blend of the stored values): linear AP1, values above 2^-10, in stops | largest at most 0.03 stops |
+
+Film grain (step P15, Alcedo Studio plan 'film_grain_format_and_stock_plan.md', phase G0, issue 675; schema 11). Source:
+results/p15_film_grain/ (stock_grain.json, layer_correlation.json, post_path_target.json); the rules are in the docstrings of
+scripts/poc/p15_film_grain/stock_granularity.py and grain_reference.py.
+- 'grain/<stock>/' for each negative and each reversal film: 'layer_amount' and 'layer_sigma_amount' (3, GRAIN_NODES): the standard deviation of the dye
+  amount of each layer at the 48 um aperture against the dye amount (for a reversal film the amount is dye_max - record); 'channel_density' and
+  'channel_sigma_48' (3, GRAIN_NODES): the diffuse granularity sigma_48 of each channel against the gross density of the read condition of the source
+  (Status M for a negative, Status A for a reversal film); 'layer_node_count' and 'channel_node_count' (3, int32): the nodes of each curve (the two
+  groups are reduced apart). Nodes past the count repeat the last node; the product reads the counted nodes. Values outside the nodes take the end value. Metadata 'grain' holds the tier ('curve', 'number', 'family', 'pgi',
+  'reversal'), the source, and the rule of each stock.
+- 'common/grain_cloud_sigma_um' (3): sigma_c of each layer (literature, no fit: the scans cannot separate the scanner blur). 'common/grain_layer_correlation'
+  (3: rg, gb, rb): the correlation of the unit fields of the layers (rule grain_layer_mix). 'common/grain_aperture_area_um2'.
+- 'common/grain_post_display_value' and 'common/grain_post_display_sigma_48' (3, linear display): the target of the post path, 5207 on Endura Premier,
+  reference light, 18 % grey, at the 48 um aperture. 'common/grain_post_display_correlation' (3: rg, gb, rb): the correlation of the display channels
+  of that print; the post path mixes its unit fields with it in place of the layer correlation (rule grain_layer_mix).
+Expected values: grain__expected.bin (grain_reference.expected_arrays: the pitch, pixel factor, kernel, lag-1, zoom, and film print values of the
+product tests). Check: every negative and reversal film has a group, the nodes are finite and rise, and sigma is positive.
 """
 
 from __future__ import annotations
@@ -96,18 +113,23 @@ from scipy.spatial import ConvexHull
 REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p6_mvp_gui"))
 import mvp_pipeline as mp  # noqa: E402
+sys.path.insert(0, str(REPO_ROOT / "scripts" / "poc" / "p15_film_grain"))
+import grain_reference as gr  # noqa: E402
 
 
 fp = mp.fp
 rf = mp.rf
 p0 = fp.p0
 sr = fp.sr
-SCHEMA_VERSION = 10  # 6: the reversal films (step P9); 7: Lab Scan (step P10); 8: the ADX16 scan with the slope match and the colour temperature grid (U92, U93), and no rule foliage_spectra (U93); 9: the generic scan of each medium, rule stock_balance, and rule untimed_axis_academy (U96 to U98, issue 664); 10: Negative Scan (step P14, issue 661) in place of all Lab Scan forms
+SCHEMA_VERSION = 11  # 6: the reversal films (step P9); 7: Lab Scan (step P10); 8: the ADX16 scan with the slope match and the colour temperature grid (U92, U93), and no rule foliage_spectra (U93); 9: the generic scan of each medium, rule stock_balance, and rule untimed_axis_academy (U96 to U98, issue 664); 10: Negative Scan (step P14, issue 661) in place of all Lab Scan forms; 11: the film grain (step P15, issue 675)
 MAGIC = b"ALCDFILM"
 OUTPUT = REPO_ROOT / "build" / "tmp" / "p7" / "product_resources"
 RESULT = REPO_ROOT / "results" / "p7_spectral_acceleration" / "product_resources.json"
 EXPECTED_SELECTIONS = (("kodak_5207", "kodak_2383", "reference"), ("kodak_portra_400", "kodak_endura_premier", "daylight"), ("fuji_eterna_500", "kodak_2383", "street_mixed"), ("kodak_5219", "cine_look", "reference"), ("kodak_5207", "cine_look", "reference"))
 RANDOM_CHECKS = 8
+GRAIN_RESULTS = REPO_ROOT / "results" / "p15_film_grain"
+GRAIN_NODES = 16
+GRAIN_CLOUD_SIGMA_UM = (2.0, 2.0, 2.8)  # the same values as grain_reference.CLOUD_SIGMA_UM (checked)
 REVERSAL_EXPECTED_SELECTIONS = (("fuji_velvia_50", "reference"), ("kodak_ektachrome_e100", "daylight"), ("fuji_provia_100f", "street_mixed"))
 REVERSAL_RANDOM_CHECKS = 4
 SETUP_LIMIT = 1e-9
@@ -684,6 +706,49 @@ FIXED_FIELDS = ("print_contrast", "print_flash", "viewing_flare", "enlarger_flar
                 "interlayer_gain", "overexposure_stops", "print_timing", "mask_gamma", "adjacency_gain", "scatter_um", "scene_flare", "printer_lamp", "density_outside")
 
 
+def collect_grain(bundle: dict[str, np.ndarray], stocks: list[str]) -> dict:
+    """The film grain (schema 11, see the docstring). Adds 'grain/<stock>/' and 'common/grain_*' to the bundle. Returns the metadata 'grain'."""
+    data = json.loads((GRAIN_RESULTS / "stock_grain.json").read_text(encoding="utf-8"))["stocks"]
+    correlation = json.loads((GRAIN_RESULTS / "layer_correlation.json").read_text(encoding="utf-8"))["layer_correlation"]
+    post = json.loads((GRAIN_RESULTS / "post_path_target.json").read_text(encoding="utf-8"))
+    missing = sorted(set(stocks) - set(data))
+    if missing:
+        raise ValueError(f"no grain data for {missing}: a stock with no grain group is a resource defect")
+
+    def padded(curves: list[list[float]], name: str) -> np.ndarray:
+        out = np.zeros((3, GRAIN_NODES))
+        for k, curve in enumerate(curves):
+            values = np.asarray(curve, dtype=np.float64)
+            if not 2 <= values.size <= GRAIN_NODES or not np.all(np.isfinite(values)):
+                raise ValueError(f"grain {name}: layer {k} has {values.size} nodes or a value that is not finite")
+            out[k, :values.size] = values
+            out[k, values.size:] = values[-1]
+        return out
+
+    metadata = {}
+    for stock in sorted(stocks):
+        entry = data[stock]
+        values = {}
+        for group, x_name, y_name in (("layer", "amount", "sigma_amount"), ("channel", "density", "sigma_48")):
+            counts = [len(x) for x in entry[group][x_name]]
+            if counts != [len(y) for y in entry[group][y_name]]:
+                raise ValueError(f"grain {stock}: {group} {x_name} and {y_name} differ in node count")
+            x, y = padded(entry[group][x_name], stock), padded(entry[group][y_name], stock)
+            for k, n in enumerate(counts):
+                if not np.all(np.diff(x[k, :n]) > 0):
+                    raise ValueError(f"grain {stock}: {group} {x_name} of layer {k} does not rise")
+                if not np.all(y[k, :n] > 0):
+                    raise ValueError(f"grain {stock}: {group} {y_name} of layer {k} is not positive")
+            values.update({f"{group}_{x_name}": x, f"{group}_{y_name}": y, f"{group}_node_count": np.array(counts, dtype=np.int32)})
+        bundle.update({f"grain/{stock}/{name}": value for name, value in values.items()})
+        metadata[stock] = {"tier": entry["tier"], "source": entry["source"], "rule": entry["rule"]}
+    bundle.update({"common/grain_cloud_sigma_um": np.array(GRAIN_CLOUD_SIGMA_UM), "common/grain_layer_correlation": np.array([correlation["rg"], correlation["gb"], correlation["rb"]]),
+                   "common/grain_aperture_area_um2": scalar(np.pi * 24.0 ** 2), "common/grain_post_display_value": np.array(post["linear"]["display_value"], dtype=np.float64),
+                   "common/grain_post_display_sigma_48": np.array(post["linear"]["display_sigma_48"], dtype=np.float64),
+                   "common/grain_post_display_correlation": np.array(post["linear"]["display_correlation_rg_gb_rb"], dtype=np.float64)})
+    return metadata
+
+
 def collect() -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict, list]:
     """All values of the two small resources. Returns (bundle arrays, setup arrays, bundle metadata, models for the reflectance table)."""
     negatives, papers = sorted(mp.CATALOG["negatives"]), sorted(mp.CATALOG["prints"])
@@ -757,6 +822,7 @@ def collect() -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict, list]
     scan_setup, scan_metadata = collect_scan(bundle, setup, negatives, lights, spectrum_names)
     setup.update(scan_setup)
     metadata.update(scan_metadata)
+    metadata["grain"] = collect_grain(bundle, negatives + sorted(mp.CATALOG["reversals"]))
     return bundle, setup, metadata, [last_model]
 
 
@@ -1036,6 +1102,11 @@ def main() -> int:
                                                             "constants": constants})
     expected_files["scan__auto.bin"] = {"bytes": (expected / "scan__auto.bin").stat().st_size, "cases": auto_record}
     grid_checks = check_grid_blend(scan_images, setup, metadata)
+    grain_arrays, grain_metadata, grain_checks = gr.expected_arrays()
+    if not np.array_equal(grain_arrays["cloud_sigma_um"], bundle["common/grain_cloud_sigma_um"]) or not np.array_equal(grain_arrays["layer_correlation"], bundle["common/grain_layer_correlation"]):
+        raise ValueError("the grain evaluator and the bundle differ in sigma_c or the layer correlation")
+    write_arrays(expected / gr.EXPECTED_NAME, grain_arrays, grain_metadata)
+    expected_files[gr.EXPECTED_NAME] = {"bytes": (expected / gr.EXPECTED_NAME).stat().st_size, "checks": grain_checks}
 
     record = {"schema_version": SCHEMA_VERSION, "manifest": manifest, "selections": {"negatives": len(metadata["negatives"]), "print_materials": len(metadata["print_materials"]), "reversal_films": len(metadata["reversal_films"]), "scene_lights": len(metadata["scene_lights"])}, "setup_difference_limit": SETUP_LIMIT, "setup_difference": checks, "scan_point_limit_relative": SCAN_POINT_LIMIT, "scan": scan_checks, "grid_blend_print_limit_code": CCT_BLEND_LIMIT, "grid_blend_scan_limit_stops": CCT_BLEND_STOPS_LIMIT, "grid_blend": grid_checks, "compact_table": {"mantissa_bits": MANTISSA_BITS, "first_wavelength_nm": float(bundle["common/wavelengths_nm"][int(compact["first_wavelength"])]), "wavelength_count": int(compact["wavelength_count"]), "nodes_kept": int(node_mask.sum()), "nodes": int(node_mask.size), "uv_relative_limit": UV_RELATIVE_LIMIT, "display_code_limit": DISPLAY_CODE_LIMIT, "checks": compact_checks}, "expected": expected_files, "seconds": round(time.perf_counter() - started, 1)}
     RESULT.parent.mkdir(parents=True, exist_ok=True)
