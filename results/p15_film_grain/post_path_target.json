@@ -1,0 +1,63 @@
+{
+ "selection": [
+  "kodak_5207",
+  "kodak_endura_premier",
+  "reference"
+ ],
+ "grey_ap1": 0.18,
+ "record": [
+  0.65752,
+  0.709649,
+  0.829216
+ ],
+ "sigma_amount_48": [
+  0.0078876,
+  0.0076071,
+  0.0144019
+ ],
+ "aperture": "48 um circle",
+ "encoded": {
+  "display_value": [
+   0.470337,
+   0.473736,
+   0.451611
+  ],
+  "display_sigma_48": [
+   0.0124291,
+   0.011537,
+   0.0186917
+  ],
+  "relative_sigma_48": [
+   0.026426,
+   0.024353,
+   0.041389
+  ],
+  "display_correlation_rg_gb_rb": [
+   0.5348,
+   0.5086,
+   0.0865
+  ]
+ },
+ "linear": {
+  "display_value": [
+   0.187605,
+   0.190531,
+   0.171955
+  ],
+  "display_sigma_48": [
+   0.0106526,
+   0.0099778,
+   0.0152264
+  ],
+  "relative_sigma_48": [
+   0.056782,
+   0.052368,
+   0.088549
+  ],
+  "display_correlation_rg_gb_rb": [
+   0.5348,
+   0.5086,
+   0.0865
+  ]
+ }
+}

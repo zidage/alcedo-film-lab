@@ -1,0 +1,13 @@
+{
+  "description": "Vector granularity charts of step P15. Each chart names the page, the clip rectangle in PDF points, the stroke paths of the characteristic curves and of the granularity curves (indices of pymupdf Page.get_drawings), and how each curve gets its layer. Path indices were chosen on the index overlays of overlay_paths.py and are checked by the overlays of digitize_granularity_charts.py.",
+  "charts": {
+    "kodak_5203": {"file": "kodak_5203_ti.pdf", "page": 4, "clip": [40, 140, 290, 370], "characteristic_paths": [49, 50, 51], "granularity_paths": [46, 47, 48], "granularity_layers": {"46": "R", "47": "G", "48": "B"}},
+    "kodak_5207": {"file": "kodak_5207_ti.pdf", "page": 4, "clip": [40, 140, 290, 370], "characteristic_paths": [3, 4, 5], "granularity_paths": [6]},
+    "kodak_5213": {"file": "kodak_5213_ti.pdf", "page": 4, "clip": [40, 140, 290, 370], "characteristic_paths": [58, 59, 60], "granularity_paths": [3, 56, 57], "granularity_layers": {"3": "R", "56": "G", "57": "B"}},
+    "kodak_5219": {"file": "kodak_5219_ti.pdf", "page": 4, "clip": [40, 140, 290, 370], "characteristic_paths": [45, 46, 47], "granularity_paths": [48, 49]},
+    "kodak_5277": {"file": "kodak_5277.pdf", "page": 3, "clip": [330, 220, 560, 440], "characteristic_paths": [10, 11], "granularity_paths": [9]},
+    "kodak_5293": {"file": "kodak_5293.pdf", "page": 4, "clip": [40, 25, 290, 270], "characteristic_paths": [6, 8, 9, 10], "granularity_paths": [12, 13, 14, 15, 16]},
+    "kodak_exr_5248": {"file": "kodak_5248.pdf", "page": 3, "clip": [60, 490, 290, 710], "sigma_axis_rms_limit_pt": 0.7, "sigma_axis_note": "The log labels of this sheet sit up to 1 pt off their ticks; 0.7 pt is 0.016 decade (3.7 % of sigma_D).", "characteristic_paths": [22], "granularity_paths": [23, 24, 25, 26]},
+    "kodak_5206": {"file": "kodak_5206.pdf", "page": 3, "clip": [340, 210, 560, 420], "characteristic_paths": [9, 10, 11], "granularity_paths": [12, 13, 14], "granularity_layers": {"12": "B", "13": "G", "14": "R"}}
+  }
+}

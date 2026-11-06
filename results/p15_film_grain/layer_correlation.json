@@ -1,0 +1,45 @@
+{
+ "stock": "kodak_5207",
+ "target": {
+  "rg": 0.661,
+  "gb": 0.41,
+  "rb": 0.246
+ },
+ "net_green_points": [
+  0.1,
+  0.3,
+  0.5,
+  0.7
+ ],
+ "limit": 0.05,
+ "independent_layers": {
+  "rg": 0.2551,
+  "gb": 0.1779,
+  "rb": 0.0437
+ },
+ "single_shared_field": {
+  "rho": 0.466,
+  "channel": {
+   "rg": 0.6612,
+   "gb": 0.6236,
+   "rb": 0.5294
+  }
+ },
+ "layer_correlation": {
+  "rg": 0.489,
+  "gb": 0.2349,
+  "rb": 0.1743
+ },
+ "layer_correlation_eigenvalues": [
+  0.5065,
+  0.8699,
+  1.6236
+ ],
+ "channel_with_layer_correlation": {
+  "rg": 0.661,
+  "gb": 0.41,
+  "rb": 0.246
+ },
+ "within_limit": true,
+ "scanner": "negative_scan.ScannerSetup() default bands"
+}

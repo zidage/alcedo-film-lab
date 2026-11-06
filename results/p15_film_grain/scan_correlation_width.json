@@ -1,0 +1,34 @@
+{
+ "pitch_um": 7.9375,
+ "blocks": 56,
+ "channels": {
+  "R": {
+   "median_total_width_um": 5.871,
+   "quartiles_um": [
+    5.622,
+    6.552
+   ],
+   "median_ratio_c2_c1": 0.305,
+   "fitted_blocks": 56
+  },
+  "G": {
+   "median_total_width_um": 7.685,
+   "quartiles_um": [
+    6.891,
+    12.166
+   ],
+   "median_ratio_c2_c1": 0.4425,
+   "fitted_blocks": 47
+  },
+  "B": {
+   "median_total_width_um": 7.769,
+   "quartiles_um": [
+    7.039,
+    9.034
+   ],
+   "median_ratio_c2_c1": 0.4828,
+   "fitted_blocks": 45
+  }
+ },
+ "reading": "s is the width of the cloud and the scanner optics together; sigma_c <= s."
+}

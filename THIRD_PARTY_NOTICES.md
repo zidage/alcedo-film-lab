@@ -103,6 +103,12 @@ nanobind (Wenzel Jakob), BSD-3-Clause, <https://github.com/wjakob/nanobind>. P7:
   ShareAlike term requires; it is not under GPL-3.0.
 - Use without reuse: the same script reads the Fotufilm profiles of Velvia 50, Provia 100F, and
   Ektachrome E100 as comparison data only (`results/p9_reversal_light_table/source_checks.json`).
+- One value (step P15): `grainStrength` 0.009 of `Sources/FotufilmCore/Stocks/portra400.json` is the absolute anchor of
+  the Print Grain Index tier (rule `pgi_anchor_external` of `scripts/poc/p15_film_grain/stock_granularity.py`). It sets
+  the scale of the grain values of Portra 160, 400, 800, Ektar 100, Gold 200, Ultramax 400, and Vericolor III in
+  `results/p15_film_grain/stock_grain.json` and in the `grain/` group of the product resources. Attribution: Fotufilm
+  (<https://fotufilm.com>), profiles by MUAStudio Inc., CC BY-SA 4.0. The 5207 value of `vision250d.json` is a
+  comparison only.
 - Reference only (ROADMAP U12): the light box view of a transparency in Fotufilm
   `SpectralModel.swift` (`NegativeViewing.lightBox`). The light table of step P9 is written for this
   lab and reuses no code or value from it.

@@ -1,0 +1,39 @@
+{
+ "expected_median_abs_relative": 0.03,
+ "layers": {
+  "R": {
+   "density_range": [
+    0.24665,
+    2.02928
+   ],
+   "median_abs_relative": 0.0627,
+   "largest_abs_relative": 0.2789,
+   "density_of_largest": 0.296,
+   "mean_ratio": 0.9775,
+   "within_expected_3_percent": false
+  },
+  "G": {
+   "density_range": [
+    0.60929,
+    2.68907
+   ],
+   "median_abs_relative": 0.1171,
+   "largest_abs_relative": 0.3585,
+   "density_of_largest": 0.681,
+   "mean_ratio": 0.9961,
+   "within_expected_3_percent": false
+  },
+  "B": {
+   "density_range": [
+    1.01939,
+    2.99567
+   ],
+   "median_abs_relative": 0.1541,
+   "largest_abs_relative": 0.4908,
+   "density_of_largest": 2.988,
+   "mean_ratio": 1.1507,
+   "within_expected_3_percent": false
+  }
+ },
+ "within_expected_3_percent": false
+}
