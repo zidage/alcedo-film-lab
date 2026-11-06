@@ -296,7 +296,17 @@ group; the nodes are finite and rise; sigma is positive; the evaluator and the b
 Machine: Intel Core i7-12700H, 31.8 GB, Windows 11, CPU only. Environment of step P6 (`build/tmp/p6/venv`). Commands: the
 [script README](../../scripts/poc/p15_film_grain/README.md).
 
-Builder run: pending.
+Builder run of 2026-11-05 at lab commit `d98712f` (clean tree), 1350 s, all checks of the builder pass
+(`results/p7_spectral_acceleration/product_resources.json`). Schema 11:
+
+| File | Bytes | SHA-256 |
+| --- | --- | --- |
+| `film_stock_bundle.bin` | 3,510,824 | `1edff3a9fdc4603adbaf4eea2361b5e1900396fb843e1bdb781e1337b7257a81` |
+| `film_print_setup.bin` | 1,681,936 | `3cb09cc05843e808bba6b9288343425558297cc37a66d097e3cdacc92e0e6bc8` |
+| `film_reflectance_table.bin` | 25,127,352 | `f364a60c8581f14abc72259dfa24109a1ae40d94ed2bc805979660dfb1533071` |
+| `expected/grain__expected.bin` | 4,936 | (test values, not shipped) |
+
+A first run on the uncommitted tree gave the same three hashes. Run time of `grain_reference.py` alone: 7 s.
 
 ## Parameters
 
